@@ -1,3 +1,81 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Digital Student ID</title><link rel="stylesheet" href="style.css"><script src="script.js" defer></script></head>
-<body onload="fillIdCard()"><header class="topbar"><strong>Student Portal</strong><nav><a href="profile.html">Profile</a><a href="#" onclick="logout();return false">Log out</a></nav></header><main class="container"><section class="id-card"><div class="id-head"><h2 style="color:white;margin:0">STUDENT IDENTIFICATION CARD</h2><small>STUDENT ID INFORMATION SYSTEM</small></div><div class="id-body"><div class="avatar">Student<br>Photo</div><div class="id-details"><h2 id="idName"></h2><p><b>Student No.:</b> <span id="idNumber"></span></p><p><b>Course:</b> <span id="idCourse"></span></p><p><b>Year:</b> <span id="idYear"></span></p></div></div><div class="id-head"><small>For demonstration only — not an official school ID</small></div></section><p style="text-align:center"><a class="btn secondary" href="profile.html">Back to profile</a></p></main></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Student ID</title>
+
+    <!-- CSS LINK -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- JAVASCRIPT LINK -->
+    <script src="script.js" defer></script>
+</head>
+
+<body onload="fillIdCard()">
+
+    <header class="topbar">
+        <strong>Student Portal</strong>
+
+        <nav>
+            <a href="profile.html">Profile</a>
+            <a href="#" onclick="logout(); return false;">Log out</a>
+        </nav>
+    </header>
+
+    <main class="container">
+
+        <section class="id-card">
+
+            <div class="id-head">
+                <h2 style="color:white; margin:0;">
+                    STUDENT IDENTIFICATION CARD
+                </h2>
+                <small>STUDENT ID INFORMATION SYSTEM</small>
+            </div>
+
+            <div class="id-body">
+
+                <div class="avatar">
+                    Student<br>Photo
+                </div>
+
+                <div class="id-details">
+                    <h2 id="idName"></h2>
+
+                    <p>
+                        <b>Student No.:</b>
+                        <span id="idNumber"></span>
+                    </p>
+
+                    <p>
+                        <b>Course:</b>
+                        <span id="idCourse"></span>
+                    </p>
+
+                    <p>
+                        <b>Year:</b>
+                        <span id="idYear"></span>
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="id-head">
+                <small>
+                    For demonstration only — not an official school ID
+                </small>
+            </div>
+
+        </section>
+
+        <p style="text-align:center;">
+            <a class="btn secondary" href="profile.html">
+                Back to profile
+            </a>
+        </p>
+
+    </main>
+
+</body>
+</html>
