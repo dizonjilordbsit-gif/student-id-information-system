@@ -1,42 +1,453 @@
-*{box-sizing:border-box}
-:root{--navy:#07172f;--blue:#123c70;--gold:#f3bd36;--ink:#1e293b}
-body{margin:0;background:#f1f5f9;color:var(--ink);font:15px Arial,sans-serif}
-.brand{background:linear-gradient(110deg,#07172f,#123c70);color:#fff;padding:18px 5%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;box-shadow:0 5px 20px #07172f30}
-.brand a{color:#fff;margin-right:14px;text-decoration:none}.brand a:hover{color:var(--gold)}
-.wrap{width:min(1120px,94%);margin:28px auto}
-.card,.hero{background:#ffffffed;border:1px solid #dce5f0;border-radius:15px;padding:22px;margin-bottom:20px;box-shadow:0 8px 28px #0f274015}
-.hero{background:linear-gradient(120deg,#e8f1fc,#fff)}
-h1,h2{color:#123c70}
-.form{display:grid;gap:14px}
-.grid,.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
-.field{display:flex;flex-direction:column;gap:6px;font-weight:bold}
-.field input,.field select,.field textarea,input[type=search],select{padding:11px;border:1px solid #cbd5e1;border-radius:8px;font:inherit;width:100%}
-.field textarea{min-height:80px}
-.btn,button{border:0;border-radius:8px;padding:11px 16px;background:#1d4ed8;color:white;font-weight:bold;cursor:pointer;text-decoration:none;display:inline-block}
-button:hover,.btn:hover{filter:brightness(1.08)}.alt{background:#475569}
-.notice{padding:12px;border-radius:8px;background:#eff6ff;color:#1e40af;margin:12px 0}
-.error{background:#fef2f2;color:#991b1b}.success{background:#ecfdf5;color:#065f46}
-.hidden{display:none}.stat{padding:18px;background:#eef4fc;border-radius:10px}
-.stat strong{display:block;font-size:28px;color:#123c70;margin-top:8px}
-.tablewrap{overflow-x:auto}table{border-collapse:collapse;width:100%}
-th,td{text-align:left;padding:11px;border-bottom:1px solid #e2e8f0;white-space:nowrap}
-th{background:#edf3fb;color:#123c70}.status{padding:5px 9px;border-radius:20px;background:#e0edff;font-size:12px;font-weight:bold}
-.approved,.released{background:#dcfce7;color:#166534}.rejected{background:#fee2e2;color:#991b1b}.for_correction{background:#fef3c7;color:#92400e}
-.chartrow{display:flex;align-items:center;gap:10px;margin:9px 0}.bar{height:13px;background:#2563eb;border-radius:8px;min-width:2px}
-.small{font-size:12px;color:#64748b}
-/* PLMUN login and registration: dimmed campus photo + dark glass panel */
-body.auth-page{min-height:100vh;background-image:linear-gradient(120deg,rgba(3,13,31,.78),rgba(4,17,39,.72)),url("plmun-background.png");background-size:cover;background-position:center;background-attachment:fixed;position:relative}
-body.auth-page:before{content:"";position:fixed;inset:0;background:rgba(3,12,29,.18);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);pointer-events:none}
-body.auth-page .wrap{position:relative;z-index:1;min-height:100vh;display:flex;align-items:center;justify-content:center;margin:0 auto;padding:35px 0}
-body.auth-page .auth-card{width:min(490px,100%);background:linear-gradient(145deg,rgba(20,39,67,.78),rgba(5,16,34,.86));border:1px solid rgba(210,226,255,.27);border-radius:22px;padding:34px;box-shadow:0 24px 70px rgba(0,0,0,.48),inset 0 1px 0 rgba(255,255,255,.16);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);color:#f8fafc}
-body.auth-page .auth-card h1,body.auth-page .auth-card h2{color:#fff;text-align:center}
-body.auth-page .auth-card p,body.auth-page .auth-card label{color:#e2e8f0}
-body.auth-page .auth-card a{color:#f7c84b}
-body.auth-page .auth-card input{background:rgba(4,14,30,.55);border:1px solid rgba(203,213,225,.35);color:white;padding:13px}
-body.auth-page .auth-card input::placeholder{color:#b8c4d5}
-body.auth-page .auth-card button{background:linear-gradient(100deg,#eeb52b,#ffda69);color:#111d33;width:100%;padding:14px;font-size:16px}
-body.auth-page .auth-card .notice{color:#dbeafe;background:rgba(30,64,175,.35)}
-body.auth-page .auth-card .notice.error{color:#fecaca;background:rgba(127,29,29,.45)}
-body.auth-page .auth-card .notice.success{color:#bbf7d0;background:rgba(20,83,45,.45)}
-body.auth-page .auth-card .small{color:#cbd5e1}
-@media(max-width:650px){.wrap{margin:16px auto}.card{padding:16px}body.auth-page .auth-card{padding:24px 19px}body.auth-page .wrap{padding:18px 0}}
+/* ==============================
+   GLOBAL SETTINGS
+============================== */
+
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --navy: #07172f;
+    --blue: #123c70;
+    --gold: #f3bd36;
+    --ink: #1e293b;
+}
+
+body {
+    margin: 0;
+    background: #f1f5f9;
+    color: var(--ink);
+    font: 15px Arial, sans-serif;
+}
+
+
+/* ==============================
+   HEADER / BRAND
+============================== */
+
+.brand {
+    background: linear-gradient(110deg, #07172f, #123c70);
+    color: #fff;
+    padding: 18px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    box-shadow: 0 5px 20px #07172f30;
+}
+
+.brand a {
+    color: #fff;
+    margin-right: 14px;
+    text-decoration: none;
+}
+
+.brand a:hover {
+    color: var(--gold);
+}
+
+
+/* ==============================
+   MAIN CONTAINER
+============================== */
+
+.wrap {
+    width: min(1120px, 94%);
+    margin: 28px auto;
+}
+
+
+/* ==============================
+   CARDS AND HERO
+============================== */
+
+.card,
+.hero {
+    background: #ffffffed;
+    border: 1px solid #dce5f0;
+    border-radius: 15px;
+    padding: 22px;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 28px #0f274015;
+}
+
+.hero {
+    background: linear-gradient(120deg, #e8f1fc, #fff);
+}
+
+
+/* ==============================
+   HEADINGS
+============================== */
+
+h1,
+h2 {
+    color: #123c70;
+}
+
+
+/* ==============================
+   FORMS
+============================== */
+
+.form {
+    display: grid;
+    gap: 14px;
+}
+
+.grid,
+.stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 14px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-weight: bold;
+}
+
+.field input,
+.field select,
+.field textarea,
+input[type="search"],
+select {
+    padding: 11px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font: inherit;
+    width: 100%;
+}
+
+.field textarea {
+    min-height: 80px;
+}
+
+
+/* ==============================
+   BUTTONS
+============================== */
+
+.btn,
+button {
+    border: 0;
+    border-radius: 8px;
+    padding: 11px 16px;
+    background: #1d4ed8;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+}
+
+button:hover,
+.btn:hover {
+    filter: brightness(1.08);
+}
+
+.alt {
+    background: #475569;
+}
+
+
+/* ==============================
+   NOTIFICATIONS
+============================== */
+
+.notice {
+    padding: 12px;
+    border-radius: 8px;
+    background: #eff6ff;
+    color: #1e40af;
+    margin: 12px 0;
+}
+
+.error {
+    background: #fef2f2;
+    color: #991b1b;
+}
+
+.success {
+    background: #ecfdf5;
+    color: #065f46;
+}
+
+.hidden {
+    display: none;
+}
+
+
+/* ==============================
+   DASHBOARD STATISTICS
+============================== */
+
+.stat {
+    padding: 18px;
+    background: #eef4fc;
+    border-radius: 10px;
+}
+
+.stat strong {
+    display: block;
+    font-size: 28px;
+    color: #123c70;
+    margin-top: 8px;
+}
+
+
+/* ==============================
+   TABLES
+============================== */
+
+.tablewrap {
+    overflow-x: auto;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th,
+td {
+    text-align: left;
+    padding: 11px;
+    border-bottom: 1px solid #e2e8f0;
+    white-space: nowrap;
+}
+
+th {
+    background: #edf3fb;
+    color: #123c70;
+}
+
+
+/* ==============================
+   STATUS LABELS
+============================== */
+
+.status {
+    padding: 5px 9px;
+    border-radius: 20px;
+    background: #e0edff;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.approved,
+.released {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.rejected {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.for_correction {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+
+/* ==============================
+   CHARTS
+============================== */
+
+.chartrow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 9px 0;
+}
+
+.bar {
+    height: 13px;
+    background: #2563eb;
+    border-radius: 8px;
+    min-width: 2px;
+}
+
+
+/* ==============================
+   SMALL TEXT
+============================== */
+
+.small {
+    font-size: 12px;
+    color: #64748b;
+}
+
+
+/* ==============================
+   PLMUN LOGIN / REGISTRATION
+   DARK GLASS DESIGN
+============================== */
+
+body.auth-page {
+    min-height: 100vh;
+    background-image:
+        linear-gradient(
+            120deg,
+            rgba(3, 13, 31, .78),
+            rgba(4, 17, 39, .72)
+        ),
+        url("plmun-background.png");
+
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    position: relative;
+}
+
+
+/* Background overlay */
+
+body.auth-page::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(3, 12, 29, .18);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    pointer-events: none;
+}
+
+
+/* Authentication container */
+
+body.auth-page .wrap {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    padding: 35px 0;
+}
+
+
+/* Glass card */
+
+body.auth-page .auth-card {
+    width: min(490px, 100%);
+    background: linear-gradient(
+        145deg,
+        rgba(20, 39, 67, .78),
+        rgba(5, 16, 34, .86)
+    );
+
+    border: 1px solid rgba(210, 226, 255, .27);
+    border-radius: 22px;
+    padding: 34px;
+
+    box-shadow:
+        0 24px 70px rgba(0, 0, 0, .48),
+        inset 0 1px 0 rgba(255, 255, 255, .16);
+
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+
+    color: #f8fafc;
+}
+
+
+/* Authentication headings */
+
+body.auth-page .auth-card h1,
+body.auth-page .auth-card h2 {
+    color: #fff;
+    text-align: center;
+}
+
+
+/* Authentication text */
+
+body.auth-page .auth-card p,
+body.auth-page .auth-card label {
+    color: #e2e8f0;
+}
+
+
+/* Authentication links */
+
+body.auth-page .auth-card a {
+    color: #f7c84b;
+}
+
+
+/* Authentication inputs */
+
+body.auth-page .auth-card input {
+    background: rgba(4, 14, 30, .55);
+    border: 1px solid rgba(203, 213, 225, .35);
+    color: white;
+    padding: 13px;
+}
+
+body.auth-page .auth-card input::placeholder {
+    color: #b8c4d5;
+}
+
+
+/* Authentication buttons */
+
+body.auth-page .auth-card button {
+    background: linear-gradient(100deg, #eeb52b, #ffda69);
+    color: #111d33;
+    width: 100%;
+    padding: 14px;
+    font-size: 16px;
+}
+
+
+/* Authentication notices */
+
+body.auth-page .auth-card .notice {
+    color: #dbeafe;
+    background: rgba(30, 64, 175, .35);
+}
+
+body.auth-page .auth-card .notice.error {
+    color: #fecaca;
+    background: rgba(127, 29, 29, .45);
+}
+
+body.auth-page .auth-card .notice.success {
+    color: #bbf7d0;
+    background: rgba(20, 83, 45, .45);
+}
+
+body.auth-page .auth-card .small {
+    color: #cbd5e1;
+}
+
+
+/* ==============================
+   RESPONSIVE DESIGN
+============================== */
+
+@media (max-width: 650px) {
+
+    .wrap {
+        margin: 16px auto;
+    }
+
+    .card {
+        padding: 16px;
+    }
+
+    body.auth-page .auth-card {
+        padding: 24px 19px;
+    }
+
+    body.auth-page .wrap {
+        padding: 18px 0;
+    }
+}
