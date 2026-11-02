@@ -278,31 +278,11 @@ body {
    REGISTRATION
 ========================= */
 
-#registerPage {
-    max-width: 750px;
-    margin: 40px auto;
-}
 
-#registerPage h2 {
-    color: var(--green-main);
-    font-size: 28px;
-}
 
-#registerPage input,
-#registerPage select {
-    width: 100%;
-    padding: 13px;
-    margin: 8px 0 15px;
-    border: 1px solid #bbb;
-    border-radius: 7px;
-    font-size: 15px;
-}
 
-#registerPage label {
-    display: block;
-    font-weight: bold;
-    color: #173c2c;
-}
+
+
 
 /* =========================
    BUTTONS
@@ -545,12 +525,7 @@ td {
 
         <button onclick="login()">LOGIN</button>
 
-        <button
-            class="register-button"
-            onclick="showPage('registerPage')"
-        >
-            REGISTER
-        </button>
+        
 
         <p id="loginMessage"></p>
 
@@ -564,53 +539,6 @@ td {
 
 </section>
 
-<!-- REGISTRATION -->
-
-<section id="registerPage" class="card hidden">
-
-    <h2>Student Registration Form</h2>
-    <p>Please complete your student information.</p>
-
-    <label for="regName">Full Name</label>
-    <input id="regName" placeholder="Full Name" required>
-
-    <label for="regEmail">Email Address</label>
-    <input id="regEmail" type="email" placeholder="Email Address" required>
-
-    <label for="regCourse">Course / Program</label>
-    <input id="regCourse" placeholder="Course / Program" required>
-
-    <label for="regYear">Year Level</label>
-    <select id="regYear" required>
-        <option value="">Select Year Level</option>
-        <option>1st Year</option>
-        <option>2nd Year</option>
-        <option>3rd Year</option>
-        <option>4th Year</option>
-    </select>
-
-    <label for="regBirth">Date of Birth</label>
-    <input id="regBirth" type="date">
-
-    <label for="regPhone">Contact Number</label>
-    <input id="regPhone" type="tel" placeholder="Contact Number">
-
-    <label for="regPIN">Create 4-Digit PIN</label>
-    <input
-        id="regPIN"
-        type="password"
-        placeholder="Create your 4-digit PIN"
-        maxlength="4"
-        inputmode="numeric"
-        required
-    >
-
-    <button onclick="registerStudent()">REGISTER STUDENT</button>
-    <button onclick="showPage('loginPage')">BACK TO LOGIN</button>
-
-    <p id="registerMessage"></p>
-
-</section>
 
 <!-- STUDENT DASHBOARD -->
 
@@ -843,67 +771,6 @@ function generateStudentID() {
 
 /* STUDENT REGISTRATION */
 
-function registerStudent() {
-
-    const name = document.getElementById("regName").value.trim();
-    const email = document.getElementById("regEmail").value.trim().toLowerCase();
-    const course = document.getElementById("regCourse").value.trim();
-    const year = document.getElementById("regYear").value;
-    const birth = document.getElementById("regBirth").value;
-    const phone = document.getElementById("regPhone").value.trim();
-    const pin = document.getElementById("regPIN").value.trim();
-
-    const message = document.getElementById("registerMessage");
-
-    message.innerText = "";
-
-    if (!name || !email || !course || !year || !pin) {
-        message.innerText = "Please complete all required fields.";
-        return;
-    }
-
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        message.innerText = "Please enter a valid email address.";
-        return;
-    }
-
-    if (!/^\d{4}$/.test(pin)) {
-        message.innerText = "PIN must contain exactly 4 numbers.";
-        return;
-    }
-
-    if (students.some(student => student.email === email)) {
-        message.innerText = "Email already registered!";
-        return;
-    }
-
-    const student = {
-        id: generateStudentID(),
-        name,
-        email,
-        course,
-        year,
-        birth,
-        phone,
-        pin
-    };
-
-    students.push(student);
-    saveStudents();
-
-    message.innerHTML =
-        "Registration successful!<br>" +
-        "Your Student ID is: <b>" + student.id + "</b><br>" +
-        "Please remember your Student ID and PIN.";
-
-    document.getElementById("regName").value = "";
-    document.getElementById("regEmail").value = "";
-    document.getElementById("regCourse").value = "";
-    document.getElementById("regYear").value = "";
-    document.getElementById("regBirth").value = "";
-    document.getElementById("regPhone").value = "";
-    document.getElementById("regPIN").value = "";
-}
 
 
 /* LOGIN SYSTEM */
