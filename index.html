@@ -6,10 +6,6 @@
 <title>PLMUN Student ID Information System</title>
 
 <style>
-/* =========================
-   PLMUN DARK GREEN THEME
-========================= */
-
 * {
     box-sizing: border-box;
 }
@@ -18,7 +14,6 @@
     --green-dark: #041f17;
     --green-main: #075c3b;
     --green-light: #128052;
-    --green-glass: rgba(3, 38, 27, 0.78);
     --gold: #d9bd68;
     --white: #ffffff;
 }
@@ -31,8 +26,8 @@ body {
 
     background:
         linear-gradient(
-            rgba(0, 20, 13, 0.78),
-            rgba(0, 20, 13, 0.88)
+            rgba(0, 20, 13, 0.72),
+            rgba(0, 20, 13, 0.82)
         ),
         url("https://ts4.mm.bing.net/th?id=OIP.BIgd-vlLpw2hbK2ITm1-XQHaEK&pid=15.1");
 
@@ -66,18 +61,18 @@ body {
     display: grid;
     grid-template-columns: 1.1fr 0.9fr;
     align-items: center;
-    gap: 50px;
+    gap: 40px;
 
     padding: 55px;
 
-    background: var(--green-glass);
-    border: 1px solid rgba(255,255,255,0.22);
+    background: rgba(2, 30, 22, 0.88);
+    border: 2px solid rgba(255,255,255,0.35);
     border-radius: 25px;
 
-    backdrop-filter: blur(22px);
-    -webkit-backdrop-filter: blur(22px);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
 
-    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.55);
 }
 
 /* LEFT BRANDING */
@@ -100,14 +95,14 @@ body {
     border: 4px solid var(--gold);
     border-radius: 50%;
 
-    background: rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.12);
 
     color: var(--gold);
     font-size: 35px;
     font-weight: 900;
     letter-spacing: 2px;
 
-    box-shadow: 0 0 30px rgba(217,189,104,0.25);
+    box-shadow: 0 0 30px rgba(217,189,104,0.35);
 }
 
 .plmun-brand h1 {
@@ -126,7 +121,7 @@ body {
 }
 
 .plmun-brand p {
-    color: #d8e9df;
+    color: #e4f0e9;
     font-size: 15px;
     line-height: 1.8;
     max-width: 450px;
@@ -141,19 +136,21 @@ body {
     margin: 20px auto;
 }
 
-/* RIGHT LOGIN BOX */
+/* LOGIN GLASS BOX */
 
 .login-box {
     padding: 40px;
     border-radius: 20px;
 
-    background: rgba(255,255,255,0.09);
-    border: 1px solid rgba(255,255,255,0.20);
+    background: rgba(2, 30, 22, 0.96);
+    border: 2px solid rgba(255,255,255,0.65);
 
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
 
-    box-shadow: 0 10px 35px rgba(0,0,0,0.25);
+    box-shadow:
+        0 15px 45px rgba(0,0,0,0.55),
+        inset 0 1px 3px rgba(255,255,255,0.18);
 }
 
 .login-box h2 {
@@ -164,8 +161,9 @@ body {
 }
 
 .login-box .subtitle {
-    color: #d8e9df;
+    color: #e2eee7;
     margin-bottom: 30px;
+    line-height: 1.6;
 }
 
 .login-box label {
@@ -181,23 +179,25 @@ body {
     padding: 15px;
     margin: 9px 0 15px;
 
-    border: 1px solid rgba(255,255,255,0.3);
+    border: 1px solid rgba(255,255,255,0.75);
     border-radius: 9px;
 
-    background: rgba(255,255,255,0.10);
+    background: rgba(255,255,255,0.18);
     color: white;
 
     font-size: 15px;
     outline: none;
+    transition: 0.3s;
 }
 
 .login-box input:focus {
+    background: rgba(255,255,255,0.25);
     border-color: var(--gold);
-    box-shadow: 0 0 8px rgba(217,189,104,0.3);
+    box-shadow: 0 0 12px rgba(217,189,104,0.45);
 }
 
 .login-box input::placeholder {
-    color: #d2e0d7;
+    color: rgba(255,255,255,0.85);
 }
 
 .login-box button {
@@ -240,13 +240,14 @@ body {
 
 .login-box hr {
     border: none;
-    border-top: 1px solid rgba(255,255,255,0.2);
+    border-top: 1px solid rgba(255,255,255,0.3);
     margin: 25px 0;
 }
 
 #loginMessage {
     color: #ffe28a;
     font-weight: bold;
+    min-height: 20px;
 }
 
 /* =========================
@@ -254,11 +255,11 @@ body {
 ========================= */
 
 .card {
-    background: rgba(255,255,255,0.96);
+    background: rgba(255,255,255,0.97);
     padding: 30px;
     border-radius: 15px;
     margin: 25px 0;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.25);
 }
 
 .card h2 {
@@ -283,13 +284,20 @@ body {
     font-size: 28px;
 }
 
-input, select {
+#registerPage input,
+#registerPage select {
     width: 100%;
     padding: 13px;
     margin: 8px 0 15px;
-    border: 1px solid #ccc;
+    border: 1px solid #bbb;
     border-radius: 7px;
     font-size: 15px;
+}
+
+#registerPage label {
+    display: block;
+    font-weight: bold;
+    color: #173c2c;
 }
 
 button {
@@ -305,14 +313,6 @@ button {
 }
 
 button:hover {
-    background: var(--green-light);
-}
-
-#registerPage button {
-    background: var(--green-main);
-}
-
-#registerPage button:hover {
     background: var(--green-light);
 }
 
@@ -336,6 +336,10 @@ nav {
 /* =========================
    TABLES
 ========================= */
+
+.table-container {
+    overflow-x: auto;
+}
 
 table {
     width: 100%;
@@ -375,7 +379,7 @@ td {
     max-width: 450px;
 
     border: 3px solid var(--gold);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
 }
 
 .id-card h2 {
@@ -415,7 +419,6 @@ td {
 ========================= */
 
 @media(max-width: 850px) {
-
     #loginPage {
         grid-template-columns: 1fr;
         gap: 20px;
@@ -438,7 +441,6 @@ td {
 }
 
 @media(max-width: 600px) {
-
     .container {
         padding: 12px;
     }
@@ -519,25 +521,27 @@ td {
         <h2>Welcome Back!</h2>
 
         <p class="subtitle">
-            Sign in to access your student account.
+            Sign in using your Student ID Number and PIN.
         </p>
 
-        <label for="loginEmail">Email Address</label>
+        <label for="loginStudentID">Student ID Number</label>
 
         <input
-            type="email"
-            id="loginEmail"
-            placeholder="Enter your email address"
+            type="text"
+            id="loginStudentID"
+            placeholder="Enter your Student ID Number"
             autocomplete="username"
             required
         >
 
-        <label for="loginPassword">Password</label>
+        <label for="loginPIN">PIN Number</label>
 
         <input
             type="password"
-            id="loginPassword"
-            placeholder="Enter your password"
+            id="loginPIN"
+            placeholder="Enter your 4-digit PIN"
+            maxlength="4"
+            inputmode="numeric"
             autocomplete="current-password"
             required
         >
@@ -558,8 +562,8 @@ td {
         <hr>
 
         <p><b>Admin Demo Account</b></p>
-        <p>Email: admin@school.test</p>
-        <p>Password: Admin123!</p>
+        <p>Student ID: PLMUN-ADMIN</p>
+        <p>PIN: 1234</p>
 
     </div>
 
@@ -575,14 +579,16 @@ td {
 
     <p>Please complete your student information.</p>
 
+    <label for="regName">Full Name</label>
     <input id="regName" placeholder="Full Name" required>
 
-    <input id="regEmail" type="email"
-           placeholder="Email Address" required>
+    <label for="regEmail">Email Address</label>
+    <input id="regEmail" type="email" placeholder="Email Address" required>
 
-    <input id="regCourse"
-           placeholder="Course / Program" required>
+    <label for="regCourse">Course / Program</label>
+    <input id="regCourse" placeholder="Course / Program" required>
 
+    <label for="regYear">Year Level</label>
     <select id="regYear" required>
         <option value="">Select Year Level</option>
         <option>1st Year</option>
@@ -591,19 +597,21 @@ td {
         <option>4th Year</option>
     </select>
 
-    <label>Date of Birth</label>
-
+    <label for="regBirth">Date of Birth</label>
     <input id="regBirth" type="date">
 
-    <input id="regPhone"
-           type="tel"
-           placeholder="Contact Number">
+    <label for="regPhone">Contact Number</label>
+    <input id="regPhone" type="tel" placeholder="Contact Number">
 
-    <input id="regPassword"
-           type="password"
-           placeholder="Create Password"
-           minlength="6"
-           required>
+    <label for="regPIN">Create 4-Digit PIN</label>
+    <input
+        id="regPIN"
+        type="password"
+        placeholder="Create your 4-digit PIN"
+        maxlength="4"
+        inputmode="numeric"
+        required
+    >
 
     <button onclick="registerStudent()">
         REGISTER STUDENT
@@ -757,7 +765,7 @@ td {
 
         <h2>Registered Students</h2>
 
-        <div style="overflow-x:auto">
+        <div class="table-container">
 
             <table>
 
@@ -796,7 +804,7 @@ td {
         oninput="searchStudents()"
     >
 
-    <div style="overflow-x:auto">
+    <div class="table-container">
 
         <table>
 
@@ -843,12 +851,10 @@ let isAdmin = false;
 // SAVE STUDENT RECORDS
 
 function saveStudents() {
-
     localStorage.setItem(
         "students",
         JSON.stringify(students)
     );
-
 }
 
 
@@ -859,15 +865,12 @@ function showPage(pageID) {
     document.querySelectorAll(
         ".container > section"
     ).forEach(section => {
-
         section.classList.add("hidden");
-
     });
 
     document.getElementById(
         pageID
     ).classList.remove("hidden");
-
 }
 
 
@@ -875,11 +878,19 @@ function showPage(pageID) {
 
 function generateStudentID() {
 
-    return "PLMUN-" +
-        new Date().getFullYear() +
-        "-" +
-        Math.floor(1000 + Math.random() * 9000);
+    let year = new Date().getFullYear();
 
+    let number;
+
+    do {
+        number = Math.floor(1000 + Math.random() * 9000);
+    } while (
+        students.some(student =>
+            student.id === `PLMUN-${year}-${number}`
+        )
+    );
+
+    return `PLMUN-${year}-${number}`;
 }
 
 
@@ -911,40 +922,28 @@ function registerStudent() {
         "regPhone"
     ).value.trim();
 
-    let password = document.getElementById(
-        "regPassword"
-    ).value;
+    let pin = document.getElementById(
+        "regPIN"
+    ).value.trim();
 
 
-    if (!name || !email || !course || !year || !password) {
-
+    if (!name || !email || !course || !year || !pin) {
         alert("Please complete all required fields.");
-
         return;
-
     }
 
-
-    if (password.length < 6) {
-
-        alert("Password must contain at least 6 characters.");
-
+    if (!/^\d{4}$/.test(pin)) {
+        alert("PIN must contain exactly 4 numbers.");
         return;
-
     }
-
 
     if (students.some(student => student.email === email)) {
-
         alert("Email already registered!");
-
         return;
-
     }
 
 
     let student = {
-
         id: generateStudentID(),
         name: name,
         email: email,
@@ -952,8 +951,7 @@ function registerStudent() {
         year: year,
         birth: birth,
         phone: phone,
-        password: password
-
+        pin: pin
     };
 
 
@@ -964,9 +962,10 @@ function registerStudent() {
 
     document.getElementById(
         "registerMessage"
-    ).innerText =
-        "Registration successful! Your Student ID is " +
-        student.id;
+    ).innerHTML =
+        "Registration successful!<br>" +
+        "Your Student ID is: <b>" + student.id + "</b><br>" +
+        "Please remember your Student ID and PIN.";
 
 
     document.getElementById("regName").value = "";
@@ -975,7 +974,7 @@ function registerStudent() {
     document.getElementById("regYear").value = "";
     document.getElementById("regBirth").value = "";
     document.getElementById("regPhone").value = "";
-    document.getElementById("regPassword").value = "";
+    document.getElementById("regPIN").value = "";
 
 }
 
@@ -984,31 +983,29 @@ function registerStudent() {
 
 function login() {
 
-    let email = document.getElementById(
-        "loginEmail"
-    ).value.trim().toLowerCase();
+    let studentID = document.getElementById(
+        "loginStudentID"
+    ).value.trim().toUpperCase();
 
-    let password = document.getElementById(
-        "loginPassword"
-    ).value;
+    let pin = document.getElementById(
+        "loginPIN"
+    ).value.trim();
 
 
-    if (!email || !password) {
-
+    if (!studentID || !pin) {
         document.getElementById(
             "loginMessage"
-        ).innerText = "Please enter your email and password.";
+        ).innerText = "Please enter your Student ID and PIN.";
 
         return;
-
     }
 
 
     // ADMIN LOGIN
 
     if (
-        email === "admin@school.test" &&
-        password === "Admin123!"
+        studentID === "PLMUN-ADMIN" &&
+        pin === "1234"
     ) {
 
         isAdmin = true;
@@ -1019,18 +1016,15 @@ function login() {
         showPage("adminDashboard");
 
         return;
-
     }
 
 
     // STUDENT LOGIN
 
     let student = students.find(
-
         student =>
-            student.email === email &&
-            student.password === password
-
+            student.id.toUpperCase() === studentID &&
+            student.pin === pin
     );
 
 
@@ -1047,7 +1041,7 @@ function login() {
 
         document.getElementById(
             "loginMessage"
-        ).innerText = "Invalid email or password!";
+        ).innerText = "Invalid Student ID Number or PIN!";
 
     }
 
@@ -1060,41 +1054,33 @@ function loadStudentProfile() {
 
     const student = currentStudent;
 
-
     document.getElementById(
         "welcomeName"
     ).innerText = student.name;
-
 
     document.getElementById(
         "profileID"
     ).innerText = student.id;
 
-
     document.getElementById(
         "profileName"
     ).innerText = student.name;
-
 
     document.getElementById(
         "profileEmail"
     ).innerText = student.email;
 
-
     document.getElementById(
         "profileCourse"
     ).innerText = student.course;
-
 
     document.getElementById(
         "profileYear"
     ).innerText = student.year;
 
-
     document.getElementById(
         "profileBirth"
     ).innerText = student.birth || "Not provided";
-
 
     document.getElementById(
         "profilePhone"
@@ -1107,21 +1093,17 @@ function loadStudentProfile() {
         "idName"
     ).innerText = student.name;
 
-
     document.getElementById(
         "idNumber"
-    ).innerText = student.id;
-
+    ).innerText = "Student ID: " + student.id;
 
     document.getElementById(
         "idCourse"
-    ).innerText = student.course;
-
+    ).innerText = "Course: " + student.course;
 
     document.getElementById(
         "idYear"
-    ).innerText = student.year;
-
+    ).innerText = "Year Level: " + student.year;
 
     document.getElementById(
         "idEmail"
@@ -1140,9 +1122,7 @@ function loadAdminDashboard() {
 
 
     let courses = [...new Set(
-
         students.map(student => student.course)
-
     )];
 
 
@@ -1161,7 +1141,6 @@ function loadAdminDashboard() {
     students.forEach(student => {
 
         let row = table.insertRow();
-
 
         [
             student.id,
@@ -1194,13 +1173,9 @@ function searchStudents() {
     let results = students.filter(student =>
 
         student.id.toLowerCase().includes(keyword) ||
-
         student.name.toLowerCase().includes(keyword) ||
-
         student.email.toLowerCase().includes(keyword) ||
-
         student.course.toLowerCase().includes(keyword) ||
-
         student.year.toLowerCase().includes(keyword)
 
     );
@@ -1216,7 +1191,6 @@ function searchStudents() {
     results.forEach(student => {
 
         let row = table.insertRow();
-
 
         [
             student.id,
@@ -1245,11 +1219,11 @@ function logout() {
     isAdmin = false;
 
     document.getElementById(
-        "loginEmail"
+        "loginStudentID"
     ).value = "";
 
     document.getElementById(
-        "loginPassword"
+        "loginPIN"
     ).value = "";
 
     document.getElementById(
