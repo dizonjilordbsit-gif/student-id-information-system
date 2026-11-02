@@ -1,105 +1,394 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Student ID Information System</title>
+<title>PLMUN Student ID Information System</title>
 
 <style>
+/* =========================
+   PLMUN DARK GREEN THEME
+========================= */
+
 * {
     box-sizing: border-box;
 }
 
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #f1f5f9;
-    color: #17233b;
+:root {
+    --green-dark: #041f17;
+    --green-main: #075c3b;
+    --green-light: #128052;
+    --green-glass: rgba(3, 38, 27, 0.78);
+    --gold: #d9bd68;
+    --white: #ffffff;
 }
 
-header {
-    background: #12316a;
-    color: white;
-    padding: 22px;
-    text-align: center;
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    color: #17233b;
+
+    background:
+        linear-gradient(
+            rgba(0, 20, 13, 0.78),
+            rgba(0, 20, 13, 0.88)
+        ),
+        url("https://ts4.mm.bing.net/th?id=OIP.BIgd-vlLpw2hbK2ITm1-XQHaEK&pid=15.1");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.hidden {
+    display: none !important;
 }
 
 .container {
-    max-width: 1100px;
-    margin: 30px auto;
-    padding: 20px;
+    width: 100%;
+    max-width: 1250px;
+    min-height: 100vh;
+    margin: auto;
+    padding: 30px;
 }
+
+/* =========================
+   LOGIN PAGE
+========================= */
+
+#loginPage {
+    width: 100%;
+    min-height: 620px;
+    margin: 0 auto;
+
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    align-items: center;
+    gap: 50px;
+
+    padding: 55px;
+
+    background: var(--green-glass);
+    border: 1px solid rgba(255,255,255,0.22);
+    border-radius: 25px;
+
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+
+/* LEFT BRANDING */
+
+.plmun-brand {
+    text-align: center;
+    padding: 20px;
+    color: white;
+}
+
+.plmun-logo {
+    width: 155px;
+    height: 155px;
+    margin: 0 auto 25px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 4px solid var(--gold);
+    border-radius: 50%;
+
+    background: rgba(255,255,255,0.08);
+
+    color: var(--gold);
+    font-size: 35px;
+    font-weight: 900;
+    letter-spacing: 2px;
+
+    box-shadow: 0 0 30px rgba(217,189,104,0.25);
+}
+
+.plmun-brand h1 {
+    color: white;
+    font-size: 38px;
+    line-height: 1.25;
+    margin: 15px 0;
+    font-weight: 900;
+}
+
+.plmun-brand h2 {
+    color: var(--gold);
+    font-size: 20px;
+    letter-spacing: 2px;
+    margin: 20px 0;
+}
+
+.plmun-brand p {
+    color: #d8e9df;
+    font-size: 15px;
+    line-height: 1.8;
+    max-width: 450px;
+    margin: auto;
+}
+
+.brand-line {
+    width: 100px;
+    height: 4px;
+    background: var(--gold);
+    border-radius: 10px;
+    margin: 20px auto;
+}
+
+/* RIGHT LOGIN BOX */
+
+.login-box {
+    padding: 40px;
+    border-radius: 20px;
+
+    background: rgba(255,255,255,0.09);
+    border: 1px solid rgba(255,255,255,0.20);
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    box-shadow: 0 10px 35px rgba(0,0,0,0.25);
+}
+
+.login-box h2 {
+    color: var(--gold);
+    font-size: 32px;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.login-box .subtitle {
+    color: #d8e9df;
+    margin-bottom: 30px;
+}
+
+.login-box label {
+    display: block;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+.login-box input {
+    width: 100%;
+    padding: 15px;
+    margin: 9px 0 15px;
+
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 9px;
+
+    background: rgba(255,255,255,0.10);
+    color: white;
+
+    font-size: 15px;
+    outline: none;
+}
+
+.login-box input:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 8px rgba(217,189,104,0.3);
+}
+
+.login-box input::placeholder {
+    color: #d2e0d7;
+}
+
+.login-box button {
+    width: 100%;
+    padding: 15px;
+    margin: 10px 0 0;
+
+    border: none;
+    border-radius: 9px;
+
+    background: var(--gold);
+    color: var(--green-dark);
+
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+.login-box button:hover {
+    background: white;
+    transform: translateY(-2px);
+}
+
+.login-box .register-button {
+    background: transparent;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+}
+
+.login-box .register-button:hover {
+    background: var(--gold);
+    color: var(--green-dark);
+}
+
+.login-box p {
+    color: white;
+}
+
+.login-box hr {
+    border: none;
+    border-top: 1px solid rgba(255,255,255,0.2);
+    margin: 25px 0;
+}
+
+#loginMessage {
+    color: #ffe28a;
+    font-weight: bold;
+}
+
+/* =========================
+   GENERAL CARDS
+========================= */
 
 .card {
-    background: white;
-    padding: 25px;
-    border-radius: 12px;
-    margin-bottom: 20px;
-    box-shadow: 0 3px 12px #0001;
+    background: rgba(255,255,255,0.96);
+    padding: 30px;
+    border-radius: 15px;
+    margin: 25px 0;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
 }
 
-h2 {
-    color: #1746a2;
+.card h2 {
+    color: var(--green-main);
+}
+
+.card p {
+    line-height: 1.6;
+}
+
+/* =========================
+   REGISTRATION
+========================= */
+
+#registerPage {
+    max-width: 750px;
+    margin: 40px auto;
+}
+
+#registerPage h2 {
+    color: var(--green-main);
+    font-size: 28px;
 }
 
 input, select {
     width: 100%;
-    padding: 12px;
+    padding: 13px;
     margin: 8px 0 15px;
     border: 1px solid #ccc;
-    border-radius: 6px;
+    border-radius: 7px;
+    font-size: 15px;
 }
 
 button {
-    background: #2563eb;
+    background: var(--green-main);
     color: white;
     border: none;
     padding: 12px 18px;
-    border-radius: 6px;
+    border-radius: 7px;
     cursor: pointer;
     margin: 4px;
+    font-weight: bold;
+    transition: 0.3s;
 }
 
 button:hover {
-    background: #1746a2;
+    background: var(--green-light);
 }
 
-.hidden {
-    display: none;
+#registerPage button {
+    background: var(--green-main);
+}
+
+#registerPage button:hover {
+    background: var(--green-light);
+}
+
+/* =========================
+   DASHBOARD
+========================= */
+
+#studentDashboard,
+#adminDashboard,
+#profilePage,
+#studentIDPage,
+#searchPage {
+    max-width: 1100px;
+    margin: 30px auto;
 }
 
 nav {
     margin-bottom: 20px;
 }
 
+/* =========================
+   TABLES
+========================= */
+
 table {
     width: 100%;
     border-collapse: collapse;
+    background: white;
 }
 
 th, td {
     border: 1px solid #ddd;
-    padding: 10px;
+    padding: 12px;
     text-align: left;
 }
 
 th {
-    background: #1746a2;
+    background: var(--green-main);
     color: white;
 }
 
+td {
+    color: #17233b;
+}
+
+/* =========================
+   STUDENT ID CARD
+========================= */
+
 .id-card {
-    background: linear-gradient(120deg, #12316a, #2874d0);
+    background: linear-gradient(
+        120deg,
+        #04251a,
+        #087448
+    );
+
     color: white;
-    padding: 25px;
+    padding: 30px;
     border-radius: 15px;
     max-width: 450px;
+
+    border: 3px solid var(--gold);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
 }
 
 .id-card h2 {
-    color: white;
+    color: var(--gold);
 }
+
+.id-card hr {
+    border: 1px solid var(--gold);
+}
+
+/* =========================
+   ADMIN STATISTICS
+========================= */
 
 .stats {
     display: flex;
@@ -108,20 +397,83 @@ th {
 }
 
 .stat {
-    background: #eaf1ff;
+    background: #e7f3ec;
     padding: 20px;
     flex: 1;
     min-width: 150px;
     border-radius: 10px;
+    border-left: 5px solid var(--gold);
 }
 
-@media(max-width:600px) {
+.stat h1 {
+    color: var(--green-main);
+    font-size: 35px;
+}
+
+/* =========================
+   RESPONSIVE DESIGN
+========================= */
+
+@media(max-width: 850px) {
+
+    #loginPage {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 30px;
+    }
+
+    .plmun-brand h1 {
+        font-size: 30px;
+    }
+
+    .plmun-logo {
+        width: 125px;
+        height: 125px;
+        font-size: 28px;
+    }
+
+    .login-box {
+        padding: 30px;
+    }
+}
+
+@media(max-width: 600px) {
+
     .container {
+        padding: 12px;
+    }
+
+    #loginPage {
+        padding: 20px;
+        border-radius: 15px;
+    }
+
+    .plmun-brand {
         padding: 10px;
+    }
+
+    .plmun-brand h1 {
+        font-size: 25px;
+    }
+
+    .plmun-brand h2 {
+        font-size: 16px;
+    }
+
+    .login-box {
+        padding: 22px;
+    }
+
+    .login-box h2 {
+        font-size: 26px;
     }
 
     table {
         font-size: 12px;
+    }
+
+    th, td {
+        padding: 8px;
     }
 }
 </style>
@@ -129,45 +481,109 @@ th {
 
 <body>
 
-<header>
-    <h1>STUDENT ID INFORMATION SYSTEM</h1>
-    <p>Student Management Portal</p>
-</header>
-
 <div class="container">
 
-<!-- LOGIN PAGE -->
-<section id="loginPage" class="card">
-    <h2>Student Login</h2>
+<!-- =========================
+     LOGIN PAGE
+========================= -->
 
-    <input type="email" id="loginEmail"
-           placeholder="Email Address">
+<section id="loginPage">
 
-    <input type="password" id="loginPassword"
-           placeholder="Password">
+    <div class="plmun-brand">
 
-    <button onclick="login()">Login</button>
-    <button onclick="showPage('registerPage')">
-        Register
-    </button>
+        <div class="plmun-logo">
+            PLMUN
+        </div>
 
-    <p id="loginMessage"></p>
+        <h1>
+            PAMANTASAN NG LUNGSOD NG MUNTINLUPA
+        </h1>
 
-    <p><b>Admin demo account:</b></p>
-    <p>Email: admin@school.test</p>
-    <p>Password: Admin123!</p>
+        <div class="brand-line"></div>
+
+        <h2>
+            STUDENT ID INFORMATION SYSTEM
+        </h2>
+
+        <p>
+            Welcome to the PLMUN Student Portal.
+            Access your student information, manage your
+            student profile, and view your identification
+            card through this online system.
+        </p>
+
+    </div>
+
+    <div class="login-box">
+
+        <h2>Welcome Back!</h2>
+
+        <p class="subtitle">
+            Sign in to access your student account.
+        </p>
+
+        <label for="loginEmail">Email Address</label>
+
+        <input
+            type="email"
+            id="loginEmail"
+            placeholder="Enter your email address"
+            autocomplete="username"
+            required
+        >
+
+        <label for="loginPassword">Password</label>
+
+        <input
+            type="password"
+            id="loginPassword"
+            placeholder="Enter your password"
+            autocomplete="current-password"
+            required
+        >
+
+        <button onclick="login()">
+            LOGIN
+        </button>
+
+        <button
+            class="register-button"
+            onclick="showPage('registerPage')"
+        >
+            REGISTER
+        </button>
+
+        <p id="loginMessage"></p>
+
+        <hr>
+
+        <p><b>Admin Demo Account</b></p>
+        <p>Email: admin@school.test</p>
+        <p>Password: Admin123!</p>
+
+    </div>
+
 </section>
 
-<!-- REGISTRATION FORM -->
+<!-- =========================
+     REGISTRATION FORM
+========================= -->
+
 <section id="registerPage" class="card hidden">
+
     <h2>Student Registration Form</h2>
 
-    <input id="regName" placeholder="Full Name">
-    <input id="regEmail" type="email" placeholder="Email Address">
+    <p>Please complete your student information.</p>
 
-    <input id="regCourse" placeholder="Course / Program">
+    <input id="regName" placeholder="Full Name" required>
 
-    <select id="regYear">
+    <input id="regEmail" type="email"
+           placeholder="Email Address" required>
+
+    <input id="regCourse"
+           placeholder="Course / Program" required>
+
+    <select id="regYear" required>
         <option value="">Select Year Level</option>
         <option>1st Year</option>
         <option>2nd Year</option>
@@ -175,33 +591,53 @@ th {
         <option>4th Year</option>
     </select>
 
-    <input id="regBirth" type="date"
-           aria-label="Date of birth">
+    <label>Date of Birth</label>
 
-    <input id="regPhone" placeholder="Contact Number">
+    <input id="regBirth" type="date">
 
-    <input id="regPassword" type="password"
-           placeholder="Create Password">
+    <input id="regPhone"
+           type="tel"
+           placeholder="Contact Number">
+
+    <input id="regPassword"
+           type="password"
+           placeholder="Create Password"
+           minlength="6"
+           required>
 
     <button onclick="registerStudent()">
-        Register Student
+        REGISTER STUDENT
     </button>
 
     <button onclick="showPage('loginPage')">
-        Back to Login
+        BACK TO LOGIN
     </button>
 
     <p id="registerMessage"></p>
+
 </section>
 
-<!-- STUDENT DASHBOARD -->
+<!-- =========================
+     STUDENT DASHBOARD
+========================= -->
+
 <section id="studentDashboard" class="hidden">
 
     <div class="card">
+
         <h2>Student Dashboard</h2>
-        <p>Welcome, <span id="welcomeName"></span>!</p>
+
+        <p>
+            Welcome,
+            <b><span id="welcomeName"></span></b>!
+        </p>
+
+        <p>
+            Welcome to your PLMUN Student Information Portal.
+        </p>
 
         <nav>
+
             <button onclick="showPage('profilePage')">
                 My Profile
             </button>
@@ -213,13 +649,19 @@ th {
             <button onclick="logout()">
                 Logout
             </button>
+
         </nav>
+
     </div>
 
 </section>
 
-<!-- STUDENT PROFILE -->
+<!-- =========================
+     STUDENT PROFILE
+========================= -->
+
 <section id="profilePage" class="card hidden">
+
     <h2>Student Profile</h2>
 
     <p><b>Student ID:</b> <span id="profileID"></span></p>
@@ -231,40 +673,62 @@ th {
     <p><b>Contact:</b> <span id="profilePhone"></span></p>
 
     <button onclick="showPage('studentDashboard')">
-        Back
+        BACK TO DASHBOARD
     </button>
+
 </section>
 
-<!-- STUDENT ID INFORMATION -->
+<!-- =========================
+     STUDENT ID
+========================= -->
+
 <section id="studentIDPage" class="card hidden">
+
     <h2>Student Identification Card</h2>
 
     <div class="id-card">
-        <h2>STUDENT ID CARD</h2>
+
+        <h2>PLMUN STUDENT ID CARD</h2>
+
         <hr>
 
         <h3 id="idName"></h3>
+
         <p id="idNumber"></p>
         <p id="idCourse"></p>
         <p id="idYear"></p>
         <p id="idEmail"></p>
 
         <hr>
-        <p>STUDENT INFORMATION SYSTEM</p>
+
+        <p>
+            PAMANTASAN NG LUNGSOD NG MUNTINLUPA
+        </p>
+
     </div>
 
     <button onclick="showPage('studentDashboard')">
-        Back
+        BACK TO DASHBOARD
     </button>
+
 </section>
 
-<!-- ADMIN DASHBOARD -->
+<!-- =========================
+     ADMIN DASHBOARD
+========================= -->
+
 <section id="adminDashboard" class="hidden">
 
     <div class="card">
+
         <h2>ADMIN DASHBOARD</h2>
 
+        <p>
+            Welcome to the PLMUN Student Management Portal.
+        </p>
+
         <div class="stats">
+
             <div class="stat">
                 <h3>Total Students</h3>
                 <h1 id="totalStudents">0</h1>
@@ -274,22 +738,68 @@ th {
                 <h3>Total Courses</h3>
                 <h1 id="totalCourses">0</h1>
             </div>
+
         </div>
 
+        <br>
+
         <button onclick="showPage('searchPage')">
-            Search Student Records
+            SEARCH STUDENT RECORDS
         </button>
 
         <button onclick="logout()">
-            Logout
+            LOGOUT
         </button>
+
     </div>
 
     <div class="card">
+
         <h2>Registered Students</h2>
 
         <div style="overflow-x:auto">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Student ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Course</th>
+                        <th>Year</th>
+                    </tr>
+                </thead>
+
+                <tbody id="studentTable"></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- =========================
+     SEARCH STUDENT RECORDS
+========================= -->
+
+<section id="searchPage" class="card hidden">
+
+    <h2>Search Student Records</h2>
+
+    <input
+        type="text"
+        id="searchInput"
+        placeholder="Search by name, ID, email or course..."
+        oninput="searchStudents()"
+    >
+
+    <div style="overflow-x:auto">
+
         <table>
+
             <thead>
                 <tr>
                     <th>Student ID</th>
@@ -300,49 +810,28 @@ th {
                 </tr>
             </thead>
 
-            <tbody id="studentTable"></tbody>
+            <tbody id="searchTable"></tbody>
+
         </table>
-        </div>
-    </div>
 
-</section>
-
-<!-- SEARCH STUDENT RECORDS -->
-<section id="searchPage" class="card hidden">
-
-    <h2>Search Student Records</h2>
-
-    <input type="text" id="searchInput"
-           placeholder="Search by name, ID, email or course..."
-           oninput="searchStudents()">
-
-    <div style="overflow-x:auto">
-    <table>
-        <thead>
-            <tr>
-                <th>Student ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Course</th>
-                <th>Year</th>
-            </tr>
-        </thead>
-
-        <tbody id="searchTable"></tbody>
-    </table>
     </div>
 
     <button onclick="showPage('adminDashboard')">
-        Back to Dashboard
+        BACK TO DASHBOARD
     </button>
 
 </section>
 
 </div>
 
+<!-- =========================
+     JAVASCRIPT
+========================= -->
+
 <script>
 
 // DATABASE (Browser Storage)
+
 let students = JSON.parse(
     localStorage.getItem("students") || "[]"
 );
@@ -350,81 +839,135 @@ let students = JSON.parse(
 let currentStudent = null;
 let isAdmin = false;
 
+
 // SAVE STUDENT RECORDS
+
 function saveStudents() {
+
     localStorage.setItem(
         "students",
         JSON.stringify(students)
     );
+
 }
 
+
 // NAVIGATION
+
 function showPage(pageID) {
 
     document.querySelectorAll(
         ".container > section"
     ).forEach(section => {
+
         section.classList.add("hidden");
+
     });
 
     document.getElementById(
         pageID
     ).classList.remove("hidden");
+
 }
 
+
 // GENERATE STUDENT ID
+
 function generateStudentID() {
 
-    return "STU-" +
+    return "PLMUN-" +
         new Date().getFullYear() +
         "-" +
         Math.floor(1000 + Math.random() * 9000);
+
 }
 
+
 // STUDENT REGISTRATION
+
 function registerStudent() {
 
-    let name = document.getElementById("regName").value.trim();
-    let email = document.getElementById("regEmail").value.trim().toLowerCase();
-    let course = document.getElementById("regCourse").value.trim();
-    let year = document.getElementById("regYear").value;
-    let birth = document.getElementById("regBirth").value;
-    let phone = document.getElementById("regPhone").value.trim();
-    let password = document.getElementById("regPassword").value;
+    let name = document.getElementById(
+        "regName"
+    ).value.trim();
+
+    let email = document.getElementById(
+        "regEmail"
+    ).value.trim().toLowerCase();
+
+    let course = document.getElementById(
+        "regCourse"
+    ).value.trim();
+
+    let year = document.getElementById(
+        "regYear"
+    ).value;
+
+    let birth = document.getElementById(
+        "regBirth"
+    ).value;
+
+    let phone = document.getElementById(
+        "regPhone"
+    ).value.trim();
+
+    let password = document.getElementById(
+        "regPassword"
+    ).value;
+
 
     if (!name || !email || !course || !year || !password) {
+
         alert("Please complete all required fields.");
+
         return;
+
     }
+
 
     if (password.length < 6) {
+
         alert("Password must contain at least 6 characters.");
+
         return;
+
     }
 
-    if (students.some(s => s.email === email)) {
+
+    if (students.some(student => student.email === email)) {
+
         alert("Email already registered!");
+
         return;
+
     }
+
 
     let student = {
+
         id: generateStudentID(),
-        name,
-        email,
-        course,
-        year,
-        birth,
-        phone,
-        password
+        name: name,
+        email: email,
+        course: course,
+        year: year,
+        birth: birth,
+        phone: phone,
+        password: password
+
     };
+
 
     students.push(student);
 
     saveStudents();
 
+
     document.getElementById(
         "registerMessage"
-    ).innerText = "Registration successful! Your Student ID is " + student.id;
+    ).innerText =
+        "Registration successful! Your Student ID is " +
+        student.id;
+
 
     document.getElementById("regName").value = "";
     document.getElementById("regEmail").value = "";
@@ -433,9 +976,12 @@ function registerStudent() {
     document.getElementById("regBirth").value = "";
     document.getElementById("regPhone").value = "";
     document.getElementById("regPassword").value = "";
+
 }
 
+
 // LOGIN SYSTEM
+
 function login() {
 
     let email = document.getElementById(
@@ -446,25 +992,47 @@ function login() {
         "loginPassword"
     ).value;
 
+
+    if (!email || !password) {
+
+        document.getElementById(
+            "loginMessage"
+        ).innerText = "Please enter your email and password.";
+
+        return;
+
+    }
+
+
     // ADMIN LOGIN
+
     if (
         email === "admin@school.test" &&
         password === "Admin123!"
     ) {
+
         isAdmin = true;
         currentStudent = null;
 
         loadAdminDashboard();
 
         showPage("adminDashboard");
+
         return;
+
     }
 
+
     // STUDENT LOGIN
+
     let student = students.find(
-        s => s.email === email &&
-             s.password === password
+
+        student =>
+            student.email === email &&
+            student.password === password
+
     );
+
 
     if (student) {
 
@@ -480,48 +1048,108 @@ function login() {
         document.getElementById(
             "loginMessage"
         ).innerText = "Invalid email or password!";
+
     }
+
 }
 
+
 // LOAD STUDENT PROFILE
+
 function loadStudentProfile() {
 
-    const s = currentStudent;
+    const student = currentStudent;
+
 
     document.getElementById(
         "welcomeName"
-    ).innerText = s.name;
+    ).innerText = student.name;
 
-    document.getElementById("profileID").innerText = s.id;
-    document.getElementById("profileName").innerText = s.name;
-    document.getElementById("profileEmail").innerText = s.email;
-    document.getElementById("profileCourse").innerText = s.course;
-    document.getElementById("profileYear").innerText = s.year;
-    document.getElementById("profileBirth").innerText = s.birth || "Not provided";
-    document.getElementById("profilePhone").innerText = s.phone || "Not provided";
+
+    document.getElementById(
+        "profileID"
+    ).innerText = student.id;
+
+
+    document.getElementById(
+        "profileName"
+    ).innerText = student.name;
+
+
+    document.getElementById(
+        "profileEmail"
+    ).innerText = student.email;
+
+
+    document.getElementById(
+        "profileCourse"
+    ).innerText = student.course;
+
+
+    document.getElementById(
+        "profileYear"
+    ).innerText = student.year;
+
+
+    document.getElementById(
+        "profileBirth"
+    ).innerText = student.birth || "Not provided";
+
+
+    document.getElementById(
+        "profilePhone"
+    ).innerText = student.phone || "Not provided";
+
 
     // STUDENT ID CARD
-    document.getElementById("idName").innerText = s.name;
-    document.getElementById("idNumber").innerText = s.id;
-    document.getElementById("idCourse").innerText = s.course;
-    document.getElementById("idYear").innerText = s.year;
-    document.getElementById("idEmail").innerText = s.email;
+
+    document.getElementById(
+        "idName"
+    ).innerText = student.name;
+
+
+    document.getElementById(
+        "idNumber"
+    ).innerText = student.id;
+
+
+    document.getElementById(
+        "idCourse"
+    ).innerText = student.course;
+
+
+    document.getElementById(
+        "idYear"
+    ).innerText = student.year;
+
+
+    document.getElementById(
+        "idEmail"
+    ).innerText = student.email;
+
 }
 
+
 // ADMIN DASHBOARD
+
 function loadAdminDashboard() {
 
     document.getElementById(
         "totalStudents"
     ).innerText = students.length;
 
+
     let courses = [...new Set(
-        students.map(s => s.course)
+
+        students.map(student => student.course)
+
     )];
+
 
     document.getElementById(
         "totalCourses"
     ).innerText = courses.length;
+
 
     let table = document.getElementById(
         "studentTable"
@@ -529,12 +1157,19 @@ function loadAdminDashboard() {
 
     table.innerHTML = "";
 
-    students.forEach(s => {
+
+    students.forEach(student => {
 
         let row = table.insertRow();
 
-        [s.id, s.name, s.email, s.course, s.year]
-        .forEach(value => {
+
+        [
+            student.id,
+            student.name,
+            student.email,
+            student.course,
+            student.year
+        ].forEach(value => {
 
             let cell = row.insertCell();
 
@@ -543,24 +1178,33 @@ function loadAdminDashboard() {
         });
 
     });
+
 }
 
+
 // SEARCH STUDENT RECORDS
+
 function searchStudents() {
 
     let keyword = document.getElementById(
         "searchInput"
     ).value.toLowerCase();
 
-    let results = students.filter(s =>
 
-        s.id.toLowerCase().includes(keyword) ||
-        s.name.toLowerCase().includes(keyword) ||
-        s.email.toLowerCase().includes(keyword) ||
-        s.course.toLowerCase().includes(keyword) ||
-        s.year.toLowerCase().includes(keyword)
+    let results = students.filter(student =>
+
+        student.id.toLowerCase().includes(keyword) ||
+
+        student.name.toLowerCase().includes(keyword) ||
+
+        student.email.toLowerCase().includes(keyword) ||
+
+        student.course.toLowerCase().includes(keyword) ||
+
+        student.year.toLowerCase().includes(keyword)
 
     );
+
 
     let table = document.getElementById(
         "searchTable"
@@ -568,12 +1212,19 @@ function searchStudents() {
 
     table.innerHTML = "";
 
-    results.forEach(s => {
+
+    results.forEach(student => {
 
         let row = table.insertRow();
 
-        [s.id, s.name, s.email, s.course, s.year]
-        .forEach(value => {
+
+        [
+            student.id,
+            student.name,
+            student.email,
+            student.course,
+            student.year
+        ].forEach(value => {
 
             let cell = row.insertCell();
 
@@ -582,19 +1233,31 @@ function searchStudents() {
         });
 
     });
+
 }
 
+
 // LOGOUT
+
 function logout() {
 
     currentStudent = null;
     isAdmin = false;
 
-    document.getElementById("loginEmail").value = "";
-    document.getElementById("loginPassword").value = "";
-    document.getElementById("loginMessage").innerText = "";
+    document.getElementById(
+        "loginEmail"
+    ).value = "";
+
+    document.getElementById(
+        "loginPassword"
+    ).value = "";
+
+    document.getElementById(
+        "loginMessage"
+    ).innerText = "";
 
     showPage("loginPage");
+
 }
 
 </script>
