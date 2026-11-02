@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,10 +25,11 @@ body {
     font-family: Arial, sans-serif;
     color: #17233b;
 
+    /* More visible background image */
     background:
         linear-gradient(
-            rgba(0, 20, 13, 0.72),
-            rgba(0, 20, 13, 0.82)
+            rgba(0, 20, 13, 0.45),
+            rgba(0, 20, 13, 0.55)
         ),
         url("https://ts4.mm.bing.net/th?id=OIP.BIgd-vlLpw2hbK2ITm1-XQHaEK&pid=15.1");
 
@@ -65,14 +67,15 @@ body {
 
     padding: 55px;
 
-    background: rgba(2, 30, 22, 0.88);
-    border: 2px solid rgba(255,255,255,0.35);
+    /* Transparent main glass board */
+    background: rgba(2, 30, 22, 0.48);
+    border: 1.5px solid rgba(255,255,255,0.45);
     border-radius: 25px;
 
-    backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
 
-    box-shadow: 0 20px 60px rgba(0,0,0,0.55);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.30);
 }
 
 /* LEFT BRANDING */
@@ -136,21 +139,24 @@ body {
     margin: 20px auto;
 }
 
-/* LOGIN GLASS BOX */
+/* =========================
+   LOGIN GLASS BOX
+========================= */
 
 .login-box {
     padding: 40px;
     border-radius: 20px;
 
-    background: rgba(2, 30, 22, 0.96);
-    border: 2px solid rgba(255,255,255,0.65);
+    /* More transparent login panel */
+    background: rgba(2, 30, 22, 0.62);
+    border: 1.5px solid rgba(255,255,255,0.65);
 
-    backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
 
     box-shadow:
-        0 15px 45px rgba(0,0,0,0.55),
-        inset 0 1px 3px rgba(255,255,255,0.18);
+        0 15px 45px rgba(0,0,0,0.35),
+        inset 0 1px 3px rgba(255,255,255,0.20);
 }
 
 .login-box h2 {
@@ -300,6 +306,10 @@ body {
     color: #173c2c;
 }
 
+/* =========================
+   BUTTONS
+========================= */
+
 button {
     background: var(--green-main);
     color: white;
@@ -367,17 +377,11 @@ td {
 ========================= */
 
 .id-card {
-    background: linear-gradient(
-        120deg,
-        #04251a,
-        #087448
-    );
-
+    background: linear-gradient(120deg, #04251a, #087448);
     color: white;
     padding: 30px;
     border-radius: 15px;
     max-width: 450px;
-
     border: 3px solid var(--gold);
     box-shadow: 0 8px 25px rgba(0,0,0,0.3);
 }
@@ -485,27 +489,19 @@ td {
 
 <div class="container">
 
-<!-- =========================
-     LOGIN PAGE
-========================= -->
+<!-- LOGIN PAGE -->
 
 <section id="loginPage">
 
     <div class="plmun-brand">
 
-        <div class="plmun-logo">
-            PLMUN
-        </div>
+        <div class="plmun-logo">PLMUN</div>
 
-        <h1>
-            I-PILIMUN Student ID INFORMATION
-        </h1>
+        <h1>I-PILIMUN Student ID INFORMATION</h1>
 
         <div class="brand-line"></div>
 
-        <h2>
-            STUDENT ID INFORMATION SYSTEM
-        </h2>
+        <h2>STUDENT ID INFORMATION SYSTEM</h2>
 
         <p>
             Welcome to the PLMUN Student Portal.
@@ -525,7 +521,6 @@ td {
         </p>
 
         <label for="loginStudentID">Student ID Number</label>
-
         <input
             type="text"
             id="loginStudentID"
@@ -535,7 +530,6 @@ td {
         >
 
         <label for="loginPIN">PIN Number</label>
-
         <input
             type="password"
             id="loginPIN"
@@ -546,9 +540,7 @@ td {
             required
         >
 
-        <button onclick="login()">
-            LOGIN
-        </button>
+        <button onclick="login()">LOGIN</button>
 
         <button
             class="register-button"
@@ -569,14 +561,11 @@ td {
 
 </section>
 
-<!-- =========================
-     REGISTRATION FORM
-========================= -->
+<!-- REGISTRATION -->
 
 <section id="registerPage" class="card hidden">
 
     <h2>Student Registration Form</h2>
-
     <p>Please complete your student information.</p>
 
     <label for="regName">Full Name</label>
@@ -613,21 +602,14 @@ td {
         required
     >
 
-    <button onclick="registerStudent()">
-        REGISTER STUDENT
-    </button>
-
-    <button onclick="showPage('loginPage')">
-        BACK TO LOGIN
-    </button>
+    <button onclick="registerStudent()">REGISTER STUDENT</button>
+    <button onclick="showPage('loginPage')">BACK TO LOGIN</button>
 
     <p id="registerMessage"></p>
 
 </section>
 
-<!-- =========================
-     STUDENT DASHBOARD
-========================= -->
+<!-- STUDENT DASHBOARD -->
 
 <section id="studentDashboard" class="hidden">
 
@@ -636,37 +618,22 @@ td {
         <h2>Student Dashboard</h2>
 
         <p>
-            Welcome,
-            <b><span id="welcomeName"></span></b>!
+            Welcome, <b><span id="welcomeName"></span></b>!
         </p>
 
-        <p>
-            Welcome to your PLMUN Student Information Portal.
-        </p>
+        <p>Welcome to your PLMUN Student Information Portal.</p>
 
         <nav>
-
-            <button onclick="showPage('profilePage')">
-                My Profile
-            </button>
-
-            <button onclick="showPage('studentIDPage')">
-                Student ID
-            </button>
-
-            <button onclick="logout()">
-                Logout
-            </button>
-
+            <button onclick="showPage('profilePage')">My Profile</button>
+            <button onclick="showPage('studentIDPage')">Student ID</button>
+            <button onclick="logout()">Logout</button>
         </nav>
 
     </div>
 
 </section>
 
-<!-- =========================
-     STUDENT PROFILE
-========================= -->
+<!-- STUDENT PROFILE -->
 
 <section id="profilePage" class="card hidden">
 
@@ -686,9 +653,7 @@ td {
 
 </section>
 
-<!-- =========================
-     STUDENT ID
-========================= -->
+<!-- STUDENT ID -->
 
 <section id="studentIDPage" class="card hidden">
 
@@ -697,11 +662,9 @@ td {
     <div class="id-card">
 
         <h2>PLMUN STUDENT ID CARD</h2>
-
         <hr>
 
         <h3 id="idName"></h3>
-
         <p id="idNumber"></p>
         <p id="idCourse"></p>
         <p id="idYear"></p>
@@ -709,9 +672,7 @@ td {
 
         <hr>
 
-        <p>
-            PAMANTASAN NG LUNGSOD NG MUNTINLUPA
-        </p>
+        <p>I-PILIMUN Student ID INFORMATION</p>
 
     </div>
 
@@ -721,9 +682,7 @@ td {
 
 </section>
 
-<!-- =========================
-     ADMIN DASHBOARD
-========================= -->
+<!-- ADMIN DASHBOARD -->
 
 <section id="adminDashboard" class="hidden">
 
@@ -731,9 +690,7 @@ td {
 
         <h2>ADMIN DASHBOARD</h2>
 
-        <p>
-            Welcome to the PLMUN Student Management Portal.
-        </p>
+        <p>Welcome to the PLMUN Student Management Portal.</p>
 
         <div class="stats">
 
@@ -755,9 +712,7 @@ td {
             SEARCH STUDENT RECORDS
         </button>
 
-        <button onclick="logout()">
-            LOGOUT
-        </button>
+        <button onclick="logout()">LOGOUT</button>
 
     </div>
 
@@ -766,9 +721,7 @@ td {
         <h2>Registered Students</h2>
 
         <div class="table-container">
-
             <table>
-
                 <thead>
                     <tr>
                         <th>Student ID</th>
@@ -780,18 +733,14 @@ td {
                 </thead>
 
                 <tbody id="studentTable"></tbody>
-
             </table>
-
         </div>
 
     </div>
 
 </section>
 
-<!-- =========================
-     SEARCH STUDENT RECORDS
-========================= -->
+<!-- SEARCH STUDENT RECORDS -->
 
 <section id="searchPage" class="card hidden">
 
@@ -805,9 +754,7 @@ td {
     >
 
     <div class="table-container">
-
         <table>
-
             <thead>
                 <tr>
                     <th>Student ID</th>
@@ -819,9 +766,7 @@ td {
             </thead>
 
             <tbody id="searchTable"></tbody>
-
         </table>
-
     </div>
 
     <button onclick="showPage('adminDashboard')">
@@ -832,13 +777,11 @@ td {
 
 </div>
 
-<!-- =========================
-     JAVASCRIPT
-========================= -->
-
 <script>
 
-// DATABASE (Browser Storage)
+/* =========================
+   DATABASE
+========================= */
 
 let students = JSON.parse(
     localStorage.getItem("students") || "[]"
@@ -848,7 +791,7 @@ let currentStudent = null;
 let isAdmin = false;
 
 
-// SAVE STUDENT RECORDS
+/* SAVE STUDENTS */
 
 function saveStudents() {
     localStorage.setItem(
@@ -858,7 +801,7 @@ function saveStudents() {
 }
 
 
-// NAVIGATION
+/* NAVIGATION */
 
 function showPage(pageID) {
 
@@ -868,18 +811,19 @@ function showPage(pageID) {
         section.classList.add("hidden");
     });
 
-    document.getElementById(
-        pageID
-    ).classList.remove("hidden");
+    const page = document.getElementById(pageID);
+
+    if (page) {
+        page.classList.remove("hidden");
+    }
 }
 
 
-// GENERATE STUDENT ID
+/* GENERATE STUDENT ID */
 
 function generateStudentID() {
 
-    let year = new Date().getFullYear();
-
+    const year = new Date().getFullYear();
     let number;
 
     do {
@@ -894,79 +838,60 @@ function generateStudentID() {
 }
 
 
-// STUDENT REGISTRATION
+/* STUDENT REGISTRATION */
 
 function registerStudent() {
 
-    let name = document.getElementById(
-        "regName"
-    ).value.trim();
+    const name = document.getElementById("regName").value.trim();
+    const email = document.getElementById("regEmail").value.trim().toLowerCase();
+    const course = document.getElementById("regCourse").value.trim();
+    const year = document.getElementById("regYear").value;
+    const birth = document.getElementById("regBirth").value;
+    const phone = document.getElementById("regPhone").value.trim();
+    const pin = document.getElementById("regPIN").value.trim();
 
-    let email = document.getElementById(
-        "regEmail"
-    ).value.trim().toLowerCase();
+    const message = document.getElementById("registerMessage");
 
-    let course = document.getElementById(
-        "regCourse"
-    ).value.trim();
-
-    let year = document.getElementById(
-        "regYear"
-    ).value;
-
-    let birth = document.getElementById(
-        "regBirth"
-    ).value;
-
-    let phone = document.getElementById(
-        "regPhone"
-    ).value.trim();
-
-    let pin = document.getElementById(
-        "regPIN"
-    ).value.trim();
-
+    message.innerText = "";
 
     if (!name || !email || !course || !year || !pin) {
-        alert("Please complete all required fields.");
+        message.innerText = "Please complete all required fields.";
+        return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        message.innerText = "Please enter a valid email address.";
         return;
     }
 
     if (!/^\d{4}$/.test(pin)) {
-        alert("PIN must contain exactly 4 numbers.");
+        message.innerText = "PIN must contain exactly 4 numbers.";
         return;
     }
 
     if (students.some(student => student.email === email)) {
-        alert("Email already registered!");
+        message.innerText = "Email already registered!";
         return;
     }
 
-
-    let student = {
+    const student = {
         id: generateStudentID(),
-        name: name,
-        email: email,
-        course: course,
-        year: year,
-        birth: birth,
-        phone: phone,
-        pin: pin
+        name,
+        email,
+        course,
+        year,
+        birth,
+        phone,
+        pin
     };
 
-
     students.push(student);
-
     saveStudents();
 
-
-    document.getElementById(
-        "registerMessage"
-    ).innerHTML =
+    message.innerHTML =
         "Registration successful!<br>" +
         "Your Student ID is: <b>" + student.id + "</b><br>" +
         "Please remember your Student ID and PIN.";
-
 
     document.getElementById("regName").value = "";
     document.getElementById("regEmail").value = "";
@@ -975,58 +900,47 @@ function registerStudent() {
     document.getElementById("regBirth").value = "";
     document.getElementById("regPhone").value = "";
     document.getElementById("regPIN").value = "";
-
 }
 
 
-// LOGIN SYSTEM
+/* LOGIN SYSTEM */
 
 function login() {
 
-    let studentID = document.getElementById(
-        "loginStudentID"
-    ).value.trim().toUpperCase();
+    const studentID = document.getElementById("loginStudentID")
+        .value.trim().toUpperCase();
 
-    let pin = document.getElementById(
-        "loginPIN"
-    ).value.trim();
+    const pin = document.getElementById("loginPIN").value.trim();
 
+    const message = document.getElementById("loginMessage");
+
+    message.innerText = "";
 
     if (!studentID || !pin) {
-        document.getElementById(
-            "loginMessage"
-        ).innerText = "Please enter your Student ID and PIN.";
-
+        message.innerText = "Please enter your Student ID and PIN.";
         return;
     }
 
+    /* ADMIN LOGIN */
 
-    // ADMIN LOGIN
-
-    if (
-        studentID === "PLMUN-ADMIN" &&
-        pin === "1234"
-    ) {
+    if (studentID === "PLMUN-ADMIN" && pin === "1234") {
 
         isAdmin = true;
         currentStudent = null;
 
         loadAdminDashboard();
-
         showPage("adminDashboard");
 
         return;
     }
 
+    /* STUDENT LOGIN */
 
-    // STUDENT LOGIN
-
-    let student = students.find(
+    const student = students.find(
         student =>
             student.id.toUpperCase() === studentID &&
             student.pin === pin
     );
-
 
     if (student) {
 
@@ -1034,113 +948,62 @@ function login() {
         isAdmin = false;
 
         loadStudentProfile();
-
         showPage("studentDashboard");
 
     } else {
 
-        document.getElementById(
-            "loginMessage"
-        ).innerText = "Invalid Student ID Number or PIN!";
+        message.innerText = "Invalid Student ID Number or PIN!";
 
     }
-
 }
 
 
-// LOAD STUDENT PROFILE
+/* LOAD STUDENT PROFILE */
 
 function loadStudentProfile() {
 
+    if (!currentStudent) return;
+
     const student = currentStudent;
 
-    document.getElementById(
-        "welcomeName"
-    ).innerText = student.name;
+    document.getElementById("welcomeName").innerText = student.name;
 
-    document.getElementById(
-        "profileID"
-    ).innerText = student.id;
+    document.getElementById("profileID").innerText = student.id;
+    document.getElementById("profileName").innerText = student.name;
+    document.getElementById("profileEmail").innerText = student.email;
+    document.getElementById("profileCourse").innerText = student.course;
+    document.getElementById("profileYear").innerText = student.year;
+    document.getElementById("profileBirth").innerText = student.birth || "Not provided";
+    document.getElementById("profilePhone").innerText = student.phone || "Not provided";
 
-    document.getElementById(
-        "profileName"
-    ).innerText = student.name;
+    /* STUDENT ID CARD */
 
-    document.getElementById(
-        "profileEmail"
-    ).innerText = student.email;
-
-    document.getElementById(
-        "profileCourse"
-    ).innerText = student.course;
-
-    document.getElementById(
-        "profileYear"
-    ).innerText = student.year;
-
-    document.getElementById(
-        "profileBirth"
-    ).innerText = student.birth || "Not provided";
-
-    document.getElementById(
-        "profilePhone"
-    ).innerText = student.phone || "Not provided";
-
-
-    // STUDENT ID CARD
-
-    document.getElementById(
-        "idName"
-    ).innerText = student.name;
-
-    document.getElementById(
-        "idNumber"
-    ).innerText = "Student ID: " + student.id;
-
-    document.getElementById(
-        "idCourse"
-    ).innerText = "Course: " + student.course;
-
-    document.getElementById(
-        "idYear"
-    ).innerText = "Year Level: " + student.year;
-
-    document.getElementById(
-        "idEmail"
-    ).innerText = student.email;
-
+    document.getElementById("idName").innerText = student.name;
+    document.getElementById("idNumber").innerText = "Student ID: " + student.id;
+    document.getElementById("idCourse").innerText = "Course: " + student.course;
+    document.getElementById("idYear").innerText = "Year Level: " + student.year;
+    document.getElementById("idEmail").innerText = student.email;
 }
 
 
-// ADMIN DASHBOARD
+/* ADMIN DASHBOARD */
 
 function loadAdminDashboard() {
 
-    document.getElementById(
-        "totalStudents"
-    ).innerText = students.length;
+    document.getElementById("totalStudents").innerText = students.length;
 
-
-    let courses = [...new Set(
+    const courses = [...new Set(
         students.map(student => student.course)
     )];
 
+    document.getElementById("totalCourses").innerText = courses.length;
 
-    document.getElementById(
-        "totalCourses"
-    ).innerText = courses.length;
-
-
-    let table = document.getElementById(
-        "studentTable"
-    );
-
+    const table = document.getElementById("studentTable");
     table.innerHTML = "";
-
 
     students.forEach(student => {
 
-        let row = table.insertRow();
+        const row = table.insertRow();
 
         [
             student.id,
@@ -1150,27 +1013,23 @@ function loadAdminDashboard() {
             student.year
         ].forEach(value => {
 
-            let cell = row.insertCell();
-
+            const cell = row.insertCell();
             cell.innerText = value;
 
         });
 
     });
-
 }
 
 
-// SEARCH STUDENT RECORDS
+/* SEARCH STUDENT RECORDS */
 
 function searchStudents() {
 
-    let keyword = document.getElementById(
-        "searchInput"
-    ).value.toLowerCase();
+    const keyword = document.getElementById("searchInput")
+        .value.toLowerCase().trim();
 
-
-    let results = students.filter(student =>
+    const results = students.filter(student =>
 
         student.id.toLowerCase().includes(keyword) ||
         student.name.toLowerCase().includes(keyword) ||
@@ -1180,17 +1039,12 @@ function searchStudents() {
 
     );
 
-
-    let table = document.getElementById(
-        "searchTable"
-    );
-
+    const table = document.getElementById("searchTable");
     table.innerHTML = "";
-
 
     results.forEach(student => {
 
-        let row = table.insertRow();
+        const row = table.insertRow();
 
         [
             student.id,
@@ -1200,38 +1054,27 @@ function searchStudents() {
             student.year
         ].forEach(value => {
 
-            let cell = row.insertCell();
-
+            const cell = row.insertCell();
             cell.innerText = value;
 
         });
 
     });
-
 }
 
 
-// LOGOUT
+/* LOGOUT */
 
 function logout() {
 
     currentStudent = null;
     isAdmin = false;
 
-    document.getElementById(
-        "loginStudentID"
-    ).value = "";
-
-    document.getElementById(
-        "loginPIN"
-    ).value = "";
-
-    document.getElementById(
-        "loginMessage"
-    ).innerText = "";
+    document.getElementById("loginStudentID").value = "";
+    document.getElementById("loginPIN").value = "";
+    document.getElementById("loginMessage").innerText = "";
 
     showPage("loginPage");
-
 }
 
 </script>
