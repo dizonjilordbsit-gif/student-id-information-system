@@ -511,6 +511,23 @@
             }
 
         });
+        async function googleLogin() {
+    const { error } = await supabaseClient.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+            redirectTo: window.location.origin +
+                "/student-dashboard.html",
+            queryParams: {
+                hd: "plmun.edu.ph",
+                prompt: "select_account"
+            }
+        }
+    });
+
+    if (error) {
+        alert(error.message);
+    }
+}
 
     </script>
 
