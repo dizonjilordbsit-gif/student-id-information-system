@@ -447,32 +447,29 @@ function showMessage(text, isError = false) {
 }
 
 async function initializeAdmin() {
-    const { data, error } = await supabaseClient.auth.getSession();
+    const isAdmin = sessionStorage.getItem("plmunAdminLoggedIn");
 
-    if (error || !data.session) {
+    if (isAdmin !== "true") {
         window.location.href = "index.html";
         return;
     }
 
-    currentUser = data.session.user;
+    showMessage("Admin dashboard opened.");
 
-    // Verify that this authenticated account is registered as an admin.
-    const { data: admin, error: adminError } = await supabaseClient
-        .from("admin_users")
-        .select("user_id")
-        .eq("user_id", currentUser.id)
-        .maybeSingle();
+    // Load data only if a valid Supabase session exists.
+    const { data } = await supabaseClient.auth.getSession();
 
-    if (adminError || !admin) {
-        await supabaseClient.auth.signOut();
-        alert("You are not authorized to access the admin dashboard.");
-        window.location.href = "index.html";
-        return;
+    if (data.session) {
+        currentUser = data.session.user;
+        await loadAllData();
+    } else {
+        showMessage(
+            "Admin access granted, but Supabase Auth is not connected. " +
+            "Document management requires a real admin account.",
+            true
+        );
     }
-
-    await loadAllData();
 }
-
 async function loadAllData() {
     showMessage("Loading dashboard data...");
 
