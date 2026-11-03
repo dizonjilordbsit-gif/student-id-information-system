@@ -1,218 +1,568 @@
-
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PLMUN Student Dashboard</title>
+
+<title>I-PILIMUN Student ID INFORMATION - Dashboard</title>
+
+<!-- SUPABASE -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 * {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 :root {
-    --green-dark: #041f17;
-    --green-main: #075c3b;
-    --green-light: #128052;
-    --gold: #d9bd68;
+    --dark-green: #003b24;
+    --main-green: #075c3b;
+    --light-green: #128052;
+    --gold: #d4af37;
+    --cream: #f8f6ef;
+    --white: #ffffff;
+    --text-dark: #123526;
 }
 
 body {
-    margin: 0;
     min-height: 100vh;
-    font-family: Arial, sans-serif;
-    color: #17233b;
-    background:
-        linear-gradient(rgba(0,0,0,.45), rgba(0,0,0,.65)),
-        url("https://ts4.mm.bing.net/th?id=OIP.BIgd-vlLpw2hbK2ITm1-XQHaEK&pid=15.1");
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
+    background: #f5f3ec;
+    color: var(--text-dark);
 }
 
-.hidden {
-    display: none !important;
+/* HEADER */
+
+.top-header {
+    background: var(--dark-green);
+    color: white;
+    padding: 15px 5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 5px solid var(--gold);
+    gap: 15px;
 }
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.brand img {
+    width: 65px;
+    height: 65px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 7px #00ff66);
+}
+
+.brand-text h1 {
+    font-size: 27px;
+    letter-spacing: 1px;
+}
+
+.brand-text p {
+    color: var(--gold);
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.header-right button {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+/* MAIN CONTAINER */
 
 .container {
-    max-width: 1100px;
+    max-width: 1450px;
     margin: auto;
     padding: 25px;
 }
 
-.student-header {
-    background: rgba(4,31,23,.96);
+/* WELCOME BANNER */
+
+.welcome-banner {
+    background: linear-gradient(110deg, #003b24, #087448);
     color: white;
-    padding: 25px 30px;
+    border: 2px solid var(--gold);
     border-radius: 15px;
-    margin: 20px 0;
+    padding: 30px 35px;
+    margin-bottom: 23px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
-    gap: 15px;
-    border-bottom: 4px solid var(--gold);
+    justify-content: space-between;
+    gap: 20px;
+    overflow: hidden;
 }
 
-.student-header h2 {
+.welcome-banner h2 {
+    font-size: 32px;
+    margin-bottom: 8px;
+}
+
+.welcome-banner h3 {
+    font-size: 23px;
+    font-weight: normal;
+}
+
+.welcome-banner h3 span {
     color: var(--gold);
-    margin-top: 0;
-}
-
-.dashboard-subtitle {
-    color: #e4f0e9;
-}
-
-.card {
-    background: rgba(255,255,255,.97);
-    padding: 25px;
-    border-radius: 15px;
-    margin: 20px 0;
-    box-shadow: 0 5px 20px rgba(0,0,0,.25);
-}
-
-.card h2 {
-    color: var(--green-main);
-}
-
-button {
-    background: var(--green-main);
-    color: white;
-    border: none;
-    padding: 12px 18px;
-    border-radius: 7px;
-    cursor: pointer;
-    margin: 4px;
     font-weight: bold;
 }
 
-button:hover {
-    background: var(--green-light);
+.welcome-banner p {
+    margin-top: 9px;
+    color: #e7eee9;
+    font-style: italic;
 }
 
-.logout-btn {
-    background: #a52a2a;
+.banner-school {
+    text-align: center;
+    color: var(--gold);
 }
 
-.logout-btn:hover {
-    background: #cc3333;
+.banner-school h2 {
+    font-size: 48px;
+    font-style: italic;
+    margin: 0;
 }
+
+.banner-school p {
+    font-size: 12px;
+    font-weight: bold;
+    font-style: normal;
+    margin: 0;
+}
+
+/* SUMMARY CARDS */
 
 .student-summary {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 15px;
-    margin: 20px 0;
+    gap: 17px;
+    margin-bottom: 23px;
 }
 
 .summary-card {
-    background: white;
+    background: var(--cream);
+    border: 2px solid var(--gold);
+    border-radius: 13px;
     padding: 20px;
-    border-radius: 12px;
-    border-left: 5px solid var(--gold);
-    box-shadow: 0 5px 15px rgba(0,0,0,.2);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    min-width: 0;
+}
+
+.summary-icon {
+    width: 75px;
+    height: 75px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: var(--dark-green);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 32px;
+}
+
+.summary-info {
+    min-width: 0;
+}
+
+.summary-info h3 {
+    font-size: 15px;
+    margin-bottom: 9px;
+}
+
+.summary-info h2 {
+    font-size: 21px;
     overflow-wrap: anywhere;
 }
 
-.summary-card h3 {
-    color: #555;
-    font-size: 14px;
+.status-badge {
+    display: inline-block;
+    padding: 9px 20px;
+    border-radius: 25px;
+    background: #f3bd27;
+    color: #18351f;
+    font-size: 16px;
 }
 
-.summary-card h2 {
-    color: var(--green-main);
-    font-size: 20px;
+/* CONTENT CARDS */
+
+.card {
+    background: var(--cream);
+    border: 2px solid #e5d9b5;
+    border-radius: 13px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(0,0,0,.07);
 }
+
+.card-header {
+    background: var(--dark-green);
+    color: white;
+    padding: 13px 20px;
+    border-bottom: 2px solid var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.card-header h2 {
+    font-size: 21px;
+}
+
+.card-header h2::before {
+    content: "";
+    display: inline-block;
+    width: 7px;
+    height: 25px;
+    background: var(--gold);
+    margin-right: 13px;
+    vertical-align: middle;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+/* QUICK ACCESS */
 
 .dashboard-actions {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-    margin-top: 20px;
+    gap: 15px;
 }
 
-.dashboard-actions button {
-    min-height: 100px;
-    background: var(--green-dark);
-    border: 1px solid var(--gold);
-    line-height: 1.8;
+.action-button {
+    min-height: 120px;
+    border: 2px solid var(--gold);
+    border-radius: 12px;
+    background: linear-gradient(120deg, #003b24, #087448);
+    color: white;
+    cursor: pointer;
+    padding: 15px 8px;
+    transition: .25s;
 }
 
-.dashboard-actions button span {
-    font-size: 25px;
-}
-
-.dashboard-actions button:hover {
-    background: var(--green-light);
+.action-button:hover {
+    background: var(--light-green);
     transform: translateY(-3px);
 }
 
-.status-label {
-    display: inline-block;
-    padding: 6px 12px;
-    border-radius: 20px;
-    background: #fff0c2;
-    color: #765500;
+.action-button .action-icon {
+    display: block;
+    font-size: 34px;
+    color: var(--gold);
+    margin-bottom: 8px;
+}
+
+.action-button strong {
+    display: block;
+    font-size: 15px;
+}
+
+.action-button small {
+    display: block;
+    margin-top: 5px;
+    font-size: 12px;
+    font-style: italic;
+}
+
+/* APPLICATION STATUS */
+
+.application-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 25px;
+}
+
+.application-details {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.application-icon {
+    width: 85px;
+    height: 85px;
+    border-radius: 50%;
+    background: var(--dark-green);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 36px;
+    flex-shrink: 0;
+}
+
+.application-text p {
+    margin: 9px 0;
+    font-size: 17px;
+}
+
+.application-text strong {
+    margin-right: 15px;
+}
+
+.view-button {
+    background: var(--gold);
+    color: var(--dark-green);
+    border: none;
+    border-radius: 9px;
+    padding: 16px 25px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.view-button:hover {
+    background: #edcc62;
+}
+
+/* OTHER PAGES */
+
+.other-page {
+    display: none;
+}
+
+.other-page.active {
+    display: block;
+}
+
+.dashboard-page.hidden {
+    display: none;
+}
+
+.profile-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.profile-item {
+    background: white;
+    padding: 16px;
+    border-left: 4px solid var(--gold);
+    border-radius: 7px;
+    overflow-wrap: anywhere;
+}
+
+.profile-item strong {
+    display: block;
+    margin-bottom: 7px;
+    color: var(--main-green);
+}
+
+.back-button {
+    margin-top: 20px;
+    padding: 12px 20px;
+    background: var(--main-green);
+    color: white;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
     font-weight: bold;
 }
 
-.status-label.approved {
-    background: #d9f5e3;
-    color: #087438;
-}
-
-.status-label.rejected {
-    background: #ffe0e0;
-    color: #a00000;
-}
-
-.status-label.pending {
-    background: #fff0c2;
-    color: #765500;
-}
-
 .id-card {
-    background: linear-gradient(120deg, #04251a, #087448);
-    color: white;
-    padding: 30px;
-    border-radius: 15px;
     max-width: 450px;
+    padding: 25px;
     border: 3px solid var(--gold);
-    box-shadow: 0 8px 25px rgba(0,0,0,.3);
+    border-radius: 13px;
+    color: white;
+    background: linear-gradient(120deg, #003b24, #087448);
 }
 
 .id-card h2 {
     color: var(--gold);
+    margin-bottom: 15px;
 }
 
-.id-card hr {
-    border: 1px solid var(--gold);
+.id-card p {
+    margin: 12px 0;
+    overflow-wrap: anywhere;
 }
 
 .document-item {
-    padding: 15px;
-    margin: 10px 0;
-    background: #f0f5f1;
-    border-left: 4px solid var(--green-main);
+    background: white;
+    padding: 17px;
+    border-left: 4px solid var(--main-green);
     border-radius: 7px;
+    margin-bottom: 12px;
 }
 
-@media(max-width:850px) {
-    .student-summary,
+.loading {
+    text-align: center;
+    padding: 50px 15px;
+    color: var(--main-green);
+    font-weight: bold;
+}
+
+.error-message {
+    color: #a00000;
+    text-align: center;
+    padding: 20px;
+}
+
+/* FOOTER */
+
+footer {
+    background: var(--dark-green);
+    color: white;
+    text-align: center;
+    padding: 20px;
+    border-top: 4px solid var(--gold);
+    font-size: 13px;
+}
+
+/* MOBILE RESPONSIVE */
+
+@media(max-width: 950px) {
+    .student-summary {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
     .dashboard-actions {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
-@media(max-width:500px) {
-    .student-summary,
-    .dashboard-actions {
-        grid-template-columns: 1fr;
+@media(max-width: 600px) {
+    .top-header {
+        padding: 13px 15px;
     }
 
-    .student-header {
-        padding: 20px;
+    .brand img {
+        width: 48px;
+        height: 48px;
+    }
+
+    .brand-text h1 {
+        font-size: 19px;
+    }
+
+    .brand-text p {
+        font-size: 9px;
+        letter-spacing: 1px;
+    }
+
+    .header-right {
+        gap: 8px;
+    }
+
+    .container {
+        padding: 13px;
+    }
+
+    .welcome-banner {
+        padding: 22px 18px;
+    }
+
+    .welcome-banner h2 {
+        font-size: 23px;
+    }
+
+    .welcome-banner h3 {
+        font-size: 17px;
+    }
+
+    .banner-school {
+        display: none;
+    }
+
+    .student-summary {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .summary-card {
+        padding: 14px;
+    }
+
+    .summary-icon {
+        width: 58px;
+        height: 58px;
+        font-size: 25px;
+    }
+
+    .summary-info h2 {
+        font-size: 18px;
+    }
+
+    .dashboard-actions {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 9px;
+    }
+
+    .action-button {
+        min-height: 110px;
+    }
+
+    .action-button strong {
+        font-size: 12px;
+    }
+
+    .action-button small {
+        font-size: 10px;
+    }
+
+    .card-header h2 {
+        font-size: 17px;
+    }
+
+    .application-content {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 17px;
+    }
+
+    .application-details {
+        gap: 13px;
+    }
+
+    .application-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 26px;
+    }
+
+    .application-text p {
+        font-size: 14px;
+    }
+
+    .application-text strong {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .view-button {
+        width: 100%;
+    }
+
+    .profile-grid {
+        grid-template-columns: 1fr;
     }
 }
 </style>
@@ -220,336 +570,626 @@ button:hover {
 
 <body>
 
-<div class="container">
+<!-- HEADER -->
+<header class="top-header">
 
-    <!-- STUDENT DASHBOARD -->
-    <section id="studentDashboard">
+    <div class="brand">
+        <img
+            src="https://64.media.tumblr.com/33ca84afd52d5cd0ef7bb1bb66c6176b/tumblr_o4ti6j8k6r1unefbyo1_400.png"
+            alt="PLMUN Logo"
+        >
 
-        <div class="student-header">
+        <div class="brand-text">
+            <h1>I-PILIMUN</h1>
+            <p>STUDENT ID INFORMATION</p>
+        </div>
+    </div>
+
+    <div class="header-right">
+        <button type="button" onclick="logout()">LOG OUT ↗</button>
+    </div>
+
+</header>
+
+
+<main class="container">
+
+    <!-- MAIN DASHBOARD -->
+    <section id="dashboardPage" class="dashboard-page">
+
+        <div class="welcome-banner">
+
             <div>
                 <h2>STUDENT DASHBOARD</h2>
-                <p>Welcome back, <b><span id="welcomeName"></span></b>!</p>
-                <p class="dashboard-subtitle">
+
+                <h3>
+                    Welcome back,
+                    <span id="welcomeName">Student!</span>
+                </h3>
+
+                <p>
                     Manage your PLMUN student information and ID application.
                 </p>
             </div>
 
-            <button class="logout-btn" onclick="logout()">LOGOUT</button>
+            <div class="banner-school">
+                <h2>PLMUN</h2>
+                <p>PAMANTASAN NG LUNGSOD NG MUNTINLUPA</p>
+            </div>
+
         </div>
 
+
+        <!-- STUDENT SUMMARY -->
         <div class="student-summary">
 
             <div class="summary-card">
-                <h3>Student ID Number</h3>
-                <h2 id="dashboardStudentID">Not assigned</h2>
+                <div class="summary-icon">▣</div>
+
+                <div class="summary-info">
+                    <h3>Student ID Number</h3>
+                    <h2 id="dashboardStudentID">Loading...</h2>
+                </div>
             </div>
 
-            <div class="summary-card">
-                <h3>Course</h3>
-                <h2 id="dashboardCourse">Not provided</h2>
-            </div>
 
             <div class="summary-card">
-                <h3>Year Level</h3>
-                <h2 id="dashboardYear">Not provided</h2>
+                <div class="summary-icon">🎓</div>
+
+                <div class="summary-info">
+                    <h3>Course</h3>
+                    <h2 id="dashboardCourse">Not provided</h2>
+                </div>
             </div>
 
+
             <div class="summary-card">
-                <h3>ID Application Status</h3>
-                <h2 id="dashboardStatus">Pending</h2>
+                <div class="summary-icon">▦</div>
+
+                <div class="summary-info">
+                    <h3>Year Level</h3>
+                    <h2 id="dashboardYear">Not provided</h2>
+                </div>
+            </div>
+
+
+            <div class="summary-card">
+                <div class="summary-icon">✓</div>
+
+                <div class="summary-info">
+                    <h3>ID Application Status</h3>
+                    <h2>
+                        <span class="status-badge" id="dashboardStatus">
+                            Pending
+                        </span>
+                    </h2>
+                </div>
             </div>
 
         </div>
 
+
+        <!-- QUICK ACCESS -->
         <div class="card">
-            <h2>Quick Access</h2>
-            <p>Select a service below to manage your student information.</p>
 
-            <div class="dashboard-actions">
+            <div class="card-header">
+                <h2>Quick Access</h2>
+                <small>Select a service below to manage your account.</small>
+            </div>
 
-                <button onclick="showPage('profilePage')">
-                    <span>👤</span><br>
-                    MY PROFILE
-                </button>
+            <div class="card-body">
 
-                <button onclick="showPage('studentIDPage')">
-                    <span>🪪</span><br>
-                    MY STUDENT ID
-                </button>
+                <div class="dashboard-actions">
 
-                <button onclick="showPage('studentStatusPage')">
-                    <span>📋</span><br>
-                    APPLICATION STATUS
-                </button>
+                    <button class="action-button" onclick="showPage('profilePage')">
+                        <span class="action-icon">👤</span>
+                        <strong>MY PROFILE</strong>
+                        <small>View your profile</small>
+                    </button>
 
-                <button onclick="showPage('studentDocumentsPage')">
-                    <span>📁</span><br>
-                    MY DOCUMENTS
+                    <button class="action-button" onclick="showPage('studentIDPage')">
+                        <span class="action-icon">▣</span>
+                        <strong>MY STUDENT ID</strong>
+                        <small>View your student ID</small>
+                    </button>
+
+                    <button class="action-button" onclick="showPage('statusPage')">
+                        <span class="action-icon">☑</span>
+                        <strong>APPLICATION STATUS</strong>
+                        <small>Track your application</small>
+                    </button>
+
+                    <button class="action-button" onclick="showPage('documentsPage')">
+                        <span class="action-icon">📁</span>
+                        <strong>MY DOCUMENTS</strong>
+                        <small>View your documents</small>
+                    </button>
+
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- APPLICATION -->
+        <div class="card">
+
+            <div class="card-header">
+                <h2>Student ID Application</h2>
+            </div>
+
+            <div class="application-content">
+
+                <div class="application-details">
+
+                    <div class="application-icon">☑</div>
+
+                    <div class="application-text">
+
+                        <p>
+                            <strong>Application Status:</strong>
+                            <span id="applicationStatus" class="status-badge">
+                                Pending
+                            </span>
+                        </p>
+
+                        <p>
+                            <strong>Admin Remarks:</strong>
+                            <span id="adminRemarks">No remarks available.</span>
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <button class="view-button" onclick="showPage('statusPage')">
+                    ▤ &nbsp; VIEW APPLICATION DETAILS
                 </button>
 
             </div>
         </div>
 
-        <div class="card">
-            <h2>Student ID Application</h2>
+    </section>
 
-            <p>
-                <b>Application Status:</b>
-                <span id="dashboardApplicationStatus" class="status-label pending">
-                    Pending
-                </span>
-            </p>
 
-            <p>
-                <b>Admin Remarks:</b>
-                <span id="dashboardRemarks">No remarks available.</span>
-            </p>
+    <!-- PROFILE PAGE -->
+    <section id="profilePage" class="other-page card">
 
-            <button onclick="showPage('studentStatusPage')">
-                VIEW APPLICATION DETAILS
+        <div class="card-header">
+            <h2>My Profile</h2>
+        </div>
+
+        <div class="card-body">
+
+            <div class="profile-grid">
+
+                <div class="profile-item">
+                    <strong>Student ID Number</strong>
+                    <span id="profileID">-</span>
+                </div>
+
+                <div class="profile-item">
+                    <strong>Full Name</strong>
+                    <span id="profileName">-</span>
+                </div>
+
+                <div class="profile-item">
+                    <strong>Institutional Email</strong>
+                    <span id="profileEmail">-</span>
+                </div>
+
+                <div class="profile-item">
+                    <strong>Course</strong>
+                    <span id="profileCourse">Not provided</span>
+                </div>
+
+                <div class="profile-item">
+                    <strong>Year Level</strong>
+                    <span id="profileYear">Not provided</span>
+                </div>
+
+                <div class="profile-item">
+                    <strong>Birthdate</strong>
+                    <span id="profileBirthdate">Not provided</span>
+                </div>
+
+            </div>
+
+            <button class="back-button" onclick="showPage('dashboardPage')">
+                ← BACK TO DASHBOARD
             </button>
-        </div>
 
+        </div>
     </section>
 
-    <!-- MY PROFILE -->
-    <section id="profilePage" class="card hidden">
 
-        <h2>My Profile</h2>
+    <!-- STUDENT ID PAGE -->
+    <section id="studentIDPage" class="other-page card">
 
-        <p><b>Student ID:</b> <span id="profileID"></span></p>
-        <p><b>Name:</b> <span id="profileName"></span></p>
-        <p><b>Email:</b> <span id="profileEmail"></span></p>
-        <p><b>Course:</b> <span id="profileCourse"></span></p>
-        <p><b>Year Level:</b> <span id="profileYear"></span></p>
-        <p><b>Birthday:</b> <span id="profileBirth"></span></p>
-        <p><b>Contact:</b> <span id="profilePhone"></span></p>
-
-        <button onclick="showPage('studentDashboard')">
-            BACK TO DASHBOARD
-        </button>
-
-    </section>
-
-    <!-- MY STUDENT ID -->
-    <section id="studentIDPage" class="card hidden">
-
-        <h2>My Student Identification Card</h2>
-
-        <div class="id-card">
-            <h2>PLMUN STUDENT ID CARD</h2>
-            <hr>
-
-            <h3 id="idName"></h3>
-            <p id="idNumber"></p>
-            <p id="idCourse"></p>
-            <p id="idYear"></p>
-            <p id="idEmail"></p>
-
-            <hr>
-            <p>I-PILIMUN Student ID INFORMATION</p>
+        <div class="card-header">
+            <h2>My Student Identification Card</h2>
         </div>
 
-        <button onclick="showPage('studentDashboard')">
-            BACK TO DASHBOARD
-        </button>
+        <div class="card-body">
 
+            <div class="id-card">
+
+                <h2>PLMUN STUDENT ID CARD</h2>
+
+                <hr>
+
+                <h3 id="idName">Student Name</h3>
+
+                <p id="idNumber">Student ID: -</p>
+
+                <p id="idCourse">Course: -</p>
+
+                <p id="idYear">Year Level: -</p>
+
+                <p id="idEmail">Email: -</p>
+
+                <hr>
+
+                <p>I-PILIMUN Student ID INFORMATION</p>
+
+            </div>
+
+            <button class="back-button" onclick="showPage('dashboardPage')">
+                ← BACK TO DASHBOARD
+            </button>
+
+        </div>
     </section>
 
-    <!-- APPLICATION STATUS -->
-    <section id="studentStatusPage" class="card hidden">
 
-        <h2>My ID Application Status</h2>
+    <!-- STATUS PAGE -->
+    <section id="statusPage" class="other-page card">
 
-        <p><b>Student Name:</b> <span id="statusStudentName"></span></p>
-        <p><b>Student ID:</b> <span id="statusStudentID"></span></p>
+        <div class="card-header">
+            <h2>My ID Application Status</h2>
+        </div>
 
-        <p>
-            <b>Application Status:</b>
-            <span id="studentApplicationStatus" class="status-label pending">
-                Pending
-            </span>
-        </p>
+        <div class="card-body">
 
-        <p><b>Admin Remarks:</b></p>
-        <p id="studentRemarks">No remarks available.</p>
+            <p><strong>Student Name:</strong> <span id="statusName">-</span></p>
 
-        <button onclick="showPage('studentDashboard')">
-            BACK TO DASHBOARD
-        </button>
+            <br>
 
+            <p><strong>Student ID:</strong> <span id="statusID">-</span></p>
+
+            <br>
+
+            <p>
+                <strong>Application Status:</strong>
+                <span id="statusValue" class="status-badge">Pending</span>
+            </p>
+
+            <br>
+
+            <p><strong>Admin Remarks:</strong></p>
+
+            <p id="statusRemarks">No remarks available.</p>
+
+            <button class="back-button" onclick="showPage('dashboardPage')">
+                ← BACK TO DASHBOARD
+            </button>
+
+        </div>
     </section>
 
-    <!-- MY DOCUMENTS -->
-    <section id="studentDocumentsPage" class="card hidden">
 
-        <h2>My Documents</h2>
-        <p>Review the document information saved in your student record.</p>
+    <!-- DOCUMENTS PAGE -->
+    <section id="documentsPage" class="other-page card">
 
-        <div class="document-item">
-            <b>Student Photo:</b>
-            <span id="documentPhotoStatus">Not uploaded</span>
+        <div class="card-header">
+            <h2>My Documents</h2>
         </div>
 
-        <div class="document-item">
-            <b>Signature:</b>
-            <span id="documentSignatureStatus">Not uploaded</span>
+        <div class="card-body">
+
+            <p>Review your uploaded student documents.</p>
+
+            <br>
+
+            <div class="document-item">
+                <strong>Student Photo:</strong>
+                <span id="photoStatus">Not uploaded</span>
+            </div>
+
+            <div class="document-item">
+                <strong>Signature:</strong>
+                <span id="signatureStatus">Not uploaded</span>
+            </div>
+
+            <div class="document-item">
+                <strong>Supporting Documents:</strong>
+                <span id="supportingStatus">Not uploaded</span>
+            </div>
+
+            <button class="back-button" onclick="showPage('dashboardPage')">
+                ← BACK TO DASHBOARD
+            </button>
+
         </div>
-
-        <div class="document-item">
-            <b>Supporting Documents:</b>
-            <span id="documentSupportingStatus">Not uploaded</span>
-        </div>
-
-        <button onclick="showPage('studentDashboard')">
-            BACK TO DASHBOARD
-        </button>
-
     </section>
 
-</div>
+
+    <!-- LOADING / ERROR -->
+    <div id="loadingMessage" class="loading">
+        Connecting to student account...
+    </div>
+
+</main>
+
+
+<footer>
+    © 2026 Pamantasan ng Lungsod ng Muntinlupa |
+    I-PILIMUN Student ID Information System
+</footer>
+
 
 <script>
 
-// GET LOGGED-IN STUDENT
-let currentStudent = JSON.parse(
-    localStorage.getItem("currentStudentSession") || "null"
+// ==========================================
+// SUPABASE CONFIGURATION
+// ==========================================
+
+const SUPABASE_URL = "YOUR_SUPABASE_PROJECT_URL";
+const SUPABASE_ANON_KEY = "YOUR_SUPABASE_PUBLISHABLE_KEY";
+
+const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
 );
 
-// CHECK LOGIN
-if (!currentStudent) {
-    alert("Please login first.");
-    window.location.href = "index.html";
+
+// ==========================================
+// STUDENT DATA
+// ==========================================
+
+let currentStudent = null;
+
+
+// ==========================================
+// LOAD AUTHENTICATED STUDENT
+// ==========================================
+
+async function loadStudentDashboard() {
+
+    const loadingMessage = document.getElementById("loadingMessage");
+
+    try {
+
+        // Check Supabase login session
+        const { data: sessionData, error: sessionError } =
+            await supabaseClient.auth.getSession();
+
+        if (sessionError) {
+            throw sessionError;
+        }
+
+        const session = sessionData.session;
+
+        // Redirect if not logged in
+        if (!session) {
+            window.location.href = "index.html";
+            return;
+        }
+
+        const user = session.user;
+
+        // Find student record using institutional email
+        const { data: student, error } = await supabaseClient
+            .from("students")
+            .select(`
+                student_number,
+                first_name,
+                last_name,
+                email,
+                course,
+                year_level,
+                birthdate
+            `)
+            .eq("email", user.email)
+            .maybeSingle();
+
+        if (error) {
+            throw error;
+        }
+
+        // Use registration metadata if profile record is not yet available
+        const metadata = user.user_metadata || {};
+
+        currentStudent = student || {};
+
+        const studentNumber =
+            currentStudent.student_number ||
+            metadata.student_number ||
+            "Not assigned";
+
+        const firstName =
+            currentStudent.first_name ||
+            metadata.first_name ||
+            "";
+
+        const lastName =
+            currentStudent.last_name ||
+            metadata.last_name ||
+            "";
+
+        const fullName =
+            (firstName + " " + lastName).trim() ||
+            user.email ||
+            "Student";
+
+        const email =
+            currentStudent.email ||
+            user.email ||
+            "Not provided";
+
+        const course =
+            currentStudent.course || "Not provided";
+
+        const yearLevel =
+            currentStudent.year_level || "Not provided";
+
+        const birthdate =
+            currentStudent.birthdate || "Not provided";
+
+        // Display the student information
+        displayStudentInformation({
+            studentNumber,
+            fullName,
+            email,
+            course,
+            yearLevel,
+            birthdate
+        });
+
+        loadingMessage.style.display = "none";
+
+    } catch (error) {
+
+        console.error("Dashboard loading error:", error);
+
+        loadingMessage.innerHTML = `
+            <p class="error-message">
+                Unable to load your student information.<br>
+                ${error.message}
+            </p>
+        `;
+    }
 }
 
+
+// ==========================================
 // DISPLAY STUDENT INFORMATION
-function loadStudentDashboard() {
+// ==========================================
 
-    if (!currentStudent) return;
+function displayStudentInformation(student) {
 
-    const student = currentStudent;
+    // Welcome banner
+    document.getElementById("welcomeName").textContent =
+        student.fullName;
 
-    const status = student.status || "Pending";
-    const remarks = student.remarks || "No remarks available.";
+    // Summary cards
+    document.getElementById("dashboardStudentID").textContent =
+        student.studentNumber;
 
-    // DASHBOARD
-    document.getElementById("welcomeName").innerText =
-        student.name || "Student";
+    document.getElementById("dashboardCourse").textContent =
+        student.course;
 
-    document.getElementById("dashboardStudentID").innerText =
-        student.id || "Not assigned";
+    document.getElementById("dashboardYear").textContent =
+        student.yearLevel;
 
-    document.getElementById("dashboardCourse").innerText =
-        student.course || "Not provided";
+    // Profile
+    document.getElementById("profileID").textContent =
+        student.studentNumber;
 
-    document.getElementById("dashboardYear").innerText =
-        student.year || "Not provided";
+    document.getElementById("profileName").textContent =
+        student.fullName;
 
-    document.getElementById("dashboardStatus").innerText = status;
+    document.getElementById("profileEmail").textContent =
+        student.email;
 
-    document.getElementById("dashboardApplicationStatus").innerText =
-        status;
+    document.getElementById("profileCourse").textContent =
+        student.course;
 
-    document.getElementById("dashboardRemarks").innerText =
-        remarks;
+    document.getElementById("profileYear").textContent =
+        student.yearLevel;
 
-    // STATUS PAGE
-    document.getElementById("statusStudentName").innerText =
-        student.name || "";
+    document.getElementById("profileBirthdate").textContent =
+        student.birthdate;
 
-    document.getElementById("statusStudentID").innerText =
-        student.id || "";
+    // Student ID card
+    document.getElementById("idName").textContent =
+        student.fullName;
 
-    document.getElementById("studentApplicationStatus").innerText =
-        status;
+    document.getElementById("idNumber").textContent =
+        "Student ID: " + student.studentNumber;
 
-    document.getElementById("studentRemarks").innerText =
-        remarks;
+    document.getElementById("idCourse").textContent =
+        "Course: " + student.course;
 
-    // STATUS COLORS
-    const statusClass = status.toLowerCase();
+    document.getElementById("idYear").textContent =
+        "Year Level: " + student.yearLevel;
 
-    document.getElementById("dashboardApplicationStatus").className =
-        "status-label " + statusClass;
+    document.getElementById("idEmail").textContent =
+        student.email;
 
-    document.getElementById("studentApplicationStatus").className =
-        "status-label " + statusClass;
+    // Application information
+    document.getElementById("statusName").textContent =
+        student.fullName;
 
-    // PROFILE
-    document.getElementById("profileID").innerText =
-        student.id || "";
-
-    document.getElementById("profileName").innerText =
-        student.name || "";
-
-    document.getElementById("profileEmail").innerText =
-        student.email || "";
-
-    document.getElementById("profileCourse").innerText =
-        student.course || "";
-
-    document.getElementById("profileYear").innerText =
-        student.year || "";
-
-    document.getElementById("profileBirth").innerText =
-        student.birth || "Not provided";
-
-    document.getElementById("profilePhone").innerText =
-        student.phone || "Not provided";
-
-    // STUDENT ID CARD
-    document.getElementById("idName").innerText =
-        student.name || "";
-
-    document.getElementById("idNumber").innerText =
-        "Student ID: " + (student.id || "");
-
-    document.getElementById("idCourse").innerText =
-        "Course: " + (student.course || "");
-
-    document.getElementById("idYear").innerText =
-        "Year Level: " + (student.year || "");
-
-    document.getElementById("idEmail").innerText =
-        student.email || "";
-
-    // DOCUMENTS
-    document.getElementById("documentPhotoStatus").innerText =
-        student.photo ? "Uploaded" : "Not uploaded";
-
-    document.getElementById("documentSignatureStatus").innerText =
-        student.signature ? "Uploaded" : "Not uploaded";
-
-    document.getElementById("documentSupportingStatus").innerText =
-        student.documents ? "Uploaded" : "Not uploaded";
+    document.getElementById("statusID").textContent =
+        student.studentNumber;
 }
 
-// NAVIGATION
+
+// ==========================================
+// PAGE NAVIGATION
+// ==========================================
+
 function showPage(pageID) {
 
-    document.querySelectorAll(".container > section").forEach(section => {
-        section.classList.add("hidden");
+    document.getElementById("dashboardPage")
+        .classList.add("hidden");
+
+    document.querySelectorAll(".other-page")
+        .forEach(page => page.classList.remove("active"));
+
+    if (pageID === "dashboardPage") {
+
+        document.getElementById("dashboardPage")
+            .classList.remove("hidden");
+
+    } else {
+
+        document.getElementById(pageID)
+            .classList.add("active");
+
+    }
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
     });
-
-    document.getElementById(pageID).classList.remove("hidden");
-
-    window.scrollTo(0, 0);
 }
 
-// LOGOUT
-function logout() {
 
-    localStorage.removeItem("currentStudentSession");
+// ==========================================
+// LOGOUT
+// ==========================================
+
+async function logout() {
+
+    const confirmLogout = confirm(
+        "Are you sure you want to log out?"
+    );
+
+    if (!confirmLogout) {
+        return;
+    }
+
+    const { error } = await supabaseClient.auth.signOut();
+
+    if (error) {
+        alert("Unable to log out: " + error.message);
+        return;
+    }
 
     window.location.href = "index.html";
 }
 
-// LOAD PAGE
-if (currentStudent) {
-    loadStudentDashboard();
-}
+
+// ==========================================
+// START DASHBOARD
+// ==========================================
+
+loadStudentDashboard();
 
 </script>
 
 </body>
 </html>
+```
