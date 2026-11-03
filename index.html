@@ -1,13 +1,11 @@
-
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>I-PILIMUN Student ID INFORMATION</title>
 
-    <!-- SUPABASE LIBRARY -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
@@ -24,35 +22,24 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
-
             background:
-                linear-gradient(
-                    rgba(0, 25, 12, 0.82),
-                    rgba(0, 20, 10, 0.90)
-                ),
+                linear-gradient(rgba(0,25,12,.82), rgba(0,20,10,.90)),
                 url("https://ts4.mm.bing.net/th?id=OIP.BIgd-vlLpw2hbK2ITm1-XQHaEK&pid=15.1");
-
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
         }
-
-        /* LOGIN CONTAINER */
 
         .login-container {
             width: 100%;
             max-width: 430px;
             padding: 35px 30px;
             text-align: center;
-
-            background: rgba(0, 35, 18, 0.94);
+            background: rgba(0,35,18,.94);
             border: 2px solid #d4af37;
             border-radius: 18px;
-
-            box-shadow: 0 0 25px rgba(0, 255, 100, 0.25);
+            box-shadow: 0 0 25px rgba(0,255,100,.25);
         }
-
-        /* PLMUN LOGO */
 
         .logo {
             width: 115px;
@@ -62,10 +49,8 @@
             filter: drop-shadow(0 0 12px #00ff66);
         }
 
-        /* TITLE */
-
         h1 {
-            color: #ffffff;
+            color: white;
             font-size: 23px;
             line-height: 1.4;
             margin-bottom: 5px;
@@ -79,12 +64,10 @@
         }
 
         .login-title {
-            color: #ffffff;
+            color: white;
             font-size: 20px;
             margin-bottom: 20px;
         }
-
-        /* INPUT FIELDS */
 
         .input-group {
             text-align: left;
@@ -93,7 +76,7 @@
 
         .input-group label {
             display: block;
-            color: #ffffff;
+            color: white;
             font-size: 14px;
             margin-bottom: 8px;
         }
@@ -101,11 +84,9 @@
         .input-group input {
             width: 100%;
             padding: 13px;
-
             border: 1px solid #d4af37;
             border-radius: 8px;
             outline: none;
-
             background: #f5f5f5;
             color: #003b20;
             font-size: 15px;
@@ -113,50 +94,63 @@
 
         .input-group input:focus {
             border: 2px solid #00ff66;
-            box-shadow: 0 0 8px rgba(0, 255, 102, 0.4);
+            box-shadow: 0 0 8px rgba(0,255,102,.4);
         }
 
-        /* LOGIN BUTTON */
+        .password-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .password-wrapper input {
+            padding-right: 65px;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: transparent;
+            color: #006b38;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 5px;
+        }
 
         .login-button {
             width: 100%;
             padding: 14px;
             margin-top: 8px;
-
             background: #d4af37;
             color: #003b20;
-
             border: none;
             border-radius: 8px;
-
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
-
-            transition: 0.3s;
+            transition: .3s;
         }
 
         .login-button:hover {
             background: #f1d46a;
             transform: translateY(-2px);
-            box-shadow: 0 0 12px rgba(212, 175, 55, 0.5);
+            box-shadow: 0 0 12px rgba(212,175,55,.5);
         }
 
         .login-button:disabled {
-            opacity: 0.65;
+            opacity: .65;
             cursor: not-allowed;
             transform: none;
         }
-
-        /* DIVIDER */
 
         .divider {
             display: flex;
             align-items: center;
             gap: 12px;
-
             margin: 23px 0 15px;
-
             color: #d4af37;
             font-size: 12px;
             font-weight: bold;
@@ -167,10 +161,38 @@
             content: "";
             flex: 1;
             height: 1px;
-            background: rgba(212, 175, 55, 0.6);
+            background: rgba(212,175,55,.6);
         }
 
-        /* GOOGLE LOGIN */
+        .admin-section {
+            margin-top: 25px;
+            padding: 18px 15px;
+            border: 1px solid rgba(212,175,55,.7);
+            border-radius: 10px;
+            background: rgba(0,20,10,.45);
+        }
+
+        .admin-section h3 {
+            color: #d4af37;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .admin-section .login-button {
+            margin-top: 5px;
+        }
+
+        .message {
+            min-height: 20px;
+            color: #ff7777;
+            font-size: 13px;
+            margin-top: 15px;
+            line-height: 1.5;
+        }
+
+        .success-message {
+            color: #7dff9b;
+        }
 
         .google-login {
             display: flex;
@@ -183,12 +205,10 @@
             width: 42px;
             height: 42px;
             padding: 7px;
-
             background: white;
             border-radius: 50%;
-
             cursor: pointer;
-            transition: 0.3s;
+            transition: .3s;
         }
 
         .google-login img:hover {
@@ -196,10 +216,8 @@
             box-shadow: 0 0 12px #d4af37;
         }
 
-        /* REGISTER LINK */
-
         .register-link {
-            color: #ffffff;
+            color: white;
             font-size: 13px;
             margin-top: 17px;
         }
@@ -214,44 +232,12 @@
             text-decoration: underline;
         }
 
-        /* ERROR MESSAGE */
-
-        .message {
-            min-height: 20px;
-            color: #ff7777;
-            font-size: 13px;
-            margin-top: 15px;
-            line-height: 1.5;
-        }
-
-        .success-message {
-            color: #7dff9b;
-        }
-
-        /* ADMIN DEMO INFORMATION */
-
-        .admin-info {
-            color: #d4af37;
-            font-size: 12px;
-            line-height: 1.7;
-
-            margin-top: 20px;
-            padding: 12px;
-
-            border: 1px solid rgba(212, 175, 55, 0.5);
-            border-radius: 8px;
-        }
-
-        /* FOOTER */
-
         .footer {
-            color: #cccccc;
+            color: #ccc;
             font-size: 11px;
             margin-top: 22px;
             line-height: 1.5;
         }
-
-        /* TABLET */
 
         @media screen and (max-width: 768px) {
             body {
@@ -260,7 +246,6 @@
             }
 
             .login-container {
-                width: 100%;
                 max-width: 430px;
                 padding: 30px 25px;
             }
@@ -274,8 +259,6 @@
             }
         }
 
-        /* MOBILE */
-
         @media screen and (max-width: 480px) {
             body {
                 min-height: 100vh;
@@ -285,7 +268,6 @@
             }
 
             .login-container {
-                width: 100%;
                 max-width: 100%;
                 padding: 25px 20px;
                 margin: auto 0;
@@ -300,30 +282,19 @@
 
             h1 {
                 font-size: 19px;
-                line-height: 1.4;
             }
 
             .subtitle {
                 font-size: 11px;
-                letter-spacing: 0.7px;
+                letter-spacing: .7px;
                 margin-bottom: 22px;
             }
 
             .login-title {
                 font-size: 19px;
-                margin-bottom: 18px;
-            }
-
-            .input-group {
-                margin-bottom: 15px;
-            }
-
-            .input-group label {
-                font-size: 13px;
             }
 
             .input-group input {
-                width: 100%;
                 padding: 13px;
                 font-size: 16px;
             }
@@ -336,12 +307,6 @@
             .divider {
                 font-size: 10px;
                 gap: 8px;
-                margin: 20px 0 12px;
-            }
-
-            .google-login img {
-                width: 42px;
-                height: 42px;
             }
 
             .register-link {
@@ -349,17 +314,10 @@
                 line-height: 1.6;
             }
 
-            .admin-info {
-                font-size: 11px;
-                padding: 11px;
-            }
-
             .footer {
                 font-size: 10px;
             }
         }
-
-        /* SMALL MOBILE */
 
         @media screen and (max-width: 360px) {
             .login-container {
@@ -374,395 +332,405 @@
             h1 {
                 font-size: 17px;
             }
-
-            .subtitle {
-                font-size: 10px;
-            }
-
-            .divider {
-                font-size: 9px;
-            }
         }
-        
-/* SHOW / HIDE PASSWORD */
-
-.password-wrapper {
-    position: relative;
-    width: 100%;
-}
-
-.password-wrapper input {
-    padding-right: 65px;
-}
-
-.toggle-password {
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-
-    border: none;
-    background: transparent;
-    color: #006b38;
-
-    font-size: 12px;
-    font-weight: bold;
-    cursor: pointer;
-    padding: 5px;
-}
-
-.toggle-password:hover {
-    color: #00994d;
-}
-
     </style>
 </head>
 
 <body>
 
-    <div class="login-container">
+<div class="login-container">
 
-        <!-- PLMUN LOGO -->
+    <img
+        src="https://64.media.tumblr.com/33ca84afd52d5cd0ef7bb1bb66c6176b/tumblr_o4ti6j8k6r1unefbyo1_400.png"
+        alt="PLMUN Logo"
+        class="logo"
+    >
 
-        <img
-            src="https://64.media.tumblr.com/33ca84afd52d5cd0ef7bb1bb66c6176b/tumblr_o4ti6j8k6r1unefbyo1_400.png"
-            alt="PLMUN Logo"
-            class="logo"
-        >
+    <h1>I-PILIMUN Student ID INFORMATION</h1>
 
-        <!-- SYSTEM TITLE -->
+    <p class="subtitle">
+        PAMANTASAN NG LUNGSOD NG MUNTINLUPA
+    </p>
 
-        <h1>I-PILIMUN Student ID INFORMATION</h1>
+    <!-- STUDENT LOGIN -->
 
-        <p class="subtitle">
-            PAMANTASAN NG LUNGSOD NG MUNTINLUPA
-        </p>
+    <h2 class="login-title">STUDENT LOGIN</h2>
 
-        <h2 class="login-title">LOGIN ACCOUNT</h2>
+    <form id="loginForm">
 
-        <!-- LOGIN FORM -->
+        <div class="input-group">
+            <label for="loginStudentID">Student ID Number</label>
+            <input
+                type="text"
+                id="loginStudentID"
+                placeholder="Enter your Student ID"
+                autocomplete="username"
+                required
+            >
+        </div>
 
-        <form id="loginForm">
+        <div class="input-group">
+            <label for="loginPIN">4-Digit Student PIN</label>
 
-            <div class="input-group">
-
-                <label for="loginStudentID">
-                    Student ID Number
-                </label>
-
+            <div class="password-wrapper">
                 <input
-                    type="text"
-                    id="loginStudentID"
-                    placeholder="Enter your Student ID"
-                    autocomplete="username"
+                    type="password"
+                    id="loginPIN"
+                    placeholder="Enter your 4-digit PIN"
+                    maxlength="4"
+                    inputmode="numeric"
+                    pattern="[0-9]{4}"
+                    autocomplete="off"
                     required
                 >
 
+                <button
+                    type="button"
+                    id="togglePIN"
+                    class="toggle-password"
+                    onclick="togglePassword('loginPIN','togglePIN')"
+                >SHOW</button>
+            </div>
+        </div>
+
+        <button type="submit" class="login-button" id="studentLoginButton">
+            LOGIN AS STUDENT
+        </button>
+
+        <p id="loginMessage" class="message" role="alert" aria-live="polite"></p>
+
+    </form>
+
+    <!-- ADMIN LOGIN -->
+
+    <div class="divider">ADMINISTRATOR ACCESS</div>
+
+    <div class="admin-section">
+
+        <h3>ADMIN LOGIN</h3>
+
+        <form id="adminLoginForm">
+
+            <div class="input-group">
+                <label for="adminEmail">Admin Email</label>
+                <input
+                    type="email"
+                    id="adminEmail"
+                    placeholder="Enter admin email"
+                    autocomplete="username"
+                    required
+                >
             </div>
 
-            
-<div class="input-group">
+            <div class="input-group">
+                <label for="adminPassword">Admin Password</label>
 
-    <label for="loginPIN">
-        4-Digit Student PIN
-    </label>
+                <div class="password-wrapper">
+                    <input
+                        type="password"
+                        id="adminPassword"
+                        placeholder="Enter admin password"
+                        autocomplete="current-password"
+                        required
+                    >
 
-    <div class="password-wrapper">
-        <input
-            type="password"
-            id="loginPIN"
-            placeholder="Enter your 4-digit PIN"
-            maxlength="4"
-            inputmode="numeric"
-            pattern="[0-9]{4}"
-            autocomplete="off"
-            required
-        >
+                    <button
+                        type="button"
+                        id="toggleAdminPassword"
+                        class="toggle-password"
+                        onclick="togglePassword('adminPassword','toggleAdminPassword')"
+                    >SHOW</button>
+                </div>
+            </div>
 
-        <button
-            type="button"
-            id="togglePIN"
-            class="toggle-password"
-            onclick="togglePassword()"
-        >
-            SHOW
-        </button>
-    </div>
-
-</div>
-
-
-            <button type="submit" class="login-button">
-                LOGIN
+            <button type="submit" class="login-button" id="adminLoginButton">
+                LOGIN AS ADMIN
             </button>
 
-            <p
-                id="loginMessage"
-                class="message"
-                role="alert"
-                aria-live="polite"
-            ></p>
+            <p id="adminMessage" class="message" role="alert" aria-live="polite"></p>
 
         </form>
 
-        <!-- INSTITUTIONAL EMAIL LOGIN -->
-
-        <div class="divider">
-            OR LOGIN / SIGN UP VIA INSTITUTIONAL EMAIL
-        </div>
-
-        <!-- GOOGLE LOGO -->
-
-        <div class="google-login">
-
-            <img
-                src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
-                alt="Google Login"
-                title="Continue with Google"
-                onclick="googleLogin()"
-            >
-
-        </div>
-
-        <p
-            id="googleMessage"
-            class="message"
-            role="alert"
-            aria-live="polite"
-        ></p>
-
-        <!-- REGISTRATION LINK -->
-
-        <p class="register-link">
-            Don't have an account?
-
-            <a href="register-page.html">
-                Sign Up Here
-            </a>
-        </p>
-
-        <!-- ADMIN DEMO INFORMATION -->
-
-        <div class="admin-info">
-
-            <strong>ADMIN DEMO ACCOUNT</strong><br>
-
-            Student ID: PLMUN-ADMIN<br>
-
-            PIN: 1234
-
-        </div>
-
-        <!-- FOOTER -->
-
-        <p class="footer">
-
-            © 2026 Pamantasan ng Lungsod ng Muntinlupa<br>
-
-            Student ID Information System
-
-        </p>
-
     </div>
 
-    <script>
+    <!-- INSTITUTIONAL EMAIL / GOOGLE -->
 
-        // =====================================
-        // SUPABASE CONFIGURATION
-        // =====================================
+    <div class="divider">
+        OR LOGIN / SIGN UP VIA INSTITUTIONAL EMAIL
+    </div>
 
-        const SUPABASE_URL =
-            "https://mlrpkkmexmboqrnmjkuy.supabase.co";
+    <div class="google-login">
+        <img
+            src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+            alt="Google Login"
+            title="Continue with Google"
+            onclick="googleLogin()"
+        >
+    </div>
 
-        const SUPABASE_ANON_KEY =
-            "sb_publishable_-BIYMjip4Zon8HwZUCPT1Q_P0pDCMke";
+    <p id="googleMessage" class="message" role="alert" aria-live="polite"></p>
 
-        const supabaseClient = window.supabase.createClient(
-            SUPABASE_URL,
-            SUPABASE_ANON_KEY
-        );
+    <p class="register-link">
+        Don't have an account?
+        <a href="register-page.html">Sign Up Here</a>
+    </p>
 
+    <p class="footer">
+        © 2026 Pamantasan ng Lungsod ng Muntinlupa<br>
+        Student ID Information System
+    </p>
 
-        // =====================================
-        // LOGIN FORM
-        // =====================================
+</div>
 
-        const loginForm = document.getElementById("loginForm");
+<script>
+    // =====================================
+    // SUPABASE CONFIGURATION
+    // =====================================
 
-        loginForm.addEventListener("submit", async function(event) {
-            event.preventDefault();
-            await login();
-        });
+    const SUPABASE_URL =
+        "https://mlrpkkmexmboqrnmjkuy.supabase.co";
 
+    const SUPABASE_ANON_KEY =
+        "sb_publishable_-BIYMjip4Zon8HwZUCPT1Q_P0pDCMke";
 
-        // =====================================
-        // STUDENT + ADMIN LOGIN
-        // =====================================
-
-        async function login() {
-
-            const studentID = document
-                .getElementById("loginStudentID")
-                .value.trim();
-
-            const pin = document
-                .getElementById("loginPIN")
-                .value.trim();
-
-            const message = document.getElementById("loginMessage");
-
-            const loginButton =
-                loginForm.querySelector(".login-button");
-
-            message.textContent = "";
-            message.classList.remove("success-message");
-
-            if (!studentID || !pin) {
-                message.textContent =
-                    "Please enter your Student ID and PIN.";
-                return;
-            }
-
-            if (!/^\d{4}$/.test(pin)) {
-                message.textContent =
-                    "Your PIN must contain exactly 4 digits.";
-                return;
-            }
-
-            loginButton.disabled = true;
-            loginButton.textContent = "PLEASE WAIT...";
-
-            try {
-
-                // =====================================
-                // ADMIN DEMO LOGIN
-                // =====================================
-
-                if (studentID === "PLMUN-ADMIN" && pin === "1234") {
-
-                    sessionStorage.setItem(
-                        "plmunAdminLoggedIn",
-                        "true"
-                    );
-
-                    window.location.href = "admin-dashboard.html";
-                    return;
-                }
+    const supabaseClient = window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_ANON_KEY
+    );
 
 
-                // =====================================
-                // STUDENT PIN LOGIN
-                // =====================================
+    // =====================================
+    // STUDENT LOGIN
+    // =====================================
 
-                const { data, error } =
-                    await supabaseClient.functions.invoke(
-                        "student-pin-login",
-                        {
-                            body: {
-                                studentID: studentID,
-                                pin: pin
-                            }
+    const loginForm = document.getElementById("loginForm");
+
+    loginForm.addEventListener("submit", async function(event) {
+        event.preventDefault();
+        await studentLogin();
+    });
+
+    async function studentLogin() {
+
+        const studentID = document
+            .getElementById("loginStudentID")
+            .value.trim();
+
+        const pin = document
+            .getElementById("loginPIN")
+            .value.trim();
+
+        const message = document.getElementById("loginMessage");
+        const button = document.getElementById("studentLoginButton");
+
+        message.textContent = "";
+        message.classList.remove("success-message");
+
+        if (!studentID || !pin) {
+            message.textContent = "Please enter your Student ID and PIN.";
+            return;
+        }
+
+        if (!/^\d{4}$/.test(pin)) {
+            message.textContent = "Your PIN must contain exactly 4 digits.";
+            return;
+        }
+
+        button.disabled = true;
+        button.textContent = "PLEASE WAIT...";
+
+        try {
+
+            // Call existing student PIN Edge Function
+            const { data, error } =
+                await supabaseClient.functions.invoke(
+                    "student-pin-login",
+                    {
+                        body: {
+                            studentID: studentID,
+                            pin: pin
                         }
-                    );
+                    }
+                );
 
-                if (error) {
-                    console.error("Edge Function Error:", error);
-                    throw new Error(
-                        "Unable to verify your Student ID and PIN. Please try again."
-                    );
-                }
-
-                if (!data || !data.token_hash) {
-                    throw new Error(
-                        data?.error || "Invalid Student ID or PIN."
-                    );
-                }
-
-
-                // =====================================
-                // CREATE SUPABASE SESSION
-                // =====================================
-
-                const { error: sessionError } =
-                    await supabaseClient.auth.verifyOtp({
-                        token_hash: data.token_hash,
-                        type: "email"
-                    });
-
-                if (sessionError) {
-                    console.error("Session Error:", sessionError);
-                    throw new Error(
-                        "Unable to create your login session. Please try again."
-                    );
-                }
-
-
-                // =====================================
-                // VERIFY AUTHENTICATED USER
-                // =====================================
-
-                const { data: sessionData, error: userError } =
-                    await supabaseClient.auth.getUser();
-
-                if (userError || !sessionData.user) {
-                    throw new Error(
-                        "Unable to verify your student account."
-                    );
-                }
-
-
-                // =====================================
-                // LOGIN SUCCESSFUL
-                // =====================================
-
-                message.textContent = "Login successful!";
-                message.classList.add("success-message");
-
-                window.location.href = "student-dashboard.html";
-
-            } catch (error) {
-
-                console.error("Login Error:", error);
-
-                message.textContent =
-                    error.message ||
-                    "Unable to login. Please try again.";
-
-            } finally {
-
-                loginButton.disabled = false;
-                loginButton.textContent = "LOGIN";
-
+            if (error) {
+                console.error("Student Edge Function Error:", error);
+                throw new Error(
+                    "Unable to verify your Student ID and PIN. Please try again."
+                );
             }
+
+            if (!data || !data.token_hash) {
+                throw new Error(
+                    data?.error || "Invalid Student ID or PIN."
+                );
+            }
+
+            // Create Supabase Auth session
+            const { error: sessionError } =
+                await supabaseClient.auth.verifyOtp({
+                    token_hash: data.token_hash,
+                    type: "email"
+                });
+
+            if (sessionError) {
+                console.error("Student Session Error:", sessionError);
+                throw new Error(
+                    "Unable to create your login session. Please try again."
+                );
+            }
+
+            const { data: sessionData, error: userError } =
+                await supabaseClient.auth.getUser();
+
+            if (userError || !sessionData.user) {
+                throw new Error("Unable to verify your student account.");
+            }
+
+            message.textContent = "Login successful!";
+            message.classList.add("success-message");
+
+            window.location.href = "student-dashboard.html";
+
+        } catch (error) {
+
+            console.error("Student Login Error:", error);
+            message.textContent =
+                error.message || "Unable to login. Please try again.";
+
+        } finally {
+
+            button.disabled = false;
+            button.textContent = "LOGIN AS STUDENT";
+
         }
-
-
-        // =====================================
-        // GOOGLE LOGIN
-        // =====================================
-
-        async function googleLogin() {
-
-            document.getElementById("googleMessage").textContent =
-                "Google login is not configured yet. Please use Student ID and PIN.";
-
-        }
-        
-function togglePassword() {
-    const pinInput = document.getElementById("loginPIN");
-    const toggleButton = document.getElementById("togglePIN");
-
-    if (pinInput.type === "password") {
-        pinInput.type = "text";
-        toggleButton.textContent = "HIDE";
-    } else {
-        pinInput.type = "password";
-        toggleButton.textContent = "SHOW";
     }
-}
 
 
-    </script>
+    // =====================================
+    // ADMIN LOGIN USING SUPABASE AUTH
+    // =====================================
+
+    const adminLoginForm = document.getElementById("adminLoginForm");
+
+    adminLoginForm.addEventListener("submit", async function(event) {
+        event.preventDefault();
+        await adminLogin();
+    });
+
+    async function adminLogin() {
+
+        const email = document
+            .getElementById("adminEmail")
+            .value.trim();
+
+        const password = document
+            .getElementById("adminPassword")
+            .value;
+
+        const message = document.getElementById("adminMessage");
+        const button = document.getElementById("adminLoginButton");
+
+        message.textContent = "";
+        message.classList.remove("success-message");
+
+        button.disabled = true;
+        button.textContent = "VERIFYING ADMIN...";
+
+        try {
+
+            // Sign in using Supabase Auth
+            const { data: authData, error: authError } =
+                await supabaseClient.auth.signInWithPassword({
+                    email: email,
+                    password: password
+                });
+
+            if (authError) {
+                throw new Error("Incorrect admin email or password.");
+            }
+
+            if (!authData.user) {
+                throw new Error("Unable to verify admin account.");
+            }
+
+            // Check if authenticated user exists in admin_users
+            const { data: adminRecord, error: adminError } =
+                await supabaseClient
+                    .from("admin_users")
+                    .select("user_id")
+                    .eq("user_id", authData.user.id)
+                    .maybeSingle();
+
+            if (adminError) {
+                console.error("Admin Check Error:", adminError);
+                throw new Error(
+                    "Unable to verify admin access. Please check your admin_users table and RLS policy."
+                );
+            }
+
+            if (!adminRecord) {
+
+                // Remove session if account is not an admin
+                await supabaseClient.auth.signOut();
+
+                throw new Error(
+                    "Access denied. This account is not registered as an administrator."
+                );
+            }
+
+            message.textContent = "Admin login successful!";
+            message.classList.add("success-message");
+
+            window.location.href = "admin-dashboard.html";
+
+        } catch (error) {
+
+            console.error("Admin Login Error:", error);
+            message.textContent =
+                error.message || "Admin login failed.";
+
+        } finally {
+
+            button.disabled = false;
+            button.textContent = "LOGIN AS ADMIN";
+
+        }
+    }
+
+
+    // =====================================
+    // GOOGLE LOGIN
+    // =====================================
+
+    async function googleLogin() {
+
+        document.getElementById("googleMessage").textContent =
+            "Google login is not configured yet. Please use Student or Admin Login.";
+
+    }
+
+
+    // =====================================
+    // SHOW / HIDE PASSWORD
+    // =====================================
+
+    function togglePassword(inputID, buttonID) {
+
+        const input = document.getElementById(inputID);
+        const button = document.getElementById(buttonID);
+
+        if (input.type === "password") {
+            input.type = "text";
+            button.textContent = "HIDE";
+        } else {
+            input.type = "password";
+            button.textContent = "SHOW";
+        }
+    }
+
+</script>
 
 </body>
 </html>
+```
