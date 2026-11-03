@@ -435,22 +435,16 @@
 
 
             <div class="input-group">
+    <label for="loginPIN">Password</label>
 
-                <label for="loginPIN">
-                    4-Digit PIN
-                </label>
-
-                <input
-                    type="password"
-                    id="loginPIN"
-                    placeholder="Enter your 4-digit PIN"
-                    maxlength="4"
-                    inputmode="numeric"
-                    autocomplete="current-password"
-                    required
-                >
-
-            </div>
+    <input
+        type="password"
+        id="loginPIN"
+        placeholder="Enter your password"
+        autocomplete="current-password"
+        required
+    >
+</div>
 
 
             <button type="submit" class="login-button">
@@ -539,258 +533,140 @@
         // SUPABASE CONFIGURATION
         // =====================================
 
-        const SUPABASE_URL = "YOUR_SUPABASE_PROJECT_URL";
+      // =====================================
+// SUPABASE CONFIGURATION
+// =====================================
 
-        const SUPABASE_ANON_KEY = "YOUR_SUPABASE_PUBLISHABLE_KEY";
+const SUPABASE_URL = "https://mlrpkkmexmboqrnmjkuy.supabase.co";
+
+const SUPABASE_ANON_KEY = "sb_publishable_-BIYMjip4Zon8HwZUCPT1Q_P0pDCMke";
+
+const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+);
 
 
-        let supabaseClient = null;
+// =====================================
+// LOGIN FORM
+// =====================================
+
+const loginForm = document.getElementById("loginForm");
+
+loginForm.addEventListener("submit", async function(event) {
+    event.preventDefault();
+    await login();
+});
 
 
-        // Initialize Supabase only when credentials are configured
+// =====================================
+// STUDENT NUMBER + PASSWORD LOGIN
+// =====================================
 
-        if (
-            SUPABASE_URL !== "YOUR_SUPABASE_PROJECT_URL" &&
-            SUPABASE_ANON_KEY !== "YOUR_SUPABASE_PUBLISHABLE_KEY"
-        ) {
+async function login() {
 
-            supabaseClient = window.supabase.createClient(
-                SUPABASE_URL,
-                SUPABASE_ANON_KEY
+    const studentID = document
+        .getElementById("loginStudentID")
+        .value.trim();
+
+    const password = document
+        .getElementById("loginPIN")
+        .value;
+
+    const message = document.getElementById("loginMessage");
+    const loginButton = loginForm.querySelector(".login-button");
+
+    message.textContent = "";
+
+    if (!studentID || !password) {
+        message.textContent =
+            "Please enter your Student Number and Password.";
+        return;
+    }
+
+    loginButton.disabled = true;
+    loginButton.textContent = "PLEASE WAIT...";
+
+    try {
+
+        // FIND STUDENT EMAIL USING STUDENT NUMBER
+
+        const { data: studentEmail, error: lookupError } =
+            await supabaseClient.rpc(
+                "get_student_email_by_number",
+                {
+                    p_student_number: studentID
+                }
             );
 
+        if (lookupError) throw lookupError;
+
+        if (!studentEmail) {
+            throw new Error("Invalid Student Number or Password.");
         }
 
+        // SUPABASE AUTHENTICATION
 
-        // =====================================
-        // STUDENT ID + PIN LOGIN
-        // =====================================
-
-        const loginForm = document.getElementById("loginForm");
-
-
-        loginForm.addEventListener("submit", function(event) {
-
-            event.preventDefault();
-
-            login();
-
-        });
-
-
-        function login() {
-
-            const studentID = document
-                .getElementById("loginStudentID")
-                .value
-                .trim()
-                .toUpperCase();
-
-
-            const pin = document
-                .getElementById("loginPIN")
-                .value
-                .trim();
-
-
-            const message = document.getElementById("loginMessage");
-
-            message.textContent = "";
-
-
-            // CHECK EMPTY INPUTS
-
-            if (!studentID || !pin) {
-
-                message.textContent =
-                    "Please enter your Student ID and PIN.";
-
-                return;
-
-            }
-
-
-            // CHECK PIN FORMAT
-
-            if (!/^\d{4}$/.test(pin)) {
-
-                message.textContent =
-                    "Your PIN must contain exactly 4 digits.";
-
-                return;
-
-            }
-
-
-            // =====================================
-            // ADMIN LOGIN
-            // =====================================
-
-            if (
-                studentID === "PLMUN-ADMIN" &&
-                pin === "1234"
-            ) {
-
-                sessionStorage.setItem(
-                    "plmunAdminLoggedIn",
-                    "true"
-                );
-
-                window.location.href = "admin-dashboard.html";
-
-                return;
-
-            }
-
-
-            // =====================================
-            // STUDENT LOGIN
-            // =====================================
-
-            let students = [];
-
-
-            try {
-
-                students = JSON.parse(
-                    localStorage.getItem("students") || "[]"
-                );
-
-
-                if (!Array.isArray(students)) {
-
-                    students = [];
-
-                }
-
-            } catch (error) {
-
-                console.error(error);
-
-                message.textContent =
-                    "Unable to load student records.";
-
-                return;
-
-            }
-
-
-            // FIND STUDENT RECORD
-
-            const student = students.find(function(item) {
-
-                return (
-
-                    item &&
-
-                    typeof item.id === "string" &&
-
-                    item.id.toUpperCase() === studentID &&
-
-                    String(item.pin) === pin
-
-                );
-
+        const { data, error: loginError } =
+            await supabaseClient.auth.signInWithPassword({
+                email: studentEmail,
+                password: password
             });
 
+        if (loginError) throw loginError;
 
-            if (student) {
+        // VERIFY STUDENT RECORD
 
-                localStorage.setItem(
-                    "currentStudentSession",
-                    JSON.stringify(student)
-                );
+        const { data: student, error: studentError } =
+            await supabaseClient
+                .from("students")
+                .select("id, student_number")
+                .eq("id", data.user.id)
+                .eq("student_number", studentID)
+                .maybeSingle();
 
+        if (studentError) throw studentError;
 
-                window.location.href = "student-dashboard.html";
+        if (!student) {
+            await supabaseClient.auth.signOut();
 
-
-            } else {
-
-                message.textContent =
-                    "Invalid Student ID Number or PIN!";
-
-            }
-
+            throw new Error(
+                "Your student account is not properly linked."
+            );
         }
 
+        // LOGIN SUCCESSFUL
 
-        // =====================================
-        // GOOGLE LOGIN USING SUPABASE
-        // =====================================
+        window.location.href = "student-dashboard.html";
 
-        async function googleLogin() {
+    } catch (error) {
 
-            const googleMessage =
-                document.getElementById("googleMessage");
+        console.error("Login Error:", error);
 
+        message.textContent =
+            error.message === "Invalid login credentials"
+                ? "Invalid Student Number or Password."
+                : error.message || "Unable to login.";
 
-            googleMessage.textContent = "";
+    } finally {
 
+        loginButton.disabled = false;
+        loginButton.textContent = "LOGIN";
 
-            // CHECK SUPABASE CONFIGURATION
-
-            if (!supabaseClient) {
-
-                googleMessage.textContent =
-                    "Please configure your Supabase URL and Publishable Key first.";
-
-                return;
-
-            }
+    }
+}
 
 
-            try {
+// =====================================
+// GOOGLE LOGIN
+// =====================================
 
-                const redirectURL = new URL(
-                    "student-dashboard.html",
-                    window.location.href
-                ).href;
+async function googleLogin() {
 
+    document.getElementById("googleMessage").textContent =
+        "Google login is not configured yet. Please use Student Number and Password.";
 
-                const { error } =
-                    await supabaseClient.auth.signInWithOAuth({
-
-                        provider: "google",
-
-                        options: {
-
-                            redirectTo: redirectURL,
-
-                            queryParams: {
-
-                                hd: "plmun.edu.ph",
-
-                                prompt: "select_account"
-
-                            }
-
-                        }
-
-                    });
-
-
-                if (error) {
-
-                    throw error;
-
-                }
-
-            } catch (error) {
-
-                console.error(
-                    "Google Login Error:",
-                    error
-                );
-
-
-                googleMessage.textContent =
-                    error.message ||
-                    "Unable to connect to Google.";
-
-            }
-
-        }
+}
 
     </script>
 
