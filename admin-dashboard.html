@@ -4,193 +4,295 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PLMUN Admin Dashboard</title>
+<title>Admin Dashboard | PLMUN</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 * {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
-}
-
-:root {
-    --green-dark: #041f17;
-    --green-main: #075c3b;
-    --green-light: #128052;
-    --gold: #d9bd68;
+    font-family: Arial, sans-serif;
 }
 
 body {
-    margin: 0;
-    min-height: 100vh;
-    font-family: Arial, sans-serif;
-    color: #17233b;
-    background:
-        linear-gradient(rgba(0,0,0,.45), rgba(0,0,0,.65)),
-        url("https://ts4.mm.bing.net/th?id=OIP.BIgd-vlLpw2hbK2ITm1-XQHaEK&pid=15.1");
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
+    background: #f3f6f3;
+    color: #26352b;
 }
 
-.container {
-    max-width: 1200px;
-    margin: auto;
-    padding: 25px;
-}
-
-.hidden {
-    display: none !important;
-}
-
-.header {
-    background: rgba(4,31,23,.96);
+header {
+    background: #064b2c;
     color: white;
-    padding: 25px;
-    border-radius: 15px;
-    border-bottom: 4px solid var(--gold);
+    padding: 17px 5%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
     gap: 15px;
+    flex-wrap: wrap;
 }
 
-.header h1 {
-    color: var(--gold);
-    margin: 0 0 8px;
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
-.card {
-    background: rgba(255,255,255,.97);
-    padding: 25px;
-    border-radius: 15px;
-    margin: 20px 0;
-    box-shadow: 0 5px 20px rgba(0,0,0,.25);
+.brand img {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
 }
 
-.card h2 {
-    color: var(--green-main);
-    margin-top: 0;
+.brand h2 {
+    font-size: 18px;
+}
+
+.brand p {
+    color: #e5d28b;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.logout-btn {
+    background: #d8bd63;
+    color: #064b2c;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.container {
+    max-width: 1250px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+.welcome {
+    margin-bottom: 25px;
+}
+
+.welcome h1 {
+    color: #064b2c;
+    margin-bottom: 7px;
+}
+
+.welcome p {
+    color: #68766c;
 }
 
 .stats {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
-    margin-top: 20px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 17px;
+    margin-bottom: 30px;
 }
 
-.stat {
-    background: #e7f3ec;
-    padding: 20px;
-    border-radius: 10px;
-    border-left: 5px solid var(--gold);
+.stat-card {
+    background: white;
+    padding: 22px;
+    border-radius: 9px;
+    border-left: 5px solid #d8bd63;
+    box-shadow: 0 3px 12px rgba(0,0,0,.05);
 }
 
-.stat h1 {
-    color: var(--green-main);
-    font-size: 35px;
-    margin-bottom: 0;
+.stat-card p {
+    color: #68766c;
+    font-size: 13px;
+    margin-bottom: 10px;
 }
 
-button {
-    background: var(--green-main);
-    color: white;
-    border: none;
-    padding: 12px 18px;
-    border-radius: 7px;
+.stat-card h2 {
+    color: #064b2c;
+    font-size: 30px;
+}
+
+.tabs {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+}
+
+.tab-btn {
+    padding: 11px 18px;
+    border: 1px solid #d4ddd5;
+    border-radius: 5px;
+    background: white;
+    color: #064b2c;
+    font-weight: bold;
     cursor: pointer;
-    margin: 4px;
-    font-weight: bold;
 }
 
-button:hover {
-    background: var(--green-light);
+.tab-btn.active {
+    background: #064b2c;
+    color: white;
+    border-color: #064b2c;
 }
 
-.logout-btn, .delete-btn {
-    background: #a52a2a;
+.panel {
+    background: white;
+    border-radius: 9px;
+    padding: 22px;
+    box-shadow: 0 3px 12px rgba(0,0,0,.05);
+    margin-bottom: 25px;
 }
 
-.logout-btn:hover, .delete-btn:hover {
-    background: #cc3333;
+.panel h2 {
+    color: #064b2c;
+    margin-bottom: 17px;
 }
 
-input, select, textarea {
-    width: 100%;
-    padding: 12px;
-    margin: 7px 0 15px;
-    border: 1px solid #bbb;
-    border-radius: 7px;
-    font-size: 14px;
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 17px;
 }
 
-label {
-    font-weight: bold;
-    color: #263b31;
+.toolbar input,
+.toolbar select {
+    padding: 10px;
+    border: 1px solid #ccd5cc;
+    border-radius: 5px;
+    min-width: 180px;
 }
 
-.form-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-}
-
-.table-container {
+.table-wrap {
     overflow-x: auto;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-    background: white;
-    min-width: 850px;
+    min-width: 700px;
 }
 
 th, td {
-    border: 1px solid #ddd;
-    padding: 12px;
+    padding: 13px;
+    border-bottom: 1px solid #e7ece7;
     text-align: left;
-    font-size: 13px;
+    font-size: 14px;
 }
 
 th {
-    background: var(--green-main);
-    color: white;
+    background: #f0f5f0;
+    color: #064b2c;
 }
 
 .status {
     font-weight: bold;
-    padding: 5px 9px;
-    border-radius: 15px;
 }
 
-.pending {
-    background: #fff0c2;
-    color: #765500;
+.status.pending {
+    color: #a16b00;
 }
 
-.approved {
-    background: #d9f5e3;
-    color: #087438;
+.status.approved {
+    color: #08783c;
 }
 
-.rejected {
-    background: #ffe0e0;
-    color: #a00000;
+.status.rejected {
+    color: #c0392b;
+}
+
+.action-btn {
+    border: none;
+    border-radius: 4px;
+    padding: 8px 10px;
+    margin: 2px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.approve-btn {
+    background: #08783c;
+    color: white;
+}
+
+.reject-btn {
+    background: #c0392b;
+    color: white;
+}
+
+.view-btn {
+    background: #e8efe9;
+    color: #064b2c;
+}
+
+.action-btn:disabled {
+    opacity: .5;
+    cursor: not-allowed;
 }
 
 .message {
+    margin: 12px 0;
+    font-size: 14px;
     font-weight: bold;
-    color: var(--green-main);
+    overflow-wrap: anywhere;
 }
 
-@media(max-width:750px) {
-    .stats, .form-grid {
-        grid-template-columns: 1fr;
+.empty {
+    color: #68766c;
+    padding: 18px 0;
+}
+
+.hidden {
+    display: none;
+}
+
+@media (max-width: 850px) {
+    .stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 550px) {
+    header {
+        padding: 14px 4%;
+    }
+
+    .brand h2 {
+        font-size: 14px;
+    }
+
+    .brand img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .logout-btn {
+        padding: 9px 12px;
     }
 
     .container {
-        padding: 12px;
+        margin: 22px auto;
+        padding: 0 12px;
+    }
+
+    .stats {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .stat-card {
+        padding: 15px;
+    }
+
+    .stat-card h2 {
+        font-size: 24px;
+    }
+
+    .panel {
+        padding: 15px;
+    }
+
+    .toolbar input,
+    .toolbar select {
+        width: 100%;
     }
 }
 </style>
@@ -198,362 +300,401 @@ th {
 
 <body>
 
-<div class="container">
-
-    <!-- ADMIN HEADER -->
-    <header class="header">
+<header>
+    <div class="brand">
+        <img src="https://64.media.tumblr.com/33ca84afd52d5cd0ef7bb1bb66c6176b/tumblr_o4ti6j8k6r1unefbyo1_400.png" alt="PLMUN Logo">
         <div>
-            <h1>PLMUN ADMIN DASHBOARD</h1>
-            <p>Student ID Information Management System</p>
+            <h2>I-PILIMUN Student ID INFORMATION</h2>
+            <p>Administrator Dashboard</p>
+        </div>
+    </div>
+
+    <button class="logout-btn" onclick="logout()">Logout</button>
+</header>
+
+<main class="container">
+
+    <section class="welcome">
+        <h1>Admin Dashboard</h1>
+        <p>Manage student records and review submitted documents.</p>
+        <div id="message" class="message"></div>
+    </section>
+
+    <section class="stats">
+        <div class="stat-card">
+            <p>Total Students</p>
+            <h2 id="totalStudents">0</h2>
         </div>
 
-        <button class="logout-btn" onclick="logout()">LOGOUT</button>
-    </header>
+        <div class="stat-card">
+            <p>Total Documents</p>
+            <h2 id="totalDocuments">0</h2>
+        </div>
 
-    <!-- STATISTICS -->
-    <section class="card">
-        <h2>Dashboard Overview</h2>
+        <div class="stat-card">
+            <p>Pending Documents</p>
+            <h2 id="pendingDocuments">0</h2>
+        </div>
 
-        <div class="stats">
-            <div class="stat">
-                <h3>Total Students</h3>
-                <h1 id="totalStudents">0</h1>
-            </div>
-
-            <div class="stat">
-                <h3>Total Courses</h3>
-                <h1 id="totalCourses">0</h1>
-            </div>
-
-            <div class="stat">
-                <h3>Pending Applications</h3>
-                <h1 id="pendingStudents">0</h1>
-            </div>
+        <div class="stat-card">
+            <p>Approved Documents</p>
+            <h2 id="approvedDocuments">0</h2>
         </div>
     </section>
 
-    <!-- ADD STUDENT -->
-    <section class="card">
-        <h2>Add Student Record</h2>
-        <p>Enter the student's information below.</p>
+    <nav class="tabs">
+        <button class="tab-btn active" onclick="showTab('documentsTab', this)">
+            Document Management
+        </button>
 
-        <form id="studentForm">
+        <button class="tab-btn" onclick="showTab('studentsTab', this)">
+            Student Management
+        </button>
+    </nav>
 
-            <div class="form-grid">
+    <section class="panel" id="documentsTab">
+        <h2>Submitted Documents</h2>
 
-                <div>
-                    <label>Full Name</label>
-                    <input type="text" id="studentName" required>
-                </div>
+        <div class="toolbar">
+            <input
+                type="search"
+                id="documentSearch"
+                placeholder="Search document or student..."
+                oninput="renderDocuments()"
+            >
 
-                <div>
-                    <label>Email Address</label>
-                    <input type="email" id="studentEmail" required>
-                </div>
+            <select id="documentFilter" onchange="renderDocuments()">
+                <option value="All">All Documents</option>
+                <option value="Pending">Pending</option>
+                <option value="Approved">Approved</option>
+                <option value="Rejected">Rejected</option>
+            </select>
 
-                <div>
-                    <label>Course</label>
-                    <input type="text" id="studentCourse"
-                    placeholder="Example: BSIT" required>
-                </div>
+            <button class="tab-btn" onclick="loadAllData()">Refresh</button>
+        </div>
 
-                <div>
-                    <label>Year Level</label>
-                    <select id="studentYear" required>
-                        <option value="">Select Year Level</option>
-                        <option>1st Year</option>
-                        <option>2nd Year</option>
-                        <option>3rd Year</option>
-                        <option>4th Year</option>
-                        <option>5th Year</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label>Birthday</label>
-                    <input type="date" id="studentBirth">
-                </div>
-
-                <div>
-                    <label>Contact Number</label>
-                    <input type="text" id="studentPhone">
-                </div>
-
-                <div>
-                    <label>Student PIN (4 digits)</label>
-                    <input type="password" id="studentPIN"
-                    maxlength="4" inputmode="numeric"
-                    pattern="[0-9]{4}" required>
-                </div>
-
-                <div>
-                    <label>Application Status</label>
-                    <select id="studentStatus">
-                        <option value="Pending">Pending</option>
-                        <option value="Approved">Approved</option>
-                        <option value="Rejected">Rejected</option>
-                    </select>
-                </div>
-
-            </div>
-
-            <label>Admin Remarks</label>
-            <textarea id="studentRemarks"
-            placeholder="Enter remarks (optional)"></textarea>
-
-            <button type="submit">ADD STUDENT</button>
-
-            <p class="message" id="formMessage"></p>
-
-        </form>
-    </section>
-
-    <!-- STUDENT RECORDS -->
-    <section class="card">
-        <h2>Registered Students</h2>
-
-        <input
-            type="text"
-            id="searchInput"
-            placeholder="Search by student ID, name, email or course..."
-            oninput="renderStudents()"
-        >
-
-        <div class="table-container">
+        <div class="table-wrap">
             <table>
                 <thead>
                     <tr>
-                        <th>Student ID</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Course</th>
-                        <th>Year</th>
-                        <th>PIN</th>
+                        <th>Student</th>
+                        <th>Document</th>
+                        <th>Date Uploaded</th>
                         <th>Status</th>
-                        <th>Remarks</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
-
-                <tbody id="studentTable"></tbody>
+                <tbody id="documentsTable">
+                    <tr><td colspan="5">Loading documents...</td></tr>
+                </tbody>
             </table>
         </div>
     </section>
 
-</div>
+    <section class="panel hidden" id="studentsTab">
+        <h2>Registered Students</h2>
+
+        <div class="toolbar">
+            <input
+                type="search"
+                id="studentSearch"
+                placeholder="Search student name or number..."
+                oninput="renderStudents()"
+            >
+
+            <button class="tab-btn" onclick="loadAllData()">Refresh</button>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Student Number</th>
+                        <th>Student Name</th>
+                        <th>Email</th>
+                        <th>Course</th>
+                        <th>Year Level</th>
+                    </tr>
+                </thead>
+                <tbody id="studentsTable">
+                    <tr><td colspan="5">Loading students...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+</main>
 
 <script>
+const SUPABASE_URL = "https://mlrpkkmexmboqrnmjkuy.supabase.co";
 
-// LOAD STUDENTS
-let students = JSON.parse(localStorage.getItem("students") || "[]");
+// Replace with your actual sb_publishable_ key.
+const SUPABASE_KEY = "sb_publishable_-BIYMjip4Zon8HwZUCPT1Q_P0pDCMke";
 
-// ADMIN SESSION CHECK
-if (sessionStorage.getItem("plmunAdminLoggedIn") !== "true") {
-    alert("Please login as administrator first.");
-    window.location.href = "index.html";
+const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
+
+let currentUser = null;
+let students = [];
+let documents = [];
+
+function showMessage(text, isError = false) {
+    const message = document.getElementById("message");
+    message.textContent = text;
+    message.style.color = isError ? "#c0392b" : "#08783c";
 }
 
-// SAVE DATABASE
-function saveStudents() {
-    localStorage.setItem("students", JSON.stringify(students));
-}
+async function initializeAdmin() {
+    const { data, error } = await supabaseClient.auth.getSession();
 
-// GENERATE STUDENT ID
-function generateStudentID() {
-    const year = new Date().getFullYear();
-    let number;
-    let id;
-
-    do {
-        number = Math.floor(1000 + Math.random() * 9000);
-        id = `PLMUN-${year}-${number}`;
-    } while (students.some(student => student.id === id));
-
-    return id;
-}
-
-// ADD STUDENT
-document.getElementById("studentForm").addEventListener("submit", function(e) {
-    e.preventDefault();
-
-    const name = document.getElementById("studentName").value.trim();
-    const email = document.getElementById("studentEmail").value.trim();
-    const course = document.getElementById("studentCourse").value.trim();
-    const year = document.getElementById("studentYear").value;
-    const birth = document.getElementById("studentBirth").value;
-    const phone = document.getElementById("studentPhone").value.trim();
-    const pin = document.getElementById("studentPIN").value.trim();
-    const status = document.getElementById("studentStatus").value;
-    const remarks = document.getElementById("studentRemarks").value.trim();
-
-    if (!/^[0-9]{4}$/.test(pin)) {
-        document.getElementById("formMessage").innerText =
-            "PIN must contain exactly 4 digits.";
+    if (error || !data.session) {
+        window.location.href = "index.html";
         return;
     }
 
-    const id = generateStudentID();
+    currentUser = data.session.user;
 
-    const newStudent = {
-        id,
-        name,
-        email,
-        course,
-        year,
-        birth,
-        phone,
-        pin,
-        status,
-        remarks,
-        photo: false,
-        signature: false,
-        documents: false
-    };
+    // Verify that this authenticated account is registered as an admin.
+    const { data: admin, error: adminError } = await supabaseClient
+        .from("admin_users")
+        .select("user_id")
+        .eq("user_id", currentUser.id)
+        .maybeSingle();
 
-    students.push(newStudent);
+    if (adminError || !admin) {
+        await supabaseClient.auth.signOut();
+        alert("You are not authorized to access the admin dashboard.");
+        window.location.href = "index.html";
+        return;
+    }
 
-    saveStudents();
-    this.reset();
+    await loadAllData();
+}
 
-    document.getElementById("formMessage").innerText =
-        "Student added successfully! Student ID: " + id;
+async function loadAllData() {
+    showMessage("Loading dashboard data...");
 
+    const [studentResult, documentResult] = await Promise.all([
+        supabaseClient
+            .from("students")
+            .select("id, student_number, first_name, last_name, email, course, year_level"),
+
+        supabaseClient
+            .from("documents")
+            .select("id, student_id, document_name, file_path, file_type, status, uploaded_at")
+            .order("uploaded_at", { ascending: false })
+    ]);
+
+    if (studentResult.error) {
+        showMessage("Could not load students: " + studentResult.error.message, true);
+        return;
+    }
+
+    if (documentResult.error) {
+        showMessage("Could not load documents: " + documentResult.error.message, true);
+        return;
+    }
+
+    students = studentResult.data || [];
+    documents = documentResult.data || [];
+
+    updateStatistics();
     renderStudents();
-});
+    renderDocuments();
 
-// UPDATE STATUS
-function updateStatus(index, value) {
-    students[index].status = value;
-    saveStudents();
-    renderStudents();
+    showMessage("Dashboard data loaded.");
 }
 
-// UPDATE REMARKS
-function updateRemarks(index, value) {
-    students[index].remarks = value;
-    saveStudents();
+function updateStatistics() {
+    document.getElementById("totalStudents").textContent = students.length;
+    document.getElementById("totalDocuments").textContent = documents.length;
+
+    document.getElementById("pendingDocuments").textContent =
+        documents.filter(d => d.status === "Pending").length;
+
+    document.getElementById("approvedDocuments").textContent =
+        documents.filter(d => d.status === "Approved").length;
 }
 
-// DELETE STUDENT
-function deleteStudent(index) {
-    const confirmed = confirm(
-        "Are you sure you want to delete this student record?"
-    );
-
-    if (!confirmed) return;
-
-    students.splice(index, 1);
-    saveStudents();
-    renderStudents();
-}
-
-// STATUS CLASS
-function getStatusClass(status) {
-    return (status || "Pending").toLowerCase();
-}
-
-// DISPLAY RECORDS
 function renderStudents() {
-    const keyword = document.getElementById("searchInput")
-        .value.toLowerCase().trim();
+    const table = document.getElementById("studentsTable");
+    const search = document.getElementById("studentSearch").value.toLowerCase();
 
-    const table = document.getElementById("studentTable");
-    table.innerHTML = "";
+    const filtered = students.filter(student => {
+        const name = `${student.first_name || ""} ${student.last_name || ""}`.toLowerCase();
 
-    const results = students
-        .map((student, index) => ({student, index}))
-        .filter(({student}) => {
-            return [
-                student.id,
-                student.name,
-                student.email,
-                student.course,
-                student.year
-            ].some(value =>
-                String(value || "").toLowerCase().includes(keyword)
-            );
-        });
-
-    results.forEach(({student, index}) => {
-        const row = table.insertRow();
-
-        row.insertCell().innerText = student.id || "";
-        row.insertCell().innerText = student.name || "";
-        row.insertCell().innerText = student.email || "";
-        row.insertCell().innerText = student.course || "";
-        row.insertCell().innerText = student.year || "";
-        row.insertCell().innerText = student.pin || "";
-
-        const statusCell = row.insertCell();
-
-        const select = document.createElement("select");
-
-        ["Pending", "Approved", "Rejected"].forEach(status => {
-            const option = document.createElement("option");
-            option.value = status;
-            option.textContent = status;
-            option.selected = (student.status || "Pending") === status;
-            select.appendChild(option);
-        });
-
-        select.addEventListener("change", function() {
-            updateStatus(index, this.value);
-        });
-
-        statusCell.appendChild(select);
-
-        const remarksCell = row.insertCell();
-        const remarksInput = document.createElement("input");
-
-        remarksInput.value = student.remarks || "";
-        remarksInput.placeholder = "Admin remarks";
-
-        remarksInput.addEventListener("change", function() {
-            updateRemarks(index, this.value);
-        });
-
-        remarksCell.appendChild(remarksInput);
-
-        const actionCell = row.insertCell();
-
-        const deleteButton = document.createElement("button");
-        deleteButton.textContent = "DELETE";
-        deleteButton.className = "delete-btn";
-
-        deleteButton.onclick = function() {
-            deleteStudent(index);
-        };
-
-        actionCell.appendChild(deleteButton);
+        return name.includes(search) ||
+            (student.student_number || "").toLowerCase().includes(search) ||
+            (student.email || "").toLowerCase().includes(search);
     });
 
-    // UPDATE STATISTICS
-    document.getElementById("totalStudents").innerText =
-        students.length;
+    table.innerHTML = "";
 
-    const courses = new Set(
-        students.map(student => student.course)
-            .filter(Boolean)
-    );
+    if (filtered.length === 0) {
+        table.innerHTML = '<tr><td colspan="5">No student records found.</td></tr>';
+        return;
+    }
 
-    document.getElementById("totalCourses").innerText =
-        courses.size;
+    filtered.forEach(student => {
+        const row = document.createElement("tr");
 
-    document.getElementById("pendingStudents").innerText =
-        students.filter(student =>
-            (student.status || "Pending") === "Pending"
-        ).length;
+        [
+            student.student_number,
+            `${student.first_name || ""} ${student.last_name || ""}`,
+            student.email,
+            student.course,
+            student.year_level
+        ].forEach(value => {
+            const cell = document.createElement("td");
+            cell.textContent = value || "—";
+            row.appendChild(cell);
+        });
+
+        table.appendChild(row);
+    });
 }
 
-// LOGOUT
-function logout() {
-    sessionStorage.removeItem("plmunAdminLoggedIn");
+function renderDocuments() {
+    const table = document.getElementById("documentsTable");
+    const search = document.getElementById("documentSearch").value.toLowerCase();
+    const filter = document.getElementById("documentFilter").value;
+
+    const filtered = documents.filter(doc => {
+        const student = students.find(s => s.id === doc.student_id);
+
+        const studentName = student
+            ? `${student.first_name || ""} ${student.last_name || ""}`
+            : "Unknown student";
+
+        const matchesSearch =
+            doc.document_name.toLowerCase().includes(search) ||
+            studentName.toLowerCase().includes(search) ||
+            (student?.student_number || "").toLowerCase().includes(search);
+
+        const matchesFilter = filter === "All" || doc.status === filter;
+
+        return matchesSearch && matchesFilter;
+    });
+
+    table.innerHTML = "";
+
+    if (filtered.length === 0) {
+        table.innerHTML = '<tr><td colspan="5">No documents found.</td></tr>';
+        return;
+    }
+
+    filtered.forEach(doc => {
+        const student = students.find(s => s.id === doc.student_id);
+        const studentName = student
+            ? `${student.first_name || ""} ${student.last_name || ""}`
+            : "Unknown student";
+
+        const row = document.createElement("tr");
+
+        const studentCell = document.createElement("td");
+        studentCell.textContent = studentName +
+            (student?.student_number ? " (" + student.student_number + ")" : "");
+
+        const documentCell = document.createElement("td");
+        documentCell.textContent = doc.document_name;
+
+        const dateCell = document.createElement("td");
+        dateCell.textContent = new Date(doc.uploaded_at).toLocaleDateString();
+
+        const statusCell = document.createElement("td");
+        statusCell.textContent = doc.status;
+        statusCell.className = "status " + doc.status.toLowerCase();
+
+        const actionsCell = document.createElement("td");
+
+        const viewButton = document.createElement("button");
+        viewButton.textContent = "View";
+        viewButton.className = "action-btn view-btn";
+        viewButton.onclick = () => viewDocument(doc.file_path);
+
+        actionsCell.appendChild(viewButton);
+
+        if (doc.status === "Pending") {
+            const approveButton = document.createElement("button");
+            approveButton.textContent = "Approve";
+            approveButton.className = "action-btn approve-btn";
+            approveButton.onclick = () => updateDocumentStatus(doc.id, "Approved");
+
+            const rejectButton = document.createElement("button");
+            rejectButton.textContent = "Reject";
+            rejectButton.className = "action-btn reject-btn";
+            rejectButton.onclick = () => updateDocumentStatus(doc.id, "Rejected");
+
+            actionsCell.appendChild(approveButton);
+            actionsCell.appendChild(rejectButton);
+        }
+
+        row.appendChild(studentCell);
+        row.appendChild(documentCell);
+        row.appendChild(dateCell);
+        row.appendChild(statusCell);
+        row.appendChild(actionsCell);
+
+        table.appendChild(row);
+    });
+}
+
+async function viewDocument(filePath) {
+    const { data, error } = await supabaseClient
+        .storage
+        .from("student-documents")
+        .createSignedUrl(filePath, 60);
+
+    if (error) {
+        showMessage("Unable to open document: " + error.message, true);
+        return;
+    }
+
+    window.open(data.signedUrl, "_blank", "noopener");
+}
+
+async function updateDocumentStatus(documentId, newStatus) {
+    const confirmation = confirm(
+        `Are you sure you want to mark this document as ${newStatus}?`
+    );
+
+    if (!confirmation) return;
+
+    const { error } = await supabaseClient
+        .from("documents")
+        .update({ status: newStatus })
+        .eq("id", documentId);
+
+    if (error) {
+        showMessage("Unable to update status: " + error.message, true);
+        return;
+    }
+
+    showMessage("Document marked as " + newStatus + ".");
+    await loadAllData();
+}
+
+async function logout() {
+    await supabaseClient.auth.signOut();
     window.location.href = "index.html";
 }
 
-// INITIALIZE
-renderStudents();
+function showTab(tabId, button) {
+    document.getElementById("documentsTab").classList.add("hidden");
+    document.getElementById("studentsTab").classList.add("hidden");
 
+    document.getElementById(tabId).classList.remove("hidden");
+
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+        if (btn.closest(".tabs")) btn.classList.remove("active");
+    });
+
+    button.classList.add("active");
+}
+
+initializeAdmin();
 </script>
 
 </body>
