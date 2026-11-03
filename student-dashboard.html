@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -954,6 +953,235 @@ button {
     overflow-wrap: anywhere;
 }
 
+/* =====================================
+   SIDEBAR NAVIGATION DESIGN
+===================================== */
+
+.menu-toggle {
+    display: none;
+    border: 1px solid var(--gold);
+    background: transparent;
+    color: white;
+    border-radius: 6px;
+    padding: 8px 11px;
+    font-size: 21px;
+    cursor: pointer;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 255px;
+    background: var(--dark-green);
+    color: white;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    border-right: 3px solid var(--gold);
+    transition: transform .3s ease;
+}
+
+.sidebar-heading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 22px 16px;
+    border-bottom: 1px solid rgba(212,175,55,.4);
+}
+
+.sidebar-heading img {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 6px #00ff66);
+}
+
+.sidebar-heading h3 {
+    color: var(--gold);
+    font-size: 14px;
+}
+
+.sidebar-heading p {
+    font-size: 11px;
+    margin-top: 5px;
+    color: #dce9df;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    padding: 20px 12px;
+}
+
+.sidebar-link {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 13px 14px;
+    border: none;
+    border-radius: 7px;
+    background: transparent;
+    color: white;
+    text-align: left;
+    font-size: 14px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.sidebar-link span {
+    width: 22px;
+    text-align: center;
+    font-size: 17px;
+}
+
+.sidebar-link:hover,
+.sidebar-link.active {
+    background: var(--gold);
+    color: var(--dark-green);
+    font-weight: bold;
+}
+
+.sidebar-divider {
+    height: 1px;
+    background: rgba(212,175,55,.4);
+    margin: 12px 4px;
+}
+
+.logout-link {
+    color: #ffb4a9;
+}
+
+.sidebar-footer {
+    margin-top: auto;
+    padding: 18px 15px;
+    border-top: 1px solid rgba(212,175,55,.4);
+    text-align: center;
+}
+
+.sidebar-footer p {
+    color: var(--gold);
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.sidebar-footer small {
+    display: block;
+    color: #dce9df;
+    font-size: 10px;
+    margin-top: 5px;
+}
+
+.sidebar-overlay {
+    display: none;
+}
+
+/* Main content adjustment */
+
+.container {
+    margin-left: 255px;
+    max-width: none;
+    padding: 25px 30px;
+}
+
+/* Desktop header adjustment */
+
+.top-header {
+    margin-left: 255px;
+}
+
+/* =====================================
+   TABLET AND MOBILE
+===================================== */
+
+@media screen and (max-width: 850px) {
+
+    .top-header {
+        margin-left: 0;
+        padding: 12px 15px;
+    }
+
+    .menu-toggle {
+        display: block;
+        flex-shrink: 0;
+    }
+
+    .sidebar {
+        transform: translateX(-100%);
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+
+    .sidebar-overlay.show {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,.5);
+        z-index: 999;
+    }
+
+    .container {
+        margin-left: 0;
+        width: 100%;
+        padding: 16px;
+    }
+
+    .top-header .header-right {
+        margin-left: auto;
+    }
+}
+
+/* Smaller phones */
+
+@media screen and (max-width: 480px) {
+
+    .top-header {
+        gap: 8px;
+    }
+
+    .menu-toggle {
+        padding: 7px 9px;
+        font-size: 18px;
+    }
+
+    .brand {
+        gap: 7px;
+        min-width: 0;
+    }
+
+    .brand img {
+        width: 37px;
+        height: 37px;
+    }
+
+    .brand-text h1 {
+        font-size: 15px;
+    }
+
+    .brand-text p {
+        font-size: 7px;
+        letter-spacing: .5px;
+    }
+
+    .header-right button {
+        font-size: 10px;
+    }
+
+    .container {
+        padding: 12px;
+    }
+
+    .sidebar {
+        width: min(280px, 82vw);
+    }
+}
+
+
 </style>
 </head>
 
@@ -961,6 +1189,14 @@ button {
 
 <!-- HEADER -->
 <header class="top-header">
+    <button
+    type="button"
+    class="menu-toggle"
+    onclick="toggleSidebar()"
+    aria-label="Open navigation menu"
+>
+    ☰
+</button>
 
     <div class="brand">
         <img
@@ -980,7 +1216,64 @@ button {
 
 </header>
 
+<!-- SIDEBAR NAVIGATION -->
+<div id="sidebarOverlay" class="sidebar-overlay"
+     onclick="closeSidebar()"></div>
 
+<aside class="sidebar" id="sidebar">
+
+    <div class="sidebar-heading">
+        <img
+            src="https://64.media.tumblr.com/33ca84afd52d5cd0ef7bb1bb66c6176b/tumblr_o4ti6j8k6r1unefbyo1_400.png"
+            alt="PLMUN Logo"
+        >
+        <div>
+            <h3>STUDENT PORTAL</h3>
+            <p>Navigation Menu</p>
+        </div>
+    </div>
+
+    <nav class="sidebar-nav">
+
+        <button class="sidebar-link active"
+                onclick="navigateSidebar('dashboardPage', this)">
+            <span>▦</span> Dashboard
+        </button>
+
+        <button class="sidebar-link"
+                onclick="navigateSidebar('profilePage', this)">
+            <span>👤</span> My Profile
+        </button>
+
+        <button class="sidebar-link"
+                onclick="navigateSidebar('studentIDPage', this)">
+            <span>▣</span> My Student ID
+        </button>
+
+        <button class="sidebar-link"
+                onclick="navigateSidebar('statusPage', this)">
+            <span>☑</span> Application Status
+        </button>
+
+        <button class="sidebar-link"
+                onclick="navigateSidebar('documentsPage', this)">
+            <span>📁</span> My Documents
+        </button>
+
+        <div class="sidebar-divider"></div>
+
+        <button class="sidebar-link logout-link" onclick="logout()">
+            <span>↗</span> Log Out
+        </button>
+
+    </nav>
+
+    <div class="sidebar-footer">
+        <p>I-PILIMUN</p>
+        <small>Student ID Information System</small>
+    </div>
+
+</aside>
 <main class="container">
 
     <!-- MAIN DASHBOARD -->
@@ -1058,46 +1351,7 @@ button {
         </div>
 
 
-        <!-- QUICK ACCESS -->
-        <div class="card">
-
-            <div class="card-header">
-                <h2>Quick Access</h2>
-                <small>Select a service below to manage your account.</small>
-            </div>
-
-            <div class="card-body">
-
-                <div class="dashboard-actions">
-
-                    <button class="action-button" onclick="showPage('profilePage')">
-                        <span class="action-icon">👤</span>
-                        <strong>MY PROFILE</strong>
-                        <small>View your profile</small>
-                    </button>
-
-                    <button class="action-button" onclick="showPage('studentIDPage')">
-                        <span class="action-icon">▣</span>
-                        <strong>MY STUDENT ID</strong>
-                        <small>View your student ID</small>
-                    </button>
-
-                    <button class="action-button" onclick="showPage('statusPage')">
-                        <span class="action-icon">☑</span>
-                        <strong>APPLICATION STATUS</strong>
-                        <small>Track your application</small>
-                    </button>
-
-<button class="action-button" onclick="window.location.href='document.html'">
-    <span class="action-icon">📁</span>
-    <strong>MY DOCUMENTS</strong>
-    <small>View your documents</small>
-</button>
-                </div>
-
-            </div>
-        </div>
-
+      
 
         <!-- APPLICATION -->
         <div class="card">
@@ -1544,6 +1798,32 @@ function showPage(pageID) {
         behavior: "smooth"
     });
 }
+// ==========================================
+// SIDEBAR NAVIGATION
+// ==========================================
+
+function toggleSidebar() {
+    document.getElementById("sidebar").classList.toggle("open");
+    document.getElementById("sidebarOverlay").classList.toggle("show");
+}
+
+function closeSidebar() {
+    document.getElementById("sidebar").classList.remove("open");
+    document.getElementById("sidebarOverlay").classList.remove("show");
+}
+
+function navigateSidebar(pageID, button) {
+
+    showPage(pageID);
+
+    document.querySelectorAll(".sidebar-link").forEach(link => {
+        link.classList.remove("active");
+    });
+
+    button.classList.add("active");
+
+    closeSidebar();
+}
 
 
 // ==========================================
@@ -1581,4 +1861,3 @@ loadStudentDashboard();
 
 </body>
 </html>
-```
