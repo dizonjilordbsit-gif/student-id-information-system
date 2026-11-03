@@ -1,9 +1,12 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>I-PILIMUN Student ID INFORMATION</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
         * {
@@ -22,7 +25,6 @@
             background:
                 linear-gradient(rgba(0, 25, 12, 0.82), rgba(0, 20, 10, 0.90)),
                 url("https://ts4.mm.bing.net/th?id=OIP.BIgd-vlLpw2hbK2ITm1-XQHaEK&pid=15.1");
-
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -115,11 +117,78 @@
             box-shadow: 0 0 12px rgba(212, 175, 55, 0.5);
         }
 
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 23px 0 15px;
+            color: #d4af37;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: rgba(212, 175, 55, 0.6);
+        }
+
+        .google-button {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            padding: 13px;
+            background: #ffffff;
+            color: #333333;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .google-button:hover {
+            background: #eeeeee;
+            transform: translateY(-2px);
+        }
+
+        .google-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .google-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        .register-link {
+            color: #ffffff;
+            font-size: 13px;
+            margin-top: 17px;
+        }
+
+        .register-link a {
+            color: #d4af37;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+
         .message {
             min-height: 20px;
             color: #ff7777;
             font-size: 13px;
             margin-top: 15px;
+            line-height: 1.5;
         }
 
         .admin-info {
@@ -210,6 +279,34 @@
 
         </form>
 
+        <!-- INSTITUTIONAL EMAIL LOGIN -->
+
+        <div class="divider">
+            OR LOGIN / SIGN UP VIA INSTITUTIONAL EMAIL
+        </div>
+
+        <button
+            type="button"
+            class="google-button"
+            id="googleLoginButton"
+        >
+            <svg class="google-icon" viewBox="0 0 48 48">
+                <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.25 5.48-4.73 7.18l7.64 5.91c4.46-4.12 7.13-10.2 7.13-17.56z"/>
+                <path fill="#FBBC05" d="M10.53 28.59A14.4 14.4 0 0 1 9.75 24c0-1.59.27-3.13.76-4.59l-7.98-6.19A23.9 23.9 0 0 0 0 24c0 3.87.93 7.53 2.56 10.78l7.97-6.19z"/>
+                <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.91-5.79l-7.64-5.91c-2.12 1.42-4.83 2.26-8.27 2.26-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+            </svg>
+
+            Continue with Google
+        </button>
+
+        <p class="register-link">
+            Don't have an account?
+            <a href="register-page.html">Sign Up Here</a>
+        </p>
+
+        <p id="googleMessage" class="message" role="alert"></p>
+
         <div class="admin-info">
             <strong>ADMIN DEMO ACCOUNT</strong><br>
             Student ID: PLMUN-ADMIN<br>
@@ -224,6 +321,23 @@
     </div>
 
     <script>
+        // =====================================
+        // SUPABASE CONFIGURATION
+        // =====================================
+
+        const SUPABASE_URL = "YOUR_SUPABASE_PROJECT_URL";
+        const SUPABASE_ANON_KEY = "YOUR_SUPABASE_PUBLISHABLE_KEY";
+
+        const supabaseClient = window.supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_ANON_KEY
+        );
+
+
+        // =====================================
+        // EXISTING STUDENT ID + PIN LOGIN
+        // =====================================
+
         const loginForm = document.getElementById("loginForm");
 
         loginForm.addEventListener("submit", function(event) {
@@ -234,27 +348,22 @@
         function login() {
             const studentID = document
                 .getElementById("loginStudentID")
-                .value
-                .trim()
-                .toUpperCase();
+                .value.trim().toUpperCase();
 
             const pin = document
                 .getElementById("loginPIN")
-                .value
-                .trim();
+                .value.trim();
 
             const message = document.getElementById("loginMessage");
 
             message.textContent = "";
 
-            // CHECK EMPTY INPUTS
             if (!studentID || !pin) {
                 message.textContent =
                     "Please enter your Student ID and PIN.";
                 return;
             }
 
-            // CHECK 4-DIGIT PIN
             if (!/^\d{4}$/.test(pin)) {
                 message.textContent =
                     "Your PIN must contain exactly 4 digits.";
@@ -275,7 +384,7 @@
                 return;
             }
 
-            // GET REGISTERED STUDENTS
+            // EXISTING LOCAL STUDENT LOGIN
             let students = [];
 
             try {
@@ -293,7 +402,6 @@
                 return;
             }
 
-            // FIND STUDENT ACCOUNT
             const student = students.find(function(item) {
                 return (
                     item &&
@@ -303,9 +411,7 @@
                 );
             });
 
-            // STUDENT LOGIN SUCCESS
             if (student) {
-
                 localStorage.setItem(
                     "currentStudentSession",
                     JSON.stringify(student)
@@ -314,12 +420,83 @@
                 window.location.href = "student-dashboard.html";
 
             } else {
-
                 message.textContent =
                     "Invalid Student ID Number or PIN!";
-
             }
         }
+
+
+        // =====================================
+        // GOOGLE LOGIN / SIGN UP WITH SUPABASE
+        // =====================================
+
+        const googleButton = document.getElementById("googleLoginButton");
+        const googleMessage = document.getElementById("googleMessage");
+
+        googleButton.addEventListener("click", async function() {
+
+            googleMessage.textContent = "";
+
+            if (
+                SUPABASE_URL === "YOUR_SUPABASE_PROJECT_URL" ||
+                SUPABASE_ANON_KEY === "YOUR_SUPABASE_PUBLISHABLE_KEY"
+            ) {
+                googleMessage.textContent =
+                    "Please configure your Supabase URL and Publishable Key first.";
+                return;
+            }
+
+            googleButton.disabled = true;
+            googleButton.textContent = "Connecting to Google...";
+
+            try {
+
+                const redirectURL = new URL(
+                    "student-dashboard.html",
+                    window.location.href
+                ).href;
+
+                const { error } = await supabaseClient.auth.signInWithOAuth({
+                    provider: "google",
+
+                    options: {
+                        redirectTo: redirectURL,
+
+                        // Google Workspace domain hint only.
+                        // The domain must still be validated securely.
+                        queryParams: {
+                            hd: "plmun.edu.ph",
+                            prompt: "select_account"
+                        }
+                    }
+                });
+
+                if (error) {
+                    throw error;
+                }
+
+            } catch (error) {
+
+                console.error("Google login error:", error);
+
+                googleMessage.textContent =
+                    error.message || "Unable to connect to Google.";
+
+                googleButton.disabled = false;
+                googleButton.innerHTML = `
+                    <svg class="google-icon" viewBox="0 0 48 48">
+                        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.25 5.48-4.73 7.18l7.64 5.91c4.46-4.12 7.13-10.2 7.13-17.56z"/>
+                        <path fill="#FBBC05" d="M10.53 28.59A14.4 14.4 0 0 1 9.75 24c0-1.59.27-3.13.76-4.59l-7.98-6.19A23.9 23.9 0 0 0 0 24c0 3.87.93 7.53 2.56 10.78l7.97-6.19z"/>
+                        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.91-5.79l-7.64-5.91c-2.12 1.42-4.83 2.26-8.27 2.26-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                    </svg>
+                    Continue with Google
+                `;
+
+            }
+
+        });
+
     </script>
 
 </body>
