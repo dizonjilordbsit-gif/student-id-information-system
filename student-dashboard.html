@@ -565,6 +565,395 @@ footer {
         grid-template-columns: 1fr;
     }
 }
+    
+/* ==========================================
+   IMPROVED RESPONSIVE MOBILE DESIGN
+========================================== */
+
+/* TABLET AND SMALL LAPTOP */
+@media screen and (max-width: 950px) {
+
+    .top-header {
+        flex-wrap: wrap;
+    }
+
+    .student-summary {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .dashboard-actions {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .welcome-banner {
+        flex-wrap: wrap;
+    }
+
+    .summary-card {
+        min-width: 0;
+    }
+
+    .summary-info h2 {
+        overflow-wrap: anywhere;
+    }
+}
+
+
+/* MOBILE PHONES */
+@media screen and (max-width: 600px) {
+
+    body {
+        width: 100%;
+        overflow-x: hidden;
+        font-size: 14px;
+    }
+
+    /* HEADER */
+
+    .top-header {
+        width: 100%;
+        padding: 12px;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .brand {
+        gap: 8px;
+        min-width: 0;
+    }
+
+    .brand img {
+        width: 42px;
+        height: 42px;
+        flex-shrink: 0;
+    }
+
+    .brand-text {
+        min-width: 0;
+    }
+
+    .brand-text h1 {
+        font-size: clamp(15px, 4vw, 19px);
+    }
+
+    .brand-text p {
+        font-size: 8px;
+        letter-spacing: .5px;
+    }
+
+    .header-right button {
+        font-size: 12px;
+        padding: 8px 5px;
+    }
+
+    /* MAIN CONTAINER */
+
+    .container {
+        width: 100%;
+        max-width: 100%;
+        padding: 12px;
+    }
+
+    /* WELCOME BANNER */
+
+    .welcome-banner {
+        width: 100%;
+        padding: 20px 16px;
+        border-radius: 12px;
+    }
+
+    .welcome-banner h2 {
+        font-size: 21px;
+        line-height: 1.3;
+    }
+
+    .welcome-banner h3 {
+        font-size: 16px;
+        line-height: 1.5;
+    }
+
+    .welcome-banner p {
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+    .banner-school {
+        display: none;
+    }
+
+    /* STUDENT SUMMARY */
+
+    .student-summary {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 10px;
+    }
+
+    .summary-card {
+        width: 100%;
+        padding: 13px;
+        gap: 12px;
+    }
+
+    .summary-icon {
+        width: 52px;
+        height: 52px;
+        font-size: 23px;
+    }
+
+    .summary-info h3 {
+        font-size: 12px;
+    }
+
+    .summary-info h2 {
+        font-size: 17px;
+        overflow-wrap: anywhere;
+    }
+
+    .status-badge {
+        font-size: 12px;
+        padding: 7px 13px;
+    }
+
+    /* CONTENT CARDS */
+
+    .card {
+        width: 100%;
+        border-radius: 10px;
+    }
+
+    .card-header {
+        padding: 12px;
+        flex-wrap: wrap;
+    }
+
+    .card-header h2 {
+        font-size: 16px;
+    }
+
+    .card-header small {
+        font-size: 10px;
+    }
+
+    .card-body {
+        padding: 13px;
+    }
+
+    /* QUICK ACCESS */
+
+    .dashboard-actions {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 9px;
+    }
+
+    .action-button {
+        width: 100%;
+        min-width: 0;
+        min-height: 105px;
+        padding: 12px 5px;
+    }
+
+    .action-button .action-icon {
+        font-size: 27px;
+    }
+
+    .action-button strong {
+        font-size: 11px;
+        line-height: 1.4;
+    }
+
+    .action-button small {
+        font-size: 9px;
+        line-height: 1.4;
+    }
+
+    /* APPLICATION STATUS */
+
+    .application-content {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 18px;
+        padding: 14px;
+    }
+
+    .application-details {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .application-icon {
+        width: 48px;
+        height: 48px;
+        font-size: 22px;
+    }
+
+    .application-text {
+        min-width: 0;
+        overflow-wrap: anywhere;
+    }
+
+    .application-text p {
+        font-size: 13px;
+        line-height: 1.6;
+    }
+
+    .application-text strong {
+        display: block;
+        margin-bottom: 4px;
+    }
+
+    .view-button {
+        width: 100%;
+        padding: 13px 10px;
+        font-size: 12px;
+    }
+
+    /* PROFILE */
+
+    .profile-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 10px;
+    }
+
+    .profile-item {
+        width: 100%;
+        padding: 13px;
+        font-size: 13px;
+    }
+
+    /* STUDENT ID CARD */
+
+    .id-card {
+        width: 100%;
+        max-width: 100%;
+        padding: 17px;
+    }
+
+    .id-card h2 {
+        font-size: 18px;
+    }
+
+    .id-card h3 {
+        font-size: 16px;
+        overflow-wrap: anywhere;
+    }
+
+    .id-card p {
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+    /* STATUS PAGE */
+
+    #statusPage .card-body p {
+        font-size: 13px;
+        line-height: 1.6;
+        overflow-wrap: anywhere;
+    }
+
+    /* BUTTONS */
+
+    .back-button {
+        width: 100%;
+        padding: 13px;
+        font-size: 12px;
+    }
+
+    /* LOADING */
+
+    .loading {
+        padding: 30px 12px;
+        font-size: 13px;
+        overflow-wrap: anywhere;
+    }
+
+    /* FOOTER */
+
+    footer {
+        padding: 17px 12px;
+        font-size: 10px;
+        line-height: 1.6;
+    }
+}
+
+
+/* EXTRA SMALL PHONES */
+@media screen and (max-width: 360px) {
+
+    .brand img {
+        width: 35px;
+        height: 35px;
+    }
+
+    .brand-text h1 {
+        font-size: 14px;
+    }
+
+    .brand-text p {
+        font-size: 7px;
+    }
+
+    .header-right button {
+        font-size: 10px;
+    }
+
+    .container {
+        padding: 9px;
+    }
+
+    .welcome-banner {
+        padding: 16px 12px;
+    }
+
+    .welcome-banner h2 {
+        font-size: 18px;
+    }
+
+    .dashboard-actions {
+        gap: 7px;
+    }
+
+    .action-button {
+        min-height: 100px;
+        padding: 9px 3px;
+    }
+
+    .action-button strong {
+        font-size: 10px;
+    }
+
+    .action-button small {
+        font-size: 8px;
+    }
+
+    .summary-info h2 {
+        font-size: 15px;
+    }
+}
+
+
+/* PREVENT LONG CONTENT FROM BREAKING LAYOUT */
+img {
+    max-width: 100%;
+}
+
+button {
+    touch-action: manipulation;
+}
+
+.profile-item,
+.document-item,
+.application-text,
+.id-card {
+    overflow-wrap: anywhere;
+}
+
 </style>
 </head>
 
