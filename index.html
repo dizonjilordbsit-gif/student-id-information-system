@@ -59,7 +59,6 @@
             height: 115px;
             object-fit: contain;
             margin-bottom: 15px;
-
             filter: drop-shadow(0 0 12px #00ff66);
         }
 
@@ -140,8 +139,13 @@
         .login-button:hover {
             background: #f1d46a;
             transform: translateY(-2px);
-
             box-shadow: 0 0 12px rgba(212, 175, 55, 0.5);
+        }
+
+        .login-button:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+            transform: none;
         }
 
         /* DIVIDER */
@@ -166,7 +170,7 @@
             background: rgba(212, 175, 55, 0.6);
         }
 
-        /* GOOGLE LOGO ONLY */
+        /* GOOGLE LOGIN */
 
         .google-login {
             display: flex;
@@ -220,6 +224,10 @@
             line-height: 1.5;
         }
 
+        .success-message {
+            color: #7dff9b;
+        }
+
         /* ADMIN DEMO INFORMATION */
 
         .admin-info {
@@ -243,150 +251,138 @@
             line-height: 1.5;
         }
 
-        /* MOBILE RESPONSIVE */
+        /* TABLET */
 
-       @media screen and (max-width: 768px) {
+        @media screen and (max-width: 768px) {
+            body {
+                padding: 15px;
+                background-attachment: scroll;
+            }
 
-    body {
-        padding: 15px;
-        background-attachment: scroll;
-    }
+            .login-container {
+                width: 100%;
+                max-width: 430px;
+                padding: 30px 25px;
+            }
 
-    .login-container {
-        width: 100%;
-        max-width: 430px;
-        padding: 30px 25px;
-    }
+            h1 {
+                font-size: 21px;
+            }
 
-    h1 {
-        font-size: 21px;
-    }
+            .subtitle {
+                font-size: 12px;
+            }
+        }
 
-    .subtitle {
-        font-size: 12px;
-    }
+        /* MOBILE */
 
-}
+        @media screen and (max-width: 480px) {
+            body {
+                min-height: 100vh;
+                padding: 20px 12px;
+                align-items: flex-start;
+                background-attachment: scroll;
+            }
 
+            .login-container {
+                width: 100%;
+                max-width: 100%;
+                padding: 25px 20px;
+                margin: auto 0;
+                border-radius: 15px;
+            }
 
-/* =====================================
-   MOBILE RESPONSIVE DESIGN
-===================================== */
+            .logo {
+                width: 90px;
+                height: 90px;
+                margin-bottom: 12px;
+            }
 
-@media screen and (max-width: 480px) {
+            h1 {
+                font-size: 19px;
+                line-height: 1.4;
+            }
 
-    body {
-        min-height: 100vh;
-        padding: 20px 12px;
-        align-items: flex-start;
-        background-attachment: scroll;
-    }
+            .subtitle {
+                font-size: 11px;
+                letter-spacing: 0.7px;
+                margin-bottom: 22px;
+            }
 
-    .login-container {
-        width: 100%;
-        max-width: 100%;
-        padding: 25px 20px;
-        margin: auto 0;
-        border-radius: 15px;
-    }
+            .login-title {
+                font-size: 19px;
+                margin-bottom: 18px;
+            }
 
-    .logo {
-        width: 90px;
-        height: 90px;
-        margin-bottom: 12px;
-    }
+            .input-group {
+                margin-bottom: 15px;
+            }
 
-    h1 {
-        font-size: 19px;
-        line-height: 1.4;
-    }
+            .input-group label {
+                font-size: 13px;
+            }
 
-    .subtitle {
-        font-size: 11px;
-        letter-spacing: 0.7px;
-        margin-bottom: 22px;
-    }
+            .input-group input {
+                width: 100%;
+                padding: 13px;
+                font-size: 16px;
+            }
 
-    .login-title {
-        font-size: 19px;
-        margin-bottom: 18px;
-    }
+            .login-button {
+                padding: 14px;
+                font-size: 15px;
+            }
 
-    .input-group {
-        margin-bottom: 15px;
-    }
+            .divider {
+                font-size: 10px;
+                gap: 8px;
+                margin: 20px 0 12px;
+            }
 
-    .input-group label {
-        font-size: 13px;
-    }
+            .google-login img {
+                width: 42px;
+                height: 42px;
+            }
 
-    .input-group input {
-        width: 100%;
-        padding: 13px;
-        font-size: 16px;
-    }
+            .register-link {
+                font-size: 12px;
+                line-height: 1.6;
+            }
 
-    .login-button {
-        padding: 14px;
-        font-size: 15px;
-    }
+            .admin-info {
+                font-size: 11px;
+                padding: 11px;
+            }
 
-    .divider {
-        font-size: 10px;
-        gap: 8px;
-        margin: 20px 0 12px;
-    }
+            .footer {
+                font-size: 10px;
+            }
+        }
 
-    .google-login img {
-        width: 42px;
-        height: 42px;
-    }
+        /* SMALL MOBILE */
 
-    .register-link {
-        font-size: 12px;
-        line-height: 1.6;
-    }
+        @media screen and (max-width: 360px) {
+            .login-container {
+                padding: 22px 15px;
+            }
 
-    .admin-info {
-        font-size: 11px;
-        padding: 11px;
-    }
+            .logo {
+                width: 78px;
+                height: 78px;
+            }
 
-    .footer {
-        font-size: 10px;
-    }
+            h1 {
+                font-size: 17px;
+            }
 
-}
+            .subtitle {
+                font-size: 10px;
+            }
 
-
-/* =====================================
-   SMALL MOBILE DEVICES
-===================================== */
-
-@media screen and (max-width: 360px) {
-
-    .login-container {
-        padding: 22px 15px;
-    }
-
-    .logo {
-        width: 78px;
-        height: 78px;
-    }
-
-    h1 {
-        font-size: 17px;
-    }
-
-    .subtitle {
-        font-size: 10px;
-    }
-
-    .divider {
-        font-size: 9px;
-    }
-
-}
+            .divider {
+                font-size: 9px;
+            }
+        }
     </style>
 </head>
 
@@ -412,8 +408,7 @@
 
         <h2 class="login-title">LOGIN ACCOUNT</h2>
 
-
-        <!-- STUDENT AND ADMIN LOGIN FORM -->
+        <!-- LOGIN FORM -->
 
         <form id="loginForm">
 
@@ -433,19 +428,24 @@
 
             </div>
 
-
             <div class="input-group">
-    <label for="loginPIN">Password</label>
 
-    <input
-        type="password"
-        id="loginPIN"
-        placeholder="Enter your password"
-        autocomplete="current-password"
-        required
-    >
-</div>
+                <label for="loginPIN">
+                    4-Digit Student PIN
+                </label>
 
+                <input
+                    type="password"
+                    id="loginPIN"
+                    placeholder="Enter your 4-digit PIN"
+                    maxlength="4"
+                    inputmode="numeric"
+                    pattern="[0-9]{4}"
+                    autocomplete="off"
+                    required
+                >
+
+            </div>
 
             <button type="submit" class="login-button">
                 LOGIN
@@ -455,10 +455,10 @@
                 id="loginMessage"
                 class="message"
                 role="alert"
+                aria-live="polite"
             ></p>
 
         </form>
-
 
         <!-- INSTITUTIONAL EMAIL LOGIN -->
 
@@ -466,8 +466,7 @@
             OR LOGIN / SIGN UP VIA INSTITUTIONAL EMAIL
         </div>
 
-
-        <!-- GOOGLE LOGO ONLY - NO LARGE BUTTON -->
+        <!-- GOOGLE LOGO -->
 
         <div class="google-login">
 
@@ -480,28 +479,24 @@
 
         </div>
 
-
         <p
             id="googleMessage"
             class="message"
             role="alert"
+            aria-live="polite"
         ></p>
-
 
         <!-- REGISTRATION LINK -->
 
         <p class="register-link">
-
             Don't have an account?
 
             <a href="register-page.html">
                 Sign Up Here
             </a>
-
         </p>
 
-
-        <!-- ADMIN DEMO ACCOUNT -->
+        <!-- ADMIN DEMO INFORMATION -->
 
         <div class="admin-info">
 
@@ -512,7 +507,6 @@
             PIN: 1234
 
         </div>
-
 
         <!-- FOOTER -->
 
@@ -526,147 +520,188 @@
 
     </div>
 
-
     <script>
 
         // =====================================
         // SUPABASE CONFIGURATION
         // =====================================
 
-      // =====================================
-// SUPABASE CONFIGURATION
-// =====================================
+        const SUPABASE_URL =
+            "https://mlrpkkmexmboqrnmjkuy.supabase.co";
 
-const SUPABASE_URL = "https://mlrpkkmexmboqrnmjkuy.supabase.co";
+        const SUPABASE_ANON_KEY =
+            "YOUR_SUPABASE_PUBLISHABLE_KEY";
 
-const SUPABASE_ANON_KEY = "sb_publishable_-BIYMjip4Zon8HwZUCPT1Q_P0pDCMke";
-
-const supabaseClient = window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_ANON_KEY
-);
+        const supabaseClient = window.supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_ANON_KEY
+        );
 
 
-// =====================================
-// LOGIN FORM
-// =====================================
+        // =====================================
+        // LOGIN FORM
+        // =====================================
 
-const loginForm = document.getElementById("loginForm");
+        const loginForm = document.getElementById("loginForm");
 
-loginForm.addEventListener("submit", async function(event) {
-    event.preventDefault();
-    await login();
-});
+        loginForm.addEventListener("submit", async function(event) {
+            event.preventDefault();
+            await login();
+        });
 
 
-// =====================================
-// STUDENT NUMBER + PASSWORD LOGIN
-// =====================================
+        // =====================================
+        // STUDENT + ADMIN LOGIN
+        // =====================================
 
-async function login() {
+        async function login() {
 
-    const studentID = document
-        .getElementById("loginStudentID")
-        .value.trim();
+            const studentID = document
+                .getElementById("loginStudentID")
+                .value.trim();
 
-    const password = document
-        .getElementById("loginPIN")
-        .value;
+            const pin = document
+                .getElementById("loginPIN")
+                .value.trim();
 
-    const message = document.getElementById("loginMessage");
-    const loginButton = loginForm.querySelector(".login-button");
+            const message = document.getElementById("loginMessage");
 
-    message.textContent = "";
+            const loginButton =
+                loginForm.querySelector(".login-button");
 
-    if (!studentID || !password) {
-        message.textContent =
-            "Please enter your Student Number and Password.";
-        return;
-    }
+            message.textContent = "";
+            message.classList.remove("success-message");
 
-    loginButton.disabled = true;
-    loginButton.textContent = "PLEASE WAIT...";
+            if (!studentID || !pin) {
+                message.textContent =
+                    "Please enter your Student ID and PIN.";
+                return;
+            }
 
-    try {
+            if (!/^\d{4}$/.test(pin)) {
+                message.textContent =
+                    "Your PIN must contain exactly 4 digits.";
+                return;
+            }
 
-        // FIND STUDENT EMAIL USING STUDENT NUMBER
+            loginButton.disabled = true;
+            loginButton.textContent = "PLEASE WAIT...";
 
-        const { data: studentEmail, error: lookupError } =
-            await supabaseClient.rpc(
-                "get_student_email_by_number",
-                {
-                    p_student_number: studentID
+            try {
+
+                // =====================================
+                // ADMIN DEMO LOGIN
+                // =====================================
+
+                if (studentID === "PLMUN-ADMIN" && pin === "1234") {
+
+                    sessionStorage.setItem(
+                        "plmunAdminLoggedIn",
+                        "true"
+                    );
+
+                    window.location.href = "admin-dashboard.html";
+                    return;
                 }
-            );
 
-        if (lookupError) throw lookupError;
 
-        if (!studentEmail) {
-            throw new Error("Invalid Student Number or Password.");
+                // =====================================
+                // STUDENT PIN LOGIN
+                // =====================================
+
+                const { data, error } =
+                    await supabaseClient.functions.invoke(
+                        "student-pin-login",
+                        {
+                            body: {
+                                studentID: studentID,
+                                pin: pin
+                            }
+                        }
+                    );
+
+                if (error) {
+                    console.error("Edge Function Error:", error);
+                    throw new Error(
+                        "Unable to verify your Student ID and PIN. Please try again."
+                    );
+                }
+
+                if (!data || !data.token_hash) {
+                    throw new Error(
+                        data?.error || "Invalid Student ID or PIN."
+                    );
+                }
+
+
+                // =====================================
+                // CREATE SUPABASE SESSION
+                // =====================================
+
+                const { error: sessionError } =
+                    await supabaseClient.auth.verifyOtp({
+                        token_hash: data.token_hash,
+                        type: "email"
+                    });
+
+                if (sessionError) {
+                    console.error("Session Error:", sessionError);
+                    throw new Error(
+                        "Unable to create your login session. Please try again."
+                    );
+                }
+
+
+                // =====================================
+                // VERIFY AUTHENTICATED USER
+                // =====================================
+
+                const { data: sessionData, error: userError } =
+                    await supabaseClient.auth.getUser();
+
+                if (userError || !sessionData.user) {
+                    throw new Error(
+                        "Unable to verify your student account."
+                    );
+                }
+
+
+                // =====================================
+                // LOGIN SUCCESSFUL
+                // =====================================
+
+                message.textContent = "Login successful!";
+                message.classList.add("success-message");
+
+                window.location.href = "student-dashboard.html";
+
+            } catch (error) {
+
+                console.error("Login Error:", error);
+
+                message.textContent =
+                    error.message ||
+                    "Unable to login. Please try again.";
+
+            } finally {
+
+                loginButton.disabled = false;
+                loginButton.textContent = "LOGIN";
+
+            }
         }
 
-        // SUPABASE AUTHENTICATION
 
-        const { data, error: loginError } =
-            await supabaseClient.auth.signInWithPassword({
-                email: studentEmail,
-                password: password
-            });
+        // =====================================
+        // GOOGLE LOGIN
+        // =====================================
 
-        if (loginError) throw loginError;
+        async function googleLogin() {
 
-        // VERIFY STUDENT RECORD
+            document.getElementById("googleMessage").textContent =
+                "Google login is not configured yet. Please use Student ID and PIN.";
 
-        const { data: student, error: studentError } =
-            await supabaseClient
-                .from("students")
-                .select("id, student_number")
-                .eq("id", data.user.id)
-                .eq("student_number", studentID)
-                .maybeSingle();
-
-        if (studentError) throw studentError;
-
-        if (!student) {
-            await supabaseClient.auth.signOut();
-
-            throw new Error(
-                "Your student account is not properly linked."
-            );
         }
-
-        // LOGIN SUCCESSFUL
-
-        window.location.href = "student-dashboard.html";
-
-    } catch (error) {
-
-        console.error("Login Error:", error);
-
-        message.textContent =
-            error.message === "Invalid login credentials"
-                ? "Invalid Student Number or Password."
-                : error.message || "Unable to login.";
-
-    } finally {
-
-        loginButton.disabled = false;
-        loginButton.textContent = "LOGIN";
-
-    }
-}
-
-
-// =====================================
-// GOOGLE LOGIN
-// =====================================
-
-async function googleLogin() {
-
-    document.getElementById("googleMessage").textContent =
-        "Google login is not configured yet. Please use Student Number and Password.";
-
-}
 
     </script>
 
