@@ -980,19 +980,20 @@ async function loadStudentDashboard() {
 
         // Find student record using institutional email
         const { data: student, error } = await supabaseClient
-            .from("students")
-            .select(`
-                student_number,
-                first_name,
-                last_name,
-                email,
-                course,
-                year_level,
-                birthdate
-            `)
-            .eq("email", user.email)
-            .maybeSingle();
-
+    .from("students")
+    .select(`
+        id,
+        student_number,
+        first_name,
+        last_name,
+        email,
+        course,
+        year_level,
+        birthdate
+    `)
+    .eq("id", user.id)
+    .maybeSingle();
+        
         if (error) {
             throw error;
         }
