@@ -383,6 +383,38 @@
                 font-size: 9px;
             }
         }
+        
+/* SHOW / HIDE PASSWORD */
+
+.password-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.password-wrapper input {
+    padding-right: 65px;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    border: none;
+    background: transparent;
+    color: #006b38;
+
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.toggle-password:hover {
+    color: #00994d;
+}
+
     </style>
 </head>
 
@@ -428,24 +460,37 @@
 
             </div>
 
-            <div class="input-group">
+            
+<div class="input-group">
 
-                <label for="loginPIN">
-                    4-Digit Student PIN
-                </label>
+    <label for="loginPIN">
+        4-Digit Student PIN
+    </label>
 
-                <input
-                    type="password"
-                    id="loginPIN"
-                    placeholder="Enter your 4-digit PIN"
-                    maxlength="4"
-                    inputmode="numeric"
-                    pattern="[0-9]{4}"
-                    autocomplete="off"
-                    required
-                >
+    <div class="password-wrapper">
+        <input
+            type="password"
+            id="loginPIN"
+            placeholder="Enter your 4-digit PIN"
+            maxlength="4"
+            inputmode="numeric"
+            pattern="[0-9]{4}"
+            autocomplete="off"
+            required
+        >
 
-            </div>
+        <button
+            type="button"
+            id="togglePIN"
+            class="toggle-password"
+            onclick="togglePassword()"
+        >
+            SHOW
+        </button>
+    </div>
+
+</div>
+
 
             <button type="submit" class="login-button">
                 LOGIN
@@ -702,6 +747,20 @@
                 "Google login is not configured yet. Please use Student ID and PIN.";
 
         }
+        
+function togglePassword() {
+    const pinInput = document.getElementById("loginPIN");
+    const toggleButton = document.getElementById("togglePIN");
+
+    if (pinInput.type === "password") {
+        pinInput.type = "text";
+        toggleButton.textContent = "HIDE";
+    } else {
+        pinInput.type = "password";
+        toggleButton.textContent = "SHOW";
+    }
+}
+
 
     </script>
 
