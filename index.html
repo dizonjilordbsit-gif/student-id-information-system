@@ -245,20 +245,148 @@
 
         /* MOBILE RESPONSIVE */
 
-        @media (max-width: 480px) {
-            .login-container {
-                padding: 28px 20px;
-            }
+       @media screen and (max-width: 768px) {
 
-            h1 {
-                font-size: 20px;
-            }
+    body {
+        padding: 15px;
+        background-attachment: scroll;
+    }
 
-            .logo {
-                width: 95px;
-                height: 95px;
-            }
-        }
+    .login-container {
+        width: 100%;
+        max-width: 430px;
+        padding: 30px 25px;
+    }
+
+    h1 {
+        font-size: 21px;
+    }
+
+    .subtitle {
+        font-size: 12px;
+    }
+
+}
+
+
+/* =====================================
+   MOBILE RESPONSIVE DESIGN
+===================================== */
+
+@media screen and (max-width: 480px) {
+
+    body {
+        min-height: 100vh;
+        padding: 20px 12px;
+        align-items: flex-start;
+        background-attachment: scroll;
+    }
+
+    .login-container {
+        width: 100%;
+        max-width: 100%;
+        padding: 25px 20px;
+        margin: auto 0;
+        border-radius: 15px;
+    }
+
+    .logo {
+        width: 90px;
+        height: 90px;
+        margin-bottom: 12px;
+    }
+
+    h1 {
+        font-size: 19px;
+        line-height: 1.4;
+    }
+
+    .subtitle {
+        font-size: 11px;
+        letter-spacing: 0.7px;
+        margin-bottom: 22px;
+    }
+
+    .login-title {
+        font-size: 19px;
+        margin-bottom: 18px;
+    }
+
+    .input-group {
+        margin-bottom: 15px;
+    }
+
+    .input-group label {
+        font-size: 13px;
+    }
+
+    .input-group input {
+        width: 100%;
+        padding: 13px;
+        font-size: 16px;
+    }
+
+    .login-button {
+        padding: 14px;
+        font-size: 15px;
+    }
+
+    .divider {
+        font-size: 10px;
+        gap: 8px;
+        margin: 20px 0 12px;
+    }
+
+    .google-login img {
+        width: 42px;
+        height: 42px;
+    }
+
+    .register-link {
+        font-size: 12px;
+        line-height: 1.6;
+    }
+
+    .admin-info {
+        font-size: 11px;
+        padding: 11px;
+    }
+
+    .footer {
+        font-size: 10px;
+    }
+
+}
+
+
+/* =====================================
+   SMALL MOBILE DEVICES
+===================================== */
+
+@media screen and (max-width: 360px) {
+
+    .login-container {
+        padding: 22px 15px;
+    }
+
+    .logo {
+        width: 78px;
+        height: 78px;
+    }
+
+    h1 {
+        font-size: 17px;
+    }
+
+    .subtitle {
+        font-size: 10px;
+    }
+
+    .divider {
+        font-size: 9px;
+    }
+
+}
     </style>
 </head>
 
