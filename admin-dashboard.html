@@ -479,6 +479,73 @@ tbody tr:hover {
         font-size: 23px;
     }
 }
+/* ADMIN PROFILE */
+
+.profile-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.profile-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.profile-field label {
+    color: var(--green);
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.profile-field input,
+.profile-field textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #d9dfd9;
+    border-radius: 6px;
+    font-size: 14px;
+    outline: none;
+    background: white;
+    color: var(--text);
+}
+
+.profile-field input:focus,
+.profile-field textarea:focus {
+    border-color: var(--green);
+}
+
+.profile-field input[readonly] {
+    background: #f1f3ef;
+    color: #68736c;
+    cursor: not-allowed;
+}
+
+.profile-field textarea {
+    resize: vertical;
+}
+
+.full-width {
+    grid-column: 1 / -1;
+}
+
+.profile-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 25px;
+    flex-wrap: wrap;
+}
+
+@media(max-width: 600px) {
+    .profile-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .full-width {
+        grid-column: auto;
+    }
+}
 </style>
 </head>
 
@@ -500,6 +567,10 @@ tbody tr:hover {
 
 <aside class="sidebar" id="sidebar">
     <div class="sidebar-title">ADMIN MENU</div>
+    
+    <button data-page="adminProfilePage">
+        <span>♙</span> Admin Profile
+    </button>
 
     <button class="active" data-page="dashboardPage">
         <span>▦</span> Dashboard
@@ -658,6 +729,95 @@ tbody tr:hover {
             </div>
         </div>
     </section>
+    <!-- ADMIN PROFILE -->
+<section class="page-section" id="adminProfilePage">
+
+    <div class="page-heading">
+        <h1>Admin Profile</h1>
+        <p>Manage your personal administrator information.</p>
+    </div>
+
+    <div class="panel">
+
+        <div class="panel-heading">
+            <h2>Personal Information</h2>
+            <span class="status status-approved">Administrator</span>
+        </div>
+
+        <div class="message" id="adminProfileMessage"></div>
+
+        <form id="adminProfileForm">
+
+            <div class="profile-grid">
+
+                <div class="profile-field">
+                    <label>First Name</label>
+                    <input type="text" id="adminFirstName"
+                        placeholder="Enter first name" required>
+                </div>
+
+                <div class="profile-field">
+                    <label>Last Name</label>
+                    <input type="text" id="adminLastName"
+                        placeholder="Enter last name" required>
+                </div>
+
+                <div class="profile-field">
+                    <label>Email Address</label>
+                    <input type="email" id="adminEmail" readonly>
+                </div>
+
+                <div class="profile-field">
+                    <label>Role</label>
+                    <input type="text" id="adminRole" value="Admin" readonly>
+                </div>
+
+                <div class="profile-field">
+                    <label>Birthday</label>
+                    <input type="date" id="adminBirthday">
+                </div>
+
+                <div class="profile-field">
+                    <label>Contact Number</label>
+                    <input type="tel" id="adminContact"
+                        placeholder="Enter contact number">
+                </div>
+
+                <div class="profile-field">
+                    <label>Department</label>
+                    <input type="text" id="adminDepartment"
+                        placeholder="Enter department">
+                </div>
+
+                <div class="profile-field">
+                    <label>Date Created</label>
+                    <input type="text" id="adminCreatedAt" readonly>
+                </div>
+
+                <div class="profile-field full-width">
+                    <label>Address</label>
+                    <textarea id="adminAddress"
+                        rows="3"
+                        placeholder="Enter your address"></textarea>
+                </div>
+
+            </div>
+
+            <div class="profile-actions">
+                <button type="submit" class="btn btn-green" id="saveAdminProfile">
+                    Save Changes
+                </button>
+
+                <button type="button" class="btn btn-gold"
+                    id="reloadAdminProfile">
+                    Reload Profile
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+</section>
 
 </main>
 
@@ -1241,6 +1401,162 @@ async function logout() {
 document.getElementById("topLogout").addEventListener("click", logout);
 document.getElementById("sidebarLogout").addEventListener("click", logout);
 
+
+// ==========================================
+// LOAD ADMIN PROFILE
+// ==========================================
+
+async function loadAdminProfile() {
+    if (!currentUser) return;
+
+    try {
+        const { data, error } = await supabaseClient
+            .from("admin_profiles")
+            .select(`
+                first_name,
+                last_name,
+                birthday,
+                contact_number,
+                department,
+                address,
+                role,
+                created_at
+            `)
+            .eq("user_id", currentUser.id)
+            .maybeSingle();
+
+        if (error) throw error;
+
+        document.getElementById("adminEmail").value =
+            currentUser.email || "";
+
+        document.getElementById("adminRole").value =
+            data?.role || "Admin";
+
+        document.getElementById("adminFirstName").value =
+            data?.first_name || "";
+
+        document.getElementById("adminLastName").value =
+            data?.last_name || "";
+
+        document.getElementById("adminBirthday").value =
+            data?.birthday || "";
+
+        document.getElementById("adminContact").value =
+            data?.contact_number || "";
+
+        document.getElementById("adminDepartment").value =
+            data?.department || "";
+
+        document.getElementById("adminAddress").value =
+            data?.address || "";
+
+        document.getElementById("adminCreatedAt").value =
+            data?.created_at ? formatDate(data.created_at) : "Not yet available";
+
+        hideMessage("adminProfileMessage");
+
+    } catch (error) {
+        console.error("Admin profile loading error:", error);
+
+        showMessage(
+            "adminProfileMessage",
+            "Unable to load profile: " + error.message
+        );
+    }
+}
+
+// ==========================================
+// SAVE ADMIN PROFILE
+// ==========================================
+
+document.getElementById("adminProfileForm").addEventListener(
+    "submit",
+    async function(event) {
+
+        event.preventDefault();
+
+        if (!currentUser) {
+            alert("Admin account is not logged in.");
+            return;
+        }
+
+        const firstName =
+            document.getElementById("adminFirstName").value.trim();
+
+        const lastName =
+            document.getElementById("adminLastName").value.trim();
+
+        const birthday =
+            document.getElementById("adminBirthday").value || null;
+
+        const contactNumber =
+            document.getElementById("adminContact").value.trim();
+
+        const department =
+            document.getElementById("adminDepartment").value.trim();
+
+        const address =
+            document.getElementById("adminAddress").value.trim();
+
+        if (!firstName || !lastName) {
+            alert("Please enter your first name and last name.");
+            return;
+        }
+
+        const saveButton =
+            document.getElementById("saveAdminProfile");
+
+        saveButton.disabled = true;
+        saveButton.textContent = "Saving...";
+
+        try {
+            const { error } = await supabaseClient
+                .from("admin_profiles")
+                .upsert({
+                    user_id: currentUser.id,
+                    first_name: firstName,
+                    last_name: lastName,
+                    birthday: birthday,
+                    contact_number: contactNumber || null,
+                    department: department || null,
+                    address: address || null,
+                    updated_at: new Date().toISOString()
+                }, {
+                    onConflict: "user_id"
+                });
+
+            if (error) throw error;
+
+            showMessage(
+                "adminProfileMessage",
+                "Your admin profile has been successfully updated!"
+            );
+
+            await loadAdminProfile();
+
+        } catch (error) {
+            console.error("Admin profile save error:", error);
+
+            showMessage(
+                "adminProfileMessage",
+                "Unable to save profile: " + error.message
+            );
+
+        } finally {
+            saveButton.disabled = false;
+            saveButton.textContent = "Save Changes";
+        }
+    }
+);
+
+// ==========================================
+// RELOAD ADMIN PROFILE
+// ==========================================
+
+document.getElementById("reloadAdminProfile")
+    .addEventListener("click", loadAdminProfile);
+
 // ==========================================
 // START
 // ==========================================
@@ -1322,6 +1638,7 @@ async function editStudent(studentId) {
 
         alert("Student information successfully updated!");
 
+        await loadAdminProfile();
         await loadAllData();
 
     } catch (error) {
