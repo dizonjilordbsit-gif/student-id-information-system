@@ -4,9 +4,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Application Status | PLMUN</title>
+
+<title>Application Status | I-PILIMUN</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
 :root {
     --dark-green: #003b24;
     --main-green: #075c3b;
@@ -14,213 +24,272 @@
     --gold: #d4af37;
     --cream: #f8f6ef;
     --white: #ffffff;
-    --text: #26372e;
-    --muted: #78847c;
-    --border: #e7e1ce;
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+    --text-dark: #123526;
 }
 
 body {
-    font-family: Arial, sans-serif;
-    background: var(--cream);
-    color: var(--text);
+    min-height: 100vh;
+    background: #f5f3ec;
+    color: var(--text-dark);
 }
 
-/* HEADER - SAME AS DASHBOARD */
+/* HEADER */
+
 .top-header {
-    height: 75px;
     background: var(--dark-green);
     color: white;
+    padding: 15px 5%;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 25px;
-    border-bottom: 3px solid var(--gold);
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 100;
+    border-bottom: 5px solid var(--gold);
+    gap: 15px;
+    margin-left: 255px;
 }
 
 .brand {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 15px;
 }
 
 .brand img {
-    width: 45px;
-    height: 45px;
+    width: 65px;
+    height: 65px;
     object-fit: contain;
-    filter: drop-shadow(0 0 6px #39e69b);
+    filter: drop-shadow(0 0 7px #00ff66);
 }
 
-.brand-text {
-    font-size: 16px;
+.brand-text h1 {
+    font-size: 27px;
+    letter-spacing: 1px;
+}
+
+.brand-text p {
+    color: var(--gold);
+    font-size: 13px;
     font-weight: bold;
-    letter-spacing: .3px;
+    letter-spacing: 2px;
 }
 
 .header-right {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 18px;
 }
 
-.logout-btn {
-    background: var(--gold);
-    color: var(--dark-green);
+.header-right button {
+    background: transparent;
     border: none;
-    padding: 10px 18px;
-    border-radius: 7px;
-    font-weight: bold;
+    color: white;
+    font-size: 15px;
     cursor: pointer;
 }
 
-.logout-btn:hover {
-    background: #edcc65;
-}
+/* SIDEBAR */
 
 .menu-toggle {
     display: none;
+    border: 1px solid var(--gold);
     background: transparent;
     color: white;
-    border: 1px solid var(--gold);
-    padding: 8px 12px;
     border-radius: 6px;
-    font-size: 20px;
+    padding: 8px 11px;
+    font-size: 21px;
     cursor: pointer;
 }
 
-/* SIDEBAR - SAME AS DASHBOARD */
 .sidebar {
-    width: 255px;
-    height: calc(100vh - 75px);
-    background: var(--dark-green);
     position: fixed;
-    top: 75px;
+    top: 0;
     left: 0;
-    padding: 22px 15px;
-    overflow-y: auto;
-    z-index: 90;
-    border-right: 2px solid var(--gold);
+    bottom: 0;
+    width: 255px;
+    background: var(--dark-green);
+    color: white;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    border-right: 3px solid var(--gold);
+    transition: transform .3s ease;
 }
 
 .sidebar-heading {
-    color: var(--gold);
-    font-size: 11px;
-    font-weight: bold;
-    letter-spacing: 1.5px;
-    padding: 8px 12px 16px;
-    text-transform: uppercase;
-}
-
-.sidebar-link {
     display: flex;
     align-items: center;
     gap: 12px;
-    color: #e8eee9;
-    text-decoration: none;
-    padding: 13px 14px;
-    border-radius: 8px;
-    margin-bottom: 7px;
+    padding: 22px 16px;
+    border-bottom: 1px solid rgba(212,175,55,.4);
+}
+
+.sidebar-heading img {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 6px #00ff66);
+}
+
+.sidebar-heading h3 {
+    color: var(--gold);
     font-size: 14px;
+}
+
+.sidebar-heading p {
+    font-size: 11px;
+    margin-top: 5px;
+    color: #dce9df;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    padding: 20px 12px;
+}
+
+.sidebar-link {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 13px 14px;
+    border: none;
+    border-radius: 7px;
+    background: transparent;
+    color: white;
+    text-align: left;
+    font-size: 14px;
+    cursor: pointer;
     transition: .2s;
+    text-decoration: none;
 }
 
-.sidebar-link:hover {
-    background: rgba(18, 128, 82, .45);
-    color: white;
-}
-
-.sidebar-link.active {
-    background: var(--main-green);
-    color: white;
-    border-left: 4px solid var(--gold);
-    font-weight: bold;
-}
-
-.sidebar-icon {
+.sidebar-link span {
     width: 22px;
     text-align: center;
     font-size: 17px;
 }
 
+.sidebar-link:hover,
+.sidebar-link.active {
+    background: var(--gold);
+    color: var(--dark-green);
+    font-weight: bold;
+}
+
+.sidebar-divider {
+    height: 1px;
+    background: rgba(212,175,55,.4);
+    margin: 12px 4px;
+}
+
+.logout-link {
+    color: #ffb4a9;
+}
+
+.sidebar-footer {
+    margin-top: auto;
+    padding: 18px 15px;
+    border-top: 1px solid rgba(212,175,55,.4);
+    text-align: center;
+}
+
+.sidebar-footer p {
+    color: var(--gold);
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.sidebar-footer small {
+    display: block;
+    color: #dce9df;
+    font-size: 10px;
+    margin-top: 5px;
+}
+
+.sidebar-overlay {
+    display: none;
+}
+
 /* MAIN CONTAINER */
+
 .container {
+    max-width: 1450px;
     margin-left: 255px;
-    padding: 105px 30px 35px;
-    max-width: 1500px;
+    padding: 25px;
 }
 
 /* WELCOME BANNER */
+
 .welcome-banner {
-    background: linear-gradient(120deg, var(--dark-green), var(--main-green));
+    background: linear-gradient(110deg, #003b24, #087448);
     color: white;
-    padding: 28px 30px;
-    border-radius: 14px;
-    border: 1px solid var(--gold);
-    box-shadow: 0 5px 18px rgba(0, 59, 36, .12);
-    margin-bottom: 25px;
-    position: relative;
+    border: 2px solid var(--gold);
+    border-radius: 15px;
+    padding: 30px 35px;
+    margin-bottom: 23px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
     overflow: hidden;
 }
 
-.welcome-banner::after {
-    content: "";
-    position: absolute;
-    width: 180px;
-    height: 180px;
-    border: 25px solid rgba(212, 175, 55, .12);
-    border-radius: 50%;
-    right: -45px;
-    top: -70px;
+.welcome-banner h2 {
+    font-size: 32px;
+    margin-bottom: 8px;
 }
 
-.welcome-banner h1 {
-    font-size: 25px;
-    margin-bottom: 9px;
-    position: relative;
-    z-index: 1;
+.welcome-banner h3 {
+    font-size: 23px;
+    font-weight: normal;
+}
+
+.welcome-banner h3 span {
+    color: var(--gold);
+    font-weight: bold;
 }
 
 .welcome-banner p {
-    color: #e2e9e3;
-    font-size: 14px;
-    line-height: 1.6;
-    position: relative;
-    z-index: 1;
+    margin-top: 9px;
+    color: #e7eee9;
+    font-style: italic;
 }
 
-.breadcrumb {
+.banner-school {
+    text-align: center;
     color: var(--gold);
+}
+
+.banner-school h2 {
+    font-size: 48px;
+    font-style: italic;
+    margin: 0;
+}
+
+.banner-school p {
     font-size: 12px;
     font-weight: bold;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin-bottom: 9px;
+    font-style: normal;
+    margin: 0;
 }
 
-/* CARDS */
+/* CONTENT CARDS */
+
 .card {
-    background: var(--white);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    margin-bottom: 22px;
-    box-shadow: 0 4px 15px rgba(0, 59, 36, .05);
+    background: var(--cream);
+    border: 2px solid #e5d9b5;
+    border-radius: 13px;
+    margin-bottom: 20px;
     overflow: hidden;
+    box-shadow: 0 3px 10px rgba(0,0,0,.07);
 }
 
 .card-header {
-    background: #f3f5ed;
-    border-bottom: 1px solid var(--border);
-    padding: 17px 22px;
+    background: var(--dark-green);
+    color: white;
+    padding: 13px 20px;
+    border-bottom: 2px solid var(--gold);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -228,220 +297,247 @@ body {
 }
 
 .card-header h2 {
-    color: var(--dark-green);
-    font-size: 17px;
+    font-size: 21px;
+}
+
+.card-header h2::before {
+    content: "";
+    display: inline-block;
+    width: 7px;
+    height: 25px;
+    background: var(--gold);
+    margin-right: 13px;
+    vertical-align: middle;
 }
 
 .card-body {
-    padding: 22px;
-}
-
-.section-title {
-    color: var(--dark-green);
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 8px;
-}
-
-.section-description {
-    color: var(--muted);
-    font-size: 13px;
-    line-height: 1.6;
-}
-
-/* OVERALL STATUS */
-.status-overview {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 18px;
-    margin-bottom: 22px;
-}
-
-.summary-card {
-    background: var(--cream);
-    border: 1px solid var(--border);
-    border-radius: 10px;
     padding: 20px;
 }
 
-.summary-card small {
-    display: block;
-    color: var(--muted);
-    font-size: 12px;
-    margin-bottom: 10px;
+/* APPLICATION SUMMARY */
+
+.status-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 17px;
+    margin-bottom: 20px;
 }
 
-.summary-card h2 {
-    color: var(--dark-green);
-    font-size: 23px;
-    margin-bottom: 7px;
+.status-summary-card {
+    background: white;
+    border: 2px solid var(--gold);
+    border-radius: 13px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    min-width: 0;
 }
 
-.summary-card p {
-    color: var(--muted);
-    font-size: 12px;
-    line-height: 1.5;
+.status-icon {
+    width: 70px;
+    height: 70px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: var(--dark-green);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+}
+
+.status-info {
+    min-width: 0;
+}
+
+.status-info h3 {
+    font-size: 14px;
+    margin-bottom: 9px;
+}
+
+.status-info h2 {
+    font-size: 20px;
+    overflow-wrap: anywhere;
 }
 
 .status-badge {
     display: inline-block;
-    padding: 8px 15px;
-    border-radius: 20px;
-    font-size: 12px;
+    padding: 9px 17px;
+    border-radius: 25px;
+    background: #f3bd27;
+    color: #18351f;
+    font-size: 13px;
     font-weight: bold;
 }
 
-.status-badge.pending {
-    background: #fff0c4;
-    color: #795900;
-}
-
 .status-badge.approved {
-    background: #dff4e5;
-    color: #176b39;
+    background: #c8ebd1;
+    color: #145a2b;
 }
 
 .status-badge.rejected {
-    background: #fde2e2;
-    color: #a52b2b;
+    background: #f6d0d0;
+    color: #9a2222;
 }
 
-/* DOCUMENT ITEMS */
-.document-list {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+.status-badge.pending {
+    background: #f3bd27;
+    color: #18351f;
 }
+
+/* DOCUMENT LIST */
 
 .document-item {
+    background: white;
+    padding: 17px;
+    border-left: 4px solid var(--main-green);
+    border-radius: 7px;
+    margin-bottom: 12px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 15px;
     flex-wrap: wrap;
-    background: #fbfbf7;
-    border: 1px solid var(--border);
-    border-radius: 9px;
-    padding: 16px 18px;
-    transition: .2s;
 }
 
-.document-item:hover {
-    border-color: var(--gold);
-    box-shadow: 0 3px 10px rgba(0, 59, 36, .05);
-}
-
-.document-info {
+.document-details {
     display: flex;
     align-items: center;
     gap: 13px;
+    min-width: 0;
 }
 
 .document-icon {
-    width: 42px;
-    height: 42px;
-    border-radius: 9px;
-    background: #e9f2eb;
-    color: var(--main-green);
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: var(--dark-green);
+    color: var(--gold);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 19px;
+    font-size: 22px;
+}
+
+.document-info {
+    min-width: 0;
 }
 
 .document-info strong {
     display: block;
     color: var(--dark-green);
     font-size: 14px;
-    margin-bottom: 5px;
+    margin-bottom: 6px;
+    overflow-wrap: anywhere;
 }
 
 .document-info small {
-    color: var(--muted);
+    display: block;
+    color: #78847c;
     font-size: 11px;
 }
 
 .empty-state {
-    text-align: center;
-    background: #fbfbf7;
-    border: 1px dashed #d7d9ce;
+    background: white;
+    border: 2px dashed #d8cda9;
     border-radius: 10px;
+    text-align: center;
     padding: 35px 15px;
-    color: var(--muted);
+    color: #78847c;
     line-height: 1.7;
-}
-
-.empty-state .empty-icon {
-    font-size: 35px;
-    margin-bottom: 10px;
 }
 
 .empty-state strong {
     display: block;
     color: var(--dark-green);
-    margin-bottom: 5px;
+    font-size: 16px;
+    margin-bottom: 7px;
 }
 
-/* NOTICE */
 .notice {
-    background: #fff8e5;
-    border-left: 4px solid var(--gold);
+    background: #fff5d8;
+    border-left: 5px solid var(--gold);
     border-radius: 7px;
-    padding: 15px;
-    color: #6d5923;
-    font-size: 12px;
-    line-height: 1.7;
+    padding: 16px;
     margin-top: 20px;
+    color: #68551f;
+    font-size: 13px;
+    line-height: 1.7;
 }
 
-.message {
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 20px;
-    color: var(--muted);
-    margin-bottom: 20px;
-    line-height: 1.6;
+.loading {
+    text-align: center;
+    padding: 50px 15px;
+    color: var(--main-green);
+    font-weight: bold;
 }
+
+.error-message {
+    color: #a00000;
+    text-align: center;
+    padding: 20px;
+}
+
+/* FOOTER */
 
 footer {
-    margin-left: 255px;
-    padding: 20px;
+    background: var(--dark-green);
+    color: white;
     text-align: center;
-    color: var(--muted);
-    font-size: 12px;
+    padding: 20px;
+    border-top: 4px solid var(--gold);
+    font-size: 13px;
+    margin-left: 255px;
+}
+
+/* TABLET */
+
+@media screen and (max-width: 950px) {
+    .status-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .welcome-banner {
+        flex-wrap: wrap;
+    }
 }
 
 /* MOBILE SIDEBAR */
-.sidebar-overlay {
-    display: none;
-}
 
-@media(max-width: 950px) {
+@media screen and (max-width: 850px) {
+
+    .top-header {
+        margin-left: 0;
+        padding: 13px 15px;
+    }
+
     .menu-toggle {
         display: block;
+        flex-shrink: 0;
     }
 
     .sidebar {
-        left: -270px;
-        transition: left .3s ease;
+        transform: translateX(-100%);
     }
 
-    .sidebar.show {
-        left: 0;
+    .sidebar.open {
+        transform: translateX(0);
     }
 
     .sidebar-overlay.show {
         display: block;
         position: fixed;
-        inset: 75px 0 0;
-        background: rgba(0, 0, 0, .45);
-        z-index: 80;
+        inset: 0;
+        background: rgba(0,0,0,.5);
+        z-index: 999;
     }
 
     .container {
         margin-left: 0;
-        padding: 100px 22px 30px;
+        width: 100%;
+        padding: 16px;
     }
 
     footer {
@@ -449,77 +545,148 @@ footer {
     }
 }
 
-@media(max-width: 600px) {
+/* MOBILE PHONES */
+
+@media screen and (max-width: 600px) {
+
     .top-header {
-        padding: 0 13px;
-        height: 68px;
+        padding: 13px 15px;
+        gap: 8px;
     }
 
     .brand {
-        gap: 7px;
+        gap: 8px;
+        min-width: 0;
     }
 
     .brand img {
-        width: 34px;
-        height: 34px;
+        width: 48px;
+        height: 48px;
     }
 
-    .brand-text {
-        font-size: 11px;
+    .brand-text h1 {
+        font-size: 19px;
     }
 
-    .logout-btn {
-        padding: 9px 11px;
-        font-size: 11px;
+    .brand-text p {
+        font-size: 9px;
+        letter-spacing: 1px;
     }
 
-    .sidebar {
-        top: 68px;
-        height: calc(100vh - 68px);
+    .header-right {
+        gap: 8px;
     }
 
-    .sidebar-overlay.show {
-        inset: 68px 0 0;
+    .header-right button {
+        font-size: 12px;
     }
 
     .container {
-        padding: 90px 14px 25px;
+        padding: 13px;
     }
 
     .welcome-banner {
-        padding: 23px 19px;
+        padding: 22px 18px;
     }
 
-    .welcome-banner h1 {
-        font-size: 21px;
+    .welcome-banner h2 {
+        font-size: 23px;
     }
 
-    .status-overview {
+    .welcome-banner h3 {
+        font-size: 17px;
+    }
+
+    .welcome-banner p {
+        font-size: 12px;
+    }
+
+    .banner-school {
+        display: none;
+    }
+
+    .status-grid {
         grid-template-columns: 1fr;
+        gap: 10px;
     }
 
-    .card-header,
+    .status-summary-card {
+        padding: 14px;
+    }
+
+    .status-icon {
+        width: 58px;
+        height: 58px;
+        font-size: 25px;
+    }
+
+    .status-info h2 {
+        font-size: 18px;
+    }
+
+    .card-header {
+        padding: 12px;
+    }
+
+    .card-header h2 {
+        font-size: 17px;
+    }
+
     .card-body {
-        padding: 16px;
+        padding: 13px;
     }
 
     .document-item {
         padding: 13px;
+        align-items: flex-start;
+    }
+
+    .document-icon {
+        width: 42px;
+        height: 42px;
+        font-size: 19px;
+    }
+
+    .document-info strong {
+        font-size: 12px;
+    }
+
+    .status-badge {
+        font-size: 11px;
+        padding: 7px 13px;
+    }
+
+    footer {
+        padding: 17px 12px;
+        font-size: 10px;
     }
 }
 
-@media(max-width: 360px) {
-    .brand-text {
-        font-size: 9px;
-    }
+@media screen and (max-width: 360px) {
 
     .brand img {
-        width: 29px;
-        height: 29px;
+        width: 35px;
+        height: 35px;
     }
 
-    .logout-btn {
-        padding: 8px;
+    .brand-text h1 {
+        font-size: 14px;
+    }
+
+    .brand-text p {
+        font-size: 7px;
+    }
+
+    .header-right button {
+        font-size: 10px;
+    }
+
+    .container {
+        padding: 9px;
+    }
+
+    .welcome-banner h2 {
+        font-size: 19px;
     }
 }
 </style>
@@ -528,79 +695,141 @@ footer {
 <body>
 
 <!-- HEADER -->
+
 <header class="top-header">
 
+    <button
+        type="button"
+        class="menu-toggle"
+        onclick="toggleSidebar()"
+        aria-label="Open navigation menu"
+    >
+        ☰
+    </button>
+
     <div class="brand">
-        <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
 
         <img
             src="https://64.media.tumblr.com/33ca84afd52d5cd0ef7bb1bb66c6176b/tumblr_o4ti6j8k6r1unefbyo1_400.png"
             alt="PLMUN Logo"
         >
 
-        <span class="brand-text">I-PILIMUN Student ID INFORMATION</span>
+        <div class="brand-text">
+            <h1>I-PILIMUN</h1>
+            <p>STUDENT ID INFORMATION</p>
+        </div>
+
     </div>
 
     <div class="header-right">
-        <button class="logout-btn" onclick="logout()">Log Out</button>
+        <button type="button" onclick="logout()">LOG OUT ↗</button>
     </div>
 
 </header>
 
 <!-- SIDEBAR OVERLAY -->
-<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+<div
+    id="sidebarOverlay"
+    class="sidebar-overlay"
+    onclick="closeSidebar()"
+></div>
 
 <!-- SIDEBAR -->
+
 <aside class="sidebar" id="sidebar">
 
-    <div class="sidebar-heading">Main Menu</div>
+    <div class="sidebar-heading">
 
-    <a href="student-dashboard.html" class="sidebar-link">
-        <span class="sidebar-icon">⌂</span>
-        Dashboard
-    </a>
+        <img
+            src="https://64.media.tumblr.com/33ca84afd52d5cd0ef7bb1bb66c6176b/tumblr_o4ti6j8k6r1unefbyo1_400.png"
+            alt="PLMUN Logo"
+        >
 
-    <a href="profile.html" class="sidebar-link">
-        <span class="sidebar-icon">♙</span>
-        My Profile
-    </a>
+        <div>
+            <h3>STUDENT PORTAL</h3>
+            <p>Navigation Menu</p>
+        </div>
 
-    <a href="id.html" class="sidebar-link">
-        <span class="sidebar-icon">▣</span>
-        My Student ID
-    </a>
+    </div>
 
-    <a href="application.html" class="sidebar-link active">
-        <span class="sidebar-icon">◷</span>
-        Application Status
-    </a>
+    <nav class="sidebar-nav">
 
-    <a href="document.html" class="sidebar-link">
-        <span class="sidebar-icon">▤</span>
-        My Documents
-    </a>
+        <a class="sidebar-link" href="student-dashboard.html">
+            <span>▦</span> Dashboard
+        </a>
+
+        <a class="sidebar-link" href="profile.html">
+            <span>👤</span> My Profile
+        </a>
+
+        <a class="sidebar-link" href="id.html">
+            <span>▣</span> My Student ID
+        </a>
+
+        <a class="sidebar-link active" href="application.html">
+            <span>☑</span> Application Status
+        </a>
+
+        <a class="sidebar-link" href="document.html">
+            <span>📁</span> My Documents
+        </a>
+
+        <div class="sidebar-divider"></div>
+
+        <button class="sidebar-link logout-link" onclick="logout()">
+            <span>↗</span> Log Out
+        </button>
+
+    </nav>
+
+    <div class="sidebar-footer">
+        <p>I-PILIMUN</p>
+        <small>Student ID Information System</small>
+    </div>
 
 </aside>
 
 <!-- MAIN CONTENT -->
+
 <main class="container">
 
+    <!-- WELCOME BANNER -->
+
     <section class="welcome-banner">
-        <div class="breadcrumb">Student Portal / Application</div>
-        <h1>Application Status</h1>
-        <p>
-            Monitor the review progress of your submitted student
-            requirements and documents.
-        </p>
+
+        <div>
+            <h2>APPLICATION STATUS</h2>
+
+            <h3>
+                Student ID Application
+                <span>Review</span>
+            </h3>
+
+            <p>
+                Monitor the review progress of your submitted student documents.
+            </p>
+        </div>
+
+        <div class="banner-school">
+            <h2>PLMUN</h2>
+            <p>PAMANTASAN NG LUNGSOD NG MUNTINLUPA</p>
+        </div>
+
     </section>
 
-    <div id="message" class="message">
+    <!-- LOADING MESSAGE -->
+
+    <div id="loadingMessage" class="loading">
         Checking your application status...
     </div>
 
-    <section id="statusContent" hidden>
+    <!-- APPLICATION CONTENT -->
 
-        <!-- OVERALL STATUS -->
+    <section id="applicationContent" hidden>
+
+        <!-- APPLICATION OVERVIEW -->
+
         <div class="card">
 
             <div class="card-header">
@@ -609,34 +838,55 @@ footer {
 
             <div class="card-body">
 
-                <div class="status-overview">
+                <div class="status-grid">
 
-                    <div class="summary-card">
-                        <small>OVERALL REVIEW STATUS</small>
-                        <h2 id="overallStatus">Pending Review</h2>
-                        <p id="overallDescription">
-                            Your documents are being reviewed.
-                        </p>
+                    <div class="status-summary-card">
+
+                        <div class="status-icon">☑</div>
+
+                        <div class="status-info">
+                            <h3>Overall Review Status</h3>
+
+                            <h2 id="overallStatus">
+                                Not Submitted
+                            </h2>
+                        </div>
+
                     </div>
 
-                    <div class="summary-card">
-                        <small>SUBMITTED DOCUMENTS</small>
-                        <h2 id="documentCount">0</h2>
-                        <p>Number of document records submitted</p>
+                    <div class="status-summary-card">
+
+                        <div class="status-icon">📄</div>
+
+                        <div class="status-info">
+                            <h3>Submitted Documents</h3>
+
+                            <h2 id="documentCount">
+                                0
+                            </h2>
+                        </div>
+
                     </div>
 
                 </div>
 
-                <div>
-                    <span id="overallBadge" class="status-badge pending">
-                        Pending Review
-                    </span>
-                </div>
+                <p style="margin-bottom:10px;font-weight:bold;">
+                    Current Application Status:
+                </p>
+
+                <span
+                    id="overallBadge"
+                    class="status-badge pending"
+                >
+                    Not Submitted
+                </span>
 
             </div>
+
         </div>
 
-        <!-- DOCUMENT STATUS -->
+        <!-- DOCUMENT REVIEW -->
+
         <div class="card">
 
             <div class="card-header">
@@ -645,22 +895,23 @@ footer {
 
             <div class="card-body">
 
-                <p class="section-description" style="margin-bottom:18px;">
-                    Check the individual review status of each document
-                    you have uploaded.
+                <p style="margin-bottom:18px;color:#52665a;font-size:14px;line-height:1.6;">
+                    Below is the list of your uploaded documents and their
+                    respective review status.
                 </p>
 
-                <div id="documentsList" class="document-list"></div>
+                <div id="documentsList"></div>
 
                 <div class="notice">
-                    <strong>Important:</strong>
-                    The status displayed here is based on the records
-                    stored in the documents table. For questions,
-                    corrections, or document concerns, please contact
-                    the school office.
+                    <strong>IMPORTANT NOTICE:</strong><br>
+                    The document statuses displayed here are based on the
+                    records saved in the system. If a document is marked
+                    as Rejected or requires correction, please contact
+                    the school office for further instructions.
                 </div>
 
             </div>
+
         </div>
 
     </section>
@@ -668,38 +919,81 @@ footer {
 </main>
 
 <footer>
-    PLMUN Student ID Information System
+    © 2026 Pamantasan ng Lungsod ng Muntinlupa |
+    I-PILIMUN Student ID Information System
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script>
+
+// ==========================================
+// SUPABASE CONFIGURATION
+// ==========================================
+
+const SUPABASE_URL =
+    "https://mlrpkkmexmboqrnmjkuy.supabase.co";
+
+const SUPABASE_ANON_KEY =
+    "sb_publishable_-BIYMjip4Zon8HwZUCPT1Q_P0pDCMke";
+
 const db = window.supabase.createClient(
-    "https://mlrpkkmexmboqrnmjkuy.supabase.co",
-    "sb_publishable_-BIYMjip4Zon8HwZUCPT1Q_P0pDCMke"
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
 );
 
 let currentUser = null;
 
-/* SIDEBAR FUNCTIONS */
+
+// ==========================================
+// SIDEBAR FUNCTIONS
+// ==========================================
+
 function toggleSidebar() {
-    document.getElementById("sidebar").classList.toggle("show");
+
+    document.getElementById("sidebar").classList.toggle("open");
+
     document.getElementById("sidebarOverlay").classList.toggle("show");
+
 }
 
 function closeSidebar() {
-    document.getElementById("sidebar").classList.remove("show");
+
+    document.getElementById("sidebar").classList.remove("open");
+
     document.getElementById("sidebarOverlay").classList.remove("show");
+
 }
 
-/* LOGOUT */
+
+// ==========================================
+// LOGOUT
+// ==========================================
+
 async function logout() {
-    await db.auth.signOut();
-    location.href = "index.html";
+
+    const confirmLogout = confirm(
+        "Are you sure you want to log out?"
+    );
+
+    if (!confirmLogout) return;
+
+    const { error } = await db.auth.signOut();
+
+    if (error) {
+        alert("Unable to log out: " + error.message);
+        return;
+    }
+
+    window.location.href = "index.html";
+
 }
 
-/* HTML ESCAPE */
+
+// ==========================================
+// HTML ESCAPE
+// ==========================================
+
 function escapeHTML(value) {
+
     return String(value ?? "").replace(/[&<>"']/g, char => ({
         "&": "&amp;",
         "<": "&lt;",
@@ -707,9 +1001,14 @@ function escapeHTML(value) {
         '"': "&quot;",
         "'": "&#039;"
     })[char]);
+
 }
 
-/* CHECK STUDENT SESSION */
+
+// ==========================================
+// CHECK STUDENT SESSION
+// ==========================================
+
 async function getStudent() {
 
     const { data, error } = await db.auth.getSession();
@@ -717,26 +1016,36 @@ async function getStudent() {
     currentUser = data.session?.user;
 
     if (error || !currentUser) {
-        location.href = "index.html";
+
+        window.location.href = "index.html";
+
         return null;
+
     }
 
     const { data: student, error: studentError } = await db
         .from("students")
-        .select("*")
+        .select("id, student_number, first_name, last_name, email")
         .eq("id", currentUser.id)
         .maybeSingle();
 
     if (studentError || !student) {
-        document.getElementById("message").textContent =
-            "Hindi ma-load ang student record. Check ang students table at RLS policies.";
-        return null;
+
+        throw new Error(
+            "Hindi ma-load ang student record. Check ang students table at RLS policies."
+        );
+
     }
 
     return student;
+
 }
 
-/* GET STATUS CLASS */
+
+// ==========================================
+// GET STATUS STYLE
+// ==========================================
+
 function getStatusClass(status) {
 
     const value = String(status || "Pending").toLowerCase();
@@ -750,121 +1059,184 @@ function getStatusClass(status) {
     }
 
     return "pending";
+
 }
 
-/* LOAD APPLICATION DATA */
+
+// ==========================================
+// LOAD APPLICATION STATUS
+// ==========================================
+
 async function loadApplicationStatus() {
 
-    const student = await getStudent();
+    const loading = document.getElementById("loadingMessage");
 
-    if (!student) return;
+    try {
 
-    const { data, error } = await db
-        .from("documents")
-        .select("document_name, status, uploaded_at")
-        .eq("student_id", currentUser.id)
-        .order("uploaded_at", { ascending: false });
+        // Check student login and record
+        const student = await getStudent();
 
-    if (error) {
-        document.getElementById("message").textContent =
-            "Hindi ma-load ang document status. Check ang documents table at RLS policies.";
-        return;
-    }
+        if (!student) return;
 
-    const documents = data || [];
 
-    const statuses = documents.map(doc =>
-        String(doc.status || "Pending").toLowerCase()
-    );
+        // Load only documents belonging to the logged-in student
+        const { data, error } = await db
+            .from("documents")
+            .select("document_name, status, uploaded_at")
+            .eq("student_id", currentUser.id)
+            .order("uploaded_at", { ascending: false });
 
-    let overallStatus = "Not Submitted";
-    let description = "You have not submitted any documents yet.";
 
-    if (documents.length > 0) {
-
-        if (statuses.includes("rejected")) {
-            overallStatus = "Action Required";
-            description = "One or more documents require your attention.";
-
-        } else if (statuses.every(status => status === "approved")) {
-            overallStatus = "Approved";
-            description = "All submitted documents have been approved.";
-
-        } else {
-            overallStatus = "Pending Review";
-            description = "Your submitted documents are awaiting review.";
+        if (error) {
+            throw error;
         }
-    }
 
-    /* OVERALL STATUS */
-    document.getElementById("overallStatus").textContent = overallStatus;
-    document.getElementById("overallDescription").textContent = description;
-    document.getElementById("documentCount").textContent = documents.length;
 
-    const badge = document.getElementById("overallBadge");
+        const documents = data || [];
 
-    badge.textContent = overallStatus;
 
-    badge.className = "status-badge " +
-        (overallStatus === "Approved"
-            ? "approved"
-            : overallStatus === "Action Required"
-                ? "rejected"
-                : "pending");
+        // Compute overall document review status
+        const statuses = documents.map(doc =>
+            String(doc.status || "Pending").toLowerCase()
+        );
 
-    /* DOCUMENT LIST */
-    const list = document.getElementById("documentsList");
+        let overallStatus = "Not Submitted";
 
-    if (documents.length === 0) {
+        if (documents.length > 0) {
 
-        list.innerHTML = `
-            <div class="empty-state">
-                <div class="empty-icon">📄</div>
-                <strong>No Documents Submitted</strong>
-                You have not uploaded any documents yet.
-                Please visit My Documents to submit your requirements.
-            </div>
-        `;
+            if (statuses.includes("rejected")) {
 
-    } else {
+                overallStatus = "Action Required";
 
-        list.innerHTML = documents.map(doc => {
+            } else if (
+                statuses.every(status => status === "approved")
+            ) {
 
-            const status = doc.status || "Pending";
-            const statusClass = getStatusClass(status);
+                overallStatus = "Approved";
 
-            const uploadedDate = doc.uploaded_at
-                ? new Date(doc.uploaded_at).toLocaleDateString()
-                : "Date unavailable";
+            } else {
 
-            return `
-                <div class="document-item">
+                overallStatus = "Pending Review";
 
-                    <div class="document-info">
-                        <div class="document-icon">▤</div>
+            }
 
-                        <div>
-                            <strong>${escapeHTML(doc.document_name || "Document")}</strong>
-                            <small>Uploaded: ${escapeHTML(uploadedDate)}</small>
-                        </div>
-                    </div>
+        }
 
-                    <span class="status-badge ${statusClass}">
-                        ${escapeHTML(status)}
-                    </span>
 
+        // Display overall status
+        document.getElementById("overallStatus").textContent =
+            overallStatus;
+
+        document.getElementById("documentCount").textContent =
+            documents.length;
+
+        const badge = document.getElementById("overallBadge");
+
+        badge.textContent = overallStatus;
+
+        badge.className =
+            "status-badge " +
+            (
+                overallStatus === "Approved"
+                    ? "approved"
+                    : overallStatus === "Action Required"
+                        ? "rejected"
+                        : "pending"
+            );
+
+
+        // Display document records
+        const documentsList =
+            document.getElementById("documentsList");
+
+        if (documents.length === 0) {
+
+            documentsList.innerHTML = `
+                <div class="empty-state">
+                    <strong>No Documents Submitted</strong>
+                    You have not uploaded any documents yet.
+                    <br>
+                    Visit the My Documents page to submit your requirements.
                 </div>
             `;
 
-        }).join("");
+        } else {
+
+            documentsList.innerHTML = documents.map(doc => {
+
+                const status = doc.status || "Pending";
+
+                const statusClass = getStatusClass(status);
+
+                const uploadedDate = doc.uploaded_at
+                    ? new Date(doc.uploaded_at).toLocaleDateString()
+                    : "Date unavailable";
+
+                return `
+
+                    <div class="document-item">
+
+                        <div class="document-details">
+
+                            <div class="document-icon">
+                                ▤
+                            </div>
+
+                            <div class="document-info">
+
+                                <strong>
+                                    ${escapeHTML(doc.document_name || "Document")}
+                                </strong>
+
+                                <small>
+                                    Uploaded: ${escapeHTML(uploadedDate)}
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                        <span class="status-badge ${statusClass}">
+                            ${escapeHTML(status)}
+                        </span>
+
+                    </div>
+
+                `;
+
+            }).join("");
+
+        }
+
+
+        // Show application content
+        document.getElementById("applicationContent").hidden = false;
+
+        loading.style.display = "none";
+
+
+    } catch (error) {
+
+        console.error("Application Status Error:", error);
+
+        loading.innerHTML = `
+            <p class="error-message">
+                Unable to load application status.<br>
+                ${escapeHTML(error.message)}
+            </p>
+        `;
+
     }
 
-    document.getElementById("statusContent").hidden = false;
-    document.getElementById("message").hidden = true;
 }
 
-/* INITIALIZE */
+
+// ==========================================
+// START APPLICATION PAGE
+// ==========================================
+
 loadApplicationStatus();
+
 </script>
 
 </body>
