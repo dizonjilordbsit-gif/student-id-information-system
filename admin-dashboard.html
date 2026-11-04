@@ -589,19 +589,20 @@ tbody tr:hover {
 
             <div class="table-wrapper">
                 <table>
-                    <thead>
-                        <tr>
-                            <th>Student Number</th>
-                            <th>Student Name</th>
-                            <th>Email</th>
-                            <th>Course</th>
-                            <th>Year Level</th>
-                            <th>Profile Status</th>
-                            <th>Date Registered</th>
-                        </tr>
-                    </thead>
+                   <thead>
+    <tr>
+        <th>Student Number</th>
+        <th>Student Name</th>
+        <th>Email</th>
+        <th>Course</th>
+        <th>Year Level</th>
+        <th>Profile Status</th>
+        <th>Date Registered</th>
+        <th>Actions</th>
+    </tr>
+</thead>
                     <tbody id="studentsTable">
-                        <tr><td colspan="7" class="loading">Loading students...</td></tr>
+                        <tr><td colspan="8" class="loading">Loading students...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -871,13 +872,10 @@ function updateStatistics() {
 
 // ==========================================
 // STUDENT MANAGEMENT
-// ==========================================
-
 function renderStudents() {
     const table = document.getElementById("studentsTable");
     const search = document.getElementById("studentSearch").value
-        .trim()
-        .toLowerCase();
+        .trim().toLowerCase();
 
     const filtered = students.filter(student => {
         const fullName =
@@ -892,7 +890,7 @@ function renderStudents() {
 
     if (filtered.length === 0) {
         table.innerHTML =
-            '<tr><td colspan="7" class="empty">No registered students found.</td></tr>';
+            '<tr><td colspan="8" class="empty">No registered students found.</td></tr>';
         return;
     }
 
@@ -921,6 +919,21 @@ function renderStudents() {
                     </span>
                 </td>
                 <td>${formatDate(student.created_at)}</td>
+                <td>
+                    <div class="action-buttons">
+                        <button class="btn btn-view"
+                            data-student-action="edit"
+                            data-id="${escapeHTML(student.id)}">
+                            Edit
+                        </button>
+
+                        <button class="btn btn-reject"
+                            data-student-action="delete"
+                            data-id="${escapeHTML(student.id)}">
+                            Delete
+                        </button>
+                    </div>
+                </td>
             </tr>
         `;
     }).join("");
@@ -984,11 +997,28 @@ function renderDocuments() {
         }
 
         const pendingActions = status.toLowerCase() === "pending"
-            ? `
-                <button class="btn btn-approve" data-action="approve" data-id="${escapeHTML(doc.id)}">Approve</button>
-                <button class="btn btn-reject" data-action="reject" data-id="${escapeHTML(doc.id)}">Reject</button>
-            `
-            : "";
+    ? `
+        <button class="btn btn-approve"
+            data-action="approve"
+            data-id="${escapeHTML(doc.id)}">
+            Approve
+        </button>
+
+        <button class="btn btn-reject"
+            data-action="reject"
+            data-id="${escapeHTML(doc.id)}">
+            Reject
+        </button>
+    `
+    : "";
+
+const deleteAction = `
+    <button class="btn btn-reject"
+        data-action="delete"
+        data-id="${escapeHTML(doc.id)}">
+        Delete
+    </button>
+`;
 
         return `
             <tr>
@@ -1002,14 +1032,16 @@ function renderDocuments() {
                     </span>
                 </td>
                 <td>
-                    <div class="action-buttons">
-                        <button class="btn btn-view"
-                            data-action="view"
-                            data-id="${escapeHTML(doc.id)}">
-                            View
-                        </button>
-                        ${pendingActions}
-                    </div>
+                   <div class="action-buttons">
+    <button class="btn btn-view"
+        data-action="view"
+        data-id="${escapeHTML(doc.id)}">
+        View
+    </button>
+
+    ${pendingActions}
+    ${deleteAction}
+</div>
                 </td>
             </tr>
         `;
@@ -1214,6 +1246,165 @@ document.getElementById("sidebarLogout").addEventListener("click", logout);
 // ==========================================
 
 initializeAdmin();
+
+// ==========================================
+// EDIT STUDENT
+// ==========================================
+
+async function editStudent(studentId) {
+    const student = students.find(item => item.id === studentId);
+
+    if (!student) {
+        alert("Student not found.");
+        return;
+    }
+
+    const studentNumber = prompt(
+        "Student Number:",
+        student.student_number || ""
+    );
+
+    if (studentNumber === null) return;
+
+    const firstName = prompt(
+        "First Name:",
+        student.first_name || ""
+    );
+
+    if (firstName === null) return;
+
+    const lastName = prompt(
+        "Last Name:",
+        student.last_name || ""
+    );
+
+    if (lastName === null) return;
+
+    const email = prompt(
+        "Email:",
+        student.email || ""
+    );
+
+    if (email === null) return;
+
+    const course = prompt(
+        "Course:",
+        student.course || ""
+    );
+
+    if (course === null) return;
+
+    const yearLevel = prompt(
+        "Year Level:",
+        student.year_level || ""
+    );
+
+    if (yearLevel === null) return;
+
+    const confirmed = confirm("Save the updated student information?");
+
+    if (!confirmed) return;
+
+    try {
+        const { error } = await supabaseClient
+            .from("students")
+            .update({
+                student_number: studentNumber.trim() || null,
+                first_name: firstName.trim() || null,
+                last_name: lastName.trim() || null,
+                email: email.trim(),
+                course: course.trim() || null,
+                year_level: yearLevel.trim() || null
+            })
+            .eq("id", studentId);
+
+        if (error) throw error;
+
+        alert("Student information successfully updated!");
+
+        await loadAllData();
+
+    } catch (error) {
+        console.error(error);
+        alert("Unable to update student: " + error.message);
+    }
+}
+
+// ==========================================
+// DELETE STUDENT RECORD
+// ==========================================
+
+async function deleteStudent(studentId) {
+    const student = students.find(item => item.id === studentId);
+
+    if (!student) return;
+
+    const confirmed = confirm(
+        `Are you sure you want to delete ${student.first_name || ""} ${student.last_name || ""} from the student records?`
+    );
+
+    if (!confirmed) return;
+
+    try {
+        const { error } = await supabaseClient
+            .from("students")
+            .delete()
+            .eq("id", studentId);
+
+        if (error) throw error;
+
+        alert("Student record successfully deleted!");
+
+        await loadAllData();
+
+    } catch (error) {
+        console.error(error);
+        alert("Unable to delete student: " + error.message);
+    }
+}
+
+// STUDENT ACTION BUTTONS
+
+document.getElementById("studentsTable").addEventListener("click", async event => {
+    const button = event.target.closest("button[data-student-action]");
+
+    if (!button) return;
+
+    const action = button.dataset.studentAction;
+    const studentId = button.dataset.id;
+
+    if (action === "edit") {
+        await editStudent(studentId);
+    }
+
+    if (action === "delete") {
+        await deleteStudent(studentId);
+    }
+});
+document.getElementById("documentsTable").addEventListener("click", async event => {
+    const button = event.target.closest("button[data-action]");
+
+    if (!button) return;
+
+    const action = button.dataset.action;
+    const documentId = button.dataset.id;
+
+    if (action === "view") {
+        await viewDocument(documentId);
+    }
+
+    if (action === "approve") {
+        await updateDocumentStatus(documentId, "Approved");
+    }
+
+    if (action === "reject") {
+        await updateDocumentStatus(documentId, "Rejected");
+    }
+
+    if (action === "delete") {
+        await deleteDocument(documentId);
+    }
+});
 
 </script>
 
