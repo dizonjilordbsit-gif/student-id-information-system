@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Documents | I-PILIMUN</title>
+<title>I-PILIMUN Student ID INFORMATION - My Documents</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -13,274 +13,395 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Arial, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+:root {
+    --dark-green: #003b24;
+    --main-green: #075c3b;
+    --light-green: #128052;
+    --gold: #d4af37;
+    --cream: #f8f6ef;
+    --white: #ffffff;
+    --text-dark: #123526;
 }
 
 body {
+    min-height: 100vh;
     background: #f5f3ec;
-    color: #26352b;
+    color: var(--text-dark);
 }
 
 /* HEADER */
+
 .top-header {
-    height: 75px;
-    background: #003b24;
+    background: var(--dark-green);
     color: white;
+    padding: 15px 5%;
     display: flex;
     align-items: center;
-    padding: 0 25px;
-    gap: 18px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-}
-
-.menu-toggle {
-    background: transparent;
-    border: none;
-    color: white;
-    font-size: 27px;
-    cursor: pointer;
+    justify-content: space-between;
+    border-bottom: 5px solid var(--gold);
+    gap: 15px;
+    margin-left: 255px;
 }
 
 .brand {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 15px;
 }
 
 .brand img {
-    width: 45px;
-    height: 45px;
+    width: 65px;
+    height: 65px;
     object-fit: contain;
-    filter: drop-shadow(0 0 5px #00ff75);
+    filter: drop-shadow(0 0 7px #00ff66);
 }
 
-.brand h2 {
-    font-size: 17px;
-    letter-spacing: 0.4px;
-}
-
-.brand p {
-    color: #d4af37;
-    font-size: 11px;
-    margin-top: 4px;
+.brand-text h1 {
+    font-size: 27px;
     letter-spacing: 1px;
 }
 
+.brand-text p {
+    color: var(--gold);
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.header-right button {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+}
+
 /* SIDEBAR */
+
+.menu-toggle {
+    display: none;
+    border: 1px solid var(--gold);
+    background: transparent;
+    color: white;
+    border-radius: 6px;
+    padding: 8px 11px;
+    font-size: 21px;
+    cursor: pointer;
+}
+
 .sidebar {
     position: fixed;
-    top: 75px;
+    top: 0;
     left: 0;
+    bottom: 0;
     width: 255px;
-    height: calc(100vh - 75px);
-    background: #003b24;
-    padding: 22px 15px;
-    transition: 0.3s;
-    z-index: 900;
-    overflow-y: auto;
+    background: var(--dark-green);
+    color: white;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    border-right: 3px solid var(--gold);
+    transition: transform .3s ease;
 }
 
-.sidebar a {
-    display: block;
-    color: #e9eee9;
-    text-decoration: none;
-    padding: 14px 16px;
-    margin-bottom: 7px;
-    border-radius: 6px;
+.sidebar-heading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 22px 16px;
+    border-bottom: 1px solid rgba(212,175,55,.4);
+}
+
+.sidebar-heading img {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 6px #00ff66);
+}
+
+.sidebar-heading h3 {
+    color: var(--gold);
     font-size: 14px;
-    transition: 0.2s;
 }
 
-.sidebar a:hover,
-.sidebar a.active {
-    background: #d4af37;
-    color: #003b24;
+.sidebar-heading p {
+    font-size: 11px;
+    margin-top: 5px;
+    color: #dce9df;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    padding: 20px 12px;
+}
+
+.sidebar-link {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 13px 14px;
+    border: none;
+    border-radius: 7px;
+    background: transparent;
+    color: white;
+    text-align: left;
+    font-size: 14px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.sidebar-link span {
+    width: 22px;
+    text-align: center;
+    font-size: 17px;
+}
+
+.sidebar-link:hover,
+.sidebar-link.active {
+    background: var(--gold);
+    color: var(--dark-green);
     font-weight: bold;
 }
 
-.sidebar .logout-link {
-    margin-top: 25px;
-    border: 1px solid #d4af37;
-    color: #d4af37;
+.sidebar-divider {
+    height: 1px;
+    background: rgba(212,175,55,.4);
+    margin: 12px 4px;
 }
 
-.sidebar .logout-link:hover {
-    background: #d4af37;
-    color: #003b24;
+.logout-link {
+    color: #ffb4a9;
 }
 
-.overlay {
+.sidebar-footer {
+    margin-top: auto;
+    padding: 18px 15px;
+    border-top: 1px solid rgba(212,175,55,.4);
+    text-align: center;
+}
+
+.sidebar-footer p {
+    color: var(--gold);
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.sidebar-footer small {
+    display: block;
+    color: #dce9df;
+    font-size: 10px;
+    margin-top: 5px;
+}
+
+.sidebar-overlay {
     display: none;
-    position: fixed;
-    inset: 75px 0 0;
-    background: rgba(0,0,0,0.45);
-    z-index: 850;
 }
 
-/* MAIN CONTENT */
+/* MAIN CONTAINER */
+
 .container {
     margin-left: 255px;
-    padding: 110px 30px 35px;
-    min-height: 100vh;
-    transition: 0.3s;
+    max-width: none;
+    padding: 25px 30px;
 }
+
+/* PAGE HEADING */
 
 .page-heading {
-    margin-bottom: 25px;
+    margin-bottom: 23px;
 }
 
-.page-heading h1 {
-    color: #003b24;
+.page-heading h2 {
     font-size: 27px;
+    color: var(--dark-green);
     margin-bottom: 8px;
 }
 
 .page-heading p {
-    color: #68766c;
+    color: #52675b;
     font-size: 14px;
-    line-height: 1.5;
+    line-height: 1.6;
 }
 
-/* CARDS */
-.content-card {
-    background: #fff;
-    border-radius: 9px;
+/* CONTENT CARDS */
+
+.card {
+    background: var(--cream);
+    border: 2px solid #e5d9b5;
+    border-radius: 13px;
+    margin-bottom: 20px;
     overflow: hidden;
-    margin-bottom: 25px;
-    box-shadow: 0 3px 12px rgba(0,0,0,0.06);
-    border: 1px solid #e6e2d5;
+    box-shadow: 0 3px 10px rgba(0,0,0,.07);
 }
 
 .card-header {
-    background: #003b24;
+    background: var(--dark-green);
     color: white;
-    padding: 16px 20px;
-    border-bottom: 3px solid #d4af37;
+    padding: 13px 20px;
+    border-bottom: 2px solid var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
 }
 
 .card-header h2 {
-    font-size: 17px;
+    font-size: 21px;
+}
+
+.card-header h2::before {
+    content: "";
+    display: inline-block;
+    width: 7px;
+    height: 25px;
+    background: var(--gold);
+    margin-right: 13px;
+    vertical-align: middle;
 }
 
 .card-body {
-    padding: 22px;
+    padding: 20px;
 }
 
-/* NOTICE */
+/* REMINDER */
+
 .notice {
     background: #fff8df;
-    border-left: 5px solid #d4af37;
-    padding: 15px;
+    border: 1px solid #e5d9b5;
+    border-left: 5px solid var(--gold);
+    border-radius: 8px;
+    padding: 16px 18px;
     margin-bottom: 22px;
-    border-radius: 5px;
-    line-height: 1.6;
-    font-size: 14px;
     color: #5c5130;
-}
-
-/* MESSAGE */
-#message {
-    margin: 15px 0;
     font-size: 14px;
-    font-weight: bold;
-    overflow-wrap: anywhere;
+    line-height: 1.6;
 }
 
 /* DOCUMENT GRID */
+
 .document-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 20px;
+    gap: 17px;
 }
 
 .document-card {
-    background: #fff;
-    padding: 22px;
-    border-radius: 9px;
-    border: 1px solid #e5e2d8;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+    background: white;
+    border: 2px solid #e5d9b5;
+    border-radius: 10px;
+    padding: 20px;
+    min-width: 0;
 }
 
 .document-card h3 {
-    color: #003b24;
-    font-size: 16px;
+    color: var(--dark-green);
+    font-size: 17px;
     margin-bottom: 9px;
 }
 
 .document-card p {
-    color: #68766c;
+    color: #52675b;
     font-size: 13px;
-    line-height: 1.5;
+    line-height: 1.6;
     margin-bottom: 15px;
 }
 
 .document-card input {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ccd5cc;
-    border-radius: 5px;
-    background: #fafafa;
+    padding: 11px;
+    border: 1px solid #c9d2c9;
+    border-radius: 7px;
+    background: #f8f8f5;
     font-size: 13px;
+    max-width: 100%;
 }
 
 .upload-btn {
     width: 100%;
-    margin-top: 12px;
-    padding: 12px;
-    border: none;
-    border-radius: 5px;
-    background: #003b24;
+    margin-top: 13px;
+    padding: 13px;
+    background: linear-gradient(120deg, #003b24, #087448);
     color: white;
+    border: 2px solid var(--gold);
+    border-radius: 8px;
     font-weight: bold;
+    font-size: 13px;
     cursor: pointer;
-    transition: 0.2s;
+    transition: .25s;
 }
 
 .upload-btn:hover {
-    background: #08703e;
+    background: var(--light-green);
+    transform: translateY(-2px);
 }
 
 .upload-btn:disabled {
-    opacity: 0.6;
+    opacity: .6;
     cursor: not-allowed;
+    transform: none;
 }
 
-.status {
+.upload-status {
     margin-top: 12px;
+    color: var(--main-green);
     font-size: 13px;
-    color: #08783c;
+    overflow-wrap: anywhere;
+}
+
+/* MESSAGE */
+
+#message {
+    margin: 0 0 17px;
+    font-size: 14px;
+    font-weight: bold;
     overflow-wrap: anywhere;
 }
 
 /* DOCUMENT HISTORY */
+
 .document-item {
-    padding: 15px 0;
-    border-bottom: 1px solid #e7ece7;
+    background: white;
+    padding: 17px;
+    border-left: 4px solid var(--main-green);
+    border-radius: 7px;
+    margin-bottom: 12px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    gap: 12px;
+    justify-content: space-between;
+    gap: 15px;
 }
 
 .document-item:last-child {
-    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.document-details {
+    min-width: 0;
+    overflow-wrap: anywhere;
 }
 
 .document-item strong {
-    color: #003b24;
+    color: var(--dark-green);
     font-size: 14px;
 }
 
 .document-item small {
     display: block;
-    color: #78847b;
-    margin-top: 6px;
+    color: #68766c;
     font-size: 12px;
+    margin-top: 7px;
 }
 
 .pending {
@@ -304,86 +425,264 @@ body {
 }
 
 .empty-message {
-    color: #78847b;
+    color: #52675b;
     font-size: 14px;
     padding: 10px 0;
+    line-height: 1.6;
 }
 
 /* FOOTER */
+
 footer {
     margin-left: 255px;
+    background: var(--dark-green);
+    color: white;
     text-align: center;
     padding: 20px;
-    color: #758078;
-    font-size: 12px;
+    border-top: 4px solid var(--gold);
+    font-size: 13px;
 }
 
 /* RESPONSIVE */
-@media (max-width: 768px) {
-    .sidebar {
-        left: -255px;
+
+@media(max-width: 950px) {
+    .document-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media screen and (max-width: 850px) {
+
+    .top-header {
+        margin-left: 0;
+        padding: 12px 15px;
     }
 
-    .sidebar.show {
-        left: 0;
-    }
-
-    .overlay.show {
+    .menu-toggle {
         display: block;
+        flex-shrink: 0;
+    }
+
+    .sidebar {
+        transform: translateX(-100%);
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+
+    .sidebar-overlay.show {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,.5);
+        z-index: 999;
     }
 
     .container {
         margin-left: 0;
-        padding: 100px 18px 30px;
+        width: 100%;
+        padding: 16px;
     }
 
     footer {
         margin-left: 0;
     }
 
-    .document-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .brand h2 {
-        font-size: 14px;
-    }
-
-    .brand p {
-        font-size: 10px;
-    }
-
-    .top-header {
-        padding: 0 15px;
+    .top-header .header-right {
+        margin-left: auto;
     }
 }
 
-@media (max-width: 450px) {
-    .brand img {
-        width: 38px;
-        height: 38px;
+@media screen and (max-width: 600px) {
+
+    body {
+        width: 100%;
+        overflow-x: hidden;
+        font-size: 14px;
     }
 
-    .brand h2 {
+    .top-header {
+        width: 100%;
+        padding: 12px;
+        gap: 10px;
+    }
+
+    .brand {
+        gap: 8px;
+        min-width: 0;
+    }
+
+    .brand img {
+        width: 42px;
+        height: 42px;
+        flex-shrink: 0;
+    }
+
+    .brand-text {
+        min-width: 0;
+    }
+
+    .brand-text h1 {
+        font-size: clamp(15px, 4vw, 19px);
+    }
+
+    .brand-text p {
+        font-size: 8px;
+        letter-spacing: .5px;
+    }
+
+    .header-right button {
+        font-size: 12px;
+        padding: 8px 5px;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 100%;
+        padding: 12px;
+    }
+
+    .page-heading h2 {
+        font-size: 22px;
+    }
+
+    .page-heading p {
         font-size: 12px;
     }
 
-    .page-heading h1 {
-        font-size: 23px;
+    .card {
+        width: 100%;
+        border-radius: 10px;
+    }
+
+    .card-header {
+        padding: 12px;
+    }
+
+    .card-header h2 {
+        font-size: 16px;
     }
 
     .card-body {
-        padding: 16px;
+        padding: 13px;
+    }
+
+    .document-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 12px;
     }
 
     .document-card {
-        padding: 18px;
+        width: 100%;
+        padding: 15px;
+    }
+
+    .document-card h3 {
+        font-size: 15px;
+    }
+
+    .document-card p {
+        font-size: 12px;
+    }
+
+    .notice {
+        padding: 13px;
+        font-size: 12px;
     }
 
     .document-item {
         align-items: flex-start;
         flex-direction: column;
+        padding: 14px;
+        gap: 10px;
     }
+
+    .sidebar {
+        width: min(280px, 82vw);
+    }
+
+    footer {
+        padding: 17px 12px;
+        font-size: 10px;
+        line-height: 1.6;
+    }
+}
+
+@media screen and (max-width: 480px) {
+
+    .top-header {
+        gap: 8px;
+    }
+
+    .menu-toggle {
+        padding: 7px 9px;
+        font-size: 18px;
+    }
+
+    .brand {
+        gap: 7px;
+        min-width: 0;
+    }
+
+    .brand img {
+        width: 37px;
+        height: 37px;
+    }
+
+    .brand-text h1 {
+        font-size: 15px;
+    }
+
+    .brand-text p {
+        font-size: 7px;
+        letter-spacing: .5px;
+    }
+
+    .header-right button {
+        font-size: 10px;
+    }
+
+    .container {
+        padding: 12px;
+    }
+}
+
+@media screen and (max-width: 360px) {
+
+    .brand img {
+        width: 35px;
+        height: 35px;
+    }
+
+    .brand-text h1 {
+        font-size: 14px;
+    }
+
+    .brand-text p {
+        font-size: 7px;
+    }
+
+    .header-right button {
+        font-size: 10px;
+    }
+
+    .container {
+        padding: 9px;
+    }
+}
+
+img {
+    max-width: 100%;
+}
+
+button {
+    touch-action: manipulation;
+}
+
+.document-item,
+.document-details {
+    overflow-wrap: anywhere;
 }
 </style>
 </head>
@@ -392,101 +691,226 @@ footer {
 
 <!-- HEADER -->
 <header class="top-header">
-    <button class="menu-toggle" onclick="toggleSidebar()" aria-label="Toggle menu">
+
+    <button
+        type="button"
+        class="menu-toggle"
+        onclick="toggleSidebar()"
+        aria-label="Open navigation menu"
+    >
         ☰
     </button>
 
     <div class="brand">
-        <img src="https://64.media.tumblr.com/33ca84afd52d5cd0ef7bb1bb66c6176b/tumblr_o4ti6j8k6r1unefbyo1_400.png" alt="PLMUN Logo">
-        <div>
-            <h2>I-PILIMUN</h2>
+        <img
+            src="https://64.media.tumblr.com/33ca84afd52d5cd0ef7bb1bb66c6176b/tumblr_o4ti6j8k6r1unefbyo1_400.png"
+            alt="PLMUN Logo"
+        >
+
+        <div class="brand-text">
+            <h1>I-PILIMUN</h1>
             <p>STUDENT ID INFORMATION</p>
         </div>
     </div>
+
+    <div class="header-right">
+        <button type="button" onclick="logout()">LOG OUT ↗</button>
+    </div>
+
 </header>
+
+<!-- SIDEBAR OVERLAY -->
+<div
+    id="sidebarOverlay"
+    class="sidebar-overlay"
+    onclick="closeSidebar()"
+></div>
 
 <!-- SIDEBAR -->
 <aside class="sidebar" id="sidebar">
-    <a href="student-dashboard.html">Dashboard</a>
-    <a href="profile.html">My Profile</a>
-    <a href="id.html">My Student ID</a>
-    <a href="application.html">Application Status</a>
-    <a href="document.html" class="active">My Documents</a>
-    <a href="#" class="logout-link" onclick="logout(event)">Logout</a>
-</aside>
 
-<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+    <div class="sidebar-heading">
+        <img
+            src="https://64.media.tumblr.com/33ca84afd52d5cd0ef7bb1bb66c6176b/tumblr_o4ti6j8k6r1unefbyo1_400.png"
+            alt="PLMUN Logo"
+        >
+
+        <div>
+            <h3>STUDENT PORTAL</h3>
+            <p>Navigation Menu</p>
+        </div>
+    </div>
+
+    <nav class="sidebar-nav">
+
+        <button class="sidebar-link"
+            onclick="window.location.href='student-dashboard.html'">
+            <span>▦</span> Dashboard
+        </button>
+
+        <button class="sidebar-link"
+            onclick="window.location.href='profile.html'">
+            <span>👤</span> My Profile
+        </button>
+
+        <button class="sidebar-link"
+            onclick="window.location.href='id.html'">
+            <span>▣</span> My Student ID
+        </button>
+
+        <button class="sidebar-link"
+            onclick="window.location.href='application.html'">
+            <span>☑</span> Application Status
+        </button>
+
+        <button class="sidebar-link active"
+            onclick="window.location.href='document.html'">
+            <span>📁</span> My Documents
+        </button>
+
+        <div class="sidebar-divider"></div>
+
+        <button class="sidebar-link logout-link" onclick="logout()">
+            <span>↗</span> Log Out
+        </button>
+
+    </nav>
+
+    <div class="sidebar-footer">
+        <p>I-PILIMUN</p>
+        <small>Student ID Information System</small>
+    </div>
+
+</aside>
 
 <!-- MAIN CONTENT -->
 <main class="container">
 
     <section class="page-heading">
-        <h1>My Documents</h1>
-        <p>Upload and manage the documents required for your Student ID application.</p>
+        <h2>My Documents</h2>
+        <p>
+            Upload and manage the documents required for your
+            Student ID application.
+        </p>
     </section>
 
     <div class="notice">
-        <strong>Reminder:</strong> Please upload clear and readable documents.
-        Accepted formats: PDF, JPG, and PNG. Maximum file size: 5 MB.
+        <strong>REMINDER:</strong>
+        Upload clear and readable documents.
+        Accepted formats: PDF, JPG, and PNG.
+        Maximum file size: 5 MB.
     </div>
 
     <div id="message"></div>
 
-    <!-- UPLOAD DOCUMENTS -->
-    <section class="content-card">
+    <!-- DOCUMENT UPLOAD CARD -->
+    <section class="card">
+
         <div class="card-header">
             <h2>Document Submission</h2>
         </div>
 
         <div class="card-body">
-            <section class="document-grid">
+
+            <div class="document-grid">
 
                 <div class="document-card">
                     <h3>2x2 ID Picture</h3>
-                    <p>Upload your recent 2x2 identification picture.</p>
-                    <input type="file" id="file-picture" accept=".jpg,.jpeg,.png,.pdf">
-                    <button class="upload-btn" onclick="uploadDocument('2x2 ID Picture', 'file-picture')">
-                        Upload Document
+                    <p>
+                        Upload your recent 2x2 identification picture.
+                    </p>
+
+                    <input
+                        type="file"
+                        id="file-picture"
+                        accept=".jpg,.jpeg,.png,.pdf"
+                    >
+
+                    <button
+                        class="upload-btn"
+                        onclick="uploadDocument('2x2 ID Picture', 'file-picture')"
+                    >
+                        UPLOAD DOCUMENT
                     </button>
-                    <div class="status" id="status-picture"></div>
+
+                    <div class="upload-status" id="status-picture"></div>
                 </div>
 
                 <div class="document-card">
                     <h3>Birth Certificate</h3>
-                    <p>Upload a clear copy of your birth certificate.</p>
-                    <input type="file" id="file-birth" accept=".jpg,.jpeg,.png,.pdf">
-                    <button class="upload-btn" onclick="uploadDocument('Birth Certificate', 'file-birth')">
-                        Upload Document
+                    <p>
+                        Upload a clear copy of your birth certificate.
+                    </p>
+
+                    <input
+                        type="file"
+                        id="file-birth"
+                        accept=".jpg,.jpeg,.png,.pdf"
+                    >
+
+                    <button
+                        class="upload-btn"
+                        onclick="uploadDocument('Birth Certificate', 'file-birth')"
+                    >
+                        UPLOAD DOCUMENT
                     </button>
-                    <div class="status" id="status-birth"></div>
+
+                    <div class="upload-status" id="status-birth"></div>
                 </div>
 
                 <div class="document-card">
                     <h3>Registration Form</h3>
-                    <p>Upload your current registration or enrollment form.</p>
-                    <input type="file" id="file-registration" accept=".jpg,.jpeg,.png,.pdf">
-                    <button class="upload-btn" onclick="uploadDocument('Registration Form', 'file-registration')">
-                        Upload Document
+                    <p>
+                        Upload your current registration or enrollment form.
+                    </p>
+
+                    <input
+                        type="file"
+                        id="file-registration"
+                        accept=".jpg,.jpeg,.png,.pdf"
+                    >
+
+                    <button
+                        class="upload-btn"
+                        onclick="uploadDocument('Registration Form', 'file-registration')"
+                    >
+                        UPLOAD DOCUMENT
                     </button>
-                    <div class="status" id="status-registration"></div>
+
+                    <div class="upload-status" id="status-registration"></div>
                 </div>
 
                 <div class="document-card">
                     <h3>Valid School ID</h3>
-                    <p>Upload a copy of your existing school identification, if available.</p>
-                    <input type="file" id="file-schoolid" accept=".jpg,.jpeg,.png,.pdf">
-                    <button class="upload-btn" onclick="uploadDocument('Valid School ID', 'file-schoolid')">
-                        Upload Document
+                    <p>
+                        Upload a copy of your existing school identification,
+                        if available.
+                    </p>
+
+                    <input
+                        type="file"
+                        id="file-schoolid"
+                        accept=".jpg,.jpeg,.png,.pdf"
+                    >
+
+                    <button
+                        class="upload-btn"
+                        onclick="uploadDocument('Valid School ID', 'file-schoolid')"
+                    >
+                        UPLOAD DOCUMENT
                     </button>
-                    <div class="status" id="status-schoolid"></div>
+
+                    <div class="upload-status" id="status-schoolid"></div>
                 </div>
 
-            </section>
+            </div>
+
         </div>
     </section>
 
-    <!-- UPLOADED DOCUMENTS -->
-    <section class="content-card">
+    <!-- UPLOADED DOCUMENTS CARD -->
+    <section class="card">
+
         <div class="card-header">
             <h2>Uploaded Documents</h2>
         </div>
@@ -496,39 +920,64 @@ footer {
                 Loading documents...
             </div>
         </div>
+
     </section>
 
 </main>
 
+<!-- FOOTER -->
 <footer>
-    Pamantasan ng Lungsod ng Muntinlupa | Student ID Information System
+    © 2026 Pamantasan ng Lungsod ng Muntinlupa |
+    I-PILIMUN Student ID Information System
 </footer>
 
 <script>
+
+// ==========================================
+// SUPABASE CONFIGURATION
+// ==========================================
+
 const SUPABASE_URL = "https://mlrpkkmexmboqrnmjkuy.supabase.co";
-const SUPABASE_KEY = "sb_publishable_-BIYMjip4Zon8HwZUCPT1Q_P0pDCMke";
+
+const SUPABASE_ANON_KEY =
+    "sb_publishable_-BIYMjip4Zon8HwZUCPT1Q_P0pDCMke";
 
 const supabaseClient = window.supabase.createClient(
     SUPABASE_URL,
-    SUPABASE_KEY
+    SUPABASE_ANON_KEY
 );
 
 let currentUser = null;
 
-/* SIDEBAR */
+
+// ==========================================
+// SIDEBAR
+// ==========================================
+
 function toggleSidebar() {
-    document.getElementById("sidebar").classList.toggle("show");
-    document.getElementById("overlay").classList.toggle("show");
+    document.getElementById("sidebar").classList.toggle("open");
+    document.getElementById("sidebarOverlay").classList.toggle("show");
 }
 
 function closeSidebar() {
-    document.getElementById("sidebar").classList.remove("show");
-    document.getElementById("overlay").classList.remove("show");
+    document.getElementById("sidebar").classList.remove("open");
+    document.getElementById("sidebarOverlay").classList.remove("show");
 }
 
-/* LOGOUT */
-async function logout(event) {
-    if (event) event.preventDefault();
+
+// ==========================================
+// LOGOUT
+// ==========================================
+
+async function logout() {
+
+    const confirmLogout = confirm(
+        "Are you sure you want to log out?"
+    );
+
+    if (!confirmLogout) {
+        return;
+    }
 
     const { error } = await supabaseClient.auth.signOut();
 
@@ -540,9 +989,15 @@ async function logout(event) {
     window.location.href = "index.html";
 }
 
-/* INITIALIZE PAGE */
+
+// ==========================================
+// INITIALIZE PAGE
+// ==========================================
+
 async function initializePage() {
-    const { data, error } = await supabaseClient.auth.getSession();
+
+    const { data, error } =
+        await supabaseClient.auth.getSession();
 
     if (error || !data.session) {
         window.location.href = "index.html";
@@ -554,15 +1009,29 @@ async function initializePage() {
     await loadDocuments();
 }
 
-/* MESSAGE */
+
+// ==========================================
+// MESSAGE
+// ==========================================
+
 function showMessage(message, isError = false) {
+
     const box = document.getElementById("message");
+
     box.textContent = message;
-    box.style.color = isError ? "#c0392b" : "#08783c";
+
+    box.style.color = isError
+        ? "#a00000"
+        : "#075c3b";
 }
 
-/* UPLOAD DOCUMENT */
+
+// ==========================================
+// UPLOAD DOCUMENT
+// ==========================================
+
 async function uploadDocument(documentName, inputId) {
+
     if (!currentUser) {
         showMessage("Please log in again.", true);
         return;
@@ -571,9 +1040,13 @@ async function uploadDocument(documentName, inputId) {
     const input = document.getElementById(inputId);
     const file = input.files[0];
 
-    const statusId = "status-" + inputId.replace("file-", "");
+    const statusId =
+        "status-" + inputId.replace("file-", "");
+
     const status = document.getElementById(statusId);
-    const button = input.parentElement.querySelector("button");
+
+    const button =
+        input.parentElement.querySelector("button");
 
     if (!file) {
         showMessage("Please select a file first.", true);
@@ -587,113 +1060,170 @@ async function uploadDocument(documentName, inputId) {
     ];
 
     if (!allowedTypes.includes(file.type)) {
-        showMessage("Only PDF, JPG, and PNG files are allowed.", true);
+        showMessage(
+            "Only PDF, JPG, and PNG files are allowed.",
+            true
+        );
         return;
     }
 
     if (file.size > 5 * 1024 * 1024) {
-        showMessage("File size must not exceed 5 MB.", true);
+        showMessage(
+            "File size must not exceed 5 MB.",
+            true
+        );
         return;
     }
 
     button.disabled = true;
-    button.textContent = "Uploading...";
+    button.textContent = "UPLOADING...";
     status.textContent = "";
 
-    const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
-    const filePath = currentUser.id + "/" + Date.now() + "_" + safeName;
+    const safeName = file.name.replace(
+        /[^a-zA-Z0-9._-]/g,
+        "_"
+    );
+
+    const filePath =
+        currentUser.id + "/" + Date.now() + "_" + safeName;
 
     try {
-        const { error: uploadError } = await supabaseClient
-            .storage
-            .from("student-documents")
-            .upload(filePath, file);
 
-        if (uploadError) throw uploadError;
+        // Upload file to Supabase Storage
+        const { error: uploadError } =
+            await supabaseClient
+                .storage
+                .from("student-documents")
+                .upload(filePath, file);
 
-        const { error: insertError } = await supabaseClient
-            .from("documents")
-            .insert({
-                student_id: currentUser.id,
-                document_name: documentName,
-                file_path: filePath,
-                file_type: file.type,
-                status: "Pending"
-            });
+        if (uploadError) {
+            throw uploadError;
+        }
+
+        // Save document information to database
+        const { error: insertError } =
+            await supabaseClient
+                .from("documents")
+                .insert({
+                    student_id: currentUser.id,
+                    document_name: documentName,
+                    file_path: filePath,
+                    file_type: file.type,
+                    status: "Pending"
+                });
 
         if (insertError) {
-            await supabaseClient.storage
+
+            // Remove uploaded file if database insert fails
+            await supabaseClient
+                .storage
                 .from("student-documents")
                 .remove([filePath]);
 
             throw insertError;
         }
 
-        showMessage(documentName + " uploaded successfully!");
+        showMessage(
+            documentName + " uploaded successfully!"
+        );
+
         status.textContent = "Uploaded successfully.";
+
         input.value = "";
 
         await loadDocuments();
 
     } catch (error) {
-        console.error(error);
-        showMessage("Upload failed: " + error.message, true);
+
+        console.error("Upload error:", error);
+
+        showMessage(
+            "Upload failed: " + error.message,
+            true
+        );
 
     } finally {
+
         button.disabled = false;
-        button.textContent = "Upload Document";
+        button.textContent = "UPLOAD DOCUMENT";
     }
 }
 
-/* LOAD UPLOADED DOCUMENTS */
+
+// ==========================================
+// LOAD DOCUMENT HISTORY
+// ==========================================
+
 async function loadDocuments() {
+
     const list = document.getElementById("documentList");
 
     const { data, error } = await supabaseClient
         .from("documents")
-        .select("document_name, file_path, status, uploaded_at")
+        .select(`
+            document_name,
+            file_path,
+            status,
+            uploaded_at
+        `)
         .eq("student_id", currentUser.id)
         .order("uploaded_at", { ascending: false });
 
     if (error) {
-        list.textContent = "Unable to load documents: " + error.message;
+
+        list.textContent =
+            "Unable to load documents: " + error.message;
+
         return;
     }
 
     if (!data || data.length === 0) {
-        list.textContent = "You have not uploaded any documents yet.";
+
+        list.textContent =
+            "You have not uploaded any documents yet.";
+
         return;
     }
 
     list.innerHTML = "";
 
     data.forEach(doc => {
+
         const item = document.createElement("div");
         item.className = "document-item";
 
         const details = document.createElement("div");
+        details.className = "document-details";
 
         const name = document.createElement("strong");
         name.textContent = doc.document_name;
 
         const date = document.createElement("small");
-        date.textContent = "Uploaded: " +
+
+        date.textContent =
+            "Uploaded: " +
             new Date(doc.uploaded_at).toLocaleString();
 
         details.appendChild(name);
         details.appendChild(date);
 
         const status = document.createElement("span");
-        status.textContent = doc.status || "Pending";
 
-        const normalizedStatus = (doc.status || "Pending").toLowerCase();
+        const documentStatus = doc.status || "Pending";
+
+        status.textContent = documentStatus;
+
+        const normalizedStatus =
+            documentStatus.toLowerCase();
 
         if (normalizedStatus === "approved") {
             status.className = "approved";
         } else if (normalizedStatus === "rejected") {
             status.className = "rejected";
-        } else {
+        } else if (normalizedStatus === "pending") {
             status.className = "pending";
+        } else {
+            status.className = "default-status";
         }
 
         item.appendChild(details);
@@ -703,7 +1233,13 @@ async function loadDocuments() {
     });
 }
 
+
+// ==========================================
+// START PAGE
+// ==========================================
+
 initializePage();
+
 </script>
 
 </body>
