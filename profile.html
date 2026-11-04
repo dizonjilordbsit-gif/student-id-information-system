@@ -498,6 +498,115 @@ footer {
     border-top: 4px solid var(--gold);
     font-size: 13px;
 }
+/* PROFILE EDITING */
+
+.profile-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.action-button {
+    padding: 11px 16px;
+    border: none;
+    border-radius: 7px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.edit-button,
+.save-button {
+    background: var(--main-green);
+    color: white;
+}
+
+.edit-button:hover,
+.save-button:hover {
+    background: var(--light-green);
+}
+
+.cancel-button {
+    background: #777;
+    color: white;
+}
+
+.delete-picture-button {
+    background: #a32626;
+    color: white;
+    margin-bottom: 12px;
+}
+
+.delete-picture-button:hover {
+    background: #c0392b;
+}
+
+.edit-form {
+    margin-top: 20px;
+    padding: 18px;
+    background: var(--cream);
+    border: 1px solid #e5d9b5;
+    border-radius: 9px;
+}
+
+.edit-form h4 {
+    color: var(--main-green);
+    margin-bottom: 15px;
+}
+
+.edit-field {
+    margin-bottom: 13px;
+}
+
+.edit-field label {
+    display: block;
+    color: var(--main-green);
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 6px;
+}
+
+.edit-field input,
+.edit-field select {
+    width: 100%;
+    padding: 11px;
+    border: 1px solid #cfc7ae;
+    border-radius: 6px;
+    background: white;
+    color: var(--text-dark);
+    font-size: 14px;
+}
+
+.edit-field input:focus,
+.edit-field select:focus {
+    outline: 2px solid var(--gold);
+    border-color: var(--main-green);
+}
+
+.edit-message {
+    margin-top: 12px;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.edit-message.success {
+    color: #087a37;
+}
+
+.edit-message.error {
+    color: #a00000;
+}
+
+@media(max-width: 600px) {
+    .profile-actions {
+        flex-direction: column;
+    }
+
+    .action-button {
+        width: 100%;
+    }
+}
 
 /* TABLET */
 
@@ -821,12 +930,20 @@ footer {
 
                     </div>
 
-                    <label
-                        for="profilePictureInput"
-                        class="upload-picture-button"
-                    >
-                        📷 Change Profile Picture
-                    </label>
+               <label
+    for="profilePictureInput"
+    class="upload-picture-button"
+>
+    📷 Change Profile Picture
+</label>
+
+<button
+    type="button"
+    class="action-button delete-picture-button"
+    onclick="deleteProfilePicture()"
+>
+    🗑 Delete Profile Picture
+</button>
 
                     <input
                         type="file"
@@ -867,6 +984,94 @@ footer {
                     </div>
 
                     <div class="profile-grid" id="fields"></div>
+                    <div class="profile-actions" id="profileActions">
+    <button
+        type="button"
+        class="action-button edit-button"
+        onclick="showEditForm()"
+    >
+        ✏️ EDIT PROFILE
+    </button>
+</div>
+
+<form id="editForm" class="edit-form" hidden>
+
+    <h4>Edit Personal Information</h4>
+
+    <div class="edit-field">
+        <label for="editFirstName">First Name</label>
+        <input
+            type="text"
+            id="editFirstName"
+            required
+            maxlength="100"
+        >
+    </div>
+
+    <div class="edit-field">
+        <label for="editLastName">Last Name</label>
+        <input
+            type="text"
+            id="editLastName"
+            required
+            maxlength="100"
+        >
+    </div>
+
+    <div class="edit-field">
+        <label for="editCourse">Course</label>
+        <input
+            type="text"
+            id="editCourse"
+            required
+            maxlength="150"
+        >
+    </div>
+
+    <div class="edit-field">
+        <label for="editYearLevel">Year Level</label>
+        <select id="editYearLevel" required>
+            <option value="">Select Year Level</option>
+            <option value="1st Year">1st Year</option>
+            <option value="2nd Year">2nd Year</option>
+            <option value="3rd Year">3rd Year</option>
+            <option value="4th Year">4th Year</option>
+            <option value="5th Year">5th Year</option>
+        </select>
+    </div>
+
+    <div class="edit-field">
+        <label for="editBirthdate">Birthdate</label>
+        <input
+            type="date"
+            id="editBirthdate"
+            required
+        >
+    </div>
+
+    <div class="profile-actions">
+
+        <button
+            type="submit"
+            class="action-button save-button"
+            id="saveProfileButton"
+        >
+            💾 SAVE CHANGES
+        </button>
+
+        <button
+            type="button"
+            class="action-button cancel-button"
+            onclick="cancelEdit()"
+        >
+            CANCEL
+        </button>
+
+    </div>
+
+    <div id="editMessage" class="edit-message"></div>
+
+</form>
 
                     <div class="notice profile-notice">
 
@@ -921,6 +1126,7 @@ const db = window.supabase.createClient(
 );
 
 let currentUser = null;
+let currentStudent = null;
 
 
 // ==========================================
@@ -1022,7 +1228,8 @@ async function getStudent() {
 
         }
 
-        return student;
+       currentStudent = student;
+return student;
 
     } catch (error) {
 
@@ -1247,10 +1454,14 @@ document.getElementById("profilePictureInput")
                 throw urlError;
             }
 
-            // DISPLAY NEW PROFILE PICTURE
+            // UPDATE CURRENT STUDENT DATA
 
-            document.getElementById("profilePicture").src =
-                data.signedUrl;
+currentStudent.profile_picture_path = filePath;
+
+// DISPLAY NEW PROFILE PICTURE
+
+document.getElementById("profilePicture").src =
+    data.signedUrl;
 
             uploadMessage.className =
                 "upload-message success";
@@ -1273,7 +1484,242 @@ document.getElementById("profilePictureInput")
         event.target.value = "";
 
     });
+// ==========================================
+// EDIT PROFILE
+// ==========================================
 
+function showEditForm() {
+
+    if (!currentStudent) return;
+
+    document.getElementById("editFirstName").value =
+        currentStudent.first_name || "";
+
+    document.getElementById("editLastName").value =
+        currentStudent.last_name || "";
+
+    document.getElementById("editCourse").value =
+        currentStudent.course || "";
+
+    document.getElementById("editYearLevel").value =
+        currentStudent.year_level || "";
+
+    document.getElementById("editBirthdate").value =
+        currentStudent.birthdate || "";
+
+    document.getElementById("editMessage").textContent = "";
+
+    document.getElementById("editForm").hidden = false;
+
+    document.getElementById("profileActions").hidden = true;
+
+}
+
+function cancelEdit() {
+
+    document.getElementById("editForm").hidden = true;
+
+    document.getElementById("profileActions").hidden = false;
+
+    document.getElementById("editMessage").textContent = "";
+
+}
+
+
+// ==========================================
+// SAVE / UPDATE PROFILE
+// ==========================================
+
+document.getElementById("editForm")
+    .addEventListener("submit", async function(event) {
+
+        event.preventDefault();
+
+        if (!currentUser || !currentStudent) {
+            alert("Student session not found. Please log in again.");
+            return;
+        }
+
+        const firstName =
+            document.getElementById("editFirstName").value.trim();
+
+        const lastName =
+            document.getElementById("editLastName").value.trim();
+
+        const course =
+            document.getElementById("editCourse").value.trim();
+
+        const yearLevel =
+            document.getElementById("editYearLevel").value;
+
+        const birthdate =
+            document.getElementById("editBirthdate").value;
+
+        const editMessage =
+            document.getElementById("editMessage");
+
+        const saveButton =
+            document.getElementById("saveProfileButton");
+
+        if (!firstName || !lastName || !course ||
+            !yearLevel || !birthdate) {
+
+            editMessage.className = "edit-message error";
+
+            editMessage.textContent =
+                "Please complete all required fields.";
+
+            return;
+        }
+
+        saveButton.disabled = true;
+        saveButton.textContent = "SAVING...";
+
+        editMessage.className = "edit-message";
+        editMessage.textContent = "Updating your profile...";
+
+        try {
+
+            const updates = {
+                first_name: firstName,
+                last_name: lastName,
+                course: course,
+                year_level: yearLevel,
+                birthdate: birthdate
+            };
+
+            const { error } = await db
+                .from("students")
+                .update(updates)
+                .eq("id", currentUser.id);
+
+            if (error) {
+                throw error;
+            }
+
+            currentStudent = {
+                ...currentStudent,
+                ...updates
+            };
+
+            // REFRESH PROFILE DISPLAY
+
+            await displayProfile(currentStudent);
+
+            cancelEdit();
+
+            const uploadMessage =
+                document.getElementById("uploadMessage");
+
+            uploadMessage.className =
+                "upload-message success";
+
+            uploadMessage.textContent =
+                "Student information successfully updated!";
+
+        } catch (error) {
+
+            console.error("Profile update error:", error);
+
+            editMessage.className = "edit-message error";
+
+            editMessage.textContent =
+                "Update failed: " + error.message;
+
+        } finally {
+
+            saveButton.disabled = false;
+            saveButton.textContent = "💾 SAVE CHANGES";
+
+        }
+
+    });
+
+
+// ==========================================
+// DELETE PROFILE PICTURE
+// ==========================================
+
+async function deleteProfilePicture() {
+
+    if (!currentUser || !currentStudent) {
+        alert("Student session not found.");
+        return;
+    }
+
+    const filePath = currentStudent.profile_picture_path;
+
+    if (!filePath) {
+        alert("You do not have an uploaded profile picture.");
+        return;
+    }
+
+    const confirmed = confirm(
+        "Are you sure you want to delete your profile picture? " +
+        "This action cannot be undone."
+    );
+
+    if (!confirmed) return;
+
+    const uploadMessage =
+        document.getElementById("uploadMessage");
+
+    uploadMessage.className = "upload-message";
+
+    uploadMessage.textContent =
+        "Deleting profile picture...";
+
+    try {
+
+        // DELETE FILE FROM SUPABASE STORAGE
+
+        const { error: deleteError } = await db.storage
+            .from("student-profiles")
+            .remove([filePath]);
+
+        if (deleteError) {
+            throw deleteError;
+        }
+
+        // CLEAR PROFILE PICTURE PATH IN STUDENTS TABLE
+
+        const { error: updateError } = await db
+            .from("students")
+            .update({
+                profile_picture_path: null
+            })
+            .eq("id", currentUser.id);
+
+        if (updateError) {
+            throw updateError;
+        }
+
+        currentStudent.profile_picture_path = null;
+
+        // RESTORE DEFAULT PROFILE IMAGE
+
+        document.getElementById("profilePicture").src =
+            "https://placehold.co/250x250/003b24/d4af37?text=STUDENT";
+
+        uploadMessage.className =
+            "upload-message success";
+
+        uploadMessage.textContent =
+            "Profile picture successfully deleted.";
+
+    } catch (error) {
+
+        console.error("Delete picture error:", error);
+
+        uploadMessage.className =
+            "upload-message error";
+
+        uploadMessage.textContent =
+            "Delete failed: " + error.message;
+
+    }
+
+}
 
 // ==========================================
 // LOGOUT
