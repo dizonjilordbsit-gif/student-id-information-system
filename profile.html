@@ -241,7 +241,7 @@ body {
     margin-bottom: 10px;
 }
 
-/* PROFILE CARD */
+/* PROFILE BOARD */
 
 .card {
     background: var(--cream);
@@ -277,33 +277,167 @@ body {
     padding: 23px;
 }
 
+.profile-board {
+    width: 100%;
+    max-width: 1100px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.profile-layout {
+    display: grid;
+    grid-template-columns: 280px minmax(0, 1fr);
+    gap: 25px;
+    align-items: stretch;
+    min-height: 440px;
+}
+
+/* LEFT PROFILE PANEL */
+
+.profile-left {
+    background: var(--dark-green);
+    border: 2px solid var(--gold);
+    border-radius: 12px;
+    padding: 25px 18px;
+    text-align: center;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-width: 0;
+}
+
+.profile-picture-container {
+    width: 175px;
+    height: 175px;
+    flex-shrink: 0;
+    border: 4px solid var(--gold);
+    border-radius: 50%;
+    overflow: hidden;
+    background: white;
+    margin-bottom: 15px;
+    box-shadow: 0 0 15px rgba(212,175,55,.35);
+}
+
+.profile-picture-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.upload-picture-button {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--dark-green);
+    padding: 10px 13px;
+    border-radius: 7px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 10px;
+    transition: .2s;
+}
+
+.upload-picture-button:hover {
+    background: #f0cf5a;
+}
+
+.upload-picture-button:focus-visible {
+    outline: 3px solid white;
+    outline-offset: 3px;
+}
+
+.picture-hint {
+    color: #dce9df;
+    font-size: 11px;
+    line-height: 1.5;
+    margin-bottom: 18px;
+}
+
+.profile-left h3 {
+    color: var(--gold);
+    font-size: 19px;
+    overflow-wrap: anywhere;
+    margin-bottom: 7px;
+}
+
+.profile-left p {
+    font-size: 12px;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+.upload-message {
+    margin-top: 12px;
+    font-size: 12px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.upload-message.success {
+    color: #a8f0bd;
+}
+
+.upload-message.error {
+    color: #ffb4a9;
+}
+
+/* RIGHT INFORMATION PANEL */
+
+.profile-right {
+    min-width: 0;
+    background: white;
+    border: 1px solid #e5d9b5;
+    border-radius: 10px;
+    padding: 22px;
+}
+
+.profile-section-title {
+    border-bottom: 2px solid var(--gold);
+    padding-bottom: 13px;
+    margin-bottom: 18px;
+}
+
+.profile-section-title h3 {
+    color: var(--main-green);
+    font-size: 21px;
+    margin-bottom: 5px;
+}
+
+.profile-section-title p {
+    color: #777;
+    font-size: 12px;
+}
+
 .profile-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 15px;
+    gap: 13px;
 }
 
 .profile-item {
-    background: white;
-    padding: 18px;
+    background: var(--cream);
+    padding: 16px;
     border-left: 4px solid var(--gold);
     border-radius: 7px;
-    overflow-wrap: anywhere;
     min-width: 0;
+    overflow-wrap: anywhere;
 }
 
 .profile-item strong {
     display: block;
-    margin-bottom: 9px;
+    margin-bottom: 8px;
     color: var(--main-green);
-    font-size: 13px;
+    font-size: 12px;
 }
 
 .profile-item span {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: bold;
     color: var(--text-dark);
     overflow-wrap: anywhere;
+    word-break: break-word;
 }
 
 .notice {
@@ -314,6 +448,27 @@ body {
     margin-bottom: 18px;
     color: #68551f;
     line-height: 1.6;
+}
+
+.profile-notice {
+    margin-top: 20px;
+    margin-bottom: 0;
+    font-size: 13px;
+}
+
+.back-button {
+    margin-top: 22px;
+    padding: 13px 20px;
+    background: var(--main-green);
+    color: white;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.back-button:hover {
+    background: var(--light-green);
 }
 
 .loading {
@@ -332,21 +487,6 @@ body {
     line-height: 1.6;
 }
 
-.back-button {
-    margin-top: 22px;
-    padding: 13px 20px;
-    background: var(--main-green);
-    color: white;
-    border: none;
-    border-radius: 7px;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-.back-button:hover {
-    background: var(--light-green);
-}
-
 /* FOOTER */
 
 footer {
@@ -362,6 +502,7 @@ footer {
 /* TABLET */
 
 @media(max-width: 850px) {
+
     .top-header {
         margin-left: 0;
         padding: 12px 15px;
@@ -397,11 +538,59 @@ footer {
     footer {
         margin-left: 0;
     }
+
+    .profile-layout {
+        grid-template-columns: 230px minmax(0, 1fr);
+        gap: 15px;
+    }
+
+    .profile-left {
+        padding: 20px 12px;
+    }
+
+    .profile-picture-container {
+        width: 145px;
+        height: 145px;
+    }
+
+    .profile-right {
+        padding: 16px;
+    }
 }
 
 /* MOBILE */
 
+@media(max-width: 650px) {
+
+    .profile-layout {
+        grid-template-columns: 1fr;
+        min-height: auto;
+    }
+
+    .profile-left {
+        padding: 25px 15px;
+    }
+
+    .profile-picture-container {
+        width: 150px;
+        height: 150px;
+    }
+
+    .profile-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-right {
+        padding: 15px;
+    }
+
+    .profile-section-title h3 {
+        font-size: 18px;
+    }
+}
+
 @media(max-width: 600px) {
+
     .top-header {
         padding: 12px;
         gap: 8px;
@@ -455,19 +644,6 @@ footer {
         padding: 14px;
     }
 
-    .profile-grid {
-        grid-template-columns: 1fr;
-        gap: 10px;
-    }
-
-    .profile-item {
-        padding: 14px;
-    }
-
-    .profile-item span {
-        font-size: 14px;
-    }
-
     .back-button {
         width: 100%;
     }
@@ -480,6 +656,7 @@ footer {
 }
 
 @media(max-width: 360px) {
+
     .brand img {
         width: 35px;
         height: 35px;
@@ -503,6 +680,7 @@ footer {
 <body>
 
 <!-- HEADER -->
+
 <header class="top-header">
 
     <button
@@ -515,6 +693,7 @@ footer {
     </button>
 
     <div class="brand">
+
         <img
             src="https://64.media.tumblr.com/33ca84afd52d5cd0ef7bb1bb66c6176b/tumblr_o4ti6j8k6r1unefbyo1_400.png"
             alt="PLMUN Logo"
@@ -524,6 +703,7 @@ footer {
             <h1>I-PILIMUN</h1>
             <p>STUDENT ID INFORMATION</p>
         </div>
+
     </div>
 
     <div class="header-right">
@@ -533,6 +713,7 @@ footer {
 </header>
 
 <!-- SIDEBAR OVERLAY -->
+
 <div
     id="sidebarOverlay"
     class="sidebar-overlay"
@@ -540,9 +721,11 @@ footer {
 ></div>
 
 <!-- SIDEBAR -->
+
 <aside class="sidebar" id="sidebar">
 
     <div class="sidebar-heading">
+
         <img
             src="https://64.media.tumblr.com/33ca84afd52d5cd0ef7bb1bb66c6176b/tumblr_o4ti6j8k6r1unefbyo1_400.png"
             alt="PLMUN Logo"
@@ -552,6 +735,7 @@ footer {
             <h3>STUDENT PORTAL</h3>
             <p>Navigation Menu</p>
         </div>
+
     </div>
 
     <nav class="sidebar-nav">
@@ -592,33 +776,111 @@ footer {
 </aside>
 
 <!-- MAIN CONTENT -->
+
 <main class="container">
 
     <section class="page-heading">
+
         <div class="eyebrow">STUDENT PORTAL</div>
+
         <h2>MY PROFILE</h2>
-        <p>View your registered PLMUN student information.</p>
+
+        <p>
+            View and manage your registered PLMUN student information.
+        </p>
+
     </section>
 
     <div id="message" class="loading">
         Connecting to student account...
     </div>
 
-    <section class="card" id="profileCard" hidden>
+    <!-- PROFILE BOARD -->
+
+    <section class="card profile-board" id="profileCard" hidden>
 
         <div class="card-header">
-            <h2>Personal Information</h2>
+            <h2>Student Profile</h2>
         </div>
 
         <div class="card-body">
 
-            <div class="profile-grid" id="fields"></div>
+            <div class="profile-layout">
 
-            <div class="notice" style="margin-top:20px;">
-                <strong>Profile Information:</strong>
-                This page is for viewing your registered student details.
-                For corrections or updates, please contact the authorized
-                school administrator.
+                <!-- LEFT SIDE: PROFILE PICTURE -->
+
+                <div class="profile-left">
+
+                    <div class="profile-picture-container">
+
+                        <img
+                            id="profilePicture"
+                            src="https://placehold.co/250x250/003b24/d4af37?text=STUDENT"
+                            alt="Student Profile Picture"
+                        >
+
+                    </div>
+
+                    <label
+                        for="profilePictureInput"
+                        class="upload-picture-button"
+                    >
+                        📷 Change Profile Picture
+                    </label>
+
+                    <input
+                        type="file"
+                        id="profilePictureInput"
+                        accept="image/png,image/jpeg,image/webp"
+                        hidden
+                    >
+
+                    <p class="picture-hint">
+                        JPG, PNG, or WEBP<br>
+                        Maximum file size: 3 MB
+                    </p>
+
+                    <h3 id="profileName">Student Name</h3>
+
+                    <p id="profileStudentNumber">
+                        Student Number
+                    </p>
+
+                    <p id="profileCourse">
+                        Course
+                    </p>
+
+                    <div id="uploadMessage" class="upload-message"></div>
+
+                </div>
+
+                <!-- RIGHT SIDE: STUDENT INFORMATION -->
+
+                <div class="profile-right">
+
+                    <div class="profile-section-title">
+
+                        <h3>Personal Information</h3>
+
+                        <p>Your registered student details</p>
+
+                    </div>
+
+                    <div class="profile-grid" id="fields"></div>
+
+                    <div class="notice profile-notice">
+
+                        <strong>Profile Information:</strong>
+
+                        This page is for viewing your registered student
+                        details. For corrections or updates to your
+                        personal information, please contact the
+                        authorized school administrator.
+
+                    </div>
+
+                </div>
+
             </div>
 
             <button
@@ -629,9 +891,12 @@ footer {
             </button>
 
         </div>
+
     </section>
 
 </main>
+
+<!-- FOOTER -->
 
 <footer>
     © 2026 Pamantasan ng Lungsod ng Muntinlupa |
@@ -639,11 +904,13 @@ footer {
 </footer>
 
 <script>
+
 // ==========================================
 // SUPABASE CONFIGURATION
 // ==========================================
 
-const SUPABASE_URL = "https://mlrpkkmexmboqrnmjkuy.supabase.co";
+const SUPABASE_URL =
+    "https://mlrpkkmexmboqrnmjkuy.supabase.co";
 
 const SUPABASE_ANON_KEY =
     "sb_publishable_-BIYMjip4Zon8HwZUCPT1Q_P0pDCMke";
@@ -661,13 +928,23 @@ let currentUser = null;
 // ==========================================
 
 function toggleSidebar() {
-    document.getElementById("sidebar").classList.toggle("open");
-    document.getElementById("sidebarOverlay").classList.toggle("show");
+
+    document.getElementById("sidebar")
+        .classList.toggle("open");
+
+    document.getElementById("sidebarOverlay")
+        .classList.toggle("show");
+
 }
 
 function closeSidebar() {
-    document.getElementById("sidebar").classList.remove("open");
-    document.getElementById("sidebarOverlay").classList.remove("show");
+
+    document.getElementById("sidebar")
+        .classList.remove("open");
+
+    document.getElementById("sidebarOverlay")
+        .classList.remove("show");
+
 }
 
 
@@ -676,12 +953,14 @@ function closeSidebar() {
 // ==========================================
 
 function escapeHTML(value) {
+
     return String(value ?? "")
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
+
 }
 
 
@@ -704,8 +983,11 @@ async function getStudent() {
         currentUser = data.session?.user;
 
         if (!currentUser) {
+
             location.href = "index.html";
+
             return null;
+
         }
 
         const { data: student, error: studentError } = await db
@@ -718,7 +1000,8 @@ async function getStudent() {
                 email,
                 course,
                 year_level,
-                birthdate
+                birthdate,
+                profile_picture_path
             `)
             .eq("id", currentUser.id)
             .maybeSingle();
@@ -728,11 +1011,15 @@ async function getStudent() {
         }
 
         if (!student) {
+
             message.className = "error-message";
+
             message.textContent =
                 "Hindi ma-load ang student record. " +
-                "Please check ang students table at RLS policies.";
+                "Please check your students table and RLS policies.";
+
             return null;
+
         }
 
         return student;
@@ -742,11 +1029,14 @@ async function getStudent() {
         console.error("Profile loading error:", error);
 
         message.className = "error-message";
+
         message.textContent =
             "Unable to load profile: " + error.message;
 
         return null;
+
     }
+
 }
 
 
@@ -754,16 +1044,36 @@ async function getStudent() {
 // DISPLAY PROFILE INFORMATION
 // ==========================================
 
-function displayProfile(student) {
+async function displayProfile(student) {
+
+    const fullName =
+        `${student.first_name || ""} ${student.last_name || ""}`.trim();
+
+    document.getElementById("profileName").textContent =
+        fullName || "Student Name";
+
+    document.getElementById("profileStudentNumber").textContent =
+        student.student_number || "No Student Number";
+
+    document.getElementById("profileCourse").textContent =
+        student.course || "No Course Provided";
 
     const fields = [
+
         ["Student ID Number", student.student_number],
+
         ["First Name", student.first_name],
+
         ["Last Name", student.last_name],
+
         ["Institutional Email", student.email || currentUser.email],
+
         ["Course", student.course],
+
         ["Year Level", student.year_level],
+
         ["Birthdate", student.birthdate]
+
     ];
 
     document.getElementById("fields").innerHTML =
@@ -774,9 +1084,195 @@ function displayProfile(student) {
             </div>
         `).join("");
 
+    // DEFAULT PROFILE PICTURE
+
+    const picture = document.getElementById("profilePicture");
+
+    picture.src =
+        "https://placehold.co/250x250/003b24/d4af37?text=STUDENT";
+
+    // LOAD SAVED PROFILE PICTURE
+
+    if (student.profile_picture_path) {
+
+        const { data, error } = await db.storage
+            .from("student-profiles")
+            .createSignedUrl(
+                student.profile_picture_path,
+                3600
+            );
+
+        if (!error && data?.signedUrl) {
+
+            picture.src = data.signedUrl;
+
+        } else {
+
+            console.error(
+                "Profile picture loading error:",
+                error
+            );
+
+        }
+
+    }
+
     document.getElementById("profileCard").hidden = false;
+
     document.getElementById("message").style.display = "none";
+
 }
+
+
+// ==========================================
+// PROFILE PICTURE UPLOAD
+// ==========================================
+
+document.getElementById("profilePictureInput")
+    .addEventListener("change", async function(event) {
+
+        const file = event.target.files[0];
+
+        if (!file) return;
+
+        const uploadMessage =
+            document.getElementById("uploadMessage");
+
+        const allowedTypes = [
+            "image/jpeg",
+            "image/png",
+            "image/webp"
+        ];
+
+        // CHECK FILE TYPE
+
+        if (!allowedTypes.includes(file.type)) {
+
+            uploadMessage.className =
+                "upload-message error";
+
+            uploadMessage.textContent =
+                "Please select a JPG, PNG, or WEBP image.";
+
+            event.target.value = "";
+
+            return;
+
+        }
+
+        // CHECK FILE SIZE
+
+        if (file.size > 3 * 1024 * 1024) {
+
+            uploadMessage.className =
+                "upload-message error";
+
+            uploadMessage.textContent =
+                "Image is too large. Maximum size is 3 MB.";
+
+            event.target.value = "";
+
+            return;
+
+        }
+
+        if (!currentUser) {
+
+            uploadMessage.className =
+                "upload-message error";
+
+            uploadMessage.textContent =
+                "Your session has expired. Please log in again.";
+
+            event.target.value = "";
+
+            return;
+
+        }
+
+        uploadMessage.className = "upload-message";
+
+        uploadMessage.textContent =
+            "Uploading profile picture...";
+
+        const extension = file.type === "image/jpeg"
+            ? "jpg"
+            : file.type === "image/png"
+                ? "png"
+                : "webp";
+
+        // EACH STUDENT HAS THEIR OWN FOLDER
+
+        const filePath =
+            `${currentUser.id}/profile.${extension}`;
+
+        try {
+
+            // UPLOAD IMAGE TO SUPABASE STORAGE
+
+            const { error: uploadError } = await db.storage
+                .from("student-profiles")
+                .upload(filePath, file, {
+
+                    upsert: true,
+
+                    contentType: file.type
+
+                });
+
+            if (uploadError) {
+                throw uploadError;
+            }
+
+            // SAVE IMAGE PATH TO STUDENT RECORD
+
+            const { error: updateError } = await db
+                .from("students")
+                .update({
+                    profile_picture_path: filePath
+                })
+                .eq("id", currentUser.id);
+
+            if (updateError) {
+                throw updateError;
+            }
+
+            // GENERATE TEMPORARY PRIVATE IMAGE URL
+
+            const { data, error: urlError } = await db.storage
+                .from("student-profiles")
+                .createSignedUrl(filePath, 3600);
+
+            if (urlError) {
+                throw urlError;
+            }
+
+            // DISPLAY NEW PROFILE PICTURE
+
+            document.getElementById("profilePicture").src =
+                data.signedUrl;
+
+            uploadMessage.className =
+                "upload-message success";
+
+            uploadMessage.textContent =
+                "Profile picture successfully updated!";
+
+        } catch (error) {
+
+            console.error("Picture upload error:", error);
+
+            uploadMessage.className =
+                "upload-message error";
+
+            uploadMessage.textContent =
+                "Upload failed: " + error.message;
+
+        }
+
+        event.target.value = "";
+
+    });
 
 
 // ==========================================
@@ -796,11 +1292,15 @@ async function logout() {
     const { error } = await db.auth.signOut();
 
     if (error) {
+
         alert("Unable to log out: " + error.message);
+
         return;
+
     }
 
     location.href = "index.html";
+
 }
 
 
@@ -816,7 +1316,7 @@ async function logout() {
         return;
     }
 
-    displayProfile(student);
+    await displayProfile(student);
 
 })();
 
@@ -824,4 +1324,3 @@ async function logout() {
 
 </body>
 </html>
-
