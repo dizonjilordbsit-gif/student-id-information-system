@@ -314,18 +314,17 @@ const supabaseClient = window.supabase.createClient(
 
 
 // ==========================================
-// REGISTRATION FORM
+// ELEMENTS
 // ==========================================
 
-const registerForm =
-    document.getElementById("registerForm");
+const registerForm = document.getElementById("registerForm");
+const registerButton = document.getElementById("registerButton");
+const message = document.getElementById("message");
 
-const registerButton =
-    document.getElementById("registerButton");
 
-const message =
-    document.getElementById("message");
-
+// ==========================================
+// REGISTRATION
+// ==========================================
 
 registerForm.addEventListener("submit", async function(event) {
 
@@ -349,57 +348,42 @@ registerForm.addEventListener("submit", async function(event) {
         .value;
 
 
-    // CHECK EMPTY FIELDS
+    // CHECK REQUIRED FIELDS
 
     if (!email || !password || !confirmPassword) {
-
-        showMessage(
-            "Please complete all required fields.",
-            "error"
-        );
-
+        showMessage("Please complete all required fields.", "error");
         return;
     }
 
 
-    // CHECK INSTITUTIONAL EMAIL
+    // CHECK PLMUN EMAIL
 
-    const emailPattern =
-        /^[a-zA-Z0-9._%+-]+@plmun\.edu\.ph$/i;
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@plmun\.edu\.ph$/i;
 
     if (!emailPattern.test(email)) {
-
         showMessage(
             "Please use your official PLMUN institutional email.",
             "error"
         );
-
         return;
     }
 
 
-    // CHECK PASSWORD LENGTH
+    // CHECK PASSWORD
 
     if (password.length < 8) {
-
         showMessage(
             "Password must contain at least 8 characters.",
             "error"
         );
-
         return;
     }
 
-
-    // CHECK PASSWORD MATCH
-
     if (password !== confirmPassword) {
-
         showMessage(
             "Passwords do not match. Please try again.",
             "error"
         );
-
         return;
     }
 
@@ -411,88 +395,74 @@ registerForm.addEventListener("submit", async function(event) {
     try {
 
         // ======================================
-        // CREATE SUPABASE AUTH ACCOUNT
+        // CREATE AUTH ACCOUNT
         // ======================================
 
-        const { data, error } =
-            await supabaseClient.auth.signUp({
-
-                email: email,
-
-                password: password
-
-            });
-
+        const { data, error } = await supabaseClient.auth.signUp({
+            email: email,
+            password: password
+        });
 
         if (error) {
             throw error;
         }
 
-
         if (!data.user) {
-
-            throw new Error(
-                "Unable to create your account. Please try again."
-            );
-
+            throw new Error("Unable to create your account.");
         }
 
 
         // ======================================
-        // CHECK ACTIVE SESSION
+        // CHECK SESSION
         // ======================================
 
         if (!data.session) {
-
             throw new Error(
-                "Account created, but no active session was returned. " +
-                "Please check that Confirm email is OFF in Supabase."
+                "No active session was created. Please make sure " +
+                "Confirm email is OFF in Supabase Authentication settings. " +
+                "If this email is already registered, use the Login page " +
+                "or reset your password."
             );
-
         }
 
 
         // ======================================
-        // SAVE STUDENT INFORMATION
-        // TO PUBLIC.STUDENTS TABLE
+        // CREATE INCOMPLETE STUDENT RECORD
         // ======================================
 
-        const { error: studentError } =
-            await supabaseClient
-                .from("students")
-                .insert({
-
-                    id: data.user.id,
-
-                    email: email
-
-                });
-
+        const { error: studentError } = await supabaseClient
+            .from("students")
+            .insert({
+                id: data.user.id,
+                email: email
+            });
 
         if (studentError) {
-            throw studentError;
+            console.error("Student record error:", studentError);
+
+            throw new Error(
+                "Your login account was created, but your student record " +
+                "could not be saved. Please do not register again using " +
+                "the same email. Database error: " + studentError.message
+            );
         }
 
 
         // ======================================
-        // REGISTRATION SUCCESSFUL
+        // SUCCESS
         // ======================================
 
         showMessage(
-            "Registration successful! Your account has been created. Redirecting to your Student Dashboard...",
+            "Registration successful! Redirecting to your Student Dashboard...",
             "success"
         );
 
-        registerForm.reset();
-
         registerButton.textContent = "SUCCESS!";
 
+        registerForm.reset();
 
         setTimeout(function() {
-
-            window.location.href =
-                "student-dashboard.html";
-
+            window.location.href = "student-dashboard.html";
         }, 2000);
 
 
@@ -511,25 +481,22 @@ registerForm.addEventListener("submit", async function(event) {
     }
 
 });
+
+
 // ==========================================
 // SHOW / HIDE PASSWORD
 // ==========================================
 
 function togglePassword(inputId, button) {
 
-    const passwordInput =
-        document.getElementById(inputId);
+    const passwordInput = document.getElementById(inputId);
 
     if (passwordInput.type === "password") {
-
         passwordInput.type = "text";
         button.textContent = "Hide Password";
-
     } else {
-
         passwordInput.type = "password";
         button.textContent = "Show Password";
-
     }
 
 }
@@ -540,10 +507,8 @@ function togglePassword(inputId, button) {
 // ==========================================
 
 function showMessage(text, type) {
-
     message.textContent = text;
     message.className = "message " + type;
-
 }
 
 </script>
