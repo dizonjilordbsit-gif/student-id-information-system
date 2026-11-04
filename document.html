@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Student Documents | PLMUN</title>
+<title>My Documents | I-PILIMUN</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -17,19 +17,33 @@
 }
 
 body {
-    background: #f4f7f4;
+    background: #f5f3ec;
     color: #26352b;
 }
 
-header {
-    background: #064b2c;
+/* HEADER */
+.top-header {
+    height: 75px;
+    background: #003b24;
     color: white;
-    padding: 18px 7%;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 15px;
-    flex-wrap: wrap;
+    padding: 0 25px;
+    gap: 18px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.menu-toggle {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 27px;
+    cursor: pointer;
 }
 
 .brand {
@@ -39,81 +53,168 @@ header {
 }
 
 .brand img {
-    width: 48px;
-    height: 48px;
+    width: 45px;
+    height: 45px;
     object-fit: contain;
+    filter: drop-shadow(0 0 5px #00ff75);
 }
 
 .brand h2 {
-    font-size: 19px;
+    font-size: 17px;
+    letter-spacing: 0.4px;
 }
 
 .brand p {
-    color: #e5d28b;
-    font-size: 12px;
+    color: #d4af37;
+    font-size: 11px;
     margin-top: 4px;
+    letter-spacing: 1px;
 }
 
-.back-btn {
-    background: #d8bd63;
-    color: #064b2c;
-    padding: 10px 17px;
-    border-radius: 6px;
+/* SIDEBAR */
+.sidebar {
+    position: fixed;
+    top: 75px;
+    left: 0;
+    width: 255px;
+    height: calc(100vh - 75px);
+    background: #003b24;
+    padding: 22px 15px;
+    transition: 0.3s;
+    z-index: 900;
+    overflow-y: auto;
+}
+
+.sidebar a {
+    display: block;
+    color: #e9eee9;
     text-decoration: none;
+    padding: 14px 16px;
+    margin-bottom: 7px;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.sidebar a:hover,
+.sidebar a.active {
+    background: #d4af37;
+    color: #003b24;
     font-weight: bold;
 }
 
-.container {
-    max-width: 1100px;
-    margin: 35px auto;
-    padding: 0 20px;
+.sidebar .logout-link {
+    margin-top: 25px;
+    border: 1px solid #d4af37;
+    color: #d4af37;
 }
 
-.page-title {
+.sidebar .logout-link:hover {
+    background: #d4af37;
+    color: #003b24;
+}
+
+.overlay {
+    display: none;
+    position: fixed;
+    inset: 75px 0 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 850;
+}
+
+/* MAIN CONTENT */
+.container {
+    margin-left: 255px;
+    padding: 110px 30px 35px;
+    min-height: 100vh;
+    transition: 0.3s;
+}
+
+.page-heading {
     margin-bottom: 25px;
 }
 
-.page-title h1 {
-    color: #064b2c;
+.page-heading h1 {
+    color: #003b24;
+    font-size: 27px;
     margin-bottom: 8px;
 }
 
-.page-title p {
+.page-heading p {
     color: #68766c;
+    font-size: 14px;
     line-height: 1.5;
 }
 
+/* CARDS */
+.content-card {
+    background: #fff;
+    border-radius: 9px;
+    overflow: hidden;
+    margin-bottom: 25px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+    border: 1px solid #e6e2d5;
+}
+
+.card-header {
+    background: #003b24;
+    color: white;
+    padding: 16px 20px;
+    border-bottom: 3px solid #d4af37;
+}
+
+.card-header h2 {
+    font-size: 17px;
+}
+
+.card-body {
+    padding: 22px;
+}
+
+/* NOTICE */
 .notice {
     background: #fff8df;
-    border-left: 5px solid #d8bd63;
+    border-left: 5px solid #d4af37;
     padding: 15px;
-    margin-bottom: 25px;
+    margin-bottom: 22px;
     border-radius: 5px;
-    line-height: 1.5;
+    line-height: 1.6;
+    font-size: 14px;
+    color: #5c5130;
 }
 
+/* MESSAGE */
+#message {
+    margin: 15px 0;
+    font-size: 14px;
+    font-weight: bold;
+    overflow-wrap: anywhere;
+}
+
+/* DOCUMENT GRID */
 .document-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 20px;
 }
 
 .document-card {
-    background: white;
+    background: #fff;
     padding: 22px;
-    border-radius: 10px;
-    box-shadow: 0 3px 12px rgba(0,0,0,0.06);
-    border: 1px solid #e5ebe5;
+    border-radius: 9px;
+    border: 1px solid #e5e2d8;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
 }
 
 .document-card h3 {
-    color: #064b2c;
-    margin-bottom: 8px;
+    color: #003b24;
+    font-size: 16px;
+    margin-bottom: 9px;
 }
 
 .document-card p {
     color: #68766c;
-    font-size: 14px;
+    font-size: 13px;
     line-height: 1.5;
     margin-bottom: 15px;
 }
@@ -124,18 +225,20 @@ header {
     border: 1px solid #ccd5cc;
     border-radius: 5px;
     background: #fafafa;
+    font-size: 13px;
 }
 
 .upload-btn {
     width: 100%;
     margin-top: 12px;
-    padding: 11px;
+    padding: 12px;
     border: none;
     border-radius: 5px;
-    background: #064b2c;
+    background: #003b24;
     color: white;
     font-weight: bold;
     cursor: pointer;
+    transition: 0.2s;
 }
 
 .upload-btn:hover {
@@ -150,25 +253,13 @@ header {
 .status {
     margin-top: 12px;
     font-size: 13px;
-    color: #68766c;
+    color: #08783c;
     overflow-wrap: anywhere;
 }
 
-.history {
-    margin-top: 35px;
-    background: white;
-    border-radius: 10px;
-    padding: 22px;
-    box-shadow: 0 3px 12px rgba(0,0,0,0.06);
-}
-
-.history h2 {
-    color: #064b2c;
-    margin-bottom: 18px;
-}
-
+/* DOCUMENT HISTORY */
 .document-item {
-    padding: 14px 0;
+    padding: 15px 0;
     border-bottom: 1px solid #e7ece7;
     display: flex;
     justify-content: space-between;
@@ -180,10 +271,16 @@ header {
     border-bottom: none;
 }
 
+.document-item strong {
+    color: #003b24;
+    font-size: 14px;
+}
+
 .document-item small {
     display: block;
     color: #78847b;
-    margin-top: 5px;
+    margin-top: 6px;
+    font-size: 12px;
 }
 
 .pending {
@@ -201,45 +298,82 @@ header {
     font-weight: bold;
 }
 
-#message {
-    margin: 15px 0;
-    font-size: 14px;
+.default-status {
+    color: #68766c;
     font-weight: bold;
 }
 
-footer {
-    text-align: center;
-    padding: 25px;
-    color: #758078;
-    font-size: 13px;
+.empty-message {
+    color: #78847b;
+    font-size: 14px;
+    padding: 10px 0;
 }
 
-@media (max-width: 650px) {
-    header {
-        padding: 15px 5%;
+/* FOOTER */
+footer {
+    margin-left: 255px;
+    text-align: center;
+    padding: 20px;
+    color: #758078;
+    font-size: 12px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .sidebar {
+        left: -255px;
     }
 
-    .brand h2 {
-        font-size: 15px;
+    .sidebar.show {
+        left: 0;
     }
 
-    .brand img {
-        width: 40px;
-        height: 40px;
-    }
-
-    .back-btn {
-        padding: 9px 12px;
-        font-size: 13px;
+    .overlay.show {
+        display: block;
     }
 
     .container {
-        margin: 25px auto;
-        padding: 0 14px;
+        margin-left: 0;
+        padding: 100px 18px 30px;
+    }
+
+    footer {
+        margin-left: 0;
     }
 
     .document-grid {
         grid-template-columns: 1fr;
+    }
+
+    .brand h2 {
+        font-size: 14px;
+    }
+
+    .brand p {
+        font-size: 10px;
+    }
+
+    .top-header {
+        padding: 0 15px;
+    }
+}
+
+@media (max-width: 450px) {
+    .brand img {
+        width: 38px;
+        height: 38px;
+    }
+
+    .brand h2 {
+        font-size: 12px;
+    }
+
+    .page-heading h1 {
+        font-size: 23px;
+    }
+
+    .card-body {
+        padding: 16px;
     }
 
     .document-card {
@@ -256,79 +390,112 @@ footer {
 
 <body>
 
-<header>
+<!-- HEADER -->
+<header class="top-header">
+    <button class="menu-toggle" onclick="toggleSidebar()" aria-label="Toggle menu">
+        ☰
+    </button>
+
     <div class="brand">
         <img src="https://64.media.tumblr.com/33ca84afd52d5cd0ef7bb1bb66c6176b/tumblr_o4ti6j8k6r1unefbyo1_400.png" alt="PLMUN Logo">
         <div>
-            <h2>I-PILIMUN Student ID INFORMATION</h2>
-            <p>Student Document Submission</p>
+            <h2>I-PILIMUN</h2>
+            <p>STUDENT ID INFORMATION</p>
         </div>
     </div>
-
-    <a href="student-dashboard.html" class="back-btn">← Dashboard</a>
 </header>
 
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+    <a href="student-dashboard.html">Dashboard</a>
+    <a href="profile.html">My Profile</a>
+    <a href="id.html">My Student ID</a>
+    <a href="application.html">Application Status</a>
+    <a href="document.html" class="active">My Documents</a>
+    <a href="#" class="logout-link" onclick="logout(event)">Logout</a>
+</aside>
+
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<!-- MAIN CONTENT -->
 <main class="container">
 
-    <section class="page-title">
+    <section class="page-heading">
         <h1>My Documents</h1>
         <p>Upload and manage the documents required for your Student ID application.</p>
     </section>
 
     <div class="notice">
-        <strong>Reminder:</strong> Upload clear and readable files.
+        <strong>Reminder:</strong> Please upload clear and readable documents.
         Accepted formats: PDF, JPG, and PNG. Maximum file size: 5 MB.
     </div>
 
     <div id="message"></div>
 
-    <section class="document-grid" id="documentGrid">
-
-        <div class="document-card">
-            <h3>2x2 ID Picture</h3>
-            <p>Upload your recent 2x2 identification picture.</p>
-            <input type="file" id="file-picture" accept=".jpg,.jpeg,.png,.pdf">
-            <button class="upload-btn" onclick="uploadDocument('2x2 ID Picture', 'file-picture')">
-                Upload Document
-            </button>
-            <div class="status" id="status-picture"></div>
+    <!-- UPLOAD DOCUMENTS -->
+    <section class="content-card">
+        <div class="card-header">
+            <h2>Document Submission</h2>
         </div>
 
-        <div class="document-card">
-            <h3>Birth Certificate</h3>
-            <p>Upload a clear copy of your birth certificate.</p>
-            <input type="file" id="file-birth" accept=".jpg,.jpeg,.png,.pdf">
-            <button class="upload-btn" onclick="uploadDocument('Birth Certificate', 'file-birth')">
-                Upload Document
-            </button>
-            <div class="status" id="status-birth"></div>
-        </div>
+        <div class="card-body">
+            <section class="document-grid">
 
-        <div class="document-card">
-            <h3>Registration Form</h3>
-            <p>Upload your current registration or enrollment form.</p>
-            <input type="file" id="file-registration" accept=".jpg,.jpeg,.png,.pdf">
-            <button class="upload-btn" onclick="uploadDocument('Registration Form', 'file-registration')">
-                Upload Document
-            </button>
-            <div class="status" id="status-registration"></div>
-        </div>
+                <div class="document-card">
+                    <h3>2x2 ID Picture</h3>
+                    <p>Upload your recent 2x2 identification picture.</p>
+                    <input type="file" id="file-picture" accept=".jpg,.jpeg,.png,.pdf">
+                    <button class="upload-btn" onclick="uploadDocument('2x2 ID Picture', 'file-picture')">
+                        Upload Document
+                    </button>
+                    <div class="status" id="status-picture"></div>
+                </div>
 
-        <div class="document-card">
-            <h3>Valid School ID</h3>
-            <p>Upload a copy of your existing school identification, if available.</p>
-            <input type="file" id="file-schoolid" accept=".jpg,.jpeg,.png,.pdf">
-            <button class="upload-btn" onclick="uploadDocument('Valid School ID', 'file-schoolid')">
-                Upload Document
-            </button>
-            <div class="status" id="status-schoolid"></div>
-        </div>
+                <div class="document-card">
+                    <h3>Birth Certificate</h3>
+                    <p>Upload a clear copy of your birth certificate.</p>
+                    <input type="file" id="file-birth" accept=".jpg,.jpeg,.png,.pdf">
+                    <button class="upload-btn" onclick="uploadDocument('Birth Certificate', 'file-birth')">
+                        Upload Document
+                    </button>
+                    <div class="status" id="status-birth"></div>
+                </div>
 
+                <div class="document-card">
+                    <h3>Registration Form</h3>
+                    <p>Upload your current registration or enrollment form.</p>
+                    <input type="file" id="file-registration" accept=".jpg,.jpeg,.png,.pdf">
+                    <button class="upload-btn" onclick="uploadDocument('Registration Form', 'file-registration')">
+                        Upload Document
+                    </button>
+                    <div class="status" id="status-registration"></div>
+                </div>
+
+                <div class="document-card">
+                    <h3>Valid School ID</h3>
+                    <p>Upload a copy of your existing school identification, if available.</p>
+                    <input type="file" id="file-schoolid" accept=".jpg,.jpeg,.png,.pdf">
+                    <button class="upload-btn" onclick="uploadDocument('Valid School ID', 'file-schoolid')">
+                        Upload Document
+                    </button>
+                    <div class="status" id="status-schoolid"></div>
+                </div>
+
+            </section>
+        </div>
     </section>
 
-    <section class="history">
-        <h2>Uploaded Documents</h2>
-        <div id="documentList">Loading documents...</div>
+    <!-- UPLOADED DOCUMENTS -->
+    <section class="content-card">
+        <div class="card-header">
+            <h2>Uploaded Documents</h2>
+        </div>
+
+        <div class="card-body">
+            <div id="documentList" class="empty-message">
+                Loading documents...
+            </div>
+        </div>
     </section>
 
 </main>
@@ -339,8 +506,6 @@ footer {
 
 <script>
 const SUPABASE_URL = "https://mlrpkkmexmboqrnmjkuy.supabase.co";
-
-// Replace this with your actual Supabase publishable key.
 const SUPABASE_KEY = "sb_publishable_-BIYMjip4Zon8HwZUCPT1Q_P0pDCMke";
 
 const supabaseClient = window.supabase.createClient(
@@ -350,6 +515,32 @@ const supabaseClient = window.supabase.createClient(
 
 let currentUser = null;
 
+/* SIDEBAR */
+function toggleSidebar() {
+    document.getElementById("sidebar").classList.toggle("show");
+    document.getElementById("overlay").classList.toggle("show");
+}
+
+function closeSidebar() {
+    document.getElementById("sidebar").classList.remove("show");
+    document.getElementById("overlay").classList.remove("show");
+}
+
+/* LOGOUT */
+async function logout(event) {
+    if (event) event.preventDefault();
+
+    const { error } = await supabaseClient.auth.signOut();
+
+    if (error) {
+        showMessage("Unable to log out: " + error.message, true);
+        return;
+    }
+
+    window.location.href = "index.html";
+}
+
+/* INITIALIZE PAGE */
 async function initializePage() {
     const { data, error } = await supabaseClient.auth.getSession();
 
@@ -359,15 +550,18 @@ async function initializePage() {
     }
 
     currentUser = data.session.user;
-    loadDocuments();
+
+    await loadDocuments();
 }
 
+/* MESSAGE */
 function showMessage(message, isError = false) {
     const box = document.getElementById("message");
     box.textContent = message;
     box.style.color = isError ? "#c0392b" : "#08783c";
 }
 
+/* UPLOAD DOCUMENT */
 async function uploadDocument(documentName, inputId) {
     if (!currentUser) {
         showMessage("Please log in again.", true);
@@ -376,9 +570,9 @@ async function uploadDocument(documentName, inputId) {
 
     const input = document.getElementById(inputId);
     const file = input.files[0];
-    const status = document.getElementById(
-        "status-" + inputId.replace("file-", "")
-    );
+
+    const statusId = "status-" + inputId.replace("file-", "");
+    const status = document.getElementById(statusId);
     const button = input.parentElement.querySelector("button");
 
     if (!file) {
@@ -428,7 +622,6 @@ async function uploadDocument(documentName, inputId) {
             });
 
         if (insertError) {
-            // Remove the uploaded file if saving its record fails.
             await supabaseClient.storage
                 .from("student-documents")
                 .remove([filePath]);
@@ -445,12 +638,14 @@ async function uploadDocument(documentName, inputId) {
     } catch (error) {
         console.error(error);
         showMessage("Upload failed: " + error.message, true);
+
     } finally {
         button.disabled = false;
         button.textContent = "Upload Document";
     }
 }
 
+/* LOAD UPLOADED DOCUMENTS */
 async function loadDocuments() {
     const list = document.getElementById("documentList");
 
@@ -489,8 +684,17 @@ async function loadDocuments() {
         details.appendChild(date);
 
         const status = document.createElement("span");
-        status.textContent = doc.status;
-        status.className = doc.status.toLowerCase();
+        status.textContent = doc.status || "Pending";
+
+        const normalizedStatus = (doc.status || "Pending").toLowerCase();
+
+        if (normalizedStatus === "approved") {
+            status.className = "approved";
+        } else if (normalizedStatus === "rejected") {
+            status.className = "rejected";
+        } else {
+            status.className = "pending";
+        }
 
         item.appendChild(details);
         item.appendChild(status);
