@@ -1,12 +1,11 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I-PILIMUN Student ID INFORMATION - My Documents</title>
 
-<title>I-PILIMUN Student ID INFORMATION - Dashboard</title>
-
-<!-- SUPABASE -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
@@ -44,6 +43,7 @@ body {
     justify-content: space-between;
     border-bottom: 5px solid var(--gold);
     gap: 15px;
+    margin-left: 255px;
 }
 
 .brand {
@@ -85,877 +85,7 @@ body {
     cursor: pointer;
 }
 
-/* MAIN CONTAINER */
-
-.container {
-    max-width: 1450px;
-    margin: auto;
-    padding: 25px;
-}
-
-/* WELCOME BANNER */
-
-.welcome-banner {
-    background: linear-gradient(110deg, #003b24, #087448);
-    color: white;
-    border: 2px solid var(--gold);
-    border-radius: 15px;
-    padding: 30px 35px;
-    margin-bottom: 23px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-    overflow: hidden;
-}
-
-.welcome-banner h2 {
-    font-size: 32px;
-    margin-bottom: 8px;
-}
-
-.welcome-banner h3 {
-    font-size: 23px;
-    font-weight: normal;
-}
-
-.welcome-banner h3 span {
-    color: var(--gold);
-    font-weight: bold;
-}
-
-.welcome-banner p {
-    margin-top: 9px;
-    color: #e7eee9;
-    font-style: italic;
-}
-
-.banner-school {
-    text-align: center;
-    color: var(--gold);
-}
-
-.banner-school h2 {
-    font-size: 48px;
-    font-style: italic;
-    margin: 0;
-}
-
-.banner-school p {
-    font-size: 12px;
-    font-weight: bold;
-    font-style: normal;
-    margin: 0;
-}
-
-/* SUMMARY CARDS */
-
-.student-summary {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 17px;
-    margin-bottom: 23px;
-}
-
-.summary-card {
-    background: var(--cream);
-    border: 2px solid var(--gold);
-    border-radius: 13px;
-    padding: 20px;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    min-width: 0;
-}
-
-.summary-icon {
-    width: 75px;
-    height: 75px;
-    flex-shrink: 0;
-    border-radius: 50%;
-    background: var(--dark-green);
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 32px;
-}
-
-.summary-info {
-    min-width: 0;
-}
-
-.summary-info h3 {
-    font-size: 15px;
-    margin-bottom: 9px;
-}
-
-.summary-info h2 {
-    font-size: 21px;
-    overflow-wrap: anywhere;
-}
-
-.status-badge {
-    display: inline-block;
-    padding: 9px 20px;
-    border-radius: 25px;
-    background: #f3bd27;
-    color: #18351f;
-    font-size: 16px;
-}
-
-/* CONTENT CARDS */
-
-.card {
-    background: var(--cream);
-    border: 2px solid #e5d9b5;
-    border-radius: 13px;
-    margin-bottom: 20px;
-    overflow: hidden;
-    box-shadow: 0 3px 10px rgba(0,0,0,.07);
-}
-
-.card-header {
-    background: var(--dark-green);
-    color: white;
-    padding: 13px 20px;
-    border-bottom: 2px solid var(--gold);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-}
-
-.card-header h2 {
-    font-size: 21px;
-}
-
-.card-header h2::before {
-    content: "";
-    display: inline-block;
-    width: 7px;
-    height: 25px;
-    background: var(--gold);
-    margin-right: 13px;
-    vertical-align: middle;
-}
-
-.card-body {
-    padding: 20px;
-}
-
-/* QUICK ACCESS */
-
-.dashboard-actions {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 15px;
-}
-
-.action-button {
-    min-height: 120px;
-    border: 2px solid var(--gold);
-    border-radius: 12px;
-    background: linear-gradient(120deg, #003b24, #087448);
-    color: white;
-    cursor: pointer;
-    padding: 15px 8px;
-    transition: .25s;
-}
-
-.action-button:hover {
-    background: var(--light-green);
-    transform: translateY(-3px);
-}
-
-.action-button .action-icon {
-    display: block;
-    font-size: 34px;
-    color: var(--gold);
-    margin-bottom: 8px;
-}
-
-.action-button strong {
-    display: block;
-    font-size: 15px;
-}
-
-.action-button small {
-    display: block;
-    margin-top: 5px;
-    font-size: 12px;
-    font-style: italic;
-}
-
-/* APPLICATION STATUS */
-
-.application-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 20px;
-    padding: 25px;
-}
-
-.application-details {
-    display: flex;
-    align-items: center;
-    gap: 25px;
-}
-
-.application-icon {
-    width: 85px;
-    height: 85px;
-    border-radius: 50%;
-    background: var(--dark-green);
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 36px;
-    flex-shrink: 0;
-}
-
-.application-text p {
-    margin: 9px 0;
-    font-size: 17px;
-}
-
-.application-text strong {
-    margin-right: 15px;
-}
-
-.view-button {
-    background: var(--gold);
-    color: var(--dark-green);
-    border: none;
-    border-radius: 9px;
-    padding: 16px 25px;
-    font-weight: bold;
-    cursor: pointer;
-    font-size: 14px;
-}
-
-.view-button:hover {
-    background: #edcc62;
-}
-
-/* OTHER PAGES */
-
-.other-page {
-    display: none;
-}
-
-.other-page.active {
-    display: block;
-}
-
-.dashboard-page.hidden {
-    display: none;
-}
-
-.profile-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-}
-
-.profile-item {
-    background: white;
-    padding: 16px;
-    border-left: 4px solid var(--gold);
-    border-radius: 7px;
-    overflow-wrap: anywhere;
-}
-
-.profile-item strong {
-    display: block;
-    margin-bottom: 7px;
-    color: var(--main-green);
-}
-
-.back-button {
-    margin-top: 20px;
-    padding: 12px 20px;
-    background: var(--main-green);
-    color: white;
-    border: none;
-    border-radius: 7px;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-.id-card {
-    max-width: 450px;
-    padding: 25px;
-    border: 3px solid var(--gold);
-    border-radius: 13px;
-    color: white;
-    background: linear-gradient(120deg, #003b24, #087448);
-}
-
-.id-card h2 {
-    color: var(--gold);
-    margin-bottom: 15px;
-}
-
-.id-card p {
-    margin: 12px 0;
-    overflow-wrap: anywhere;
-}
-
-.document-item {
-    background: white;
-    padding: 17px;
-    border-left: 4px solid var(--main-green);
-    border-radius: 7px;
-    margin-bottom: 12px;
-}
-
-.loading {
-    text-align: center;
-    padding: 50px 15px;
-    color: var(--main-green);
-    font-weight: bold;
-}
-
-.error-message {
-    color: #a00000;
-    text-align: center;
-    padding: 20px;
-}
-
-/* FOOTER */
-
-footer {
-    background: var(--dark-green);
-    color: white;
-    text-align: center;
-    padding: 20px;
-    border-top: 4px solid var(--gold);
-    font-size: 13px;
-}
-
-/* MOBILE RESPONSIVE */
-
-@media(max-width: 950px) {
-    .student-summary {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .dashboard-actions {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media(max-width: 600px) {
-    .top-header {
-        padding: 13px 15px;
-    }
-
-    .brand img {
-        width: 48px;
-        height: 48px;
-    }
-
-    .brand-text h1 {
-        font-size: 19px;
-    }
-
-    .brand-text p {
-        font-size: 9px;
-        letter-spacing: 1px;
-    }
-
-    .header-right {
-        gap: 8px;
-    }
-
-    .container {
-        padding: 13px;
-    }
-
-    .welcome-banner {
-        padding: 22px 18px;
-    }
-
-    .welcome-banner h2 {
-        font-size: 23px;
-    }
-
-    .welcome-banner h3 {
-        font-size: 17px;
-    }
-
-    .banner-school {
-        display: none;
-    }
-
-    .student-summary {
-        grid-template-columns: 1fr;
-        gap: 10px;
-    }
-
-    .summary-card {
-        padding: 14px;
-    }
-
-    .summary-icon {
-        width: 58px;
-        height: 58px;
-        font-size: 25px;
-    }
-
-    .summary-info h2 {
-        font-size: 18px;
-    }
-
-    .dashboard-actions {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 9px;
-    }
-
-    .action-button {
-        min-height: 110px;
-    }
-
-    .action-button strong {
-        font-size: 12px;
-    }
-
-    .action-button small {
-        font-size: 10px;
-    }
-
-    .card-header h2 {
-        font-size: 17px;
-    }
-
-    .application-content {
-        flex-direction: column;
-        align-items: stretch;
-        padding: 17px;
-    }
-
-    .application-details {
-        gap: 13px;
-    }
-
-    .application-icon {
-        width: 60px;
-        height: 60px;
-        font-size: 26px;
-    }
-
-    .application-text p {
-        font-size: 14px;
-    }
-
-    .application-text strong {
-        display: block;
-        margin-bottom: 5px;
-    }
-
-    .view-button {
-        width: 100%;
-    }
-
-    .profile-grid {
-        grid-template-columns: 1fr;
-    }
-}
-    
-/* ==========================================
-   IMPROVED RESPONSIVE MOBILE DESIGN
-========================================== */
-
-/* TABLET AND SMALL LAPTOP */
-@media screen and (max-width: 950px) {
-
-    .top-header {
-        flex-wrap: wrap;
-    }
-
-    .student-summary {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .dashboard-actions {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .welcome-banner {
-        flex-wrap: wrap;
-    }
-
-    .summary-card {
-        min-width: 0;
-    }
-
-    .summary-info h2 {
-        overflow-wrap: anywhere;
-    }
-}
-
-
-/* MOBILE PHONES */
-@media screen and (max-width: 600px) {
-
-    body {
-        width: 100%;
-        overflow-x: hidden;
-        font-size: 14px;
-    }
-
-    /* HEADER */
-
-    .top-header {
-        width: 100%;
-        padding: 12px;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        gap: 10px;
-    }
-
-    .brand {
-        gap: 8px;
-        min-width: 0;
-    }
-
-    .brand img {
-        width: 42px;
-        height: 42px;
-        flex-shrink: 0;
-    }
-
-    .brand-text {
-        min-width: 0;
-    }
-
-    .brand-text h1 {
-        font-size: clamp(15px, 4vw, 19px);
-    }
-
-    .brand-text p {
-        font-size: 8px;
-        letter-spacing: .5px;
-    }
-
-    .header-right button {
-        font-size: 12px;
-        padding: 8px 5px;
-    }
-
-    /* MAIN CONTAINER */
-
-    .container {
-        width: 100%;
-        max-width: 100%;
-        padding: 12px;
-    }
-
-    /* WELCOME BANNER */
-
-    .welcome-banner {
-        width: 100%;
-        padding: 20px 16px;
-        border-radius: 12px;
-    }
-
-    .welcome-banner h2 {
-        font-size: 21px;
-        line-height: 1.3;
-    }
-
-    .welcome-banner h3 {
-        font-size: 16px;
-        line-height: 1.5;
-    }
-
-    .welcome-banner p {
-        font-size: 12px;
-        line-height: 1.5;
-    }
-
-    .banner-school {
-        display: none;
-    }
-
-    /* STUDENT SUMMARY */
-
-    .student-summary {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr);
-        gap: 10px;
-    }
-
-    .summary-card {
-        width: 100%;
-        padding: 13px;
-        gap: 12px;
-    }
-
-    .summary-icon {
-        width: 52px;
-        height: 52px;
-        font-size: 23px;
-    }
-
-    .summary-info h3 {
-        font-size: 12px;
-    }
-
-    .summary-info h2 {
-        font-size: 17px;
-        overflow-wrap: anywhere;
-    }
-
-    .status-badge {
-        font-size: 12px;
-        padding: 7px 13px;
-    }
-
-    /* CONTENT CARDS */
-
-    .card {
-        width: 100%;
-        border-radius: 10px;
-    }
-
-    .card-header {
-        padding: 12px;
-        flex-wrap: wrap;
-    }
-
-    .card-header h2 {
-        font-size: 16px;
-    }
-
-    .card-header small {
-        font-size: 10px;
-    }
-
-    .card-body {
-        padding: 13px;
-    }
-
-    /* QUICK ACCESS */
-
-    .dashboard-actions {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 9px;
-    }
-
-    .action-button {
-        width: 100%;
-        min-width: 0;
-        min-height: 105px;
-        padding: 12px 5px;
-    }
-
-    .action-button .action-icon {
-        font-size: 27px;
-    }
-
-    .action-button strong {
-        font-size: 11px;
-        line-height: 1.4;
-    }
-
-    .action-button small {
-        font-size: 9px;
-        line-height: 1.4;
-    }
-
-    /* APPLICATION STATUS */
-
-    .application-content {
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-        gap: 18px;
-        padding: 14px;
-    }
-
-    .application-details {
-        display: flex;
-        align-items: flex-start;
-        gap: 12px;
-    }
-
-    .application-icon {
-        width: 48px;
-        height: 48px;
-        font-size: 22px;
-    }
-
-    .application-text {
-        min-width: 0;
-        overflow-wrap: anywhere;
-    }
-
-    .application-text p {
-        font-size: 13px;
-        line-height: 1.6;
-    }
-
-    .application-text strong {
-        display: block;
-        margin-bottom: 4px;
-    }
-
-    .view-button {
-        width: 100%;
-        padding: 13px 10px;
-        font-size: 12px;
-    }
-
-    /* PROFILE */
-
-    .profile-grid {
-        grid-template-columns: minmax(0, 1fr);
-        gap: 10px;
-    }
-
-    .profile-item {
-        width: 100%;
-        padding: 13px;
-        font-size: 13px;
-    }
-
-    /* STUDENT ID CARD */
-
-    .id-card {
-        width: 100%;
-        max-width: 100%;
-        padding: 17px;
-    }
-
-    .id-card h2 {
-        font-size: 18px;
-    }
-
-    .id-card h3 {
-        font-size: 16px;
-        overflow-wrap: anywhere;
-    }
-
-    .id-card p {
-        font-size: 13px;
-        line-height: 1.5;
-    }
-
-    /* STATUS PAGE */
-
-    #statusPage .card-body p {
-        font-size: 13px;
-        line-height: 1.6;
-        overflow-wrap: anywhere;
-    }
-
-    /* BUTTONS */
-
-    .back-button {
-        width: 100%;
-        padding: 13px;
-        font-size: 12px;
-    }
-
-    /* LOADING */
-
-    .loading {
-        padding: 30px 12px;
-        font-size: 13px;
-        overflow-wrap: anywhere;
-    }
-
-    /* FOOTER */
-
-    footer {
-        padding: 17px 12px;
-        font-size: 10px;
-        line-height: 1.6;
-    }
-}
-
-
-/* EXTRA SMALL PHONES */
-@media screen and (max-width: 360px) {
-
-    .brand img {
-        width: 35px;
-        height: 35px;
-    }
-
-    .brand-text h1 {
-        font-size: 14px;
-    }
-
-    .brand-text p {
-        font-size: 7px;
-    }
-
-    .header-right button {
-        font-size: 10px;
-    }
-
-    .container {
-        padding: 9px;
-    }
-
-    .welcome-banner {
-        padding: 16px 12px;
-    }
-
-    .welcome-banner h2 {
-        font-size: 18px;
-    }
-
-    .dashboard-actions {
-        gap: 7px;
-    }
-
-    .action-button {
-        min-height: 100px;
-        padding: 9px 3px;
-    }
-
-    .action-button strong {
-        font-size: 10px;
-    }
-
-    .action-button small {
-        font-size: 8px;
-    }
-
-    .summary-info h2 {
-        font-size: 15px;
-    }
-}
-
-
-/* PREVENT LONG CONTENT FROM BREAKING LAYOUT */
-img {
-    max-width: 100%;
-}
-
-button {
-    touch-action: manipulation;
-}
-
-.profile-item,
-.document-item,
-.application-text,
-.id-card {
-    overflow-wrap: anywhere;
-}
-
-/* =====================================
-   SIDEBAR NAVIGATION DESIGN
-===================================== */
+/* SIDEBAR */
 
 .menu-toggle {
     display: none;
@@ -1079,7 +209,7 @@ button {
     display: none;
 }
 
-/* Main content adjustment */
+/* MAIN CONTAINER */
 
 .container {
     margin-left: 255px;
@@ -1087,15 +217,239 @@ button {
     padding: 25px 30px;
 }
 
-/* Desktop header adjustment */
+/* PAGE HEADING */
 
-.top-header {
-    margin-left: 255px;
+.page-heading {
+    margin-bottom: 23px;
 }
 
-/* =====================================
-   TABLET AND MOBILE
-===================================== */
+.page-heading h2 {
+    font-size: 27px;
+    color: var(--dark-green);
+    margin-bottom: 8px;
+}
+
+.page-heading p {
+    color: #52675b;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* CONTENT CARDS */
+
+.card {
+    background: var(--cream);
+    border: 2px solid #e5d9b5;
+    border-radius: 13px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(0,0,0,.07);
+}
+
+.card-header {
+    background: var(--dark-green);
+    color: white;
+    padding: 13px 20px;
+    border-bottom: 2px solid var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.card-header h2 {
+    font-size: 21px;
+}
+
+.card-header h2::before {
+    content: "";
+    display: inline-block;
+    width: 7px;
+    height: 25px;
+    background: var(--gold);
+    margin-right: 13px;
+    vertical-align: middle;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+/* REMINDER */
+
+.notice {
+    background: #fff8df;
+    border: 1px solid #e5d9b5;
+    border-left: 5px solid var(--gold);
+    border-radius: 8px;
+    padding: 16px 18px;
+    margin-bottom: 22px;
+    color: #5c5130;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* DOCUMENT GRID */
+
+.document-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 17px;
+}
+
+.document-card {
+    background: white;
+    border: 2px solid #e5d9b5;
+    border-radius: 10px;
+    padding: 20px;
+    min-width: 0;
+}
+
+.document-card h3 {
+    color: var(--dark-green);
+    font-size: 17px;
+    margin-bottom: 9px;
+}
+
+.document-card p {
+    color: #52675b;
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.document-card input {
+    width: 100%;
+    padding: 11px;
+    border: 1px solid #c9d2c9;
+    border-radius: 7px;
+    background: #f8f8f5;
+    font-size: 13px;
+    max-width: 100%;
+}
+
+.upload-btn {
+    width: 100%;
+    margin-top: 13px;
+    padding: 13px;
+    background: linear-gradient(120deg, #003b24, #087448);
+    color: white;
+    border: 2px solid var(--gold);
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 13px;
+    cursor: pointer;
+    transition: .25s;
+}
+
+.upload-btn:hover {
+    background: var(--light-green);
+    transform: translateY(-2px);
+}
+
+.upload-btn:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.upload-status {
+    margin-top: 12px;
+    color: var(--main-green);
+    font-size: 13px;
+    overflow-wrap: anywhere;
+}
+
+/* MESSAGE */
+
+#message {
+    margin: 0 0 17px;
+    font-size: 14px;
+    font-weight: bold;
+    overflow-wrap: anywhere;
+}
+
+/* DOCUMENT HISTORY */
+
+.document-item {
+    background: white;
+    padding: 17px;
+    border-left: 4px solid var(--main-green);
+    border-radius: 7px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.document-item:last-child {
+    margin-bottom: 0;
+}
+
+.document-details {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.document-item strong {
+    color: var(--dark-green);
+    font-size: 14px;
+}
+
+.document-item small {
+    display: block;
+    color: #68766c;
+    font-size: 12px;
+    margin-top: 7px;
+}
+
+.pending {
+    color: #9a6b00;
+    font-weight: bold;
+}
+
+.approved {
+    color: #08783c;
+    font-weight: bold;
+}
+
+.rejected {
+    color: #c0392b;
+    font-weight: bold;
+}
+
+.default-status {
+    color: #68766c;
+    font-weight: bold;
+}
+
+.empty-message {
+    color: #52675b;
+    font-size: 14px;
+    padding: 10px 0;
+    line-height: 1.6;
+}
+
+/* FOOTER */
+
+footer {
+    margin-left: 255px;
+    background: var(--dark-green);
+    color: white;
+    text-align: center;
+    padding: 20px;
+    border-top: 4px solid var(--gold);
+    font-size: 13px;
+}
+
+/* RESPONSIVE */
+
+@media(max-width: 950px) {
+    .document-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
 
 @media screen and (max-width: 850px) {
 
@@ -1131,12 +485,129 @@ button {
         padding: 16px;
     }
 
+    footer {
+        margin-left: 0;
+    }
+
     .top-header .header-right {
         margin-left: auto;
     }
 }
 
-/* Smaller phones */
+@media screen and (max-width: 600px) {
+
+    body {
+        width: 100%;
+        overflow-x: hidden;
+        font-size: 14px;
+    }
+
+    .top-header {
+        width: 100%;
+        padding: 12px;
+        gap: 10px;
+    }
+
+    .brand {
+        gap: 8px;
+        min-width: 0;
+    }
+
+    .brand img {
+        width: 42px;
+        height: 42px;
+        flex-shrink: 0;
+    }
+
+    .brand-text {
+        min-width: 0;
+    }
+
+    .brand-text h1 {
+        font-size: clamp(15px, 4vw, 19px);
+    }
+
+    .brand-text p {
+        font-size: 8px;
+        letter-spacing: .5px;
+    }
+
+    .header-right button {
+        font-size: 12px;
+        padding: 8px 5px;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 100%;
+        padding: 12px;
+    }
+
+    .page-heading h2 {
+        font-size: 22px;
+    }
+
+    .page-heading p {
+        font-size: 12px;
+    }
+
+    .card {
+        width: 100%;
+        border-radius: 10px;
+    }
+
+    .card-header {
+        padding: 12px;
+    }
+
+    .card-header h2 {
+        font-size: 16px;
+    }
+
+    .card-body {
+        padding: 13px;
+    }
+
+    .document-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 12px;
+    }
+
+    .document-card {
+        width: 100%;
+        padding: 15px;
+    }
+
+    .document-card h3 {
+        font-size: 15px;
+    }
+
+    .document-card p {
+        font-size: 12px;
+    }
+
+    .notice {
+        padding: 13px;
+        font-size: 12px;
+    }
+
+    .document-item {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 14px;
+        gap: 10px;
+    }
+
+    .sidebar {
+        width: min(280px, 82vw);
+    }
+
+    footer {
+        padding: 17px 12px;
+        font-size: 10px;
+        line-height: 1.6;
+    }
+}
 
 @media screen and (max-width: 480px) {
 
@@ -1175,13 +646,44 @@ button {
     .container {
         padding: 12px;
     }
+}
 
-    .sidebar {
-        width: min(280px, 82vw);
+@media screen and (max-width: 360px) {
+
+    .brand img {
+        width: 35px;
+        height: 35px;
+    }
+
+    .brand-text h1 {
+        font-size: 14px;
+    }
+
+    .brand-text p {
+        font-size: 7px;
+    }
+
+    .header-right button {
+        font-size: 10px;
+    }
+
+    .container {
+        padding: 9px;
     }
 }
 
+img {
+    max-width: 100%;
+}
 
+button {
+    touch-action: manipulation;
+}
+
+.document-item,
+.document-details {
+    overflow-wrap: anywhere;
+}
 </style>
 </head>
 
@@ -1189,14 +691,15 @@ button {
 
 <!-- HEADER -->
 <header class="top-header">
+
     <button
-    type="button"
-    class="menu-toggle"
-    onclick="toggleSidebar()"
-    aria-label="Open navigation menu"
->
-    ☰
-</button>
+        type="button"
+        class="menu-toggle"
+        onclick="toggleSidebar()"
+        aria-label="Open navigation menu"
+    >
+        ☰
+    </button>
 
     <div class="brand">
         <img
@@ -1216,10 +719,14 @@ button {
 
 </header>
 
-<!-- SIDEBAR NAVIGATION -->
-<div id="sidebarOverlay" class="sidebar-overlay"
-     onclick="closeSidebar()"></div>
+<!-- SIDEBAR OVERLAY -->
+<div
+    id="sidebarOverlay"
+    class="sidebar-overlay"
+    onclick="closeSidebar()"
+></div>
 
+<!-- SIDEBAR -->
 <aside class="sidebar" id="sidebar">
 
     <div class="sidebar-heading">
@@ -1227,6 +734,7 @@ button {
             src="https://64.media.tumblr.com/33ca84afd52d5cd0ef7bb1bb66c6176b/tumblr_o4ti6j8k6r1unefbyo1_400.png"
             alt="PLMUN Logo"
         >
+
         <div>
             <h3>STUDENT PORTAL</h3>
             <p>Navigation Menu</p>
@@ -1235,30 +743,30 @@ button {
 
     <nav class="sidebar-nav">
 
-       <button class="sidebar-link active"
-        onclick="window.location.href='student-dashboard.html'">
-    <span>▦</span> Dashboard
-</button>
+        <button class="sidebar-link"
+            onclick="window.location.href='student-dashboard.html'">
+            <span>▦</span> Dashboard
+        </button>
 
-<button class="sidebar-link"
-        onclick="window.location.href='profile.html'">
-    <span>👤</span> My Profile
-</button>
+        <button class="sidebar-link"
+            onclick="window.location.href='profile.html'">
+            <span>👤</span> My Profile
+        </button>
 
-<button class="sidebar-link"
-        onclick="window.location.href='id.html'">
-    <span>▣</span> My Student ID
-</button>
+        <button class="sidebar-link"
+            onclick="window.location.href='id.html'">
+            <span>▣</span> My Student ID
+        </button>
 
-<button class="sidebar-link"
-        onclick="window.location.href='application.html'">
-    <span>☑</span> Application Status
-</button>
+        <button class="sidebar-link"
+            onclick="window.location.href='application.html'">
+            <span>☑</span> Application Status
+        </button>
 
-<button class="sidebar-link"
-        onclick="window.location.href='document.html'">
-    <span>📁</span> My Documents
-</button>
+        <button class="sidebar-link active"
+            onclick="window.location.href='document.html'">
+            <span>📁</span> My Documents
+        </button>
 
         <div class="sidebar-divider"></div>
 
@@ -1274,301 +782,154 @@ button {
     </div>
 
 </aside>
+
+<!-- MAIN CONTENT -->
 <main class="container">
 
-    <!-- MAIN DASHBOARD -->
-    <section id="dashboardPage" class="dashboard-page">
-
-        <div class="welcome-banner">
-
-            <div>
-                <h2>STUDENT DASHBOARD</h2>
-
-                <h3>
-                    Welcome back,
-                    <span id="welcomeName">Student!</span>
-                </h3>
-
-                <p>
-                    Manage your PLMUN student information and ID application.
-                </p>
-            </div>
-
-            <div class="banner-school">
-                <h2>PLMUN</h2>
-                <p>PAMANTASAN NG LUNGSOD NG MUNTINLUPA</p>
-            </div>
-
-        </div>
-
-
-        <!-- STUDENT SUMMARY -->
-        <div class="student-summary">
-
-            <div class="summary-card">
-                <div class="summary-icon">▣</div>
-
-                <div class="summary-info">
-                    <h3>Student ID Number</h3>
-                    <h2 id="dashboardStudentID">Loading...</h2>
-                </div>
-            </div>
-
-
-            <div class="summary-card">
-                <div class="summary-icon">🎓</div>
-
-                <div class="summary-info">
-                    <h3>Course</h3>
-                    <h2 id="dashboardCourse">Not provided</h2>
-                </div>
-            </div>
-
-
-            <div class="summary-card">
-                <div class="summary-icon">▦</div>
-
-                <div class="summary-info">
-                    <h3>Year Level</h3>
-                    <h2 id="dashboardYear">Not provided</h2>
-                </div>
-            </div>
-
-
-            <div class="summary-card">
-                <div class="summary-icon">✓</div>
-
-                <div class="summary-info">
-                    <h3>ID Application Status</h3>
-                    <h2>
-                        <span class="status-badge" id="dashboardStatus">
-                            Pending
-                        </span>
-                    </h2>
-                </div>
-            </div>
-
-        </div>
-
-
-      
-
-        <!-- APPLICATION -->
-        <div class="card">
-
-            <div class="card-header">
-                <h2>Student ID Application</h2>
-            </div>
-
-            <div class="application-content">
-
-                <div class="application-details">
-
-                    <div class="application-icon">☑</div>
-
-                    <div class="application-text">
-
-                        <p>
-                            <strong>Application Status:</strong>
-                            <span id="applicationStatus" class="status-badge">
-                                Pending
-                            </span>
-                        </p>
-
-                        <p>
-                            <strong>Admin Remarks:</strong>
-                            <span id="adminRemarks">No remarks available.</span>
-                        </p>
-
-                    </div>
-
-                </div>
-
-                <button class="view-button" onclick="showPage('statusPage')">
-                    ▤ &nbsp; VIEW APPLICATION DETAILS
-                </button>
-
-            </div>
-        </div>
-
+    <section class="page-heading">
+        <h2>My Documents</h2>
+        <p>
+            Upload and manage the documents required for your
+            Student ID application.
+        </p>
     </section>
 
-
-    <!-- PROFILE PAGE -->
-    <section id="profilePage" class="other-page card">
-
-        <div class="card-header">
-            <h2>My Profile</h2>
-        </div>
-
-        <div class="card-body">
-
-            <div class="profile-grid">
-
-                <div class="profile-item">
-                    <strong>Student ID Number</strong>
-                    <span id="profileID">-</span>
-                </div>
-
-                <div class="profile-item">
-                    <strong>Full Name</strong>
-                    <span id="profileName">-</span>
-                </div>
-
-                <div class="profile-item">
-                    <strong>Institutional Email</strong>
-                    <span id="profileEmail">-</span>
-                </div>
-
-                <div class="profile-item">
-                    <strong>Course</strong>
-                    <span id="profileCourse">Not provided</span>
-                </div>
-
-                <div class="profile-item">
-                    <strong>Year Level</strong>
-                    <span id="profileYear">Not provided</span>
-                </div>
-
-                <div class="profile-item">
-                    <strong>Birthdate</strong>
-                    <span id="profileBirthdate">Not provided</span>
-                </div>
-
-            </div>
-
-            <button class="back-button" onclick="showPage('dashboardPage')">
-                ← BACK TO DASHBOARD
-            </button>
-
-        </div>
-    </section>
-
-
-    <!-- STUDENT ID PAGE -->
-    <section id="studentIDPage" class="other-page card">
-
-        <div class="card-header">
-            <h2>My Student Identification Card</h2>
-        </div>
-
-        <div class="card-body">
-
-            <div class="id-card">
-
-                <h2>PLMUN STUDENT ID CARD</h2>
-
-                <hr>
-
-                <h3 id="idName">Student Name</h3>
-
-                <p id="idNumber">Student ID: -</p>
-
-                <p id="idCourse">Course: -</p>
-
-                <p id="idYear">Year Level: -</p>
-
-                <p id="idEmail">Email: -</p>
-
-                <hr>
-
-                <p>I-PILIMUN Student ID INFORMATION</p>
-
-            </div>
-
-            <button class="back-button" onclick="showPage('dashboardPage')">
-                ← BACK TO DASHBOARD
-            </button>
-
-        </div>
-    </section>
-
-
-    <!-- STATUS PAGE -->
-    <section id="statusPage" class="other-page card">
-
-        <div class="card-header">
-            <h2>My ID Application Status</h2>
-        </div>
-
-        <div class="card-body">
-
-            <p><strong>Student Name:</strong> <span id="statusName">-</span></p>
-
-            <br>
-
-            <p><strong>Student ID:</strong> <span id="statusID">-</span></p>
-
-            <br>
-
-            <p>
-                <strong>Application Status:</strong>
-                <span id="statusValue" class="status-badge">Pending</span>
-            </p>
-
-            <br>
-
-            <p><strong>Admin Remarks:</strong></p>
-
-            <p id="statusRemarks">No remarks available.</p>
-
-            <button class="back-button" onclick="showPage('dashboardPage')">
-                ← BACK TO DASHBOARD
-            </button>
-
-        </div>
-    </section>
-
-
-    <!-- DOCUMENTS PAGE -->
-    <section id="documentsPage" class="other-page card">
-
-        <div class="card-header">
-            <h2>My Documents</h2>
-        </div>
-
-        <div class="card-body">
-
-            <p>Review your uploaded student documents.</p>
-
-            <br>
-
-            <div class="document-item">
-                <strong>Student Photo:</strong>
-                <span id="photoStatus">Not uploaded</span>
-            </div>
-
-            <div class="document-item">
-                <strong>Signature:</strong>
-                <span id="signatureStatus">Not uploaded</span>
-            </div>
-
-            <div class="document-item">
-                <strong>Supporting Documents:</strong>
-                <span id="supportingStatus">Not uploaded</span>
-            </div>
-
-            <button class="back-button" onclick="showPage('dashboardPage')">
-                ← BACK TO DASHBOARD
-            </button>
-
-        </div>
-    </section>
-
-
-    <!-- LOADING / ERROR -->
-    <div id="loadingMessage" class="loading">
-        Connecting to student account...
+    <div class="notice">
+        <strong>REMINDER:</strong>
+        Upload clear and readable documents.
+        Accepted formats: PDF, JPG, and PNG.
+        Maximum file size: 5 MB.
     </div>
+
+    <div id="message"></div>
+
+    <!-- DOCUMENT UPLOAD CARD -->
+    <section class="card">
+
+        <div class="card-header">
+            <h2>Document Submission</h2>
+        </div>
+
+        <div class="card-body">
+
+            <div class="document-grid">
+
+                <div class="document-card">
+                    <h3>2x2 ID Picture</h3>
+                    <p>
+                        Upload your recent 2x2 identification picture.
+                    </p>
+
+                    <input
+                        type="file"
+                        id="file-picture"
+                        accept=".jpg,.jpeg,.png,.pdf"
+                    >
+
+                    <button
+                        class="upload-btn"
+                        onclick="uploadDocument('2x2 ID Picture', 'file-picture')"
+                    >
+                        UPLOAD DOCUMENT
+                    </button>
+
+                    <div class="upload-status" id="status-picture"></div>
+                </div>
+
+                <div class="document-card">
+                    <h3>Birth Certificate</h3>
+                    <p>
+                        Upload a clear copy of your birth certificate.
+                    </p>
+
+                    <input
+                        type="file"
+                        id="file-birth"
+                        accept=".jpg,.jpeg,.png,.pdf"
+                    >
+
+                    <button
+                        class="upload-btn"
+                        onclick="uploadDocument('Birth Certificate', 'file-birth')"
+                    >
+                        UPLOAD DOCUMENT
+                    </button>
+
+                    <div class="upload-status" id="status-birth"></div>
+                </div>
+
+                <div class="document-card">
+                    <h3>Registration Form</h3>
+                    <p>
+                        Upload your current registration or enrollment form.
+                    </p>
+
+                    <input
+                        type="file"
+                        id="file-registration"
+                        accept=".jpg,.jpeg,.png,.pdf"
+                    >
+
+                    <button
+                        class="upload-btn"
+                        onclick="uploadDocument('Registration Form', 'file-registration')"
+                    >
+                        UPLOAD DOCUMENT
+                    </button>
+
+                    <div class="upload-status" id="status-registration"></div>
+                </div>
+
+                <div class="document-card">
+                    <h3>Valid School ID</h3>
+                    <p>
+                        Upload a copy of your existing school identification,
+                        if available.
+                    </p>
+
+                    <input
+                        type="file"
+                        id="file-schoolid"
+                        accept=".jpg,.jpeg,.png,.pdf"
+                    >
+
+                    <button
+                        class="upload-btn"
+                        onclick="uploadDocument('Valid School ID', 'file-schoolid')"
+                    >
+                        UPLOAD DOCUMENT
+                    </button>
+
+                    <div class="upload-status" id="status-schoolid"></div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- UPLOADED DOCUMENTS CARD -->
+    <section class="card">
+
+        <div class="card-header">
+            <h2>Uploaded Documents</h2>
+        </div>
+
+        <div class="card-body">
+            <div id="documentList" class="empty-message">
+                Loading documents...
+            </div>
+        </div>
+
+    </section>
 
 </main>
 
-
+<!-- FOOTER -->
 <footer>
     © 2026 Pamantasan ng Lungsod ng Muntinlupa |
     I-PILIMUN Student ID Information System
 </footer>
-
 
 <script>
 
@@ -1577,229 +938,20 @@ button {
 // ==========================================
 
 const SUPABASE_URL = "https://mlrpkkmexmboqrnmjkuy.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_-BIYMjip4Zon8HwZUCPT1Q_P0pDCMke";
+
+const SUPABASE_ANON_KEY =
+    "sb_publishable_-BIYMjip4Zon8HwZUCPT1Q_P0pDCMke";
 
 const supabaseClient = window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_ANON_KEY
 );
 
-
-// ==========================================
-// STUDENT DATA
-// ==========================================
-
-let currentStudent = null;
+let currentUser = null;
 
 
 // ==========================================
-// LOAD AUTHENTICATED STUDENT
-// ==========================================
-
-async function loadStudentDashboard() {
-
-    const loadingMessage = document.getElementById("loadingMessage");
-
-    try {
-
-        // Check Supabase login session
-        const { data: sessionData, error: sessionError } =
-            await supabaseClient.auth.getSession();
-
-        if (sessionError) {
-            throw sessionError;
-        }
-
-        const session = sessionData.session;
-
-        // Redirect if not logged in
-        if (!session) {
-            window.location.href = "index.html";
-            return;
-        }
-
-        const user = session.user;
-
-        // Find student record using institutional email
-        const { data: student, error } = await supabaseClient
-    .from("students")
-    .select(`
-        id,
-        student_number,
-        first_name,
-        last_name,
-        email,
-        course,
-        year_level,
-        birthdate
-    `)
-    .eq("id", user.id)
-    .maybeSingle();
-        
-        if (error) {
-            throw error;
-        }
-
-        // Use registration metadata if profile record is not yet available
-        const metadata = user.user_metadata || {};
-
-        currentStudent = student || {};
-
-        const studentNumber =
-            currentStudent.student_number ||
-            metadata.student_number ||
-            "Not assigned";
-
-        const firstName =
-            currentStudent.first_name ||
-            metadata.first_name ||
-            "";
-
-        const lastName =
-            currentStudent.last_name ||
-            metadata.last_name ||
-            "";
-
-        const fullName =
-            (firstName + " " + lastName).trim() ||
-            user.email ||
-            "Student";
-
-        const email =
-            currentStudent.email ||
-            user.email ||
-            "Not provided";
-
-        const course =
-            currentStudent.course || "Not provided";
-
-        const yearLevel =
-            currentStudent.year_level || "Not provided";
-
-        const birthdate =
-            currentStudent.birthdate || "Not provided";
-
-        // Display the student information
-        displayStudentInformation({
-            studentNumber,
-            fullName,
-            email,
-            course,
-            yearLevel,
-            birthdate
-        });
-
-        loadingMessage.style.display = "none";
-
-    } catch (error) {
-
-        console.error("Dashboard loading error:", error);
-
-        loadingMessage.innerHTML = `
-            <p class="error-message">
-                Unable to load your student information.<br>
-                ${error.message}
-            </p>
-        `;
-    }
-}
-
-
-// ==========================================
-// DISPLAY STUDENT INFORMATION
-// ==========================================
-
-function displayStudentInformation(student) {
-
-    // Welcome banner
-    document.getElementById("welcomeName").textContent =
-        student.fullName;
-
-    // Summary cards
-    document.getElementById("dashboardStudentID").textContent =
-        student.studentNumber;
-
-    document.getElementById("dashboardCourse").textContent =
-        student.course;
-
-    document.getElementById("dashboardYear").textContent =
-        student.yearLevel;
-
-    // Profile
-    document.getElementById("profileID").textContent =
-        student.studentNumber;
-
-    document.getElementById("profileName").textContent =
-        student.fullName;
-
-    document.getElementById("profileEmail").textContent =
-        student.email;
-
-    document.getElementById("profileCourse").textContent =
-        student.course;
-
-    document.getElementById("profileYear").textContent =
-        student.yearLevel;
-
-    document.getElementById("profileBirthdate").textContent =
-        student.birthdate;
-
-    // Student ID card
-    document.getElementById("idName").textContent =
-        student.fullName;
-
-    document.getElementById("idNumber").textContent =
-        "Student ID: " + student.studentNumber;
-
-    document.getElementById("idCourse").textContent =
-        "Course: " + student.course;
-
-    document.getElementById("idYear").textContent =
-        "Year Level: " + student.yearLevel;
-
-    document.getElementById("idEmail").textContent =
-        student.email;
-
-    // Application information
-    document.getElementById("statusName").textContent =
-        student.fullName;
-
-    document.getElementById("statusID").textContent =
-        student.studentNumber;
-}
-
-
-// ==========================================
-// PAGE NAVIGATION
-// ==========================================
-
-function showPage(pageID) {
-
-    document.getElementById("dashboardPage")
-        .classList.add("hidden");
-
-    document.querySelectorAll(".other-page")
-        .forEach(page => page.classList.remove("active"));
-
-    if (pageID === "dashboardPage") {
-
-        document.getElementById("dashboardPage")
-            .classList.remove("hidden");
-
-    } else {
-
-        document.getElementById(pageID)
-            .classList.add("active");
-
-    }
-
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
-}
-// ==========================================
-// SIDEBAR NAVIGATION
+// SIDEBAR
 // ==========================================
 
 function toggleSidebar() {
@@ -1810,19 +962,6 @@ function toggleSidebar() {
 function closeSidebar() {
     document.getElementById("sidebar").classList.remove("open");
     document.getElementById("sidebarOverlay").classList.remove("show");
-}
-
-function navigateSidebar(pageID, button) {
-
-    showPage(pageID);
-
-    document.querySelectorAll(".sidebar-link").forEach(link => {
-        link.classList.remove("active");
-    });
-
-    button.classList.add("active");
-
-    closeSidebar();
 }
 
 
@@ -1843,7 +982,7 @@ async function logout() {
     const { error } = await supabaseClient.auth.signOut();
 
     if (error) {
-        alert("Unable to log out: " + error.message);
+        showMessage("Unable to log out: " + error.message, true);
         return;
     }
 
@@ -1852,10 +991,254 @@ async function logout() {
 
 
 // ==========================================
-// START DASHBOARD
+// INITIALIZE PAGE
 // ==========================================
 
-loadStudentDashboard();
+async function initializePage() {
+
+    const { data, error } =
+        await supabaseClient.auth.getSession();
+
+    if (error || !data.session) {
+        window.location.href = "index.html";
+        return;
+    }
+
+    currentUser = data.session.user;
+
+    await loadDocuments();
+}
+
+
+// ==========================================
+// MESSAGE
+// ==========================================
+
+function showMessage(message, isError = false) {
+
+    const box = document.getElementById("message");
+
+    box.textContent = message;
+
+    box.style.color = isError
+        ? "#a00000"
+        : "#075c3b";
+}
+
+
+// ==========================================
+// UPLOAD DOCUMENT
+// ==========================================
+
+async function uploadDocument(documentName, inputId) {
+
+    if (!currentUser) {
+        showMessage("Please log in again.", true);
+        return;
+    }
+
+    const input = document.getElementById(inputId);
+    const file = input.files[0];
+
+    const statusId =
+        "status-" + inputId.replace("file-", "");
+
+    const status = document.getElementById(statusId);
+
+    const button =
+        input.parentElement.querySelector("button");
+
+    if (!file) {
+        showMessage("Please select a file first.", true);
+        return;
+    }
+
+    const allowedTypes = [
+        "application/pdf",
+        "image/jpeg",
+        "image/png"
+    ];
+
+    if (!allowedTypes.includes(file.type)) {
+        showMessage(
+            "Only PDF, JPG, and PNG files are allowed.",
+            true
+        );
+        return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+        showMessage(
+            "File size must not exceed 5 MB.",
+            true
+        );
+        return;
+    }
+
+    button.disabled = true;
+    button.textContent = "UPLOADING...";
+    status.textContent = "";
+
+    const safeName = file.name.replace(
+        /[^a-zA-Z0-9._-]/g,
+        "_"
+    );
+
+    const filePath =
+        currentUser.id + "/" + Date.now() + "_" + safeName;
+
+    try {
+
+        // Upload file to Supabase Storage
+        const { error: uploadError } =
+            await supabaseClient
+                .storage
+                .from("student-documents")
+                .upload(filePath, file);
+
+        if (uploadError) {
+            throw uploadError;
+        }
+
+        // Save document information to database
+        const { error: insertError } =
+            await supabaseClient
+                .from("documents")
+                .insert({
+                    student_id: currentUser.id,
+                    document_name: documentName,
+                    file_path: filePath,
+                    file_type: file.type,
+                    status: "Pending"
+                });
+
+        if (insertError) {
+
+            // Remove uploaded file if database insert fails
+            await supabaseClient
+                .storage
+                .from("student-documents")
+                .remove([filePath]);
+
+            throw insertError;
+        }
+
+        showMessage(
+            documentName + " uploaded successfully!"
+        );
+
+        status.textContent = "Uploaded successfully.";
+
+        input.value = "";
+
+        await loadDocuments();
+
+    } catch (error) {
+
+        console.error("Upload error:", error);
+
+        showMessage(
+            "Upload failed: " + error.message,
+            true
+        );
+
+    } finally {
+
+        button.disabled = false;
+        button.textContent = "UPLOAD DOCUMENT";
+    }
+}
+
+
+// ==========================================
+// LOAD DOCUMENT HISTORY
+// ==========================================
+
+async function loadDocuments() {
+
+    const list = document.getElementById("documentList");
+
+    const { data, error } = await supabaseClient
+        .from("documents")
+        .select(`
+            document_name,
+            file_path,
+            status,
+            uploaded_at
+        `)
+        .eq("student_id", currentUser.id)
+        .order("uploaded_at", { ascending: false });
+
+    if (error) {
+
+        list.textContent =
+            "Unable to load documents: " + error.message;
+
+        return;
+    }
+
+    if (!data || data.length === 0) {
+
+        list.textContent =
+            "You have not uploaded any documents yet.";
+
+        return;
+    }
+
+    list.innerHTML = "";
+
+    data.forEach(doc => {
+
+        const item = document.createElement("div");
+        item.className = "document-item";
+
+        const details = document.createElement("div");
+        details.className = "document-details";
+
+        const name = document.createElement("strong");
+        name.textContent = doc.document_name;
+
+        const date = document.createElement("small");
+
+        date.textContent =
+            "Uploaded: " +
+            new Date(doc.uploaded_at).toLocaleString();
+
+        details.appendChild(name);
+        details.appendChild(date);
+
+        const status = document.createElement("span");
+
+        const documentStatus = doc.status || "Pending";
+
+        status.textContent = documentStatus;
+
+        const normalizedStatus =
+            documentStatus.toLowerCase();
+
+        if (normalizedStatus === "approved") {
+            status.className = "approved";
+        } else if (normalizedStatus === "rejected") {
+            status.className = "rejected";
+        } else if (normalizedStatus === "pending") {
+            status.className = "pending";
+        } else {
+            status.className = "default-status";
+        }
+
+        item.appendChild(details);
+        item.appendChild(status);
+
+        list.appendChild(item);
+    });
+}
+
+
+// ==========================================
+// START PAGE
+// ==========================================
+
+initializePage();
 
 </script>
 
