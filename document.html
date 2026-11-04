@@ -1,14 +1,18 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>I-PILIMUN Student ID INFORMATION - My Documents</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
+/* ==========================================
+   GENERAL DESIGN - SAME AS STUDENT DASHBOARD
+========================================== */
+
 * {
     margin: 0;
     padding: 0;
@@ -30,9 +34,12 @@ body {
     min-height: 100vh;
     background: #f5f3ec;
     color: var(--text-dark);
+    width: 100%;
 }
 
-/* HEADER */
+/* ==========================================
+   HEADER - SAME AS DASHBOARD
+========================================== */
 
 .top-header {
     background: var(--dark-green);
@@ -85,7 +92,9 @@ body {
     cursor: pointer;
 }
 
-/* SIDEBAR */
+/* ==========================================
+   SIDEBAR - SAME AS DASHBOARD
+========================================== */
 
 .menu-toggle {
     display: none;
@@ -209,7 +218,9 @@ body {
     display: none;
 }
 
-/* MAIN CONTAINER */
+/* ==========================================
+   MAIN CONTAINER - SAME AS DASHBOARD
+========================================== */
 
 .container {
     margin-left: 255px;
@@ -217,7 +228,9 @@ body {
     padding: 25px 30px;
 }
 
-/* PAGE HEADING */
+/* ==========================================
+   PAGE HEADING
+========================================== */
 
 .page-heading {
     margin-bottom: 23px;
@@ -235,7 +248,9 @@ body {
     line-height: 1.6;
 }
 
-/* CONTENT CARDS */
+/* ==========================================
+   CONTENT CARDS - SAME AS DASHBOARD
+========================================== */
 
 .card {
     background: var(--cream);
@@ -275,7 +290,9 @@ body {
     padding: 20px;
 }
 
-/* REMINDER */
+/* ==========================================
+   REMINDER
+========================================== */
 
 .notice {
     background: #fff8df;
@@ -289,7 +306,9 @@ body {
     line-height: 1.6;
 }
 
-/* DOCUMENT GRID */
+/* ==========================================
+   DOCUMENT UPLOAD GRID
+========================================== */
 
 .document-grid {
     display: grid;
@@ -320,13 +339,15 @@ body {
 
 .document-card input {
     width: 100%;
+    max-width: 100%;
     padding: 11px;
     border: 1px solid #c9d2c9;
     border-radius: 7px;
     background: #f8f8f5;
     font-size: 13px;
-    max-width: 100%;
 }
+
+/* UPLOAD BUTTON */
 
 .upload-btn {
     width: 100%;
@@ -360,7 +381,9 @@ body {
     overflow-wrap: anywhere;
 }
 
-/* MESSAGE */
+/* ==========================================
+   MESSAGE
+========================================== */
 
 #message {
     margin: 0 0 17px;
@@ -369,7 +392,9 @@ body {
     overflow-wrap: anywhere;
 }
 
-/* DOCUMENT HISTORY */
+/* ==========================================
+   UPLOADED DOCUMENT HISTORY
+========================================== */
 
 .document-item {
     background: white;
@@ -431,7 +456,9 @@ body {
     line-height: 1.6;
 }
 
-/* FOOTER */
+/* ==========================================
+   FOOTER - SAME AS DASHBOARD
+========================================== */
 
 footer {
     margin-left: 255px;
@@ -443,13 +470,21 @@ footer {
     font-size: 13px;
 }
 
-/* RESPONSIVE */
+/* ==========================================
+   TABLET AND SMALL LAPTOP
+========================================== */
 
-@media(max-width: 950px) {
+@media screen and (max-width: 950px) {
+
     .document-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+
 }
+
+/* ==========================================
+   TABLET AND MOBILE SIDEBAR
+========================================== */
 
 @media screen and (max-width: 850px) {
 
@@ -494,6 +529,10 @@ footer {
     }
 }
 
+/* ==========================================
+   MOBILE PHONES
+========================================== */
+
 @media screen and (max-width: 600px) {
 
     body {
@@ -505,6 +544,10 @@ footer {
     .top-header {
         width: 100%;
         padding: 12px;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
         gap: 10px;
     }
 
@@ -558,6 +601,7 @@ footer {
 
     .card-header {
         padding: 12px;
+        flex-wrap: wrap;
     }
 
     .card-header h2 {
@@ -566,6 +610,11 @@ footer {
 
     .card-body {
         padding: 13px;
+    }
+
+    .notice {
+        padding: 13px;
+        font-size: 12px;
     }
 
     .document-grid {
@@ -586,11 +635,6 @@ footer {
         font-size: 12px;
     }
 
-    .notice {
-        padding: 13px;
-        font-size: 12px;
-    }
-
     .document-item {
         align-items: flex-start;
         flex-direction: column;
@@ -608,6 +652,10 @@ footer {
         line-height: 1.6;
     }
 }
+
+/* ==========================================
+   SMALLER PHONES
+========================================== */
 
 @media screen and (max-width: 480px) {
 
@@ -648,6 +696,10 @@ footer {
     }
 }
 
+/* ==========================================
+   EXTRA SMALL PHONES
+========================================== */
+
 @media screen and (max-width: 360px) {
 
     .brand img {
@@ -672,6 +724,10 @@ footer {
     }
 }
 
+/* ==========================================
+   GENERAL RESPONSIVE FIXES
+========================================== */
+
 img {
     max-width: 100%;
 }
@@ -689,7 +745,10 @@ button {
 
 <body>
 
-<!-- HEADER -->
+<!-- ==========================================
+     HEADER
+========================================== -->
+
 <header class="top-header">
 
     <button
@@ -702,6 +761,7 @@ button {
     </button>
 
     <div class="brand">
+
         <img
             src="https://64.media.tumblr.com/33ca84afd52d5cd0ef7bb1bb66c6176b/tumblr_o4ti6j8k6r1unefbyo1_400.png"
             alt="PLMUN Logo"
@@ -711,25 +771,37 @@ button {
             <h1>I-PILIMUN</h1>
             <p>STUDENT ID INFORMATION</p>
         </div>
+
     </div>
 
     <div class="header-right">
-        <button type="button" onclick="logout()">LOG OUT ↗</button>
+        <button type="button" onclick="logout()">
+            LOG OUT ↗
+        </button>
     </div>
 
 </header>
 
-<!-- SIDEBAR OVERLAY -->
+
+<!-- ==========================================
+     SIDEBAR OVERLAY
+========================================== -->
+
 <div
     id="sidebarOverlay"
     class="sidebar-overlay"
     onclick="closeSidebar()"
 ></div>
 
-<!-- SIDEBAR -->
+
+<!-- ==========================================
+     SIDEBAR NAVIGATION
+========================================== -->
+
 <aside class="sidebar" id="sidebar">
 
     <div class="sidebar-heading">
+
         <img
             src="https://64.media.tumblr.com/33ca84afd52d5cd0ef7bb1bb66c6176b/tumblr_o4ti6j8k6r1unefbyo1_400.png"
             alt="PLMUN Logo"
@@ -739,38 +811,52 @@ button {
             <h3>STUDENT PORTAL</h3>
             <p>Navigation Menu</p>
         </div>
+
     </div>
 
     <nav class="sidebar-nav">
 
-        <button class="sidebar-link"
-            onclick="window.location.href='student-dashboard.html'">
+        <button
+            class="sidebar-link"
+            onclick="window.location.href='student-dashboard.html'"
+        >
             <span>▦</span> Dashboard
         </button>
 
-        <button class="sidebar-link"
-            onclick="window.location.href='profile.html'">
+        <button
+            class="sidebar-link"
+            onclick="window.location.href='profile.html'"
+        >
             <span>👤</span> My Profile
         </button>
 
-        <button class="sidebar-link"
-            onclick="window.location.href='id.html'">
+        <button
+            class="sidebar-link"
+            onclick="window.location.href='id.html'"
+        >
             <span>▣</span> My Student ID
         </button>
 
-        <button class="sidebar-link"
-            onclick="window.location.href='application.html'">
+        <button
+            class="sidebar-link"
+            onclick="window.location.href='application.html'"
+        >
             <span>☑</span> Application Status
         </button>
 
-        <button class="sidebar-link active"
-            onclick="window.location.href='document.html'">
+        <button
+            class="sidebar-link active"
+            onclick="window.location.href='document.html'"
+        >
             <span>📁</span> My Documents
         </button>
 
         <div class="sidebar-divider"></div>
 
-        <button class="sidebar-link logout-link" onclick="logout()">
+        <button
+            class="sidebar-link logout-link"
+            onclick="logout()"
+        >
             <span>↗</span> Log Out
         </button>
 
@@ -783,27 +869,47 @@ button {
 
 </aside>
 
-<!-- MAIN CONTENT -->
+
+<!-- ==========================================
+     MAIN CONTENT
+========================================== -->
+
 <main class="container">
 
     <section class="page-heading">
+
         <h2>My Documents</h2>
+
         <p>
             Upload and manage the documents required for your
             Student ID application.
         </p>
+
     </section>
 
+
+    <!-- REMINDER -->
+
     <div class="notice">
+
         <strong>REMINDER:</strong>
+
         Upload clear and readable documents.
         Accepted formats: PDF, JPG, and PNG.
         Maximum file size: 5 MB.
+
     </div>
+
+
+    <!-- MESSAGE -->
 
     <div id="message"></div>
 
-    <!-- DOCUMENT UPLOAD CARD -->
+
+    <!-- ======================================
+         DOCUMENT SUBMISSION
+    ======================================= -->
+
     <section class="card">
 
         <div class="card-header">
@@ -814,8 +920,12 @@ button {
 
             <div class="document-grid">
 
+                <!-- 2x2 ID PICTURE -->
+
                 <div class="document-card">
+
                     <h3>2x2 ID Picture</h3>
+
                     <p>
                         Upload your recent 2x2 identification picture.
                     </p>
@@ -827,17 +937,27 @@ button {
                     >
 
                     <button
+                        type="button"
                         class="upload-btn"
                         onclick="uploadDocument('2x2 ID Picture', 'file-picture')"
                     >
                         UPLOAD DOCUMENT
                     </button>
 
-                    <div class="upload-status" id="status-picture"></div>
+                    <div
+                        class="upload-status"
+                        id="status-picture"
+                    ></div>
+
                 </div>
 
+
+                <!-- BIRTH CERTIFICATE -->
+
                 <div class="document-card">
+
                     <h3>Birth Certificate</h3>
+
                     <p>
                         Upload a clear copy of your birth certificate.
                     </p>
@@ -849,17 +969,27 @@ button {
                     >
 
                     <button
+                        type="button"
                         class="upload-btn"
                         onclick="uploadDocument('Birth Certificate', 'file-birth')"
                     >
                         UPLOAD DOCUMENT
                     </button>
 
-                    <div class="upload-status" id="status-birth"></div>
+                    <div
+                        class="upload-status"
+                        id="status-birth"
+                    ></div>
+
                 </div>
 
+
+                <!-- REGISTRATION FORM -->
+
                 <div class="document-card">
+
                     <h3>Registration Form</h3>
+
                     <p>
                         Upload your current registration or enrollment form.
                     </p>
@@ -871,17 +1001,27 @@ button {
                     >
 
                     <button
+                        type="button"
                         class="upload-btn"
                         onclick="uploadDocument('Registration Form', 'file-registration')"
                     >
                         UPLOAD DOCUMENT
                     </button>
 
-                    <div class="upload-status" id="status-registration"></div>
+                    <div
+                        class="upload-status"
+                        id="status-registration"
+                    ></div>
+
                 </div>
 
+
+                <!-- VALID SCHOOL ID -->
+
                 <div class="document-card">
+
                     <h3>Valid School ID</h3>
+
                     <p>
                         Upload a copy of your existing school identification,
                         if available.
@@ -894,21 +1034,31 @@ button {
                     >
 
                     <button
+                        type="button"
                         class="upload-btn"
                         onclick="uploadDocument('Valid School ID', 'file-schoolid')"
                     >
                         UPLOAD DOCUMENT
                     </button>
 
-                    <div class="upload-status" id="status-schoolid"></div>
+                    <div
+                        class="upload-status"
+                        id="status-schoolid"
+                    ></div>
+
                 </div>
 
             </div>
 
         </div>
+
     </section>
 
-    <!-- UPLOADED DOCUMENTS CARD -->
+
+    <!-- ======================================
+         UPLOADED DOCUMENTS
+    ======================================= -->
+
     <section class="card">
 
         <div class="card-header">
@@ -916,28 +1066,38 @@ button {
         </div>
 
         <div class="card-body">
+
             <div id="documentList" class="empty-message">
                 Loading documents...
             </div>
+
         </div>
 
     </section>
 
 </main>
 
-<!-- FOOTER -->
+
+<!-- ==========================================
+     FOOTER
+========================================== -->
+
 <footer>
+
     © 2026 Pamantasan ng Lungsod ng Muntinlupa |
     I-PILIMUN Student ID Information System
+
 </footer>
+
 
 <script>
 
-// ==========================================
-// SUPABASE CONFIGURATION
-// ==========================================
+/* ==========================================
+   SUPABASE CONFIGURATION
+========================================== */
 
-const SUPABASE_URL = "https://mlrpkkmexmboqrnmjkuy.supabase.co";
+const SUPABASE_URL =
+    "https://mlrpkkmexmboqrnmjkuy.supabase.co";
 
 const SUPABASE_ANON_KEY =
     "sb_publishable_-BIYMjip4Zon8HwZUCPT1Q_P0pDCMke";
@@ -950,24 +1110,34 @@ const supabaseClient = window.supabase.createClient(
 let currentUser = null;
 
 
-// ==========================================
-// SIDEBAR
-// ==========================================
+/* ==========================================
+   SIDEBAR NAVIGATION
+========================================== */
 
 function toggleSidebar() {
-    document.getElementById("sidebar").classList.toggle("open");
-    document.getElementById("sidebarOverlay").classList.toggle("show");
+
+    document.getElementById("sidebar")
+        .classList.toggle("open");
+
+    document.getElementById("sidebarOverlay")
+        .classList.toggle("show");
+
 }
 
 function closeSidebar() {
-    document.getElementById("sidebar").classList.remove("open");
-    document.getElementById("sidebarOverlay").classList.remove("show");
+
+    document.getElementById("sidebar")
+        .classList.remove("open");
+
+    document.getElementById("sidebarOverlay")
+        .classList.remove("show");
+
 }
 
 
-// ==========================================
-// LOGOUT
-// ==========================================
+/* ==========================================
+   LOGOUT
+========================================== */
 
 async function logout() {
 
@@ -979,40 +1149,70 @@ async function logout() {
         return;
     }
 
-    const { error } = await supabaseClient.auth.signOut();
+    const { error } =
+        await supabaseClient.auth.signOut();
 
     if (error) {
-        showMessage("Unable to log out: " + error.message, true);
+
+        showMessage(
+            "Unable to log out: " + error.message,
+            true
+        );
+
         return;
     }
 
     window.location.href = "index.html";
+
 }
 
 
-// ==========================================
-// INITIALIZE PAGE
-// ==========================================
+/* ==========================================
+   INITIALIZE PAGE
+========================================== */
 
 async function initializePage() {
 
-    const { data, error } =
-        await supabaseClient.auth.getSession();
+    try {
 
-    if (error || !data.session) {
-        window.location.href = "index.html";
-        return;
+        const { data, error } =
+            await supabaseClient.auth.getSession();
+
+        if (error) {
+            throw error;
+        }
+
+        if (!data.session) {
+
+            window.location.href = "index.html";
+            return;
+
+        }
+
+        currentUser = data.session.user;
+
+        await loadDocuments();
+
+    } catch (error) {
+
+        console.error("Initialization error:", error);
+
+        showMessage(
+            "Unable to connect to your account: " + error.message,
+            true
+        );
+
+        document.getElementById("documentList").textContent =
+            "Unable to load documents.";
+
     }
 
-    currentUser = data.session.user;
-
-    await loadDocuments();
 }
 
 
-// ==========================================
-// MESSAGE
-// ==========================================
+/* ==========================================
+   MESSAGE
+========================================== */
 
 function showMessage(message, isError = false) {
 
@@ -1023,35 +1223,51 @@ function showMessage(message, isError = false) {
     box.style.color = isError
         ? "#a00000"
         : "#075c3b";
+
 }
 
 
-// ==========================================
-// UPLOAD DOCUMENT
-// ==========================================
+/* ==========================================
+   UPLOAD DOCUMENT
+========================================== */
 
 async function uploadDocument(documentName, inputId) {
 
     if (!currentUser) {
-        showMessage("Please log in again.", true);
+
+        showMessage(
+            "Please log in again.",
+            true
+        );
+
         return;
     }
 
     const input = document.getElementById(inputId);
+
     const file = input.files[0];
 
     const statusId =
         "status-" + inputId.replace("file-", "");
 
-    const status = document.getElementById(statusId);
+    const status =
+        document.getElementById(statusId);
 
     const button =
         input.parentElement.querySelector("button");
 
     if (!file) {
-        showMessage("Please select a file first.", true);
+
+        showMessage(
+            "Please select a file first.",
+            true
+        );
+
         return;
     }
+
+
+    /* CHECK FILE TYPE */
 
     const allowedTypes = [
         "application/pdf",
@@ -1060,24 +1276,36 @@ async function uploadDocument(documentName, inputId) {
     ];
 
     if (!allowedTypes.includes(file.type)) {
+
         showMessage(
             "Only PDF, JPG, and PNG files are allowed.",
             true
         );
+
         return;
     }
 
+
+    /* CHECK FILE SIZE */
+
     if (file.size > 5 * 1024 * 1024) {
+
         showMessage(
             "File size must not exceed 5 MB.",
             true
         );
+
         return;
     }
 
+
     button.disabled = true;
     button.textContent = "UPLOADING...";
+
     status.textContent = "";
+
+
+    /* CREATE SAFE FILE NAME */
 
     const safeName = file.name.replace(
         /[^a-zA-Z0-9._-]/g,
@@ -1087,9 +1315,11 @@ async function uploadDocument(documentName, inputId) {
     const filePath =
         currentUser.id + "/" + Date.now() + "_" + safeName;
 
+
     try {
 
-        // Upload file to Supabase Storage
+        /* UPLOAD FILE TO SUPABASE STORAGE */
+
         const { error: uploadError } =
             await supabaseClient
                 .storage
@@ -1100,36 +1330,54 @@ async function uploadDocument(documentName, inputId) {
             throw uploadError;
         }
 
-        // Save document information to database
+
+        /* SAVE DOCUMENT INFORMATION TO DATABASE */
+
         const { error: insertError } =
             await supabaseClient
                 .from("documents")
                 .insert({
+
                     student_id: currentUser.id,
+
                     document_name: documentName,
+
                     file_path: filePath,
+
                     file_type: file.type,
+
                     status: "Pending"
+
                 });
+
 
         if (insertError) {
 
-            // Remove uploaded file if database insert fails
+            /* REMOVE FILE IF DATABASE INSERT FAILS */
+
             await supabaseClient
                 .storage
                 .from("student-documents")
                 .remove([filePath]);
 
             throw insertError;
+
         }
+
+
+        /* SUCCESS MESSAGE */
 
         showMessage(
             documentName + " uploaded successfully!"
         );
 
-        status.textContent = "Uploaded successfully.";
+        status.textContent =
+            "Uploaded successfully.";
 
         input.value = "";
+
+
+        /* REFRESH DOCUMENT HISTORY */
 
         await loadDocuments();
 
@@ -1145,18 +1393,29 @@ async function uploadDocument(documentName, inputId) {
     } finally {
 
         button.disabled = false;
+
         button.textContent = "UPLOAD DOCUMENT";
+
     }
+
 }
 
 
-// ==========================================
-// LOAD DOCUMENT HISTORY
-// ==========================================
+/* ==========================================
+   LOAD DOCUMENT HISTORY
+========================================== */
 
 async function loadDocuments() {
 
-    const list = document.getElementById("documentList");
+    const list =
+        document.getElementById("documentList");
+
+    if (!currentUser) {
+        return;
+    }
+
+    list.textContent = "Loading documents...";
+
 
     const { data, error } = await supabaseClient
         .from("documents")
@@ -1167,15 +1426,21 @@ async function loadDocuments() {
             uploaded_at
         `)
         .eq("student_id", currentUser.id)
-        .order("uploaded_at", { ascending: false });
+        .order("uploaded_at", {
+            ascending: false
+        });
+
 
     if (error) {
+
+        console.error("Load documents error:", error);
 
         list.textContent =
             "Unable to load documents: " + error.message;
 
         return;
     }
+
 
     if (!data || data.length === 0) {
 
@@ -1185,58 +1450,95 @@ async function loadDocuments() {
         return;
     }
 
+
+    /* CLEAR OLD DOCUMENT LIST */
+
     list.innerHTML = "";
+
+
+    /* DISPLAY EACH DOCUMENT */
 
     data.forEach(doc => {
 
-        const item = document.createElement("div");
+        const item =
+            document.createElement("div");
+
         item.className = "document-item";
 
-        const details = document.createElement("div");
+
+        const details =
+            document.createElement("div");
+
         details.className = "document-details";
 
-        const name = document.createElement("strong");
+
+        const name =
+            document.createElement("strong");
+
         name.textContent = doc.document_name;
 
-        const date = document.createElement("small");
+
+        const date =
+            document.createElement("small");
 
         date.textContent =
             "Uploaded: " +
             new Date(doc.uploaded_at).toLocaleString();
 
+
         details.appendChild(name);
+
         details.appendChild(date);
 
-        const status = document.createElement("span");
 
-        const documentStatus = doc.status || "Pending";
+        /* DOCUMENT STATUS */
+
+        const status =
+            document.createElement("span");
+
+        const documentStatus =
+            doc.status || "Pending";
 
         status.textContent = documentStatus;
+
 
         const normalizedStatus =
             documentStatus.toLowerCase();
 
+
         if (normalizedStatus === "approved") {
+
             status.className = "approved";
+
         } else if (normalizedStatus === "rejected") {
+
             status.className = "rejected";
+
         } else if (normalizedStatus === "pending") {
+
             status.className = "pending";
+
         } else {
+
             status.className = "default-status";
+
         }
 
+
         item.appendChild(details);
+
         item.appendChild(status);
 
         list.appendChild(item);
+
     });
+
 }
 
 
-// ==========================================
-// START PAGE
-// ==========================================
+/* ==========================================
+   START PAGE
+========================================== */
 
 initializePage();
 
