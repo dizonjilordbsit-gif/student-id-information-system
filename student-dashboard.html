@@ -1599,6 +1599,8 @@ let currentStudent = null;
 async function loadStudentDashboard() {
 
     const loadingMessage = document.getElementById("loadingMessage");
+    loadingMessage.style.display = "block";
+    loadingMessage.textContent = "Refreshing student information...";
 
     try {
 
@@ -1855,7 +1857,23 @@ async function logout() {
 // START DASHBOARD
 // ==========================================
 
-loadStudentDashboard();
+// ==========================================
+// START DASHBOARD + AUTO REFRESH
+// ==========================================
+
+// Load dashboard whenever the page is opened or restored
+window.addEventListener("pageshow", function () {
+    loadStudentDashboard();
+});
+
+// Refresh when the user returns to this browser tab
+document.addEventListener("visibilitychange", function () {
+
+    if (document.visibilityState === "visible") {
+        loadStudentDashboard();
+    }
+
+});
 
 </script>
 
