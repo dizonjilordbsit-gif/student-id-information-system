@@ -1,11 +1,642 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Application Status | PLMUN</title><style>
-:root{--g:#064b35;--g2:#0b6849;--gold:#d6ad45;--bg:#f7f5ed}*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:#18352a}header{background:var(--g);color:white;padding:15px 22px;display:flex;justify-content:space-between;align-items:center;gap:12px}.brand{display:flex;align-items:center;gap:10px;font-weight:bold}.brand img{width:42px;height:42px;object-fit:contain;filter:drop-shadow(0 0 6px #39e69b)}button{cursor:pointer;border:1px solid var(--gold);border-radius:8px;padding:10px 14px;background:transparent;color:white}.layout{display:flex;min-height:calc(100vh - 72px)}aside{width:225px;background:#073d2d;padding:18px 12px;flex-shrink:0}aside a{display:block;color:white;text-decoration:none;padding:12px;border-radius:8px;margin-bottom:6px}aside a.active,aside a:hover{background:var(--g2);border-left:4px solid var(--gold)}main{width:100%;max-width:1050px;margin:auto;padding:30px}.eyebrow{font-size:12px;color:#8a6a18;font-weight:bold;letter-spacing:1px;text-transform:uppercase}h1{color:var(--g);margin:8px 0}.sub{color:#64756d;margin:0 0 22px}.card{background:white;border:1px solid #e4e5dc;border-radius:14px;padding:22px;margin:16px 0;box-shadow:0 5px 18px #18352a0b}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.field{background:#f8f9f5;border-radius:9px;padding:13px;margin:8px 0}.field small{display:block;color:#728078;margin-bottom:6px}.notice{padding:13px;background:#fff7df;border-left:4px solid var(--gold);border-radius:7px;color:#68551f}.pill{display:inline-block;padding:7px 12px;border-radius:25px;background:#fff2cc;color:#755400;font-weight:bold;font-size:13px}footer{text-align:center;color:#7b887f;padding:20px;font-size:12px}@media(max-width:700px){.layout{display:block}aside{width:100%;display:flex;overflow:auto;padding:8px;gap:4px}aside a{white-space:nowrap;margin:0;padding:10px}main{padding:20px 14px}.grid{grid-template-columns:1fr}.brand{font-size:12px}.brand img{width:34px;height:34px}}
-</style></head><body>
-<header><div class="brand"><img src="https://64.media.tumblr.com/33ca84afd52d5cd0ef7bb1bb66c6176b/tumblr_o4ti6j8k6r1unefbyo1_400.png" alt="PLMUN"><span>I-PILIMUN Student ID INFORMATION</span></div><button onclick="logout()">Log Out</button></header>
-<div class="layout"><aside><a class="" href="student-dashboard.html">Dashboard</a><a class="" href="profile.html">My Profile</a><a class="" href="id.html">My Student ID</a><a class="active" href="application.html">Application Status</a><a class="" href="document.html">My Documents</a></aside><main><div class="eyebrow">Student Portal</div><h1>Application Status</h1><p class="sub">Track the review status of your submitted documents.</p><div id="message" class="notice">Checking status...</div><section class="card" id="card" hidden><div class="eyebrow">Overall Document Review</div><h2 id="overall" style="color:#064b35"></h2><p id="summary" class="sub"></p><h3>Submitted Documents</h3><div id="docs"></div><p class="notice">Status shown here is based on records in the documents table. Contact the school office for questions or corrections.</p></section></main></div><footer>PLMUN Student ID Information System</footer>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>
-const db=window.supabase.createClient("https://mlrpkkmexmboqrnmjkuy.supabase.co","sb_publishable_-BIYMjip4Zon8HwZUCPT1Q_P0pDCMke");let currentUser=null;
-async function getStudent(){const {data,error}=await db.auth.getSession();currentUser=data.session?.user;if(error||!currentUser){location.href="index.html";return null;}const r=await db.from("students").select("*").eq("id",currentUser.id).maybeSingle();if(r.error||!r.data){document.getElementById("message").textContent="Hindi ma-load ang student record. Check ang students table at RLS policies.";return null;}return r.data;}
-async function logout(){await db.auth.signOut();location.href="index.html";}
-(async()=>{const s=await getStudent();if(!s)return;const {data,error}=await db.from("documents").select("document_name,status,uploaded_at").eq("student_id",currentUser.id).order("uploaded_at",{ascending:false});if(error){document.getElementById("message").textContent="Hindi ma-load ang status. Check ang documents table at RLS policies.";return;}const d=data||[],st=d.map(x=>(x.status||"Pending").toLowerCase());let overall="Not Submitted";if(d.length)overall=st.includes("rejected")?"Action Required":st.every(x=>x==="approved")?"Approved":"Pending Review";document.getElementById("overall").textContent=overall;document.getElementById("summary").textContent=d.length?`${d.length} document(s) recorded.`:"Wala pang uploaded documents.";document.getElementById("docs").innerHTML=d.length?d.map(x=>`<div class="field" style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><strong>${x.document_name||"Document"}</strong><span class="pill">${x.status||"Pending"}</span></div>`).join(""):"<p>No documents submitted yet.</p>";document.getElementById("card").hidden=false;document.getElementById("message").hidden=true;})();
-</script></body></html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Application Status | PLMUN</title>
+
+<style>
+:root {
+    --green: #064b35;
+    --green-dark: #073d2d;
+    --green-light: #0b6849;
+    --gold: #d6ad45;
+    --bg: #f5f3ec;
+    --white: #ffffff;
+    --text: #18352a;
+    --muted: #718078;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+}
+
+/* HEADER */
+header {
+    background: var(--green);
+    color: white;
+    padding: 14px 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    min-height: 72px;
+    position: relative;
+    z-index: 10;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.brand img {
+    width: 43px;
+    height: 43px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 6px #39e69b);
+}
+
+.menu-btn {
+    display: none;
+    background: transparent;
+    color: white;
+    border: 1px solid var(--gold);
+    border-radius: 7px;
+    padding: 8px 12px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.logout-btn {
+    background: var(--gold);
+    color: var(--green-dark);
+    border: none;
+    border-radius: 7px;
+    padding: 10px 18px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.logout-btn:hover {
+    background: #edca6c;
+}
+
+/* LAYOUT */
+.layout {
+    display: flex;
+    min-height: calc(100vh - 72px);
+}
+
+/* SIDEBAR */
+aside {
+    width: 255px;
+    background: var(--green-dark);
+    padding: 22px 13px;
+    flex-shrink: 0;
+}
+
+.sidebar-title {
+    color: #d6c99c;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    padding: 8px 13px 15px;
+    text-transform: uppercase;
+}
+
+aside a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    padding: 13px 14px;
+    border-radius: 8px;
+    margin-bottom: 7px;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+aside a:hover,
+aside a.active {
+    background: var(--green-light);
+    border-left: 4px solid var(--gold);
+}
+
+.overlay {
+    display: none;
+}
+
+/* MAIN CONTENT */
+main {
+    flex: 1;
+    width: 100%;
+    max-width: 1150px;
+    margin: 0 auto;
+    padding: 32px;
+}
+
+.eyebrow {
+    font-size: 12px;
+    color: #92701c;
+    font-weight: bold;
+    letter-spacing: 1.3px;
+    text-transform: uppercase;
+}
+
+h1 {
+    color: var(--green);
+    margin: 9px 0;
+    font-size: 28px;
+}
+
+.subtitle {
+    color: var(--muted);
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+
+/* CARDS */
+.card {
+    background: var(--white);
+    border: 1px solid #e5e5dc;
+    border-radius: 13px;
+    padding: 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 5px 18px rgba(24, 53, 42, 0.06);
+}
+
+.card h2 {
+    color: var(--green);
+    margin: 10px 0;
+    font-size: 22px;
+}
+
+.card h3 {
+    color: var(--green);
+    margin: 24px 0 12px;
+    font-size: 17px;
+}
+
+.status-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 15px;
+}
+
+.status-pill {
+    display: inline-block;
+    padding: 9px 16px;
+    border-radius: 30px;
+    background: #fff2cc;
+    color: #755400;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.status-pill.approved {
+    background: #dcf5e5;
+    color: #176b39;
+}
+
+.status-pill.rejected {
+    background: #fde4e4;
+    color: #a52a2a;
+}
+
+.status-pill.pending {
+    background: #fff2cc;
+    color: #755400;
+}
+
+/* DOCUMENT LIST */
+.document-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.document-item {
+    background: #f8f9f5;
+    border: 1px solid #e9ebe4;
+    border-radius: 10px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.document-info strong {
+    display: block;
+    color: var(--green);
+    margin-bottom: 5px;
+}
+
+.document-info small {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.notice {
+    background: #fff7df;
+    border-left: 4px solid var(--gold);
+    border-radius: 8px;
+    padding: 15px;
+    color: #68551f;
+    font-size: 13px;
+    line-height: 1.6;
+    margin-top: 20px;
+}
+
+.message {
+    background: white;
+    border: 1px solid #e5e5dc;
+    border-radius: 10px;
+    padding: 18px;
+    color: var(--muted);
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 28px 15px;
+    color: var(--muted);
+    background: #f8f9f5;
+    border-radius: 10px;
+}
+
+.empty-state strong {
+    display: block;
+    color: var(--green);
+    margin-bottom: 8px;
+}
+
+footer {
+    text-align: center;
+    color: #7b887f;
+    padding: 20px;
+    font-size: 12px;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+    header {
+        padding: 12px 15px;
+    }
+
+    .menu-btn {
+        display: block;
+    }
+
+    .brand {
+        font-size: 12px;
+    }
+
+    .brand img {
+        width: 35px;
+        height: 35px;
+    }
+
+    .logout-btn {
+        padding: 9px 12px;
+        font-size: 12px;
+    }
+
+    .layout {
+        display: block;
+    }
+
+    aside {
+        position: fixed;
+        top: 0;
+        left: -270px;
+        width: 255px;
+        height: 100vh;
+        z-index: 30;
+        transition: left 0.3s ease;
+        padding-top: 25px;
+    }
+
+    aside.show {
+        left: 0;
+    }
+
+    .overlay.show {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.45);
+        z-index: 20;
+    }
+
+    main {
+        padding: 25px 15px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    .card {
+        padding: 18px;
+    }
+}
+
+@media (max-width: 380px) {
+    .brand {
+        font-size: 10px;
+    }
+
+    .brand img {
+        width: 30px;
+        height: 30px;
+    }
+
+    .logout-btn {
+        padding: 8px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="header-left">
+        <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+
+        <div class="brand">
+            <img
+                src="https://64.media.tumblr.com/33ca84afd52d5cd0ef7bb1bb66c6176b/tumblr_o4ti6j8k6r1unefbyo1_400.png"
+                alt="PLMUN Logo"
+            >
+            <span>I-PILIMUN Student ID INFORMATION</span>
+        </div>
+    </div>
+
+    <button class="logout-btn" onclick="logout()">Log Out</button>
+</header>
+
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<div class="layout">
+
+    <aside id="sidebar">
+        <div class="sidebar-title">Student Menu</div>
+
+        <a href="student-dashboard.html">Dashboard</a>
+        <a href="profile.html">My Profile</a>
+        <a href="id.html">My Student ID</a>
+        <a href="application.html" class="active">Application Status</a>
+        <a href="document.html">My Documents</a>
+    </aside>
+
+    <main>
+
+        <div class="eyebrow">Student Portal</div>
+
+        <h1>Application Status</h1>
+
+        <p class="subtitle">
+            Track the review status of your submitted documents.
+        </p>
+
+        <div id="message" class="message">
+            Checking your application status...
+        </div>
+
+        <section class="card" id="statusCard" hidden>
+
+            <div class="eyebrow">Overall Document Review</div>
+
+            <div class="status-summary">
+                <div>
+                    <h2 id="overallStatus">Pending Review</h2>
+                    <p id="summary" class="subtitle" style="margin:0">
+                        Loading document information...
+                    </p>
+                </div>
+
+                <span id="overallPill" class="status-pill pending">
+                    Pending
+                </span>
+            </div>
+
+            <h3>Submitted Documents</h3>
+
+            <div id="documentsList" class="document-list"></div>
+
+            <div class="notice">
+                The status displayed here is based on the records saved in
+                the documents table. For questions or corrections, please
+                contact the school office.
+            </div>
+
+        </section>
+
+    </main>
+</div>
+
+<footer>
+    PLMUN Student ID Information System
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const db = window.supabase.createClient(
+    "https://mlrpkkmexmboqrnmjkuy.supabase.co",
+    "sb_publishable_-BIYMjip4Zon8HwZUCPT1Q_P0pDCMke"
+);
+
+let currentUser = null;
+
+/* SIDEBAR */
+function toggleSidebar() {
+    document.getElementById("sidebar").classList.toggle("show");
+    document.getElementById("overlay").classList.toggle("show");
+}
+
+function closeSidebar() {
+    document.getElementById("sidebar").classList.remove("show");
+    document.getElementById("overlay").classList.remove("show");
+}
+
+/* LOGOUT */
+async function logout() {
+    await db.auth.signOut();
+    location.href = "index.html";
+}
+
+/* ESCAPE HTML */
+function escapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, function(char) {
+        return {
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#039;"
+        }[char];
+    });
+}
+
+/* GET LOGGED-IN STUDENT */
+async function getStudent() {
+    const { data, error } = await db.auth.getSession();
+
+    currentUser = data.session?.user;
+
+    if (error || !currentUser) {
+        location.href = "index.html";
+        return null;
+    }
+
+    const result = await db
+        .from("students")
+        .select("*")
+        .eq("id", currentUser.id)
+        .maybeSingle();
+
+    if (result.error || !result.data) {
+        document.getElementById("message").textContent =
+            "Hindi ma-load ang student record. Check ang students table at RLS policies.";
+
+        return null;
+    }
+
+    return result.data;
+}
+
+/* STATUS CLASS */
+function getStatusClass(status) {
+    const value = String(status || "Pending").toLowerCase();
+
+    if (value === "approved") return "approved";
+    if (value === "rejected") return "rejected";
+
+    return "pending";
+}
+
+/* LOAD APPLICATION STATUS */
+async function loadApplicationStatus() {
+
+    const student = await getStudent();
+
+    if (!student) return;
+
+    const { data, error } = await db
+        .from("documents")
+        .select("document_name, status, uploaded_at")
+        .eq("student_id", currentUser.id)
+        .order("uploaded_at", { ascending: false });
+
+    if (error) {
+        document.getElementById("message").textContent =
+            "Hindi ma-load ang application status. Check ang documents table at RLS policies.";
+
+        return;
+    }
+
+    const documents = data || [];
+
+    const statuses = documents.map(document =>
+        String(document.status || "Pending").toLowerCase()
+    );
+
+    let overallStatus = "Not Submitted";
+
+    if (documents.length > 0) {
+
+        if (statuses.includes("rejected")) {
+            overallStatus = "Action Required";
+
+        } else if (statuses.every(status => status === "approved")) {
+            overallStatus = "Approved";
+
+        } else {
+            overallStatus = "Pending Review";
+        }
+    }
+
+    const overallPill = document.getElementById("overallPill");
+
+    document.getElementById("overallStatus").textContent =
+        overallStatus;
+
+    document.getElementById("summary").textContent =
+        documents.length
+            ? documents.length + " document(s) recorded."
+            : "No uploaded documents have been recorded yet.";
+
+    overallPill.textContent = overallStatus;
+    overallPill.className =
+        "status-pill " +
+        (overallStatus === "Approved"
+            ? "approved"
+            : overallStatus === "Action Required"
+                ? "rejected"
+                : "pending");
+
+    const documentsList = document.getElementById("documentsList");
+
+    if (documents.length > 0) {
+
+        documentsList.innerHTML = documents.map(document => {
+
+            const status = document.status || "Pending";
+            const statusClass = getStatusClass(status);
+
+            const date = document.uploaded_at
+                ? new Date(document.uploaded_at).toLocaleDateString()
+                : "Date unavailable";
+
+            return `
+                <div class="document-item">
+                    <div class="document-info">
+                        <strong>${escapeHTML(document.document_name || "Document")}</strong>
+                        <small>Uploaded: ${escapeHTML(date)}</small>
+                    </div>
+
+                    <span class="status-pill ${statusClass}">
+                        ${escapeHTML(status)}
+                    </span>
+                </div>
+            `;
+
+        }).join("");
+
+    } else {
+
+        documentsList.innerHTML = `
+            <div class="empty-state">
+                <strong>No Documents Submitted</strong>
+                You have not uploaded any documents yet.
+                Go to My Documents to submit your requirements.
+            </div>
+        `;
+    }
+
+    document.getElementById("statusCard").hidden = false;
+    document.getElementById("message").hidden = true;
+}
+
+/* START */
+loadApplicationStatus();
+</script>
+
+</body>
+</html>
