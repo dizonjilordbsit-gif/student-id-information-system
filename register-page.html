@@ -217,18 +217,6 @@
     <form id="registerForm">
 
         <div class="form-group">
-            <label for="studentNumber">Student Number</label>
-
-            <input
-                type="text"
-                id="studentNumber"
-                placeholder="Enter your Student Number"
-                autocomplete="off"
-                required
-            >
-        </div>
-
-        <div class="form-group">
             <label for="email">Institutional Email</label>
 
             <input
@@ -298,6 +286,7 @@
 
 </div>
 
+
 <script>
 
 // ==========================================
@@ -337,11 +326,6 @@ registerForm.addEventListener("submit", async function(event) {
     message.textContent = "";
     message.className = "message";
 
-    const studentNumber = document
-        .getElementById("studentNumber")
-        .value
-        .trim();
-
     const email = document
         .getElementById("email")
         .value
@@ -359,12 +343,8 @@ registerForm.addEventListener("submit", async function(event) {
 
     // CHECK EMPTY FIELDS
 
-    if (
-        !studentNumber ||
-        !email ||
-        !password ||
-        !confirmPassword
-    ) {
+    if (!email || !password || !confirmPassword) {
+
         showMessage(
             "Please complete all required fields.",
             "error"
@@ -424,7 +404,6 @@ registerForm.addEventListener("submit", async function(event) {
 
         // ======================================
         // CREATE SUPABASE AUTH ACCOUNT
-        // NO EMAIL VERIFICATION REDIRECT
         // ======================================
 
         const { data, error } =
@@ -432,13 +411,7 @@ registerForm.addEventListener("submit", async function(event) {
 
                 email: email,
 
-                password: password,
-
-                options: {
-                    data: {
-                        student_number: studentNumber
-                    }
-                }
+                password: password
 
             });
 
@@ -449,9 +422,11 @@ registerForm.addEventListener("submit", async function(event) {
 
 
         if (!data.user) {
+
             throw new Error(
                 "Unable to create your account. Please try again."
             );
+
         }
 
 
@@ -462,9 +437,8 @@ registerForm.addEventListener("submit", async function(event) {
         if (!data.session) {
 
             throw new Error(
-                "Account creation requires an active session. " +
-                "Please make sure Confirm email is turned OFF " +
-                "in your Supabase Email settings."
+                "Account created, but no active session was returned. " +
+                "Please check that Confirm email is OFF in Supabase."
             );
 
         }
@@ -481,8 +455,6 @@ registerForm.addEventListener("submit", async function(event) {
                 .insert({
 
                     id: data.user.id,
-
-                    student_number: studentNumber,
 
                     email: email
 
@@ -507,8 +479,12 @@ registerForm.addEventListener("submit", async function(event) {
 
         registerButton.textContent = "SUCCESS!";
 
+
         setTimeout(function() {
-            window.location.href = "student-dashboard.html";
+
+            window.location.href =
+                "student-dashboard.html";
+
         }, 2000);
 
 
@@ -541,6 +517,7 @@ function showMessage(text, type) {
 }
 
 </script>
+
 
 </body>
 </html>
