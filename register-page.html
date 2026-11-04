@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -210,13 +211,12 @@
 
     <p class="description">
         Register using your official PLMUN institutional email
-        and student number to access the Student ID Information System.
+        and create your own password to access the system.
     </p>
 
     <form id="registerForm">
 
         <div class="form-group">
-
             <label for="studentNumber">Student Number</label>
 
             <input
@@ -226,11 +226,9 @@
                 autocomplete="off"
                 required
             >
-
         </div>
 
         <div class="form-group">
-
             <label for="email">Institutional Email</label>
 
             <input
@@ -244,7 +242,36 @@
             <p class="hint">
                 Only @plmun.edu.ph email addresses are accepted.
             </p>
+        </div>
 
+        <div class="form-group">
+            <label for="password">Create Password</label>
+
+            <input
+                type="password"
+                id="password"
+                placeholder="Enter your password"
+                minlength="8"
+                autocomplete="new-password"
+                required
+            >
+
+            <p class="hint">
+                Password must contain at least 8 characters.
+            </p>
+        </div>
+
+        <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+
+            <input
+                type="password"
+                id="confirmPassword"
+                placeholder="Re-enter your password"
+                minlength="8"
+                autocomplete="new-password"
+                required
+            >
         </div>
 
         <button
@@ -277,9 +304,11 @@
 // SUPABASE CONFIGURATION
 // ==========================================
 
-const SUPABASE_URL = "YOUR_SUPABASE_PROJECT_URL";
+const SUPABASE_URL =
+    "https://mlrpkkmexmboqrnmjkuy.supabase.co";
 
-const SUPABASE_ANON_KEY = "YOUR_SUPABASE_PUBLISHABLE_KEY";
+const SUPABASE_ANON_KEY =
+    "sb_publishable_-BIYMjip4Zon8HwZUCPT1Q_P0pDCMke";
 
 const supabaseClient = window.supabase.createClient(
     SUPABASE_URL,
@@ -291,9 +320,14 @@ const supabaseClient = window.supabase.createClient(
 // REGISTRATION FORM
 // ==========================================
 
-const registerForm = document.getElementById("registerForm");
-const registerButton = document.getElementById("registerButton");
-const message = document.getElementById("message");
+const registerForm =
+    document.getElementById("registerForm");
+
+const registerButton =
+    document.getElementById("registerButton");
+
+const message =
+    document.getElementById("message");
 
 
 registerForm.addEventListener("submit", async function(event) {
@@ -314,13 +348,25 @@ registerForm.addEventListener("submit", async function(event) {
         .trim()
         .toLowerCase();
 
+    const password = document
+        .getElementById("password")
+        .value;
+
+    const confirmPassword = document
+        .getElementById("confirmPassword")
+        .value;
+
 
     // CHECK EMPTY FIELDS
 
-    if (!studentNumber || !email) {
-
+    if (
+        !studentNumber ||
+        !email ||
+        !password ||
+        !confirmPassword
+    ) {
         showMessage(
-            "Please enter your Student Number and institutional email.",
+            "Please complete all required fields.",
             "error"
         );
 
@@ -330,12 +376,13 @@ registerForm.addEventListener("submit", async function(event) {
 
     // CHECK INSTITUTIONAL EMAIL
 
-    const emailPattern = /^[a-zA-Z0-9._%+-]+@plmun\.edu\.ph$/i;
+    const emailPattern =
+        /^[a-zA-Z0-9._%+-]+@plmun\.edu\.ph$/i;
 
     if (!emailPattern.test(email)) {
 
         showMessage(
-            "Please use your official PLMUN institutional email (@plmun.edu.ph).",
+            "Please use your official PLMUN institutional email.",
             "error"
         );
 
@@ -343,15 +390,25 @@ registerForm.addEventListener("submit", async function(event) {
     }
 
 
-    // CHECK SUPABASE CONFIGURATION
+    // CHECK PASSWORD LENGTH
 
-    if (
-        SUPABASE_URL === "YOUR_SUPABASE_PROJECT_URL" ||
-        SUPABASE_ANON_KEY === "YOUR_SUPABASE_PUBLISHABLE_KEY"
-    ) {
+    if (password.length < 8) {
 
         showMessage(
-            "Please configure your Supabase URL and Publishable Key first.",
+            "Password must contain at least 8 characters.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    // CHECK PASSWORD MATCH
+
+    if (password !== confirmPassword) {
+
+        showMessage(
+            "Passwords do not match. Please try again.",
             "error"
         );
 
@@ -360,36 +417,30 @@ registerForm.addEventListener("submit", async function(event) {
 
 
     registerButton.disabled = true;
-    registerButton.textContent = "PROCESSING...";
+    registerButton.textContent = "CREATING ACCOUNT...";
 
 
     try {
 
-        // SEND EMAIL VERIFICATION LINK
+        // ======================================
+        // CREATE SUPABASE AUTH ACCOUNT
+        // NO EMAIL VERIFICATION REDIRECT
+        // ======================================
 
-        const redirectURL = new URL(
-            "student-dashboard.html",
-            window.location.href
-        ).href;
+        const { data, error } =
+            await supabaseClient.auth.signUp({
 
+                email: email,
 
-        const { data, error } = await supabaseClient.auth.signInWithOtp({
+                password: password,
 
-            email: email,
-
-            options: {
-
-                shouldCreateUser: true,
-
-                emailRedirectTo: redirectURL,
-
-                data: {
-                    student_number: studentNumber
+                options: {
+                    data: {
+                        student_number: studentNumber
+                    }
                 }
 
-            }
-
-        });
+            });
 
 
         if (error) {
@@ -397,12 +448,68 @@ registerForm.addEventListener("submit", async function(event) {
         }
 
 
+        if (!data.user) {
+            throw new Error(
+                "Unable to create your account. Please try again."
+            );
+        }
+
+
+        // ======================================
+        // CHECK ACTIVE SESSION
+        // ======================================
+
+        if (!data.session) {
+
+            throw new Error(
+                "Account creation requires an active session. " +
+                "Please make sure Confirm email is turned OFF " +
+                "in your Supabase Email settings."
+            );
+
+        }
+
+
+        // ======================================
+        // SAVE STUDENT INFORMATION
+        // TO PUBLIC.STUDENTS TABLE
+        // ======================================
+
+        const { error: studentError } =
+            await supabaseClient
+                .from("students")
+                .insert({
+
+                    id: data.user.id,
+
+                    student_number: studentNumber,
+
+                    email: email
+
+                });
+
+
+        if (studentError) {
+            throw studentError;
+        }
+
+
+        // ======================================
+        // REGISTRATION SUCCESSFUL
+        // ======================================
+
         showMessage(
-            "Registration request successful! Please check your PLMUN institutional email and open the verification link to activate your account.",
+            "Registration successful! Your account has been created. Redirecting to your Student Dashboard...",
             "success"
         );
 
         registerForm.reset();
+
+        registerButton.textContent = "SUCCESS!";
+
+        setTimeout(function() {
+            window.location.href = "student-dashboard.html";
+        }, 2000);
 
 
     } catch (error) {
@@ -413,8 +520,6 @@ registerForm.addEventListener("submit", async function(event) {
             error.message || "Registration failed. Please try again.",
             "error"
         );
-
-    } finally {
 
         registerButton.disabled = false;
         registerButton.textContent = "REGISTER ACCOUNT";
