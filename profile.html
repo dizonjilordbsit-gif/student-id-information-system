@@ -487,17 +487,6 @@ body {
     line-height: 1.6;
 }
 
-/* FOOTER */
-
-footer {
-    margin-left: 255px;
-    background: var(--dark-green);
-    color: white;
-    text-align: center;
-    padding: 20px;
-    border-top: 4px solid var(--gold);
-    font-size: 13px;
-}
 /* PROFILE EDITING */
 
 .profile-actions {
@@ -514,6 +503,11 @@ footer {
     font-weight: bold;
     cursor: pointer;
     font-size: 13px;
+}
+
+.action-button:disabled {
+    opacity: .6;
+    cursor: not-allowed;
 }
 
 .edit-button,
@@ -584,6 +578,12 @@ footer {
     border-color: var(--main-green);
 }
 
+.email-readonly {
+    background: #eee !important;
+    color: #666 !important;
+    cursor: not-allowed;
+}
+
 .edit-message {
     margin-top: 12px;
     font-size: 13px;
@@ -598,20 +598,21 @@ footer {
     color: #a00000;
 }
 
-@media(max-width: 600px) {
-    .profile-actions {
-        flex-direction: column;
-    }
+/* FOOTER */
 
-    .action-button {
-        width: 100%;
-    }
+footer {
+    margin-left: 255px;
+    background: var(--dark-green);
+    color: white;
+    text-align: center;
+    padding: 20px;
+    border-top: 4px solid var(--gold);
+    font-size: 13px;
 }
 
 /* TABLET */
 
 @media(max-width: 850px) {
-
     .top-header {
         margin-left: 0;
         padding: 12px 15px;
@@ -670,7 +671,6 @@ footer {
 /* MOBILE */
 
 @media(max-width: 650px) {
-
     .profile-layout {
         grid-template-columns: 1fr;
         min-height: auto;
@@ -699,7 +699,6 @@ footer {
 }
 
 @media(max-width: 600px) {
-
     .top-header {
         padding: 12px;
         gap: 8px;
@@ -757,6 +756,14 @@ footer {
         width: 100%;
     }
 
+    .profile-actions {
+        flex-direction: column;
+    }
+
+    .action-button {
+        width: 100%;
+    }
+
     footer {
         padding: 17px 12px;
         font-size: 10px;
@@ -765,7 +772,6 @@ footer {
 }
 
 @media(max-width: 360px) {
-
     .brand img {
         width: 35px;
         height: 35px;
@@ -797,12 +803,9 @@ footer {
         class="menu-toggle"
         onclick="toggleSidebar()"
         aria-label="Open navigation menu"
-    >
-        ☰
-    </button>
+    >☰</button>
 
     <div class="brand">
-
         <img
             src="https://64.media.tumblr.com/33ca84afd52d5cd0ef7bb1bb66c6176b/tumblr_o4ti6j8k6r1unefbyo1_400.png"
             alt="PLMUN Logo"
@@ -812,7 +815,6 @@ footer {
             <h1>I-PILIMON</h1>
             <p>STUDENT ID INFORMATION</p>
         </div>
-
     </div>
 
     <div class="header-right">
@@ -821,20 +823,13 @@ footer {
 
 </header>
 
-<!-- SIDEBAR OVERLAY -->
-
-<div
-    id="sidebarOverlay"
-    class="sidebar-overlay"
-    onclick="closeSidebar()"
-></div>
+<div id="sidebarOverlay" class="sidebar-overlay" onclick="closeSidebar()"></div>
 
 <!-- SIDEBAR -->
 
 <aside class="sidebar" id="sidebar">
 
     <div class="sidebar-heading">
-
         <img
             src="https://64.media.tumblr.com/33ca84afd52d5cd0ef7bb1bb66c6176b/tumblr_o4ti6j8k6r1unefbyo1_400.png"
             alt="PLMUN Logo"
@@ -844,7 +839,6 @@ footer {
             <h3>STUDENT PORTAL</h3>
             <p>Navigation Menu</p>
         </div>
-
     </div>
 
     <nav class="sidebar-nav">
@@ -889,22 +883,16 @@ footer {
 <main class="container">
 
     <section class="page-heading">
-
         <div class="eyebrow">STUDENT PORTAL</div>
-
         <h2>MY PROFILE</h2>
-
-        <p>
-            View and manage your registered PLMUN student information.
-        </p>
-
+        <p>View and manage your registered PLMUN student information.</p>
     </section>
 
     <div id="message" class="loading">
         Connecting to student account...
     </div>
 
-    <!-- PROFILE BOARD -->
+    <!-- PROFILE CARD -->
 
     <section class="card profile-board" id="profileCard" hidden>
 
@@ -916,34 +904,29 @@ footer {
 
             <div class="profile-layout">
 
-                <!-- LEFT SIDE: PROFILE PICTURE -->
+                <!-- PROFILE PICTURE -->
 
                 <div class="profile-left">
 
                     <div class="profile-picture-container">
-
                         <img
                             id="profilePicture"
                             src="https://placehold.co/250x250/003b24/d4af37?text=STUDENT"
                             alt="Student Profile Picture"
                         >
-
                     </div>
 
-               <label
-    for="profilePictureInput"
-    class="upload-picture-button"
->
-    📷 Change Profile Picture
-</label>
+                    <label for="profilePictureInput" class="upload-picture-button">
+                        📷 Change Profile Picture
+                    </label>
 
-<button
-    type="button"
-    class="action-button delete-picture-button"
-    onclick="deleteProfilePicture()"
->
-    🗑 Delete Profile Picture
-</button>
+                    <button
+                        type="button"
+                        class="action-button delete-picture-button"
+                        onclick="deleteProfilePicture()"
+                    >
+                        🗑 Delete Profile Picture
+                    </button>
 
                     <input
                         type="file"
@@ -958,130 +941,144 @@ footer {
                     </p>
 
                     <h3 id="profileName">Student Name</h3>
-
-                    <p id="profileStudentNumber">
-                        Student Number
-                    </p>
-
-                    <p id="profileCourse">
-                        Course
-                    </p>
+                    <p id="profileStudentNumber">Student Number</p>
+                    <p id="profileCourse">Course</p>
 
                     <div id="uploadMessage" class="upload-message"></div>
 
                 </div>
 
-                <!-- RIGHT SIDE: STUDENT INFORMATION -->
+                <!-- STUDENT INFORMATION -->
 
                 <div class="profile-right">
 
                     <div class="profile-section-title">
-
                         <h3>Personal Information</h3>
-
                         <p>Your registered student details</p>
-
                     </div>
 
                     <div class="profile-grid" id="fields"></div>
+
                     <div class="profile-actions" id="profileActions">
-    <button
-        type="button"
-        class="action-button edit-button"
-        onclick="showEditForm()"
-    >
-        ✏️ EDIT PROFILE
-    </button>
-</div>
+                        <button
+                            type="button"
+                            class="action-button edit-button"
+                            onclick="showEditForm()"
+                        >
+                            ✏️ EDIT PROFILE
+                        </button>
+                    </div>
 
-<form id="editForm" class="edit-form" hidden>
+                    <!-- EDIT FORM -->
 
-    <h4>Edit Personal Information</h4>
+                    <form id="editForm" class="edit-form" hidden>
 
-    <div class="edit-field">
-        <label for="editFirstName">First Name</label>
-        <input
-            type="text"
-            id="editFirstName"
-            required
-            maxlength="100"
-        >
-    </div>
+                        <h4>Edit Personal Information</h4>
 
-    <div class="edit-field">
-        <label for="editLastName">Last Name</label>
-        <input
-            type="text"
-            id="editLastName"
-            required
-            maxlength="100"
-        >
-    </div>
+                        <div class="edit-field">
+                            <label for="editStudentNumber">Student Number</label>
+                            <input
+                                type="text"
+                                id="editStudentNumber"
+                                maxlength="50"
+                                placeholder="Enter your student number"
+                            >
+                        </div>
 
-    <div class="edit-field">
-        <label for="editCourse">Course</label>
-        <input
-            type="text"
-            id="editCourse"
-            required
-            maxlength="150"
-        >
-    </div>
+                        <div class="edit-field">
+                            <label for="editFirstName">First Name</label>
+                            <input
+                                type="text"
+                                id="editFirstName"
+                                required
+                                maxlength="100"
+                            >
+                        </div>
 
-    <div class="edit-field">
-        <label for="editYearLevel">Year Level</label>
-        <select id="editYearLevel" required>
-            <option value="">Select Year Level</option>
-            <option value="1st Year">1st Year</option>
-            <option value="2nd Year">2nd Year</option>
-            <option value="3rd Year">3rd Year</option>
-            <option value="4th Year">4th Year</option>
-            <option value="5th Year">5th Year</option>
-        </select>
-    </div>
+                        <div class="edit-field">
+                            <label for="editLastName">Last Name</label>
+                            <input
+                                type="text"
+                                id="editLastName"
+                                required
+                                maxlength="100"
+                            >
+                        </div>
 
-    <div class="edit-field">
-        <label for="editBirthdate">Birthdate</label>
-        <input
-            type="date"
-            id="editBirthdate"
-            required
-        >
-    </div>
+                        <div class="edit-field">
+                            <label for="editEmail">Institutional Email</label>
+                            <input
+                                type="email"
+                                id="editEmail"
+                                class="email-readonly"
+                                readonly
+                                disabled
+                            >
+                            <small>Email address cannot be changed here.</small>
+                        </div>
 
-    <div class="profile-actions">
+                        <div class="edit-field">
+                            <label for="editCourse">Course</label>
+                            <input
+                                type="text"
+                                id="editCourse"
+                                required
+                                maxlength="150"
+                                placeholder="Enter your course"
+                            >
+                        </div>
 
-        <button
-            type="submit"
-            class="action-button save-button"
-            id="saveProfileButton"
-        >
-            💾 SAVE CHANGES
-        </button>
+                        <div class="edit-field">
+                            <label for="editYearLevel">Year Level</label>
+                            <select id="editYearLevel" required>
+                                <option value="">Select Year Level</option>
+                                <option value="1st Year">1st Year</option>
+                                <option value="2nd Year">2nd Year</option>
+                                <option value="3rd Year">3rd Year</option>
+                                <option value="4th Year">4th Year</option>
+                                <option value="5th Year">5th Year</option>
+                            </select>
+                        </div>
 
-        <button
-            type="button"
-            class="action-button cancel-button"
-            onclick="cancelEdit()"
-        >
-            CANCEL
-        </button>
+                        <div class="edit-field">
+                            <label for="editBirthdate">Birthdate</label>
+                            <input
+                                type="date"
+                                id="editBirthdate"
+                                required
+                            >
+                        </div>
 
-    </div>
+                        <div class="profile-actions">
 
-    <div id="editMessage" class="edit-message"></div>
+                            <button
+                                type="submit"
+                                class="action-button save-button"
+                                id="saveProfileButton"
+                            >
+                                💾 SAVE CHANGES
+                            </button>
 
-</form>
+                            <button
+                                type="button"
+                                class="action-button cancel-button"
+                                onclick="cancelEdit()"
+                            >
+                                CANCEL
+                            </button>
+
+                        </div>
+
+                        <div id="editMessage" class="edit-message"></div>
+
+                    </form>
 
                     <div class="notice profile-notice">
-
                         <strong>Profile Information:</strong>
-
-                        This page is for viewing your registered student
-                        details. For corrections or updates to your
-                        personal information, please contact the
-                        authorized school administrator.
-
+                        You can update your Student Number and personal
+                        information using the Edit Profile button.
+                        Your institutional email address is displayed
+                        for reference and cannot be changed on this page.
                     </div>
 
                 </div>
@@ -1089,6 +1086,7 @@ footer {
             </div>
 
             <button
+                type="button"
                 class="back-button"
                 onclick="location.href='student-dashboard.html'"
             >
@@ -1100,8 +1098,6 @@ footer {
     </section>
 
 </main>
-
-<!-- FOOTER -->
 
 <footer>
     © 2026 Pamantasan ng Lungsod ng Muntinlupa |
@@ -1125,6 +1121,9 @@ const db = window.supabase.createClient(
     SUPABASE_ANON_KEY
 );
 
+const DEFAULT_PROFILE_PICTURE =
+    "https://placehold.co/250x250/003b24/d4af37?text=STUDENT";
+
 let currentUser = null;
 let currentStudent = null;
 
@@ -1134,23 +1133,13 @@ let currentStudent = null;
 // ==========================================
 
 function toggleSidebar() {
-
-    document.getElementById("sidebar")
-        .classList.toggle("open");
-
-    document.getElementById("sidebarOverlay")
-        .classList.toggle("show");
-
+    document.getElementById("sidebar").classList.toggle("open");
+    document.getElementById("sidebarOverlay").classList.toggle("show");
 }
 
 function closeSidebar() {
-
-    document.getElementById("sidebar")
-        .classList.remove("open");
-
-    document.getElementById("sidebarOverlay")
-        .classList.remove("show");
-
+    document.getElementById("sidebar").classList.remove("open");
+    document.getElementById("sidebarOverlay").classList.remove("show");
 }
 
 
@@ -1159,19 +1148,17 @@ function closeSidebar() {
 // ==========================================
 
 function escapeHTML(value) {
-
     return String(value ?? "")
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
-
 }
 
 
 // ==========================================
-// GET AUTHENTICATED STUDENT
+// LOAD AUTHENTICATED STUDENT
 // ==========================================
 
 async function getStudent() {
@@ -1182,18 +1169,13 @@ async function getStudent() {
 
         const { data, error } = await db.auth.getSession();
 
-        if (error) {
-            throw error;
-        }
+        if (error) throw error;
 
         currentUser = data.session?.user;
 
         if (!currentUser) {
-
             location.href = "index.html";
-
             return null;
-
         }
 
         const { data: student, error: studentError } = await db
@@ -1212,43 +1194,34 @@ async function getStudent() {
             .eq("id", currentUser.id)
             .maybeSingle();
 
-        if (studentError) {
-            throw studentError;
-        }
+        if (studentError) throw studentError;
 
         if (!student) {
-
             message.className = "error-message";
-
             message.textContent =
-                "Hindi ma-load ang student record. " +
-                "Please check your students table and RLS policies.";
-
+                "Student record not found. Please complete your student information or contact the administrator.";
             return null;
-
         }
 
-       currentStudent = student;
-return student;
+        currentStudent = student;
+
+        return student;
 
     } catch (error) {
 
         console.error("Profile loading error:", error);
 
         message.className = "error-message";
-
         message.textContent =
             "Unable to load profile: " + error.message;
 
         return null;
-
     }
-
 }
 
 
 // ==========================================
-// DISPLAY PROFILE INFORMATION
+// DISPLAY PROFILE
 // ==========================================
 
 async function displayProfile(student) {
@@ -1266,21 +1239,13 @@ async function displayProfile(student) {
         student.course || "No Course Provided";
 
     const fields = [
-
         ["Student ID Number", student.student_number],
-
         ["First Name", student.first_name],
-
         ["Last Name", student.last_name],
-
         ["Institutional Email", student.email || currentUser.email],
-
         ["Course", student.course],
-
         ["Year Level", student.year_level],
-
         ["Birthdate", student.birthdate]
-
     ];
 
     document.getElementById("fields").innerHTML =
@@ -1291,212 +1256,47 @@ async function displayProfile(student) {
             </div>
         `).join("");
 
-    // DEFAULT PROFILE PICTURE
-
     const picture = document.getElementById("profilePicture");
 
-    picture.src =
-        "https://placehold.co/250x250/003b24/d4af37?text=STUDENT";
-
-    // LOAD SAVED PROFILE PICTURE
+    picture.src = DEFAULT_PROFILE_PICTURE;
 
     if (student.profile_picture_path) {
 
         const { data, error } = await db.storage
             .from("student-profiles")
-            .createSignedUrl(
-                student.profile_picture_path,
-                3600
-            );
+            .createSignedUrl(student.profile_picture_path, 3600);
 
         if (!error && data?.signedUrl) {
-
             picture.src = data.signedUrl;
-
         } else {
-
-            console.error(
-                "Profile picture loading error:",
-                error
-            );
-
+            console.error("Profile picture loading error:", error);
         }
-
     }
 
     document.getElementById("profileCard").hidden = false;
-
     document.getElementById("message").style.display = "none";
-
 }
 
 
 // ==========================================
-// PROFILE PICTURE UPLOAD
-// ==========================================
-
-document.getElementById("profilePictureInput")
-    .addEventListener("change", async function(event) {
-
-        const file = event.target.files[0];
-
-        if (!file) return;
-
-        const uploadMessage =
-            document.getElementById("uploadMessage");
-
-        const allowedTypes = [
-            "image/jpeg",
-            "image/png",
-            "image/webp"
-        ];
-
-        // CHECK FILE TYPE
-
-        if (!allowedTypes.includes(file.type)) {
-
-            uploadMessage.className =
-                "upload-message error";
-
-            uploadMessage.textContent =
-                "Please select a JPG, PNG, or WEBP image.";
-
-            event.target.value = "";
-
-            return;
-
-        }
-
-        // CHECK FILE SIZE
-
-        if (file.size > 3 * 1024 * 1024) {
-
-            uploadMessage.className =
-                "upload-message error";
-
-            uploadMessage.textContent =
-                "Image is too large. Maximum size is 3 MB.";
-
-            event.target.value = "";
-
-            return;
-
-        }
-
-        if (!currentUser) {
-
-            uploadMessage.className =
-                "upload-message error";
-
-            uploadMessage.textContent =
-                "Your session has expired. Please log in again.";
-
-            event.target.value = "";
-
-            return;
-
-        }
-
-        uploadMessage.className = "upload-message";
-
-        uploadMessage.textContent =
-            "Uploading profile picture...";
-
-        const extension = file.type === "image/jpeg"
-            ? "jpg"
-            : file.type === "image/png"
-                ? "png"
-                : "webp";
-
-        // EACH STUDENT HAS THEIR OWN FOLDER
-
-        const filePath =
-            `${currentUser.id}/profile.${extension}`;
-
-        try {
-
-            // UPLOAD IMAGE TO SUPABASE STORAGE
-
-            const { error: uploadError } = await db.storage
-                .from("student-profiles")
-                .upload(filePath, file, {
-
-                    upsert: true,
-
-                    contentType: file.type
-
-                });
-
-            if (uploadError) {
-                throw uploadError;
-            }
-
-            // SAVE IMAGE PATH TO STUDENT RECORD
-
-            const { error: updateError } = await db
-                .from("students")
-                .update({
-                    profile_picture_path: filePath
-                })
-                .eq("id", currentUser.id);
-
-            if (updateError) {
-                throw updateError;
-            }
-
-            // GENERATE TEMPORARY PRIVATE IMAGE URL
-
-            const { data, error: urlError } = await db.storage
-                .from("student-profiles")
-                .createSignedUrl(filePath, 3600);
-
-            if (urlError) {
-                throw urlError;
-            }
-
-            // UPDATE CURRENT STUDENT DATA
-
-currentStudent.profile_picture_path = filePath;
-
-// DISPLAY NEW PROFILE PICTURE
-
-document.getElementById("profilePicture").src =
-    data.signedUrl;
-
-            uploadMessage.className =
-                "upload-message success";
-
-            uploadMessage.textContent =
-                "Profile picture successfully updated!";
-
-        } catch (error) {
-
-            console.error("Picture upload error:", error);
-
-            uploadMessage.className =
-                "upload-message error";
-
-            uploadMessage.textContent =
-                "Upload failed: " + error.message;
-
-        }
-
-        event.target.value = "";
-
-    });
-// ==========================================
-// EDIT PROFILE
+// SHOW EDIT FORM
 // ==========================================
 
 function showEditForm() {
 
     if (!currentStudent) return;
 
+    document.getElementById("editStudentNumber").value =
+        currentStudent.student_number || "";
+
     document.getElementById("editFirstName").value =
         currentStudent.first_name || "";
 
     document.getElementById("editLastName").value =
         currentStudent.last_name || "";
+
+    document.getElementById("editEmail").value =
+        currentStudent.email || currentUser.email || "";
 
     document.getElementById("editCourse").value =
         currentStudent.course || "";
@@ -1510,19 +1310,14 @@ function showEditForm() {
     document.getElementById("editMessage").textContent = "";
 
     document.getElementById("editForm").hidden = false;
-
     document.getElementById("profileActions").hidden = true;
-
 }
 
 function cancelEdit() {
 
     document.getElementById("editForm").hidden = true;
-
     document.getElementById("profileActions").hidden = false;
-
     document.getElementById("editMessage").textContent = "";
-
 }
 
 
@@ -1539,6 +1334,9 @@ document.getElementById("editForm")
             alert("Student session not found. Please log in again.");
             return;
         }
+
+        const studentNumber =
+            document.getElementById("editStudentNumber").value.trim();
 
         const firstName =
             document.getElementById("editFirstName").value.trim();
@@ -1565,7 +1363,6 @@ document.getElementById("editForm")
             !yearLevel || !birthdate) {
 
             editMessage.className = "edit-message error";
-
             editMessage.textContent =
                 "Please complete all required fields.";
 
@@ -1581,6 +1378,7 @@ document.getElementById("editForm")
         try {
 
             const updates = {
+                student_number: studentNumber || null,
                 first_name: firstName,
                 last_name: lastName,
                 course: course,
@@ -1588,21 +1386,25 @@ document.getElementById("editForm")
                 birthdate: birthdate
             };
 
-            const { error } = await db
+            const { data, error } = await db
                 .from("students")
                 .update(updates)
-                .eq("id", currentUser.id);
+                .eq("id", currentUser.id)
+                .select()
+                .maybeSingle();
 
-            if (error) {
-                throw error;
+            if (error) throw error;
+
+            if (!data) {
+                throw new Error(
+                    "No student record was updated. Check your students UPDATE RLS policy and permissions."
+                );
             }
 
             currentStudent = {
                 ...currentStudent,
-                ...updates
+                ...data
             };
-
-            // REFRESH PROFILE DISPLAY
 
             await displayProfile(currentStudent);
 
@@ -1611,18 +1413,15 @@ document.getElementById("editForm")
             const uploadMessage =
                 document.getElementById("uploadMessage");
 
-            uploadMessage.className =
-                "upload-message success";
-
+            uploadMessage.className = "upload-message success";
             uploadMessage.textContent =
-                "Student information successfully updated!";
+                "Your student information was successfully updated!";
 
         } catch (error) {
 
             console.error("Profile update error:", error);
 
             editMessage.className = "edit-message error";
-
             editMessage.textContent =
                 "Update failed: " + error.message;
 
@@ -1630,9 +1429,117 @@ document.getElementById("editForm")
 
             saveButton.disabled = false;
             saveButton.textContent = "💾 SAVE CHANGES";
+        }
+    });
 
+
+// ==========================================
+// PROFILE PICTURE UPLOAD
+// ==========================================
+
+document.getElementById("profilePictureInput")
+    .addEventListener("change", async function(event) {
+
+        const file = event.target.files[0];
+
+        if (!file) return;
+
+        const uploadMessage =
+            document.getElementById("uploadMessage");
+
+        const allowedTypes = [
+            "image/jpeg",
+            "image/png",
+            "image/webp"
+        ];
+
+        if (!allowedTypes.includes(file.type)) {
+
+            uploadMessage.className = "upload-message error";
+            uploadMessage.textContent =
+                "Please select a JPG, PNG, or WEBP image.";
+
+            event.target.value = "";
+            return;
         }
 
+        if (file.size > 3 * 1024 * 1024) {
+
+            uploadMessage.className = "upload-message error";
+            uploadMessage.textContent =
+                "Image is too large. Maximum size is 3 MB.";
+
+            event.target.value = "";
+            return;
+        }
+
+        if (!currentUser) {
+
+            uploadMessage.className = "upload-message error";
+            uploadMessage.textContent =
+                "Your session has expired. Please log in again.";
+
+            event.target.value = "";
+            return;
+        }
+
+        uploadMessage.className = "upload-message";
+        uploadMessage.textContent = "Uploading profile picture...";
+
+        const extension = file.type === "image/jpeg"
+            ? "jpg"
+            : file.type === "image/png"
+                ? "png"
+                : "webp";
+
+        const filePath =
+            `${currentUser.id}/profile.${extension}`;
+
+        try {
+
+            const { error: uploadError } = await db.storage
+                .from("student-profiles")
+                .upload(filePath, file, {
+                    upsert: true,
+                    contentType: file.type
+                });
+
+            if (uploadError) throw uploadError;
+
+            const { error: updateError } = await db
+                .from("students")
+                .update({
+                    profile_picture_path: filePath
+                })
+                .eq("id", currentUser.id);
+
+            if (updateError) throw updateError;
+
+            const { data, error: urlError } = await db.storage
+                .from("student-profiles")
+                .createSignedUrl(filePath, 3600);
+
+            if (urlError) throw urlError;
+
+            currentStudent.profile_picture_path = filePath;
+
+            document.getElementById("profilePicture").src =
+                data.signedUrl;
+
+            uploadMessage.className = "upload-message success";
+            uploadMessage.textContent =
+                "Profile picture successfully updated!";
+
+        } catch (error) {
+
+            console.error("Picture upload error:", error);
+
+            uploadMessage.className = "upload-message error";
+            uploadMessage.textContent =
+                "Upload failed: " + error.message;
+        }
+
+        event.target.value = "";
     });
 
 
@@ -1665,23 +1572,15 @@ async function deleteProfilePicture() {
         document.getElementById("uploadMessage");
 
     uploadMessage.className = "upload-message";
-
-    uploadMessage.textContent =
-        "Deleting profile picture...";
+    uploadMessage.textContent = "Deleting profile picture...";
 
     try {
-
-        // DELETE FILE FROM SUPABASE STORAGE
 
         const { error: deleteError } = await db.storage
             .from("student-profiles")
             .remove([filePath]);
 
-        if (deleteError) {
-            throw deleteError;
-        }
-
-        // CLEAR PROFILE PICTURE PATH IN STUDENTS TABLE
+        if (deleteError) throw deleteError;
 
         const { error: updateError } = await db
             .from("students")
@@ -1690,20 +1589,14 @@ async function deleteProfilePicture() {
             })
             .eq("id", currentUser.id);
 
-        if (updateError) {
-            throw updateError;
-        }
+        if (updateError) throw updateError;
 
         currentStudent.profile_picture_path = null;
 
-        // RESTORE DEFAULT PROFILE IMAGE
-
         document.getElementById("profilePicture").src =
-            "https://placehold.co/250x250/003b24/d4af37?text=STUDENT";
+            DEFAULT_PROFILE_PICTURE;
 
-        uploadMessage.className =
-            "upload-message success";
-
+        uploadMessage.className = "upload-message success";
         uploadMessage.textContent =
             "Profile picture successfully deleted.";
 
@@ -1711,15 +1604,12 @@ async function deleteProfilePicture() {
 
         console.error("Delete picture error:", error);
 
-        uploadMessage.className =
-            "upload-message error";
-
+        uploadMessage.className = "upload-message error";
         uploadMessage.textContent =
             "Delete failed: " + error.message;
-
     }
-
 }
+
 
 // ==========================================
 // LOGOUT
@@ -1731,22 +1621,16 @@ async function logout() {
         "Are you sure you want to log out?"
     );
 
-    if (!confirmLogout) {
-        return;
-    }
+    if (!confirmLogout) return;
 
     const { error } = await db.auth.signOut();
 
     if (error) {
-
         alert("Unable to log out: " + error.message);
-
         return;
-
     }
 
     location.href = "index.html";
-
 }
 
 
@@ -1758,9 +1642,7 @@ async function logout() {
 
     const student = await getStudent();
 
-    if (!student) {
-        return;
-    }
+    if (!student) return;
 
     await displayProfile(student);
 
