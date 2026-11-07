@@ -1,84 +1,457 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>My Profile | I-PILIMON Student ID INFORMATION</title>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
-:root{--dark-green:#003b24;--main-green:#075c3b;--light-green:#128052;--gold:#d4af37;--cream:#f8f6ef;--white:#fff;--text-dark:#123526}
-body{min-height:100vh;background:#f5f3ec;color:var(--text-dark);width:100%}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
 
-.top-header{background:var(--dark-green);color:white;padding:15px 5%;display:flex;align-items:center;justify-content:space-between;border-bottom:5px solid var(--gold);gap:15px;margin-left:255px}
-.brand{display:flex;align-items:center;gap:15px}
-.brand img{width:65px;height:65px;object-fit:contain;filter:drop-shadow(0 0 7px #00ff66)}
-.brand-text h1{font-size:27px;letter-spacing:1px}
-.brand-text p{color:var(--gold);font-size:13px;font-weight:bold;letter-spacing:2px}
-.header-right{display:flex;align-items:center;gap:18px}
-.header-right button{background:transparent;border:none;color:white;font-size:15px;cursor:pointer}
-.menu-toggle{display:none;border:1px solid var(--gold);background:transparent;color:white;border-radius:6px;padding:8px 11px;font-size:21px;cursor:pointer}
+:root {
+    --dark-green: #003b24;
+    --main-green: #075c3b;
+    --light-green: #128052;
+    --gold: #d4af37;
+    --cream: #f8f6ef;
+    --white: #fff;
+    --text-dark: #123526;
+}
+
+body {
+    min-height: 100vh;
+    background: #f5f3ec;
+    color: var(--text-dark);
+    width: 100%;
+}
+
+/* HEADER */
+
+.top-header {
+    background: var(--dark-green);
+    color: white;
+    padding: 15px 5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 5px solid var(--gold);
+    gap: 15px;
+    margin-left: 255px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.brand img {
+    width: 65px;
+    height: 65px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 7px #00ff66);
+}
+
+.brand-text h1 {
+    font-size: 27px;
+    letter-spacing: 1px;
+}
+
+.brand-text p {
+    color: var(--gold);
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.header-right button {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.menu-toggle {
+    display: none;
+    border: 1px solid var(--gold);
+    background: transparent;
+    color: white;
+    border-radius: 6px;
+    padding: 8px 11px;
+    font-size: 21px;
+    cursor: pointer;
+}
 
 /* SIDEBAR */
-.sidebar{position:fixed;top:0;left:0;bottom:0;width:255px;background:var(--dark-green);color:white;z-index:1000;display:flex;flex-direction:column;border-right:3px solid var(--gold);transition:transform .3s ease}
-.sidebar-heading{display:flex;align-items:center;gap:12px;padding:22px 16px;border-bottom:1px solid rgba(212,175,55,.4)}
-.sidebar-heading img{width:48px;height:48px;object-fit:contain;filter:drop-shadow(0 0 6px #00ff66)}
-.sidebar-heading h3{color:var(--gold);font-size:14px}
-.sidebar-heading p{font-size:11px;margin-top:5px;color:#dce9df}
-.sidebar-nav{display:flex;flex-direction:column;gap:7px;padding:20px 12px}
-.sidebar-link{width:100%;display:flex;align-items:center;gap:13px;padding:13px 14px;border:none;border-radius:7px;background:transparent;color:white;text-align:left;font-size:14px;cursor:pointer;transition:.2s}
-.sidebar-link span{width:22px;text-align:center;font-size:17px}
-.sidebar-link:hover,.sidebar-link.active{background:var(--gold);color:var(--dark-green);font-weight:bold}
-.sidebar-divider{height:1px;background:rgba(212,175,55,.4);margin:12px 4px}
-.logout-link{color:#ffb4a9}
-.sidebar-footer{margin-top:auto;padding:18px 15px;border-top:1px solid rgba(212,175,55,.4);text-align:center}
-.sidebar-footer p{color:var(--gold);font-weight:bold;font-size:14px}
-.sidebar-footer small{display:block;color:#dce9df;font-size:10px;margin-top:5px}
-.sidebar-overlay{display:none}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 255px;
+    background: var(--dark-green);
+    color: white;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    border-right: 3px solid var(--gold);
+    transition: transform .3s ease;
+}
+
+.sidebar-heading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 22px 16px;
+    border-bottom: 1px solid rgba(212,175,55,.4);
+}
+
+.sidebar-heading img {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 6px #00ff66);
+}
+
+.sidebar-heading h3 {
+    color: var(--gold);
+    font-size: 14px;
+}
+
+.sidebar-heading p {
+    font-size: 11px;
+    margin-top: 5px;
+    color: #dce9df;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    padding: 20px 12px;
+}
+
+.sidebar-link {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 13px 14px;
+    border: none;
+    border-radius: 7px;
+    background: transparent;
+    color: white;
+    text-align: left;
+    font-size: 14px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.sidebar-link span {
+    width: 22px;
+    text-align: center;
+    font-size: 17px;
+}
+
+.sidebar-link:hover,
+.sidebar-link.active {
+    background: var(--gold);
+    color: var(--dark-green);
+    font-weight: bold;
+}
+
+.sidebar-divider {
+    height: 1px;
+    background: rgba(212,175,55,.4);
+    margin: 12px 4px;
+}
+
+.logout-link {
+    color: #ffb4a9;
+}
+
+.sidebar-footer {
+    margin-top: auto;
+    padding: 18px 15px;
+    border-top: 1px solid rgba(212,175,55,.4);
+    text-align: center;
+}
+
+.sidebar-footer p {
+    color: var(--gold);
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.sidebar-footer small {
+    display: block;
+    color: #dce9df;
+    font-size: 10px;
+    margin-top: 5px;
+}
+
+.sidebar-overlay {
+    display: none;
+}
 
 /* MAIN */
-.container{margin-left:255px;max-width:none;padding:25px 30px}
-.page-heading{margin-bottom:23px}
-.page-heading h2{font-size:27px;color:var(--dark-green);margin-bottom:8px}
-.page-heading p{color:#52675b;font-size:14px;line-height:1.6}
-.card{background:var(--cream);border:2px solid #e5d9b5;border-radius:13px;margin-bottom:20px;overflow:hidden;box-shadow:0 3px 10px rgba(0,0,0,.07)}
-.card-header{background:var(--dark-green);color:white;padding:13px 20px;border-bottom:2px solid var(--gold);display:flex;align-items:center;justify-content:space-between;gap:10px}
-.card-header h2{font-size:21px}
-.card-header h2::before{content:"";display:inline-block;width:7px;height:25px;background:var(--gold);margin-right:13px;vertical-align:middle}
-.card-body{padding:20px}
-.notice{background:#fff8df;border:1px solid #e5d9b5;border-left:5px solid var(--gold);border-radius:8px;padding:16px 18px;margin-bottom:22px;color:#5c5130;font-size:14px;line-height:1.6}
-#message{margin:0 0 17px;font-size:14px;font-weight:bold;overflow-wrap:anywhere;line-height:1.6}
+
+.container {
+    margin-left: 255px;
+    max-width: none;
+    padding: 25px 30px;
+}
+
+.page-heading {
+    margin-bottom: 23px;
+}
+
+.page-heading h2 {
+    font-size: 27px;
+    color: var(--dark-green);
+    margin-bottom: 8px;
+}
+
+.page-heading p {
+    color: #52675b;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* CARDS */
+
+.card {
+    background: var(--cream);
+    border: 2px solid #e5d9b5;
+    border-radius: 13px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(0,0,0,.07);
+}
+
+.card-header {
+    background: var(--dark-green);
+    color: white;
+    padding: 13px 20px;
+    border-bottom: 2px solid var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.card-header h2 {
+    font-size: 21px;
+}
+
+.card-header h2::before {
+    content: "";
+    display: inline-block;
+    width: 7px;
+    height: 25px;
+    background: var(--gold);
+    margin-right: 13px;
+    vertical-align: middle;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.notice {
+    background: #fff8df;
+    border: 1px solid #e5d9b5;
+    border-left: 5px solid var(--gold);
+    border-radius: 8px;
+    padding: 16px 18px;
+    margin-bottom: 22px;
+    color: #5c5130;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+#message {
+    margin: 0 0 17px;
+    font-size: 14px;
+    font-weight: bold;
+    overflow-wrap: anywhere;
+    line-height: 1.6;
+}
 
 /* PROFILE PHOTO */
-.profile-photo-section{display:flex;align-items:center;gap:22px;flex-wrap:wrap;margin-bottom:25px;padding:18px;background:white;border:2px solid #e5d9b5;border-radius:10px}
-.photo-preview{width:125px;height:145px;object-fit:cover;border:4px solid var(--gold);border-radius:9px;background:#eee}
-.photo-placeholder{width:125px;height:145px;display:flex;align-items:center;justify-content:center;flex-direction:column;border:4px solid var(--gold);border-radius:9px;background:#eee;color:#777;gap:8px}
-.photo-placeholder span{font-size:38px}
-.photo-info{flex:1;min-width:200px}
-.photo-info h3{color:var(--dark-green);font-size:17px;margin-bottom:8px}
-.photo-info p{font-size:12px;color:#52675b;line-height:1.6;margin-bottom:12px}
-.photo-info input{max-width:100%;font-size:12px}
 
-/* FORM */
-.profile-form{display:grid;grid-template-columns:1fr 1fr;gap:17px}
-.form-group{display:flex;flex-direction:column;gap:8px;min-width:0}
-.form-group.full-width{grid-column:1/-1}
-.form-group label{font-size:13px;font-weight:bold;color:var(--dark-green)}
-.form-group input,.form-group select{width:100%;padding:12px;border:1px solid #c9d2c9;border-radius:7px;background:white;font-size:14px;color:var(--text-dark)}
-.form-group input:focus,.form-group select:focus{outline:2px solid rgba(7,92,59,.2);border-color:var(--main-green)}
-.form-group input:disabled{background:#eee;color:#666;cursor:not-allowed}
-.field-note{font-size:11px;color:#68766c;line-height:1.5}
-.form-actions{grid-column:1/-1;display:flex;gap:12px;flex-wrap:wrap;margin-top:5px}
-.btn{padding:13px 20px;border-radius:8px;font-size:13px;font-weight:bold;cursor:pointer;text-decoration:none;text-align:center;border:2px solid var(--gold)}
-.save-btn{background:linear-gradient(120deg,#003b24,#087448);color:white}
-.cancel-btn{background:white;border-color:var(--main-green);color:var(--main-green)}
-.btn:disabled{opacity:.6;cursor:not-allowed}
+.profile-photo-section {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    flex-wrap: wrap;
+    margin-bottom: 25px;
+    padding: 18px;
+    background: white;
+    border: 2px solid #e5d9b5;
+    border-radius: 10px;
+}
 
-footer{margin-left:255px;background:var(--dark-green);color:white;text-align:center;padding:20px;border-top:4px solid var(--gold);font-size:13px}
+.photo-preview {
+    width: 125px;
+    height: 145px;
+    object-fit: cover;
+    border: 4px solid var(--gold);
+    border-radius: 9px;
+    background: #eee;
+}
 
-/* SIGNATURE SECTION */
+.photo-placeholder {
+    width: 125px;
+    height: 145px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    border: 4px solid var(--gold);
+    border-radius: 9px;
+    background: #eee;
+    color: #777;
+    gap: 8px;
+    font-size: 12px;
+}
+
+.photo-placeholder span {
+    font-size: 38px;
+}
+
+.photo-info {
+    flex: 1;
+    min-width: 200px;
+}
+
+.photo-info h3 {
+    color: var(--dark-green);
+    font-size: 17px;
+    margin-bottom: 8px;
+}
+
+.photo-info p {
+    font-size: 12px;
+    color: #52675b;
+    line-height: 1.6;
+    margin-bottom: 12px;
+}
+
+.photo-info input {
+    max-width: 100%;
+    font-size: 12px;
+}
+
+/* PROFILE FORM */
+
+.profile-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 17px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+}
+
+.form-group.full-width {
+    grid-column: 1/-1;
+}
+
+.form-group label {
+    font-size: 13px;
+    font-weight: bold;
+    color: var(--dark-green);
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #c9d2c9;
+    border-radius: 7px;
+    background: white;
+    font-size: 14px;
+    color: var(--text-dark);
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: 2px solid rgba(7,92,59,.2);
+    border-color: var(--main-green);
+}
+
+.form-group input:disabled {
+    background: #eee;
+    color: #666;
+    cursor: not-allowed;
+}
+
+.field-note {
+    font-size: 11px;
+    color: #68766c;
+    line-height: 1.5;
+}
+
+.form-actions {
+    grid-column: 1/-1;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 5px;
+}
+
+/* BUTTONS */
+
+.btn {
+    padding: 13px 20px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    border: 2px solid var(--gold);
+}
+
+.save-btn {
+    background: linear-gradient(120deg,#003b24,#087448);
+    color: white;
+}
+
+.cancel-btn {
+    background: white;
+    border-color: var(--main-green);
+    color: var(--main-green);
+}
+
+.btn:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+}
+
+/* DIGITAL SIGNATURE */
+
 .signature-section {
     margin-top: 25px;
     padding: 18px;
@@ -147,7 +520,165 @@ footer{margin-left:255px;background:var(--dark-green);color:white;text-align:cen
     overflow-wrap: anywhere;
 }
 
+/* FOOTER */
+
+footer {
+    margin-left: 255px;
+    background: var(--dark-green);
+    color: white;
+    text-align: center;
+    padding: 20px;
+    border-top: 4px solid var(--gold);
+    font-size: 13px;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:850px) {
+    .top-header {
+        margin-left: 0;
+        padding: 12px 15px;
+    }
+
+    .menu-toggle {
+        display: block;
+        flex-shrink: 0;
+    }
+
+    .sidebar {
+        transform: translateX(-100%);
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+
+    .sidebar-overlay.show {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,.5);
+        z-index: 999;
+    }
+
+    .container {
+        margin-left: 0;
+        width: 100%;
+        padding: 16px;
+    }
+
+    footer {
+        margin-left: 0;
+    }
+
+    .top-header .header-right {
+        margin-left: auto;
+    }
+}
+
 @media(max-width:600px) {
+    body {
+        width: 100%;
+        overflow-x: hidden;
+        font-size: 14px;
+    }
+
+    .top-header {
+        width: 100%;
+        padding: 12px;
+        gap: 10px;
+    }
+
+    .brand {
+        gap: 8px;
+        min-width: 0;
+    }
+
+    .brand img {
+        width: 42px;
+        height: 42px;
+        flex-shrink: 0;
+    }
+
+    .brand-text h1 {
+        font-size: clamp(15px,4vw,19px);
+    }
+
+    .brand-text p {
+        font-size: 8px;
+        letter-spacing: .5px;
+    }
+
+    .header-right button {
+        font-size: 12px;
+        padding: 8px 5px;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 100%;
+        padding: 12px;
+    }
+
+    .page-heading h2 {
+        font-size: 22px;
+    }
+
+    .page-heading p {
+        font-size: 12px;
+    }
+
+    .card {
+        width: 100%;
+        border-radius: 10px;
+    }
+
+    .card-header {
+        padding: 12px;
+    }
+
+    .card-header h2 {
+        font-size: 16px;
+    }
+
+    .card-body {
+        padding: 13px;
+    }
+
+    .notice {
+        padding: 13px;
+        font-size: 12px;
+    }
+
+    .profile-photo-section {
+        padding: 13px;
+        gap: 13px;
+    }
+
+    .photo-preview,
+    .photo-placeholder {
+        width: 105px;
+        height: 125px;
+    }
+
+    .profile-form {
+        grid-template-columns: 1fr;
+        gap: 13px;
+    }
+
+    .form-group.full-width {
+        grid-column: auto;
+    }
+
+    .form-actions {
+        grid-column: auto;
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+    }
+
     #signatureCanvas {
         height: 160px;
     }
@@ -159,104 +690,174 @@ footer{margin-left:255px;background:var(--dark-green);color:white;text-align:cen
     .signature-actions .btn {
         width: 100%;
     }
+
+    .sidebar {
+        width: min(280px,82vw);
+    }
+
+    footer {
+        padding: 17px 12px;
+        font-size: 10px;
+        line-height: 1.6;
+    }
 }
 
-/* RESPONSIVE */
-@media(max-width:850px){
-.top-header{margin-left:0;padding:12px 15px}
-.menu-toggle{display:block;flex-shrink:0}
-.sidebar{transform:translateX(-100%)}
-.sidebar.open{transform:translateX(0)}
-.sidebar-overlay.show{display:block;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:999}
-.container{margin-left:0;width:100%;padding:16px}
-footer{margin-left:0}
-.top-header .header-right{margin-left:auto}
+@media(max-width:480px) {
+    .menu-toggle {
+        padding: 7px 9px;
+        font-size: 18px;
+    }
+
+    .brand {
+        gap: 7px;
+    }
+
+    .brand img {
+        width: 37px;
+        height: 37px;
+    }
+
+    .brand-text h1 {
+        font-size: 15px;
+    }
+
+    .brand-text p {
+        font-size: 7px;
+    }
+
+    .header-right button {
+        font-size: 10px;
+    }
 }
-@media(max-width:600px){
-body{width:100%;overflow-x:hidden;font-size:14px}
-.top-header{width:100%;padding:12px;gap:10px}
-.brand{gap:8px;min-width:0}
-.brand img{width:42px;height:42px;flex-shrink:0}
-.brand-text h1{font-size:clamp(15px,4vw,19px)}
-.brand-text p{font-size:8px;letter-spacing:.5px}
-.header-right button{font-size:12px;padding:8px 5px}
-.container{width:100%;max-width:100%;padding:12px}
-.page-heading h2{font-size:22px}
-.page-heading p{font-size:12px}
-.card{width:100%;border-radius:10px}
-.card-header{padding:12px}
-.card-header h2{font-size:16px}
-.card-body{padding:13px}
-.notice{padding:13px;font-size:12px}
-.profile-photo-section{padding:13px;gap:13px}
-.photo-preview,.photo-placeholder{width:105px;height:125px}
-.profile-form{grid-template-columns:1fr;gap:13px}
-.form-group.full-width{grid-column:auto}
-.form-actions{grid-column:auto;flex-direction:column}
-.btn{width:100%}
-.sidebar{width:min(280px,82vw)}
-footer{padding:17px 12px;font-size:10px;line-height:1.6}
-}
-@media(max-width:480px){
-.menu-toggle{padding:7px 9px;font-size:18px}
-.brand{gap:7px}
-.brand img{width:37px;height:37px}
-.brand-text h1{font-size:15px}
-.brand-text p{font-size:7px}
-.header-right button{font-size:10px}
-}
-@media(max-width:360px){
-.brand img{width:35px;height:35px}
-.brand-text h1{font-size:14px}
-.container{padding:9px}
+
+@media(max-width:360px) {
+    .brand img {
+        width: 35px;
+        height: 35px;
+    }
+
+    .brand-text h1 {
+        font-size: 14px;
+    }
+
+    .container {
+        padding: 9px;
+    }
 }
 </style>
 </head>
 
 <body>
 
+<!-- HEADER -->
+
 <header class="top-header">
-    <button type="button" class="menu-toggle" onclick="toggleSidebar()" aria-label="Open navigation menu">☰</button>
+
+    <button
+        type="button"
+        class="menu-toggle"
+        onclick="toggleSidebar()"
+        aria-label="Open navigation menu">
+        ☰
+    </button>
 
     <div class="brand">
-        <img src="https://64.media.tumblr.com/33ca84afd52d5cd0ef7bb1bb66c6176b/tumblr_o4ti6j8k6r1unefbyo1_400.png" alt="PLMUN Logo">
+
+        <img
+            src="https://64.media.tumblr.com/33ca84afd52d5cd0ef7bb1bb66c6176b/tumblr_o4ti6j8k6r1unefbyo1_400.png"
+            alt="PLMUN Logo">
+
         <div class="brand-text">
             <h1>I-PILIMON</h1>
             <p>STUDENT ID INFORMATION</p>
         </div>
+
     </div>
 
     <div class="header-right">
         <button type="button" onclick="logout()">LOG OUT ↗</button>
     </div>
+
 </header>
 
-<div id="sidebarOverlay" class="sidebar-overlay" onclick="closeSidebar()"></div>
+
+<!-- SIDEBAR OVERLAY -->
+
+<div
+    id="sidebarOverlay"
+    class="sidebar-overlay"
+    onclick="closeSidebar()">
+</div>
+
+
+<!-- SIDEBAR -->
 
 <aside class="sidebar" id="sidebar">
+
     <div class="sidebar-heading">
-        <img src="https://64.media.tumblr.com/33ca84afd52d5cd0ef7bb1bb66c6176b/tumblr_o4ti6j8k6r1unefbyo1_400.png" alt="PLMUN Logo">
+
+        <img
+            src="https://64.media.tumblr.com/33ca84afd52d5cd0ef7bb1bb66c6176b/tumblr_o4ti6j8k6r1unefbyo1_400.png"
+            alt="PLMUN Logo">
+
         <div>
             <h3>STUDENT PORTAL</h3>
             <p>Navigation Menu</p>
         </div>
+
     </div>
 
     <nav class="sidebar-nav">
-        <button class="sidebar-link" onclick="location.href='student-dashboard.html'"><span>▦</span> Dashboard</button>
-        <button class="sidebar-link active" onclick="location.href='profile.html'"><span>👤</span> My Profile</button>
-        <button class="sidebar-link" onclick="location.href='id.html'"><span>▣</span> My Student ID</button>
-        <button class="sidebar-link" onclick="location.href='application.html'"><span>☑</span> Application Status</button>
-        <button class="sidebar-link" onclick="location.href='document.html'"><span>📁</span> My Documents</button>
+
+        <button
+            class="sidebar-link"
+            onclick="location.href='student-dashboard.html'">
+            <span>▦</span> Dashboard
+        </button>
+
+        <button
+            class="sidebar-link active"
+            onclick="location.href='profile.html'">
+            <span>👤</span> My Profile
+        </button>
+
+        <button
+            class="sidebar-link"
+            onclick="location.href='id.html'">
+            <span>▣</span> My Student ID
+        </button>
+
+        <button
+            class="sidebar-link"
+            onclick="location.href='application.html'">
+            <span>☑</span> Application Status
+        </button>
+
+        <button
+            class="sidebar-link"
+            onclick="location.href='document.html'">
+            <span>📁</span> My Documents
+        </button>
+
         <div class="sidebar-divider"></div>
-        <button class="sidebar-link logout-link" onclick="logout()"><span>↗</span> Log Out</button>
+
+        <button
+            class="sidebar-link logout-link"
+            onclick="logout()">
+            <span>↗</span> Log Out
+        </button>
+
     </nav>
 
     <div class="sidebar-footer">
         <p>I-PILIMON</p>
         <small>Student ID Information System</small>
     </div>
+
 </aside>
+
+
+<!-- MAIN CONTENT -->
 
 <main class="container">
 
@@ -267,159 +868,296 @@ footer{padding:17px 12px;font-size:10px;line-height:1.6}
 
     <div class="notice">
         <strong>PROFILE REMINDER:</strong>
-        Keep your information accurate and updated. The details saved here will be used for your Student ID application.
+        Keep your information accurate and updated.
+        The details saved here will be used for your Student ID application.
     </div>
 
     <div id="message"></div>
 
+
+    <!-- PROFILE CARD -->
+
     <section class="card">
+
         <div class="card-header">
             <h2>Profile Information</h2>
         </div>
 
         <div class="card-body">
 
+
+            <!-- PROFILE PHOTO -->
+
             <div class="profile-photo-section">
+
                 <div id="photoContainer">
+
                     <div class="photo-placeholder">
                         <span>👤</span>
                         PROFILE PHOTO
                     </div>
+
                 </div>
 
                 <div class="photo-info">
+
                     <h3>Profile Picture</h3>
-                    <p>Upload a clear JPG, PNG, or WEBP image. Maximum file size: 3 MB.</p>
-                    <input type="file" id="profilePhoto" accept=".jpg,.jpeg,.png,.webp">
+
+                    <p>
+                        Upload a clear JPG, PNG, or WEBP image.
+                        Maximum file size: 3 MB.
+                    </p>
+
+                    <input
+                        type="file"
+                        id="profilePhoto"
+                        accept=".jpg,.jpeg,.png,.webp">
+
                     <p class="field-note" id="photoStatus"></p>
+
                 </div>
+
             </div>
+
+
+            <!-- PROFILE FORM -->
 
             <form id="profileForm" class="profile-form">
 
                 <div class="form-group">
-                    <label for="studentNumber">Student ID Number</label>
-                    <input type="text" id="studentNumber" placeholder="Enter student ID number">
+
+                    <label for="studentNumber">
+                        Student ID Number
+                    </label>
+
+                    <input
+                        type="text"
+                        id="studentNumber"
+                        placeholder="Enter student ID number">
+
                 </div>
 
-                <div class="form-group">
-                    <label for="email">Institutional Email</label>
-                    <input type="email" id="email" disabled>
-                    <small class="field-note">Your email is connected to your login account and cannot be changed here.</small>
-                </div>
 
                 <div class="form-group">
+
+                    <label for="email">
+                        Institutional Email
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        disabled>
+
+                    <small class="field-note">
+                        Your email is connected to your login account
+                        and cannot be changed here.
+                    </small>
+
+                </div>
+
+
+                <div class="form-group">
+
                     <label for="firstName">First Name *</label>
-                    <input type="text" id="firstName" placeholder="Enter first name" required>
+
+                    <input
+                        type="text"
+                        id="firstName"
+                        placeholder="Enter first name"
+                        required>
+
                 </div>
 
+
                 <div class="form-group">
+
                     <label for="lastName">Last Name *</label>
-                    <input type="text" id="lastName" placeholder="Enter last name" required>
+
+                    <input
+                        type="text"
+                        id="lastName"
+                        placeholder="Enter last name"
+                        required>
+
                 </div>
 
+
                 <div class="form-group">
+
                     <label for="course">Course / Program *</label>
-                    <input type="text" id="course" placeholder="Example: BSIT" required>
+
+                    <input
+                        type="text"
+                        id="course"
+                        placeholder="Example: BSIT"
+                        required>
+
                 </div>
 
+
                 <div class="form-group">
+
                     <label for="yearLevel">Year Level *</label>
+
                     <select id="yearLevel" required>
+
                         <option value="">Select year level</option>
                         <option value="1st Year">1st Year</option>
                         <option value="2nd Year">2nd Year</option>
                         <option value="3rd Year">3rd Year</option>
                         <option value="4th Year">4th Year</option>
                         <option value="5th Year">5th Year</option>
+
                     </select>
+
                 </div>
+
 
                 <div class="form-group">
+
                     <label for="birthdate">Birthdate</label>
-                    <input type="date" id="birthdate">
+
+                    <input
+                        type="date"
+                        id="birthdate">
+
                 </div>
 
+
                 <div class="form-actions">
-                    <button type="submit" class="btn save-btn" id="saveBtn">SAVE PROFILE</button>
-                    <button type="button" class="btn cancel-btn" onclick="loadProfile()">RESET CHANGES</button>
+
+                    <button
+                        type="submit"
+                        class="btn save-btn"
+                        id="saveBtn">
+                        SAVE PROFILE
+                    </button>
+
+                    <button
+                        type="button"
+                        class="btn cancel-btn"
+                        onclick="loadProfile()">
+                        RESET CHANGES
+                    </button>
+
                 </div>
 
             </form>
-        <!-- DIGITAL SIGNATURE -->
-<div class="signature-section">
 
-    <h3>Digital Signature</h3>
 
-    <p>
-        Draw your signature below using your mouse, touchscreen,
-        or stylus. You may also upload an existing signature image.
-    </p>
+            <!-- DIGITAL SIGNATURE -->
 
-    <div class="signature-canvas-wrapper">
-        <canvas id="signatureCanvas"></canvas>
-    </div>
+            <div class="signature-section">
 
-    <div class="signature-actions">
-        <button type="button" class="btn cancel-btn"
-            onclick="clearSignature()">
-            CLEAR SIGNATURE
-        </button>
+                <h3>Digital Signature</h3>
 
-        <button type="button" class="btn save-btn"
-            id="saveSignatureBtn"
-            onclick="saveDrawnSignature()">
-            SAVE DRAWN SIGNATURE
-        </button>
-    </div>
+                <p>
+                    Draw your signature below using your mouse,
+                    touchscreen, or stylus. You may also upload
+                    an existing signature image.
+                </p>
 
-    <div class="signature-upload">
 
-        <h3>Upload Signature Image</h3>
+                <!-- SIGNATURE CANVAS -->
 
-        <p>
-            Upload your signature as a JPG, JPEG, or PNG image.
-            Maximum file size: 3 MB.
-        </p>
+                <div class="signature-canvas-wrapper">
 
-        <input
-            type="file"
-            id="signatureFile"
-            accept=".jpg,.jpeg,.png"
-        >
+                    <canvas id="signatureCanvas"></canvas>
 
-        <div class="signature-actions">
-            <button type="button"
-                class="btn save-btn"
-                id="uploadSignatureBtn"
-                onclick="uploadSignature()">
-                UPLOAD SIGNATURE
-            </button>
+                </div>
+
+
+                <!-- SIGNATURE BUTTONS -->
+
+                <div class="signature-actions">
+
+                    <button
+                        type="button"
+                        class="btn cancel-btn"
+                        onclick="clearSignature()">
+                        CLEAR SIGNATURE
+                    </button>
+
+                    <button
+                        type="button"
+                        class="btn save-btn"
+                        id="saveSignatureBtn"
+                        onclick="saveDrawnSignature()">
+                        SAVE DRAWN SIGNATURE
+                    </button>
+
+                </div>
+
+
+                <!-- UPLOAD SIGNATURE -->
+
+                <div class="signature-upload">
+
+                    <h3>Upload Signature Image</h3>
+
+                    <p>
+                        Upload your signature as a JPG, JPEG, or PNG image.
+                        Maximum file size: 3 MB.
+                    </p>
+
+                    <input
+                        type="file"
+                        id="signatureFile"
+                        accept=".jpg,.jpeg,.png">
+
+                    <div class="signature-actions">
+
+                        <button
+                            type="button"
+                            class="btn save-btn"
+                            id="uploadSignatureBtn"
+                            onclick="uploadSignature()">
+                            UPLOAD SIGNATURE
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- SAVED SIGNATURE PREVIEW -->
+
+                <div id="savedSignatureContainer"></div>
+
+                <p
+                    id="signatureStatus"
+                    class="signature-status">
+                </p>
+
+            </div>
+
         </div>
 
-    </div>
-
-    <div id="savedSignatureContainer"></div>
-
-    <p id="signatureStatus" class="signature-status"></p>
-
-</div>
-        </div>
     </section>
+
 </main>
 
+
+<!-- FOOTER -->
+
 <footer>
-    © 2026 Pamantasan ng Lungsod ng Muntinlupa | I-PILIMON Student ID Information System
+    © 2026 Pamantasan ng Lungsod ng Muntinlupa |
+    I-PILIMON Student ID Information System
 </footer>
 
+
 <script>
+
 /* ==========================================
    SUPABASE CONFIGURATION
 ========================================== */
 
-const SUPABASE_URL = "https://mlrpkkmexmboqrnmjkuy.supabase.co";
+const SUPABASE_URL =
+    "https://mlrpkkmexmboqrnmjkuy.supabase.co";
 
-const SUPABASE_ANON_KEY = "sb_publishable_-BIYMjip4Zon8HwZUCPT1Q_P0pDCMke";
+const SUPABASE_ANON_KEY =
+    "sb_publishable_-BIYMjip4Zon8HwZUCPT1Q_P0pDCMke";
 
 const supabaseClient = window.supabase.createClient(
     SUPABASE_URL,
@@ -429,26 +1167,40 @@ const supabaseClient = window.supabase.createClient(
 let currentUser = null;
 let currentStudent = null;
 
-    /* ==========================================
-   DIGITAL SIGNATURE
+
+/* ==========================================
+   DIGITAL SIGNATURE SETUP
 ========================================== */
 
-const signatureCanvas = document.getElementById("signatureCanvas");
-const signatureContext = signatureCanvas.getContext("2d");
+const signatureCanvas =
+    document.getElementById("signatureCanvas");
+
+const signatureContext =
+    signatureCanvas.getContext("2d");
 
 let isDrawing = false;
 let hasSignature = false;
 
+
 function setupSignatureCanvas() {
 
     const rect = signatureCanvas.getBoundingClientRect();
+
     const pixelRatio = window.devicePixelRatio || 1;
 
-    signatureCanvas.width = rect.width * pixelRatio;
-    signatureCanvas.height = 200 * pixelRatio;
+    signatureCanvas.width =
+        Math.round(rect.width * pixelRatio);
+
+    signatureCanvas.height =
+        Math.round(rect.height * pixelRatio);
 
     signatureContext.setTransform(
-        pixelRatio, 0, 0, pixelRatio, 0, 0
+        pixelRatio,
+        0,
+        0,
+        pixelRatio,
+        0,
+        0
     );
 
     signatureContext.strokeStyle = "#003b24";
@@ -456,6 +1208,7 @@ function setupSignatureCanvas() {
     signatureContext.lineCap = "round";
     signatureContext.lineJoin = "round";
 }
+
 
 function getSignaturePosition(event) {
 
@@ -467,52 +1220,84 @@ function getSignaturePosition(event) {
     };
 }
 
-signatureCanvas.addEventListener("pointerdown", function(event) {
 
-    event.preventDefault();
+/* START DRAWING */
 
-    isDrawing = true;
-    hasSignature = true;
+signatureCanvas.addEventListener(
+    "pointerdown",
+    function(event) {
 
-    signatureCanvas.setPointerCapture(event.pointerId);
+        event.preventDefault();
 
-    const position = getSignaturePosition(event);
+        isDrawing = true;
+        hasSignature = true;
 
-    signatureContext.beginPath();
+        signatureCanvas.setPointerCapture(event.pointerId);
 
-    signatureContext.moveTo(
-        position.x,
-        position.y
-    );
-});
+        const position = getSignaturePosition(event);
 
-signatureCanvas.addEventListener("pointermove", function(event) {
+        signatureContext.beginPath();
 
-    if (!isDrawing) return;
+        signatureContext.moveTo(
+            position.x,
+            position.y
+        );
 
-    event.preventDefault();
+        // Draw a visible dot for a tap or single click.
+        signatureContext.lineTo(
+            position.x + 0.1,
+            position.y + 0.1
+        );
 
-    const position = getSignaturePosition(event);
+        signatureContext.stroke();
+    }
+);
 
-    signatureContext.lineTo(
-        position.x,
-        position.y
-    );
 
-    signatureContext.stroke();
-});
+/* CONTINUE DRAWING */
+
+signatureCanvas.addEventListener(
+    "pointermove",
+    function(event) {
+
+        if (!isDrawing) return;
+
+        event.preventDefault();
+
+        const position = getSignaturePosition(event);
+
+        signatureContext.lineTo(
+            position.x,
+            position.y
+        );
+
+        signatureContext.stroke();
+    }
+);
+
+
+/* STOP DRAWING */
 
 function stopDrawing() {
+
     if (!isDrawing) return;
 
     isDrawing = false;
+
     signatureContext.closePath();
 }
 
 signatureCanvas.addEventListener("pointerup", stopDrawing);
-signatureCanvas.addEventListener("pointercancel", stopDrawing);
-signatureCanvas.addEventListener("lostpointercapture", stopDrawing);
 
+signatureCanvas.addEventListener("pointercancel", stopDrawing);
+
+signatureCanvas.addEventListener(
+    "lostpointercapture",
+    stopDrawing
+);
+
+
+/* CLEAR SIGNATURE */
 
 function clearSignature() {
 
@@ -529,6 +1314,8 @@ function clearSignature() {
         "Signature canvas cleared.";
 }
 
+
+/* SHOW SAVED SIGNATURE */
 
 function showSavedSignature(url) {
 
@@ -556,6 +1343,10 @@ function showSavedSignature(url) {
 }
 
 
+/* ==========================================
+   SAVE SIGNATURE TO SUPABASE
+========================================== */
+
 async function saveSignatureBlob(blob) {
 
     if (!currentUser) {
@@ -574,6 +1365,9 @@ async function saveSignatureBlob(blob) {
         Date.now() +
         ".png";
 
+
+    // UPLOAD SIGNATURE IMAGE
+
     const { error: uploadError } = await supabaseClient
         .storage
         .from("student-profiles")
@@ -584,6 +1378,9 @@ async function saveSignatureBlob(blob) {
 
     if (uploadError) throw uploadError;
 
+
+    // UPDATE STUDENT DATABASE
+
     const { data, error: updateError } = await supabaseClient
         .from("students")
         .update({
@@ -593,7 +1390,9 @@ async function saveSignatureBlob(blob) {
         .select()
         .maybeSingle();
 
+
     if (updateError) {
+
         await supabaseClient.storage
             .from("student-profiles")
             .remove([filePath]);
@@ -601,17 +1400,23 @@ async function saveSignatureBlob(blob) {
         throw updateError;
     }
 
+
     if (!data) {
+
         await supabaseClient.storage
             .from("student-profiles")
             .remove([filePath]);
 
         throw new Error(
-            "Signature uploaded but database record was not updated. Check your UPDATE policy."
+            "Signature uploaded but database record was not updated. Check your students UPDATE policy."
         );
     }
 
+
     currentStudent = data;
+
+
+    // CREATE SIGNED URL
 
     const { data: signedData, error: signedError } =
         await supabaseClient.storage
@@ -620,6 +1425,7 @@ async function saveSignatureBlob(blob) {
 
     if (signedError) throw signedError;
 
+
     showSavedSignature(signedData.signedUrl);
 
     document.getElementById("signatureStatus").textContent =
@@ -627,33 +1433,48 @@ async function saveSignatureBlob(blob) {
 }
 
 
-/* SAVE DRAWN SIGNATURE */
+/* ==========================================
+   SAVE DRAWN SIGNATURE
+========================================== */
 
 async function saveDrawnSignature() {
 
     if (!hasSignature) {
+
         document.getElementById("signatureStatus").textContent =
             "Please draw your signature first.";
 
         return;
     }
 
+
     const button = document.getElementById("saveSignatureBtn");
 
     button.disabled = true;
     button.textContent = "SAVING...";
 
+
     try {
 
         const blob = await new Promise(resolve => {
-            signatureCanvas.toBlob(resolve, "image/png");
+
+            signatureCanvas.toBlob(
+                resolve,
+                "image/png"
+            );
+
         });
 
+
         if (!blob) {
-            throw new Error("Unable to create signature image.");
+            throw new Error(
+                "Unable to create signature image."
+            );
         }
 
+
         await saveSignatureBlob(blob);
+
 
     } catch (error) {
 
@@ -670,83 +1491,124 @@ async function saveDrawnSignature() {
 }
 
 
-/* UPLOAD SIGNATURE IMAGE */
+/* ==========================================
+   UPLOAD SIGNATURE IMAGE
+========================================== */
 
 async function uploadSignature() {
 
     const input = document.getElementById("signatureFile");
+
     const file = input.files[0];
 
+
     if (!file) {
+
         document.getElementById("signatureStatus").textContent =
             "Please select a signature image first.";
 
         return;
     }
 
+
     const allowed = [
         "image/jpeg",
         "image/png"
     ];
 
+
     if (!allowed.includes(file.type)) {
+
         document.getElementById("signatureStatus").textContent =
             "Only JPG, JPEG, and PNG images are allowed.";
 
+        input.value = "";
+
         return;
     }
 
+
     if (file.size > 3 * 1024 * 1024) {
+
         document.getElementById("signatureStatus").textContent =
             "Signature image must not exceed 3 MB.";
 
+        input.value = "";
+
         return;
     }
+
 
     const button = document.getElementById("uploadSignatureBtn");
 
     button.disabled = true;
     button.textContent = "UPLOADING...";
 
+
     try {
 
         let blob = file;
 
+
+        // CONVERT JPG TO PNG
+
         if (file.type !== "image/png") {
+
             const image = new Image();
 
             const objectUrl = URL.createObjectURL(file);
 
+
             try {
+
                 await new Promise((resolve, reject) => {
+
                     image.onload = resolve;
                     image.onerror = reject;
+
                     image.src = objectUrl;
+
                 });
+
 
                 const canvas = document.createElement("canvas");
 
                 canvas.width = image.naturalWidth;
                 canvas.height = image.naturalHeight;
 
-                canvas.getContext("2d").drawImage(image, 0, 0);
+                const context = canvas.getContext("2d");
+
+                context.drawImage(image, 0, 0);
+
 
                 blob = await new Promise(resolve => {
-                    canvas.toBlob(resolve, "image/png");
+
+                    canvas.toBlob(
+                        resolve,
+                        "image/png"
+                    );
+
                 });
 
+
                 if (!blob) {
-                    throw new Error("Unable to convert signature image.");
+
+                    throw new Error(
+                        "Unable to convert signature image."
+                    );
                 }
 
             } finally {
+
                 URL.revokeObjectURL(objectUrl);
             }
         }
 
+
         await saveSignatureBlob(blob);
 
         input.value = "";
+
 
     } catch (error) {
 
@@ -763,23 +1625,39 @@ async function uploadSignature() {
 }
 
 
-/* LOAD SAVED SIGNATURE */
+/* ==========================================
+   LOAD SAVED SIGNATURE
+========================================== */
 
 async function loadSavedSignature() {
 
     if (!currentStudent?.signature_path) {
+
         showSavedSignature(null);
+
         return;
     }
 
-    const { data, error } = await supabaseClient.storage
+
+    const { data, error } = await supabaseClient
+        .storage
         .from("student-profiles")
-        .createSignedUrl(currentStudent.signature_path, 3600);
+        .createSignedUrl(
+            currentStudent.signature_path,
+            3600
+        );
+
 
     if (error) {
-        console.error(error);
+
+        console.error("Signature loading error:", error);
+
+        document.getElementById("signatureStatus").textContent =
+            "Unable to load saved signature: " + error.message;
+
         return;
     }
+
 
     showSavedSignature(data.signedUrl);
 }
@@ -790,12 +1668,17 @@ async function loadSavedSignature() {
 ========================================== */
 
 function toggleSidebar() {
+
     document.getElementById("sidebar").classList.toggle("open");
+
     document.getElementById("sidebarOverlay").classList.toggle("show");
 }
 
+
 function closeSidebar() {
+
     document.getElementById("sidebar").classList.remove("open");
+
     document.getElementById("sidebarOverlay").classList.remove("show");
 }
 
@@ -805,9 +1688,11 @@ function closeSidebar() {
 ========================================== */
 
 function showMessage(message, isError = false) {
+
     const box = document.getElementById("message");
 
     box.textContent = message;
+
     box.style.color = isError ? "#a00000" : "#075c3b";
 }
 
@@ -817,17 +1702,22 @@ function showMessage(message, isError = false) {
 ========================================== */
 
 function displayPhoto(url) {
+
     const container = document.getElementById("photoContainer");
 
+
     if (!url) {
+
         container.innerHTML = `
             <div class="photo-placeholder">
                 <span>👤</span>
                 PROFILE PHOTO
             </div>
         `;
+
         return;
     }
+
 
     const img = document.createElement("img");
 
@@ -835,9 +1725,13 @@ function displayPhoto(url) {
     img.alt = "Student profile photo";
     img.className = "photo-preview";
 
+
     img.onerror = function() {
+
         displayPhoto(null);
+
     };
+
 
     container.replaceChildren(img);
 }
@@ -848,23 +1742,36 @@ function displayPhoto(url) {
 ========================================== */
 
 async function initializePage() {
+
     try {
-        const { data, error } = await supabaseClient.auth.getSession();
+
+        const { data, error } =
+            await supabaseClient.auth.getSession();
+
 
         if (error) throw error;
 
+
         if (!data.session) {
+
             location.href = "index.html";
+
             return;
         }
 
+
         currentUser = data.session.user;
 
-        document.getElementById("email").value = currentUser.email || "";
+
+        document.getElementById("email").value =
+            currentUser.email || "";
+
 
         await loadProfile();
 
+
     } catch (error) {
+
         console.error(error);
 
         showMessage(
@@ -880,11 +1787,15 @@ async function initializePage() {
 ========================================== */
 
 async function loadProfile() {
+
     if (!currentUser) return;
+
 
     showMessage("Loading profile...");
 
+
     try {
+
         const { data: student, error } = await supabaseClient
             .from("students")
             .select(`
@@ -896,22 +1807,29 @@ async function loadProfile() {
                 course,
                 year_level,
                 birthdate,
-                profile_picture_path
+                profile_picture_path,
+                signature_path
             `)
             .eq("id", currentUser.id)
             .maybeSingle();
 
+
         if (error) throw error;
 
-        currentStudent = student || null;
-        await loadSavedSignature();
 
-        // Always show the authenticated email.
+        currentStudent = student || null;
+
+
+        // ALWAYS SHOW AUTHENTICATED EMAIL
+
         document.getElementById("email").value =
             student?.email || currentUser.email || "";
 
-        // If no student row exists yet, allow the user to complete the form.
+
+        // NO STUDENT RECORD YET
+
         if (!student) {
+
             document.getElementById("studentNumber").value = "";
             document.getElementById("firstName").value = "";
             document.getElementById("lastName").value = "";
@@ -920,7 +1838,9 @@ async function loadProfile() {
             document.getElementById("birthdate").value = "";
 
             displayPhoto(null);
+
             showSavedSignature(null);
+
 
             showMessage(
                 "Your student information is not yet complete. Please fill in the required fields and click SAVE PROFILE."
@@ -929,7 +1849,9 @@ async function loadProfile() {
             return;
         }
 
-        // Load existing student information.
+
+        // LOAD EXISTING INFORMATION
+
         document.getElementById("studentNumber").value =
             student.student_number || "";
 
@@ -948,19 +1870,36 @@ async function loadProfile() {
         document.getElementById("birthdate").value =
             student.birthdate || "";
 
+
+        // LOAD PROFILE PHOTO
+
         displayPhoto(null);
 
-        // Load saved profile picture.
+
         if (student.profile_picture_path) {
+
             const { data: imageData, error: imageError } =
                 await supabaseClient.storage
                     .from("student-profiles")
-                    .createSignedUrl(student.profile_picture_path, 3600);
+                    .createSignedUrl(
+                        student.profile_picture_path,
+                        3600
+                    );
+
 
             if (!imageError && imageData?.signedUrl) {
+
                 displayPhoto(imageData.signedUrl);
             }
         }
+
+
+        // LOAD SAVED SIGNATURE
+
+        await loadSavedSignature();
+
+
+        // CHECK REQUIRED INFORMATION
 
         const incomplete =
             !student.first_name ||
@@ -968,15 +1907,21 @@ async function loadProfile() {
             !student.course ||
             !student.year_level;
 
+
         if (incomplete) {
+
             showMessage(
                 "Some profile information is missing. Please complete the required fields and save your profile."
             );
+
         } else {
+
             showMessage("Profile loaded successfully.");
         }
 
+
     } catch (error) {
+
         console.error(error);
 
         showMessage(
@@ -998,14 +1943,20 @@ document.getElementById("profileForm").addEventListener(
 
         event.preventDefault();
 
+
         if (!currentUser) {
+
             showMessage("Please log in again.", true);
+
             return;
         }
 
+
         const button = document.getElementById("saveBtn");
 
+
         const updates = {
+
             id: currentUser.id,
 
             student_number:
@@ -1028,9 +1979,12 @@ document.getElementById("profileForm").addEventListener(
 
             birthdate:
                 document.getElementById("birthdate").value || null
+
         };
 
-        // Validate required fields.
+
+        // VALIDATE REQUIRED FIELDS
+
         if (
             !updates.first_name ||
             !updates.last_name ||
@@ -1038,19 +1992,25 @@ document.getElementById("profileForm").addEventListener(
             !updates.course ||
             !updates.year_level
         ) {
+
             showMessage(
                 "Please complete First Name, Last Name, Course, and Year Level.",
                 true
             );
+
             return;
         }
+
 
         button.disabled = true;
         button.textContent = "SAVING...";
 
+
         showMessage("Saving your student information...");
 
+
         try {
+
             const { data, error } = await supabaseClient
                 .from("students")
                 .upsert(updates, {
@@ -1059,18 +2019,25 @@ document.getElementById("profileForm").addEventListener(
                 .select()
                 .single();
 
+
             if (error) throw error;
 
+
             currentStudent = data;
+
 
             showMessage(
                 "Your student profile has been saved successfully!"
             );
 
-            // Reload saved information and profile photo.
+
+            // RELOAD SAVED INFORMATION
+
             await loadProfile();
 
+
         } catch (error) {
+
             console.error(error);
 
             showMessage(
@@ -1079,6 +2046,7 @@ document.getElementById("profileForm").addEventListener(
             );
 
         } finally {
+
             button.disabled = false;
             button.textContent = "SAVE PROFILE";
         }
@@ -1098,22 +2066,31 @@ document.getElementById("profilePhoto").addEventListener(
 
         if (!file) return;
 
+
         if (!currentUser) {
+
             showMessage("Please log in again.", true);
+
             this.value = "";
+
             return;
         }
 
-        // A student record must exist before saving the photo path.
+
+        // STUDENT RECORD MUST EXIST
+
         if (!currentStudent) {
+
             showMessage(
                 "Please save your required student information first before uploading a profile picture.",
                 true
             );
 
             this.value = "";
+
             return;
         }
+
 
         const allowed = [
             "image/jpeg",
@@ -1121,35 +2098,45 @@ document.getElementById("profilePhoto").addEventListener(
             "image/webp"
         ];
 
+
         if (!allowed.includes(file.type)) {
+
             showMessage(
                 "Only JPG, PNG, and WEBP images are allowed.",
                 true
             );
 
             this.value = "";
+
             return;
         }
 
+
         if (file.size > 3 * 1024 * 1024) {
+
             showMessage(
                 "Profile picture must not exceed 3 MB.",
                 true
             );
 
             this.value = "";
+
             return;
         }
+
 
         const status = document.getElementById("photoStatus");
 
         status.textContent = "Uploading photo...";
 
+
         try {
+
             const extension = file.name
                 .split(".")
                 .pop()
                 .toLowerCase();
+
 
             const filePath =
                 currentUser.id +
@@ -1158,18 +2145,23 @@ document.getElementById("profilePhoto").addEventListener(
                 "." +
                 extension;
 
-            // Upload image to Supabase Storage.
+
+            // UPLOAD IMAGE
+
             const { error: uploadError } = await supabaseClient
                 .storage
                 .from("student-profiles")
                 .upload(filePath, file, {
-                    upsert: true,
+                    upsert: false,
                     contentType: file.type
                 });
 
+
             if (uploadError) throw uploadError;
 
-            // Save uploaded image path to students table.
+
+            // UPDATE DATABASE
+
             const { data: updatedStudent, error: updateError } =
                 await supabaseClient
                     .from("students")
@@ -1180,42 +2172,56 @@ document.getElementById("profilePhoto").addEventListener(
                     .select()
                     .maybeSingle();
 
+
             if (updateError) {
-                await supabaseClient
-                    .storage
+
+                await supabaseClient.storage
                     .from("student-profiles")
                     .remove([filePath]);
 
                 throw updateError;
             }
 
+
             if (!updatedStudent) {
+
                 throw new Error(
                     "The photo was uploaded, but the student record could not be updated. Check your students UPDATE policy."
                 );
             }
 
+
             currentStudent = updatedStudent;
+
+
+            // CREATE SIGNED URL
 
             const { data: imageData, error: imageError } =
                 await supabaseClient.storage
                     .from("student-profiles")
                     .createSignedUrl(filePath, 3600);
 
+
             if (imageError) throw imageError;
+
 
             displayPhoto(imageData.signedUrl);
 
+
             status.textContent =
                 "Profile picture uploaded successfully.";
+
 
             showMessage(
                 "Your profile picture has been updated successfully!"
             );
 
+
             this.value = "";
 
+
         } catch (error) {
+
             console.error(error);
 
             status.textContent = "";
@@ -1236,26 +2242,32 @@ document.getElementById("profilePhoto").addEventListener(
 ========================================== */
 
 async function logout() {
+
     if (!confirm("Are you sure you want to log out?")) {
         return;
     }
 
+
     const { error } = await supabaseClient.auth.signOut();
 
+
     if (error) {
+
         showMessage(
             "Unable to log out: " + error.message,
             true
         );
+
         return;
     }
+
 
     location.href = "index.html";
 }
 
 
 /* ==========================================
-   START
+   START PAGE
 ========================================== */
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -1265,6 +2277,7 @@ document.addEventListener("DOMContentLoaded", function() {
     initializePage();
 
 });
+
 </script>
 
 </body>
