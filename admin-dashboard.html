@@ -540,6 +540,22 @@ tbody tr:hover {
         font-size: 23px;
     }
 }
+.student-signature-preview {
+    width: 110px;
+    height: 55px;
+    object-fit: contain;
+    background: #ffffff;
+    border: 1px solid #d9dfd9;
+    border-radius: 6px;
+    padding: 5px;
+    cursor: pointer;
+    display: block;
+}
+
+.student-signature-preview:hover {
+    border-color: var(--gold);
+    box-shadow: 0 2px 7px rgba(0,0,0,.12);
+}
 </style>
 </head>
 
@@ -665,20 +681,21 @@ tbody tr:hover {
                 <table>
                     <thead>
                         <tr>
-                            <th>Student Number</th>
-                            <th>Student Name</th>
-                            <th>Email</th>
-                            <th>Course</th>
-                            <th>Year Level</th>
-                            <th>Profile Status</th>
-                            <th>Date Registered</th>
-                            <th>Actions</th>
+                           <th>Student Number</th>
+<th>Student Name</th>
+<th>Email</th>
+<th>Course</th>
+<th>Year Level</th>
+<th>Signature</th>
+<th>Profile Status</th>
+<th>Date Registered</th>
+<th>Actions</th>
                         </tr>
                     </thead>
 
                     <tbody id="studentsTable">
                         <tr>
-                            <td colspan="8" class="loading">Loading students...</td>
+                            <td colspan="9" class="loading">Loading students...</td>
                         </tr>
                     </tbody>
                 </table>
@@ -1176,6 +1193,7 @@ async function loadAllData() {
                 course,
                 year_level,
                 birthdate,
+                signature_path,
                 created_at
             `)
             .order("created_at", { ascending: false }),
@@ -1264,14 +1282,13 @@ function updateStatistics() {
 // STUDENT MANAGEMENT
 // ==========================================
 
-function renderStudents() {
+async function renderStudents() {
     const table = document.getElementById("studentsTable");
 
     const search = document.getElementById("studentSearch")
         .value.trim().toLowerCase();
 
     const filtered = students.filter(student => {
-
         const fullName =
             `${student.first_name || ""} ${student.last_name || ""}`
                 .toLowerCase();
@@ -1285,12 +1302,14 @@ function renderStudents() {
 
     if (filtered.length === 0) {
         table.innerHTML =
-            '<tr><td colspan="8" class="empty">No registered students found.</td></tr>';
+            '<tr><td colspan="9" class="empty">No registered students found.</td></tr>';
         return;
     }
 
-    table.innerHTML = filtered.map(student => {
+    table.innerHTML =
+        '<tr><td colspan="9" class="loading">Loading student information and signatures...</td></tr>';
 
+    const rows = await Promise.all(filtered.map(async student => {
         const fullName =
             `${student.first_name || ""} ${student.last_name || ""}`.trim();
 
@@ -1301,6 +1320,48 @@ function renderStudents() {
             student.course &&
             student.year_level
         );
+
+        let signatureHTML = `
+            <span class="status status-incomplete">No Signature</span>
+        `;
+
+        if (student.signature_path) {
+            try {
+                const { data, error } = await supabaseClient
+                    .storage
+                    .from("student-profiles")
+                    .createSignedUrl(student.signature_path, 3600);
+
+                if (error) throw error;
+
+                if (data?.signedUrl) {
+                    const safeURL = escapeHTML(data.signedUrl);
+
+                    signatureHTML = `
+                        <a href="${safeURL}"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           title="View student signature">
+                            <img
+                                src="${safeURL}"
+                                alt="Student Signature"
+                                class="student-signature-preview"
+                            >
+                        </a>
+                    `;
+                }
+            } catch (error) {
+                console.error(
+                    "Unable to load signature for:",
+                    student.id,
+                    error
+                );
+
+                signatureHTML = `
+                    <span class="status status-rejected">Unable to Load</span>
+                `;
+            }
+        }
 
         return `
             <tr>
@@ -1314,6 +1375,8 @@ function renderStudents() {
 
                 <td>${displayValue(student.year_level)}</td>
 
+                <td>${signatureHTML}</td>
+
                 <td>
                     <span class="status ${
                         complete ? "status-complete" : "status-incomplete"
@@ -1326,7 +1389,6 @@ function renderStudents() {
 
                 <td>
                     <div class="action-buttons">
-
                         <button
                             class="btn btn-view"
                             data-student-action="edit"
@@ -1342,15 +1404,14 @@ function renderStudents() {
                         >
                             Delete
                         </button>
-
                     </div>
                 </td>
             </tr>
         `;
+    }));
 
-    }).join("");
+    table.innerHTML = rows.join("");
 }
-
 // ==========================================
 // EDIT STUDENT
 // ==========================================
