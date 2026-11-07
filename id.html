@@ -1,4 +1,4 @@
-
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -445,6 +445,21 @@ body {
     background: var(--light-green);
 }
 
+.retry-button {
+    margin-top: 12px;
+    padding: 11px 18px;
+    background: var(--main-green);
+    color: white;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.retry-button:hover {
+    background: var(--light-green);
+}
+
 /* FOOTER */
 
 footer {
@@ -631,6 +646,7 @@ footer {
 <body>
 
 <!-- HEADER -->
+
 <header class="top-header">
 
     <button
@@ -661,6 +677,7 @@ footer {
 </header>
 
 <!-- SIDEBAR OVERLAY -->
+
 <div
     id="sidebarOverlay"
     class="sidebar-overlay"
@@ -668,6 +685,7 @@ footer {
 ></div>
 
 <!-- SIDEBAR -->
+
 <aside class="sidebar" id="sidebar">
 
     <div class="sidebar-heading">
@@ -706,7 +724,11 @@ footer {
 
         <div class="sidebar-divider"></div>
 
-        <button class="sidebar-link logout-link" onclick="logout()">
+        <button
+            type="button"
+            class="sidebar-link logout-link"
+            onclick="logout()"
+        >
             <span>↗</span> Log Out
         </button>
 
@@ -720,6 +742,7 @@ footer {
 </aside>
 
 <!-- MAIN CONTENT -->
+
 <main class="container">
 
     <section class="page-heading">
@@ -805,6 +828,7 @@ footer {
             </div>
 
             <button
+                type="button"
                 class="back-button"
                 onclick="location.href='student-dashboard.html'"
             >
@@ -828,7 +852,8 @@ footer {
 // SUPABASE CONFIGURATION
 // ==========================================
 
-const SUPABASE_URL = "https://mlrpkkmexmboqrnmjkuy.supabase.co";
+const SUPABASE_URL =
+    "https://mlrpkkmexmboqrnmjkuy.supabase.co";
 
 const SUPABASE_ANON_KEY =
     "sb_publishable_-BIYMjip4Zon8HwZUCPT1Q_P0pDCMke";
@@ -839,6 +864,7 @@ const db = window.supabase.createClient(
 );
 
 let currentUser = null;
+let studentLoadPromise = null;
 
 
 // ==========================================
@@ -846,13 +872,34 @@ let currentUser = null;
 // ==========================================
 
 function toggleSidebar() {
+
     document.getElementById("sidebar").classList.toggle("open");
+
     document.getElementById("sidebarOverlay").classList.toggle("show");
 }
 
 function closeSidebar() {
+
     document.getElementById("sidebar").classList.remove("open");
+
     document.getElementById("sidebarOverlay").classList.remove("show");
+}
+
+
+// ==========================================
+// MESSAGE HANDLER
+// ==========================================
+
+function showMessage(message, type = "loading") {
+
+    const messageElement = document.getElementById("message");
+
+    messageElement.className =
+        type === "error" ? "error-message" : "loading";
+
+    messageElement.style.display = "block";
+
+    messageElement.textContent = message;
 }
 
 
@@ -862,60 +909,161 @@ function closeSidebar() {
 
 async function getStudent() {
 
-    const message = document.getElementById("message");
+    if (studentLoadPromise) {
+        return studentLoadPromise;
+    }
+
+    studentLoadPromise = (async function() {
+
+        const message = document.getElementById("message");
+
+        const card = document.getElementById("card");
+
+        card.hidden = true;
+
+        showMessage("Connecting to student account...");
+
+        try {
+
+            // CHECK AUTHENTICATED SESSION
+
+            const {
+                data: sessionData,
+                error: sessionError
+            } = await db.auth.getSession();
+
+            if (sessionError) {
+                throw sessionError;
+            }
+
+            const session = sessionData.session;
+
+            if (!session || !session.user) {
+
+                location.replace("index.html");
+
+                return null;
+            }
+
+            currentUser = session.user;
+
+            // GET AUTH METADATA AS FALLBACK
+
+            const metadata = currentUser.user_metadata || {};
+
+            // GET STUDENT RECORD
+
+            const {
+                data: student,
+                error: studentError
+            } = await db
+                .from("students")
+                .select(`
+                    id,
+                    student_number,
+                    first_name,
+                    last_name,
+                    email,
+                    course,
+                    year_level
+                `)
+                .eq("id", currentUser.id)
+                .maybeSingle();
+
+            if (studentError) {
+
+                console.error(
+                    "Students table error:",
+                    studentError
+                );
+
+                throw studentError;
+            }
+
+            // HANDLE MISSING STUDENT RECORD
+
+            if (!student) {
+
+                console.warn(
+                    "No student row found for authenticated user:",
+                    currentUser.id
+                );
+
+                showMessage(
+                    "Student record not found in the database. " +
+                    "Please complete your student information in your profile " +
+                    "or contact the administrator.",
+                    "error"
+                );
+
+                return null;
+            }
+
+            // COMBINE DATABASE DATA AND AUTH METADATA
+
+            const studentInformation = {
+
+                id: student.id,
+
+                student_number:
+                    student.student_number ||
+                    metadata.student_number ||
+                    null,
+
+                first_name:
+                    student.first_name ||
+                    metadata.first_name ||
+                    "",
+
+                last_name:
+                    student.last_name ||
+                    metadata.last_name ||
+                    "",
+
+                email:
+                    student.email ||
+                    currentUser.email ||
+                    "",
+
+                course:
+                    student.course ||
+                    metadata.course ||
+                    "",
+
+                year_level:
+                    student.year_level ||
+                    metadata.year_level ||
+                    ""
+            };
+
+            return studentInformation;
+
+        } catch (error) {
+
+            console.error(
+                "Student ID loading error:",
+                error
+            );
+
+            showMessage(
+                "Unable to load your student ID. " +
+                "Please try again. Error: " +
+                (error.message || "Unknown error"),
+                "error"
+            );
+
+            return null;
+        }
+
+    })();
 
     try {
 
-        const { data, error } = await db.auth.getSession();
+        return await studentLoadPromise;
 
-        if (error) {
-            throw error;
-        }
+    } finally {
 
-        currentUser = data.session?.user;
-
-        if (!currentUser) {
-            location.href = "index.html";
-            return null;
-        }
-
-        const { data: student, error: studentError } = await db
-            .from("students")
-            .select(`
-                id,
-                student_number,
-                first_name,
-                last_name,
-                email,
-                course,
-                year_level
-            `)
-            .eq("id", currentUser.id)
-            .maybeSingle();
-
-        if (studentError) {
-            throw studentError;
-        }
-
-        if (!student) {
-            message.className = "error-message";
-            message.textContent =
-                "Hindi ma-load ang student record. " +
-                "Please check ang students table at RLS policies.";
-            return null;
-        }
-
-        return student;
-
-    } catch (error) {
-
-        console.error("Student ID loading error:", error);
-
-        message.className = "error-message";
-        message.textContent =
-            "Unable to load student ID: " + error.message;
-
-        return null;
+        studentLoadPromise = null;
     }
 }
 
@@ -926,16 +1074,23 @@ async function getStudent() {
 
 function displayStudentID(student) {
 
+    if (!student) {
+        return;
+    }
+
     const fullName = [
         student.first_name,
         student.last_name
-    ].filter(Boolean).join(" ");
+    ]
+    .filter(Boolean)
+    .join(" ")
+    .trim();
 
     document.getElementById("name").textContent =
         fullName || "Not provided";
 
     document.getElementById("number").textContent =
-        student.student_number || "Not provided";
+        student.student_number || "Not assigned";
 
     document.getElementById("course").textContent =
         student.course || "Not provided";
@@ -944,10 +1099,29 @@ function displayStudentID(student) {
         student.year_level || "Not provided";
 
     document.getElementById("email").textContent =
-        student.email || currentUser.email || "Not provided";
+        student.email ||
+        currentUser?.email ||
+        "Not provided";
 
     document.getElementById("card").hidden = false;
+
     document.getElementById("message").style.display = "none";
+}
+
+
+// ==========================================
+// RETRY LOADING
+// ==========================================
+
+async function retryLoading() {
+
+    document.getElementById("card").hidden = true;
+
+    const student = await getStudent();
+
+    if (student) {
+        displayStudentID(student);
+    }
 }
 
 
@@ -965,14 +1139,24 @@ async function logout() {
         return;
     }
 
-    const { error } = await db.auth.signOut();
+    try {
 
-    if (error) {
-        alert("Unable to log out: " + error.message);
-        return;
+        const { error } = await db.auth.signOut();
+
+        if (error) {
+            throw error;
+        }
+
+        location.replace("index.html");
+
+    } catch (error) {
+
+        console.error("Logout error:", error);
+
+        alert(
+            "Unable to log out: " + error.message
+        );
     }
-
-    location.href = "index.html";
 }
 
 
@@ -980,19 +1164,56 @@ async function logout() {
 // START STUDENT ID PAGE
 // ==========================================
 
-(async function() {
+async function initializeStudentID() {
 
     const student = await getStudent();
 
-    if (!student) {
-        return;
+    if (student) {
+
+        displayStudentID(student);
+
+    } else {
+
+        const message = document.getElementById("message");
+
+        if (message.classList.contains("error-message")) {
+
+            const retryButton = document.createElement("button");
+
+            retryButton.type = "button";
+
+            retryButton.className = "retry-button";
+
+            retryButton.textContent = "TRY AGAIN";
+
+            retryButton.onclick = retryLoading;
+
+            message.appendChild(
+                document.createElement("br")
+            );
+
+            message.appendChild(retryButton);
+        }
     }
+}
 
-    displayStudentID(student);
 
-})();
+// INITIAL LOAD
+
+initializeStudentID();
+
+
+// HANDLE BROWSER BACK/FORWARD CACHE
+
+window.addEventListener("pageshow", function(event) {
+
+    if (event.persisted) {
+        initializeStudentID();
+    }
+});
 
 </script>
 
 </body>
 </html>
+```
