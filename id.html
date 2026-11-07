@@ -105,45 +105,51 @@ body {
     transition: 0.3s;
 }
 
+/* SIDEBAR BRAND - MATCH DASHBOARD SCREENSHOT */
+
 .sidebar-brand {
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 14px;
+    text-align: left;
     color: white;
-    padding-bottom: 25px;
+    padding: 10px 5px 25px;
     border-bottom: 1px solid rgba(255,255,255,0.2);
 }
 
 .sidebar-brand img {
-    width: 65px;
-    height: 65px;
+    width: 60px;
+    height: 60px;
+    min-width: 60px;
     object-fit: contain;
-    margin-bottom: 10px;
+    margin-bottom: 0;
+    filter: drop-shadow(0 0 7px #00ff80);
 }
 
 .sidebar-brand h3 {
-    font-size: 17px;
-    letter-spacing: 1px;
+    color: var(--gold);
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
 }
 
 .sidebar-brand p {
-    color: var(--gold);
-    font-size: 11px;
-    margin-top: 5px;
-    letter-spacing: 1px;
+    color: white;
+    font-size: 14px;
+    margin-top: 7px;
+    letter-spacing: 0;
 }
 
-.sidebar-title {
-    color: var(--gold);
-    font-size: 12px;
-    font-weight: bold;
-    margin: 25px 10px 12px;
-    letter-spacing: 1px;
-}
+/* SIDEBAR LINKS */
 
 .sidebar a {
     display: block;
     color: white;
     text-decoration: none;
     padding: 14px 15px;
+    margin-top: 10px;
     margin-bottom: 7px;
     border-radius: 5px;
     font-size: 14px;
@@ -666,17 +672,23 @@ body {
 
 <aside class="sidebar" id="sidebar">
 
+    <!-- SIDEBAR HEADER - SAME AS DASHBOARD -->
+
     <div class="sidebar-brand">
+
         <img
             src="https://64.media.tumblr.com/33ca84afd52d5cd0ef7bb1bb66c6176b/tumblr_o4ti6j8k6r1unefbyo1_400.png"
             alt="PLMUN Logo"
         >
 
-        <h3>I-PILIMON</h3>
-        <p>STUDENT PORTAL</p>
+        <div>
+            <h3>STUDENT PORTAL</h3>
+            <p>Navigation Menu</p>
+        </div>
+
     </div>
 
-    <div class="sidebar-title">NAVIGATION MENU</div>
+    <!-- SIDEBAR LINKS -->
 
     <a href="student-dashboard.html" onclick="closeSidebar()">
         <span>▣</span> Dashboard
