@@ -1,1072 +1,371 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>My Student ID | I-PILIMON Student ID INFORMATION</title>
-
+<title>I-PILIMON Student ID INFORMATION - My Student ID</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-:root {
-    --dark-green: #003b24;
-    --main-green: #075c3b;
-    --light-green: #128052;
-    --gold: #d4af37;
-    --cream: #f8f6ef;
-    --white: #ffffff;
-    --text-dark: #123526;
-}
-
-body {
-    background: #f5f3ec;
-    color: var(--text-dark);
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
+:root{--dark-green:#003b24;--main-green:#075c3b;--light-green:#128052;--gold:#d4af37;--cream:#f8f6ef;--white:#fff;--text-dark:#123526}
+body{min-height:100vh;background:#f5f3ec;color:var(--text-dark);width:100%}
 
 /* HEADER */
-
-.top-header {
-    background: var(--dark-green);
-    color: white;
-    padding: 15px 5%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 5px solid var(--gold);
-    position: relative;
-    z-index: 100;
-}
-
-.brand {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.brand img {
-    width: 65px;
-    height: 65px;
-    object-fit: contain;
-}
-
-.brand-text h2 {
-    font-size: 22px;
-    letter-spacing: 1px;
-}
-
-.brand-text p {
-    font-size: 12px;
-    letter-spacing: 2px;
-    margin-top: 4px;
-}
-
-.header-right {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.logout-btn {
-    background: var(--gold);
-    color: var(--dark-green);
-    border: none;
-    padding: 11px 20px;
-    font-weight: bold;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.logout-btn:hover {
-    background: #f0ce55;
-}
+.top-header{background:var(--dark-green);color:white;padding:15px 5%;display:flex;align-items:center;justify-content:space-between;border-bottom:5px solid var(--gold);gap:15px;margin-left:255px}
+.brand{display:flex;align-items:center;gap:15px}
+.brand img{width:65px;height:65px;object-fit:contain;filter:drop-shadow(0 0 7px #00ff66)}
+.brand-text h1{font-size:27px;letter-spacing:1px}
+.brand-text p{color:var(--gold);font-size:13px;font-weight:bold;letter-spacing:2px}
+.header-right{display:flex;align-items:center;gap:18px}
+.header-right button{background:transparent;border:none;color:white;font-size:15px;cursor:pointer}
+.menu-toggle{display:none;border:1px solid var(--gold);background:transparent;color:white;border-radius:6px;padding:8px 11px;font-size:21px;cursor:pointer}
 
 /* SIDEBAR */
+.sidebar{position:fixed;top:0;left:0;bottom:0;width:255px;background:var(--dark-green);color:white;z-index:1000;display:flex;flex-direction:column;border-right:3px solid var(--gold);transition:transform .3s ease}
+.sidebar-heading{display:flex;align-items:center;gap:12px;padding:22px 16px;border-bottom:1px solid rgba(212,175,55,.4)}
+.sidebar-heading img{width:48px;height:48px;object-fit:contain;filter:drop-shadow(0 0 6px #00ff66)}
+.sidebar-heading h3{color:var(--gold);font-size:14px}
+.sidebar-heading p{font-size:11px;margin-top:5px;color:#dce9df}
+.sidebar-nav{display:flex;flex-direction:column;gap:7px;padding:20px 12px}
+.sidebar-link{width:100%;display:flex;align-items:center;gap:13px;padding:13px 14px;border:none;border-radius:7px;background:transparent;color:white;text-align:left;font-size:14px;cursor:pointer;transition:.2s}
+.sidebar-link span{width:22px;text-align:center;font-size:17px}
+.sidebar-link:hover,.sidebar-link.active{background:var(--gold);color:var(--dark-green);font-weight:bold}
+.sidebar-divider{height:1px;background:rgba(212,175,55,.4);margin:12px 4px}
+.logout-link{color:#ffb4a9}
+.sidebar-footer{margin-top:auto;padding:18px 15px;border-top:1px solid rgba(212,175,55,.4);text-align:center}
+.sidebar-footer p{color:var(--gold);font-weight:bold;font-size:14px}
+.sidebar-footer small{display:block;color:#dce9df;font-size:10px;margin-top:5px}
+.sidebar-overlay{display:none}
 
-.sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 255px;
-    height: 100vh;
-    background: var(--dark-green);
-    border-right: 3px solid var(--gold);
-    padding: 25px 15px;
-    z-index: 200;
-    overflow-y: auto;
-    transition: 0.3s;
-}
+/* MAIN */
+.container{margin-left:255px;max-width:none;padding:25px 30px}
+.page-heading{margin-bottom:23px}
+.page-heading h2{font-size:27px;color:var(--dark-green);margin-bottom:8px}
+.page-heading p{color:#52675b;font-size:14px;line-height:1.6}
+.card{background:var(--cream);border:2px solid #e5d9b5;border-radius:13px;margin-bottom:20px;overflow:hidden;box-shadow:0 3px 10px rgba(0,0,0,.07)}
+.card-header{background:var(--dark-green);color:white;padding:13px 20px;border-bottom:2px solid var(--gold);display:flex;align-items:center;justify-content:space-between;gap:10px}
+.card-header h2{font-size:21px}
+.card-header h2::before{content:"";display:inline-block;width:7px;height:25px;background:var(--gold);margin-right:13px;vertical-align:middle}
+.card-body{padding:20px}
+.notice{background:#fff8df;border:1px solid #e5d9b5;border-left:5px solid var(--gold);border-radius:8px;padding:16px 18px;margin-bottom:22px;color:#5c5130;font-size:14px;line-height:1.6}
+#message{margin:0 0 17px;font-size:14px;font-weight:bold;overflow-wrap:anywhere}
+.message-error{color:#a00000}
+.message-success{color:#075c3b}
 
-/* SIDEBAR BRAND - MATCH DASHBOARD SCREENSHOT */
-
-.sidebar-brand {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 14px;
-    text-align: left;
-    color: white;
-    padding: 10px 5px 25px;
-    border-bottom: 1px solid rgba(255,255,255,0.2);
-}
-
-.sidebar-brand img {
-    width: 60px;
-    height: 60px;
-    min-width: 60px;
-    object-fit: contain;
-    margin-bottom: 0;
-    filter: drop-shadow(0 0 7px #00ff80);
-}
-
-.sidebar-brand h3 {
-    color: var(--gold);
-    font-size: 18px;
-    font-weight: bold;
-    letter-spacing: 0.5px;
-    white-space: nowrap;
-}
-
-.sidebar-brand p {
-    color: white;
-    font-size: 14px;
-    margin-top: 7px;
-    letter-spacing: 0;
-}
-
-/* SIDEBAR LINKS */
-
-.sidebar a {
-    display: block;
-    color: white;
-    text-decoration: none;
-    padding: 14px 15px;
-    margin-top: 10px;
-    margin-bottom: 7px;
-    border-radius: 5px;
-    font-size: 14px;
-    transition: 0.2s;
-}
-
-.sidebar a:hover,
-.sidebar a.active {
-    background: var(--gold);
-    color: var(--dark-green);
-    font-weight: bold;
-}
-
-.sidebar a span {
-    margin-right: 10px;
-}
-
-.sidebar-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.5);
-    z-index: 150;
-}
-
-.sidebar-overlay.show {
-    display: block;
-}
-
-.menu-btn {
-    display: none;
-    background: transparent;
-    border: 2px solid var(--gold);
-    color: white;
-    font-size: 23px;
-    width: 42px;
-    height: 42px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-/* MAIN CONTENT */
-
-.container {
-    max-width: 1450px;
-    padding: 25px;
-    margin-left: 255px;
-}
-
-.page-heading {
-    margin-bottom: 25px;
-}
-
-.page-heading h1 {
-    color: var(--dark-green);
-    font-size: 28px;
-    margin-bottom: 8px;
-}
-
-.page-heading p {
-    color: #65766c;
-    font-size: 14px;
-}
-
-/* CONTENT CARD */
-
-.card {
-    background: var(--white);
-    border: 1px solid #e5dfca;
-    border-radius: 10px;
-    overflow: hidden;
-    margin-bottom: 25px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-}
-
-.card-header {
-    background: var(--dark-green);
-    color: white;
-    padding: 18px 22px;
-    border-bottom: 4px solid var(--gold);
-}
-
-.card-header h2 {
-    font-size: 18px;
-}
-
-.card-body {
-    padding: 25px;
-}
-
-/* STUDENT ID */
-
-.id-wrapper {
-    display: flex;
-    justify-content: center;
-    padding: 20px 10px;
-}
-
-.student-id {
-    width: 100%;
-    max-width: 580px;
-    background: var(--cream);
-    border: 3px solid var(--dark-green);
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 5px 18px rgba(0,0,0,0.12);
-}
-
-.id-top {
-    background: var(--dark-green);
-    color: white;
-    padding: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-    border-bottom: 5px solid var(--gold);
-}
-
-.id-top img {
-    width: 65px;
-    height: 65px;
-    object-fit: contain;
-}
-
-.id-school h2 {
-    font-size: 17px;
-    letter-spacing: 1px;
-}
-
-.id-school p {
-    font-size: 11px;
-    letter-spacing: 1px;
-    margin-top: 5px;
-    color: var(--gold);
-}
-
-.id-label {
-    text-align: center;
-    background: #e9e5d7;
-    padding: 10px;
-    color: var(--dark-green);
-    font-weight: bold;
-    font-size: 13px;
-    letter-spacing: 2px;
-}
-
-.id-content {
-    padding: 25px;
-}
-
-.id-photo-section {
-    text-align: center;
-    margin-bottom: 22px;
-}
-
-.student-photo {
-    width: 145px;
-    height: 165px;
-    object-fit: cover;
-    border: 4px solid var(--gold);
-    border-radius: 8px;
-    background: #e5e5e5;
-}
-
-.photo-placeholder {
-    width: 145px;
-    height: 165px;
-    margin: auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    gap: 8px;
-    border: 4px solid var(--gold);
-    border-radius: 8px;
-    background: #e5e5e5;
-    color: #777;
-    font-size: 13px;
-}
-
-.photo-placeholder span {
-    font-size: 40px;
-}
-
-.student-fullname {
-    text-align: center;
-    color: var(--dark-green);
-    font-size: 22px;
-    font-weight: bold;
-    text-transform: uppercase;
-    margin-bottom: 6px;
-    overflow-wrap: anywhere;
-}
-
-.student-number {
-    text-align: center;
-    color: var(--main-green);
-    font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 22px;
-}
-
-.id-details {
-    border-top: 2px solid var(--gold);
-    padding-top: 18px;
-}
-
-.detail-row {
-    display: grid;
-    grid-template-columns: 145px 1fr;
-    gap: 10px;
-    padding: 11px 5px;
-    border-bottom: 1px solid #dedacb;
-    font-size: 14px;
-}
-
-.detail-label {
-    color: var(--main-green);
-    font-weight: bold;
-}
-
-.detail-value {
-    color: var(--text-dark);
-    overflow-wrap: anywhere;
-}
-
-.id-bottom {
-    background: var(--dark-green);
-    color: white;
-    text-align: center;
-    padding: 13px;
-    border-top: 4px solid var(--gold);
-    font-size: 11px;
-    letter-spacing: 1px;
-}
-
-/* BUTTONS */
-
-.action-buttons {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-top: 25px;
-}
-
-.btn {
-    padding: 12px 22px;
-    border: none;
-    border-radius: 5px;
-    font-weight: bold;
-    cursor: pointer;
-    font-size: 14px;
-    text-decoration: none;
-    display: inline-block;
-    text-align: center;
-}
-
-.btn-green {
-    background: var(--main-green);
-    color: white;
-}
-
-.btn-green:hover {
-    background: var(--light-green);
-}
-
-.btn-gold {
-    background: var(--gold);
-    color: var(--dark-green);
-}
-
-.btn-gold:hover {
-    background: #f0ce55;
-}
-
-.btn-outline {
-    background: white;
-    border: 2px solid var(--main-green);
-    color: var(--main-green);
-}
-
-.btn-outline:hover {
-    background: var(--main-green);
-    color: white;
-}
-
-/* STATUS MESSAGE */
-
-.message {
-    padding: 15px;
-    border-radius: 5px;
-    margin-bottom: 18px;
-    font-size: 14px;
-    display: none;
-}
-
-.message.error {
-    display: block;
-    background: #fce8e6;
-    color: #a12622;
-    border: 1px solid #e5b5b1;
-}
-
-.message.info {
-    display: block;
-    background: #e8f3ed;
-    color: var(--dark-green);
-    border: 1px solid #b8d6c4;
-}
+/* DIGITAL ID */
+.id-area{display:flex;justify-content:center;padding:10px}
+.student-id{width:100%;max-width:600px;background:#fff;border:2px solid var(--dark-green);border-radius:12px;overflow:hidden;box-shadow:0 4px 15px rgba(0,0,0,.12)}
+.id-header{background:var(--dark-green);color:white;display:flex;align-items:center;justify-content:center;gap:14px;padding:18px 15px;border-bottom:4px solid var(--gold)}
+.id-header img{width:65px;height:65px;object-fit:contain;filter:drop-shadow(0 0 5px #00ff66);flex-shrink:0}
+.id-header h3{font-size:17px;line-height:1.4;text-align:center}
+.id-header p{color:var(--gold);font-size:11px;letter-spacing:1px;margin-top:5px;text-align:center}
+.id-ribbon{text-align:center;background:#eee9d8;color:var(--dark-green);font-size:12px;font-weight:bold;letter-spacing:2px;padding:11px}
+.id-content{padding:25px}
+.student-photo{width:145px;height:165px;object-fit:cover;border:4px solid var(--gold);border-radius:7px;background:#eee}
+.photo-placeholder{width:145px;height:165px;border:4px solid var(--gold);border-radius:7px;background:#eee;display:flex;align-items:center;justify-content:center;flex-direction:column;color:#68766c;font-size:12px;gap:8px}
+.photo-placeholder span{font-size:42px}
+.photo-area{display:flex;justify-content:center;margin-bottom:17px}
+.student-name{text-align:center;color:var(--dark-green);font-size:22px;font-weight:bold;text-transform:uppercase;overflow-wrap:anywhere;margin-bottom:7px}
+.student-number{text-align:center;color:var(--main-green);font-size:15px;font-weight:bold;margin-bottom:22px}
+.id-details{border-top:2px solid var(--gold);padding-top:12px}
+.detail-row{display:grid;grid-template-columns:135px minmax(0,1fr);gap:10px;padding:12px 5px;border-bottom:1px solid #e5dfca;font-size:14px}
+.detail-label{font-weight:bold;color:var(--main-green)}
+.detail-value{color:var(--text-dark);overflow-wrap:anywhere}
+.id-footer{background:var(--dark-green);color:white;text-align:center;padding:13px;border-top:4px solid var(--gold);font-size:11px;letter-spacing:1px}
+.action-buttons{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:22px}
+.action-btn{display:inline-block;text-decoration:none;text-align:center;border:0;border-radius:7px;padding:13px 20px;font-size:13px;font-weight:bold;cursor:pointer}
+.btn-green{background:linear-gradient(120deg,#003b24,#087448);color:white;border:2px solid var(--gold)}
+.btn-gold{background:var(--gold);color:var(--dark-green)}
+.btn-outline{background:white;border:2px solid var(--main-green);color:var(--main-green)}
+.action-btn:hover{filter:brightness(1.08);transform:translateY(-1px)}
 
 /* FOOTER */
-
-.footer {
-    background: var(--dark-green);
-    color: white;
-    text-align: center;
-    padding: 18px;
-    border-top: 4px solid var(--gold);
-    margin-left: 255px;
-    font-size: 12px;
-}
+footer{margin-left:255px;background:var(--dark-green);color:white;text-align:center;padding:20px;border-top:4px solid var(--gold);font-size:13px}
 
 /* RESPONSIVE */
-
-@media (max-width: 850px) {
-    .sidebar {
-        left: -260px;
-    }
-
-    .sidebar.open {
-        left: 0;
-    }
-
-    .container {
-        margin-left: 0;
-    }
-
-    .footer {
-        margin-left: 0;
-    }
-
-    .menu-btn {
-        display: block;
-    }
-
-    .top-header {
-        padding: 12px 4%;
-    }
+@media(max-width:850px){
+.top-header{margin-left:0;padding:12px 15px}
+.menu-toggle{display:block;flex-shrink:0}
+.sidebar{transform:translateX(-100%)}
+.sidebar.open{transform:translateX(0)}
+.sidebar-overlay.show{display:block;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:999}
+.container{margin-left:0;width:100%;padding:16px}
+footer{margin-left:0}
+.top-header .header-right{margin-left:auto}
+}
+@media(max-width:600px){
+body{width:100%;overflow-x:hidden;font-size:14px}
+.top-header{width:100%;padding:12px;gap:10px}
+.brand{gap:8px;min-width:0}
+.brand img{width:42px;height:42px;flex-shrink:0}
+.brand-text h1{font-size:clamp(15px,4vw,19px)}
+.brand-text p{font-size:8px;letter-spacing:.5px}
+.header-right button{font-size:12px;padding:8px 5px}
+.container{width:100%;max-width:100%;padding:12px}
+.page-heading h2{font-size:22px}
+.page-heading p{font-size:12px}
+.card{width:100%;border-radius:10px}
+.card-header{padding:12px}
+.card-header h2{font-size:16px}
+.card-body{padding:13px}
+.notice{padding:13px;font-size:12px}
+.id-area{padding:0}
+.id-header{gap:9px;padding:13px 8px}
+.id-header img{width:48px;height:48px}
+.id-header h3{font-size:12px}
+.id-header p{font-size:9px}
+.id-content{padding:17px 12px}
+.student-name{font-size:18px}
+.student-number{font-size:13px}
+.detail-row{grid-template-columns:105px minmax(0,1fr);font-size:12px;gap:6px;padding:10px 3px}
+.action-buttons{flex-direction:column}
+.action-btn{width:100%}
+.sidebar{width:min(280px,82vw)}
+footer{padding:17px 12px;font-size:10px;line-height:1.6}
+}
+@media(max-width:480px){
+.menu-toggle{padding:7px 9px;font-size:18px}
+.brand{gap:7px}
+.brand img{width:37px;height:37px}
+.brand-text h1{font-size:15px}
+.brand-text p{font-size:7px;letter-spacing:.5px}
+.header-right button{font-size:10px}
+}
+@media(max-width:360px){
+.brand img{width:35px;height:35px}
+.brand-text h1{font-size:14px}
+.brand-text p{font-size:7px}
+.container{padding:9px}
+.detail-row{grid-template-columns:92px minmax(0,1fr);font-size:11px}
 }
 
-@media (max-width: 600px) {
-    .brand img {
-        width: 65px;
-        height: 65px;
-    }
-
-    .brand-text h2 {
-        font-size: 16px;
-    }
-
-    .brand-text p {
-        font-size: 9px;
-        letter-spacing: 1px;
-    }
-
-    .logout-btn {
-        display: none;
-    }
-
-    .container {
-        padding: 18px 12px;
-    }
-
-    .page-heading h1 {
-        font-size: 23px;
-    }
-
-    .card-body {
-        padding: 15px;
-    }
-
-    .id-top {
-        gap: 10px;
-        padding: 15px 8px;
-    }
-
-    .id-top img {
-        width: 55px;
-        height: 55px;
-    }
-
-    .id-school h2 {
-        font-size: 13px;
-    }
-
-    .id-school p {
-        font-size: 9px;
-    }
-
-    .id-content {
-        padding: 18px 12px;
-    }
-
-    .detail-row {
-        grid-template-columns: 115px 1fr;
-        font-size: 12px;
-        gap: 5px;
-    }
-
-    .student-fullname {
-        font-size: 18px;
-    }
-
-    .student-number {
-        font-size: 14px;
-    }
-
-    .action-buttons {
-        flex-direction: column;
-    }
-
-    .btn {
-        width: 100%;
-    }
+/* PRINT ONLY THE STUDENT ID */
+@media print{
+@page{size:auto;margin:12mm}
+body{background:white}
+.top-header,.sidebar,.sidebar-overlay,footer,.page-heading,.notice,#message,.card-header,.action-buttons{display:none!important}
+.container{margin:0;padding:0;width:100%;max-width:none}
+.card{border:0;box-shadow:none;margin:0;background:white}
+.card-body{padding:0}
+.id-area{padding:0}
+.student-id{max-width:600px;margin:0 auto;box-shadow:none;break-inside:avoid}
 }
-
-@media (max-width: 360px) {
-    .brand-text h2 {
-        font-size: 13px;
-    }
-
-    .brand-text p {
-        font-size: 8px;
-    }
-
-    .detail-row {
-        grid-template-columns: 100px 1fr;
-        font-size: 11px;
-    }
-}
-
-/* PRINT */
-
-@media print {
-    body {
-        background: white;
-    }
-
-    .top-header,
-    .sidebar,
-    .sidebar-overlay,
-    .page-heading,
-    .card-header,
-    .action-buttons,
-    .footer,
-    .menu-btn {
-        display: none !important;
-    }
-
-    .container {
-        margin: 0;
-        padding: 0;
-        max-width: none;
-    }
-
-    .card {
-        border: none;
-        box-shadow: none;
-        margin: 0;
-    }
-
-    .card-body {
-        padding: 0;
-    }
-
-    .id-wrapper {
-        padding: 20px;
-    }
-
-    .student-id {
-        max-width: 580px;
-        box-shadow: none;
-        break-inside: avoid;
-    }
-}
+img{max-width:100%}
+button{touch-action:manipulation}
 </style>
 </head>
 
 <body>
 
-<!-- HEADER -->
-
 <header class="top-header">
-
+    <button type="button" class="menu-toggle" onclick="toggleSidebar()" aria-label="Open navigation menu">☰</button>
     <div class="brand">
-        <button class="menu-btn" onclick="toggleSidebar()">☰</button>
-
-        <img
-            src="https://64.media.tumblr.com/33ca84afd52d5cd0ef7bb1bb66c6176b/tumblr_o4ti6j8k6r1unefbyo1_400.png"
-            alt="PLMUN Logo"
-        >
-
+        <img src="https://64.media.tumblr.com/33ca84afd52d5cd0ef7bb1bb66c6176b/tumblr_o4ti6j8k6r1unefbyo1_400.png" alt="PLMUN Logo">
         <div class="brand-text">
-            <h2>I-PILIMON</h2>
+            <h1>I-PILIMON</h1>
             <p>STUDENT ID INFORMATION</p>
         </div>
     </div>
-
     <div class="header-right">
-        <button class="logout-btn" onclick="logout()">LOG OUT</button>
+        <button type="button" onclick="logout()">LOG OUT ↗</button>
     </div>
-
 </header>
 
-<!-- SIDEBAR -->
-
-<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+<div id="sidebarOverlay" class="sidebar-overlay" onclick="closeSidebar()"></div>
 
 <aside class="sidebar" id="sidebar">
-
-    <!-- SIDEBAR HEADER - SAME AS DASHBOARD -->
-
-    <div class="sidebar-brand">
-
-        <img
-            src="https://64.media.tumblr.com/33ca84afd52d5cd0ef7bb1bb66c6176b/tumblr_o4ti6j8k6r1unefbyo1_400.png"
-            alt="PLMUN Logo"
-        >
-
+    <div class="sidebar-heading">
+        <img src="https://64.media.tumblr.com/33ca84afd52d5cd0ef7bb1bb66c6176b/tumblr_o4ti6j8k6r1unefbyo1_400.png" alt="PLMUN Logo">
         <div>
             <h3>STUDENT PORTAL</h3>
             <p>Navigation Menu</p>
         </div>
-
     </div>
 
-    <!-- SIDEBAR LINKS -->
+    <nav class="sidebar-nav">
+        <button class="sidebar-link" onclick="window.location.href='student-dashboard.html'"><span>▦</span> Dashboard</button>
+        <button class="sidebar-link" onclick="window.location.href='profile.html'"><span>👤</span> My Profile</button>
+        <button class="sidebar-link active" onclick="window.location.href='id.html'"><span>▣</span> My Student ID</button>
+        <button class="sidebar-link" onclick="window.location.href='application.html'"><span>☑</span> Application Status</button>
+        <button class="sidebar-link" onclick="window.location.href='document.html'"><span>📁</span> My Documents</button>
+        <div class="sidebar-divider"></div>
+        <button class="sidebar-link logout-link" onclick="logout()"><span>↗</span> Log Out</button>
+    </nav>
 
-    <a href="student-dashboard.html" onclick="closeSidebar()">
-        <span>▣</span> Dashboard
-    </a>
-
-    <a href="profile.html" onclick="closeSidebar()">
-        <span>◉</span> My Profile
-    </a>
-
-    <a href="id.html" class="active" onclick="closeSidebar()">
-        <span>▤</span> My Student ID
-    </a>
-
-    <a href="application.html" onclick="closeSidebar()">
-        <span>▧</span> Application Status
-    </a>
-
-    <a href="document.html" onclick="closeSidebar()">
-        <span>▣</span> My Documents
-    </a>
-
-    <a href="#" onclick="logout(); return false;">
-        <span>⇥</span> Log Out
-    </a>
-
+    <div class="sidebar-footer">
+        <p>I-PILIMON</p>
+        <small>Student ID Information System</small>
+    </div>
 </aside>
 
-<!-- MAIN CONTENT -->
-
 <main class="container">
-
-    <div class="page-heading">
-        <h1>My Student ID</h1>
+    <section class="page-heading">
+        <h2>My Student ID</h2>
         <p>View and print your digital student identification card.</p>
+    </section>
+
+    <div class="notice">
+        <strong>STUDENT ID:</strong>
+        Review your student information below. If any information is incorrect or missing, update your profile first.
     </div>
 
-    <section class="card">
+    <div id="message"></div>
 
+    <section class="card">
         <div class="card-header">
             <h2>Digital Student Identification Card</h2>
         </div>
 
         <div class="card-body">
-
-            <div id="message" class="message"></div>
-
-            <div class="id-wrapper">
-
+            <div class="id-area">
                 <div class="student-id" id="studentIDCard">
-
-                    <div class="id-top">
-
-                        <img
-                            src="https://64.media.tumblr.com/33ca84afd52d5cd0ef7bb1bb66c6176b/tumblr_o4ti6j8k6r1unefbyo1_400.png"
-                            alt="PLMUN Logo"
-                        >
-
-                        <div class="id-school">
-                            <h2>PAMANTASAN NG LUNGSOD NG MUNTINLUPA</h2>
+                    <div class="id-header">
+                        <img src="https://64.media.tumblr.com/33ca84afd52d5cd0ef7bb1bb66c6176b/tumblr_o4ti6j8k6r1unefbyo1_400.png" alt="PLMUN Logo">
+                        <div>
+                            <h3>PAMANTASAN NG LUNGSOD NG MUNTINLUPA</h3>
                             <p>STUDENT IDENTIFICATION CARD</p>
                         </div>
-
                     </div>
 
-                    <div class="id-label">
-                        OFFICIAL STUDENT IDENTIFICATION
-                    </div>
+                    <div class="id-ribbon">OFFICIAL STUDENT IDENTIFICATION</div>
 
                     <div class="id-content">
-
-                        <div class="id-photo-section" id="photoContainer">
-                            <div class="photo-placeholder">
-                                <span>👤</span>
-                                STUDENT PHOTO
-                            </div>
+                        <div class="photo-area" id="photoContainer">
+                            <div class="photo-placeholder"><span>👤</span>STUDENT PHOTO</div>
                         </div>
 
-                        <h2 class="student-fullname" id="fullName">
-                            Loading Student Information...
-                        </h2>
-
-                        <p class="student-number" id="studentNumber">
-                            Student No.: Loading...
-                        </p>
+                        <h2 class="student-name" id="fullName">Loading Student Information...</h2>
+                        <p class="student-number" id="studentNumber">Student No.: Loading...</p>
 
                         <div class="id-details">
-
                             <div class="detail-row">
                                 <div class="detail-label">Course</div>
                                 <div class="detail-value" id="course">—</div>
                             </div>
-
                             <div class="detail-row">
                                 <div class="detail-label">Year Level</div>
                                 <div class="detail-value" id="yearLevel">—</div>
                             </div>
-
                             <div class="detail-row">
                                 <div class="detail-label">Email</div>
                                 <div class="detail-value" id="email">—</div>
                             </div>
-
                             <div class="detail-row">
                                 <div class="detail-label">Birthdate</div>
                                 <div class="detail-value" id="birthdate">—</div>
                             </div>
-
                         </div>
-
                     </div>
 
-                    <div class="id-bottom">
-                        PAMANTASAN NG LUNGSOD NG MUNTINLUPA
-                    </div>
-
+                    <div class="id-footer">PAMANTASAN NG LUNGSOD NG MUNTINLUPA</div>
                 </div>
-
             </div>
 
             <div class="action-buttons">
-
-                <button class="btn btn-green" onclick="printStudentID()">
-                    🖨 PRINT STUDENT ID
-                </button>
-
-                <a href="profile.html" class="btn btn-gold">
-                    ✎ EDIT MY PROFILE
-                </a>
-
-                <a href="student-dashboard.html" class="btn btn-outline">
-                    ← BACK TO DASHBOARD
-                </a>
-
+                <button class="action-btn btn-green" type="button" onclick="printStudentID()">🖨 PRINT STUDENT ID</button>
+                <a href="profile.html" class="action-btn btn-gold">✎ EDIT MY PROFILE</a>
+                <a href="student-dashboard.html" class="action-btn btn-outline">← BACK TO DASHBOARD</a>
             </div>
-
         </div>
-
     </section>
-
 </main>
 
-<footer class="footer">
-    © 2026 I-PILIMON Student ID Information System | Pamantasan ng Lungsod ng Muntinlupa
+<footer>
+    © 2026 Pamantasan ng Lungsod ng Muntinlupa | I-PILIMON Student ID Information System
 </footer>
 
 <script>
-
-// ==========================================
-// SUPABASE CONFIGURATION
-// ==========================================
-
 const SUPABASE_URL = "https://mlrpkkmexmboqrnmjkuy.supabase.co";
-
 const SUPABASE_ANON_KEY = "sb_publishable_-BIYMjip4Zon8HwZUCPT1Q_P0pDCMke";
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-const supabaseClient = window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_ANON_KEY
-);
-
-// ==========================================
-// SIDEBAR
-// ==========================================
-
-function toggleSidebar() {
+function toggleSidebar(){
     document.getElementById("sidebar").classList.toggle("open");
     document.getElementById("sidebarOverlay").classList.toggle("show");
 }
-
-function closeSidebar() {
+function closeSidebar(){
     document.getElementById("sidebar").classList.remove("open");
     document.getElementById("sidebarOverlay").classList.remove("show");
 }
-
-// ==========================================
-// MESSAGE
-// ==========================================
-
-function showMessage(message, type = "error") {
-    const box = document.getElementById("message");
-    box.textContent = message;
-    box.className = "message " + type;
+function showMessage(message,isError=true){
+    const box=document.getElementById("message");
+    box.textContent=message;
+    box.className=isError?"message-error":"message-success";
+}
+function formatDate(value){
+    if(!value)return "Not provided";
+    const date=new Date(value+"T00:00:00");
+    if(isNaN(date.getTime()))return value;
+    return date.toLocaleDateString("en-PH",{year:"numeric",month:"long",day:"numeric"});
+}
+function showPhotoPlaceholder(){
+    document.getElementById("photoContainer").innerHTML =
+        '<div class="photo-placeholder"><span>👤</span>STUDENT PHOTO</div>';
 }
 
-// ==========================================
-// FORMAT DATE
-// ==========================================
+async function loadStudentID(){
+    try{
+        const {data:{session},error:sessionError}=await supabaseClient.auth.getSession();
+        if(sessionError)throw sessionError;
+        if(!session){window.location.href="index.html";return;}
 
-function formatDate(dateValue) {
-    if (!dateValue) return "Not provided";
-
-    const date = new Date(dateValue + "T00:00:00");
-
-    if (isNaN(date.getTime())) return dateValue;
-
-    return date.toLocaleDateString("en-PH", {
-        year: "numeric",
-        month: "long",
-        day: "numeric"
-    });
-}
-
-// ==========================================
-// LOAD STUDENT ID
-// ==========================================
-
-async function loadStudentID() {
-
-    try {
-
-        const {
-            data: { session },
-            error: sessionError
-        } = await supabaseClient.auth.getSession();
-
-        if (sessionError) throw sessionError;
-
-        if (!session) {
-            window.location.href = "index.html";
-            return;
-        }
-
-        const user = session.user;
-
-        const { data: student, error } = await supabaseClient
+        const user=session.user;
+        const {data:student,error}=await supabaseClient
             .from("students")
-            .select(`
-                id,
-                student_number,
-                first_name,
-                last_name,
-                email,
-                course,
-                year_level,
-                birthdate,
-                profile_picture_path
-            `)
-            .eq("id", user.id)
+            .select("id,student_number,first_name,last_name,email,course,year_level,birthdate,profile_picture_path")
+            .eq("id",user.id)
             .maybeSingle();
 
-        if (error) throw error;
+        if(error)throw error;
 
-        if (!student) {
-
-            showMessage(
-                "Student record not found. Please complete your student information first.",
-                "error"
-            );
-
-            document.getElementById("fullName").textContent =
-                "Student Information Not Found";
-
-            document.getElementById("studentNumber").textContent =
-                "Student No.: Not available";
-
+        if(!student){
+            showMessage("Student record not found. Please contact the administrator or complete your student profile.");
+            document.getElementById("fullName").textContent="Student Information Not Found";
+            document.getElementById("studentNumber").textContent="Student No.: Not available";
             return;
         }
 
-        // STUDENT NAME
+        const fullName=[student.first_name,student.last_name].filter(Boolean).join(" ").trim();
+        document.getElementById("fullName").textContent=fullName||"Name not provided";
+        document.getElementById("studentNumber").textContent="Student No.: "+(student.student_number||"Not assigned");
+        document.getElementById("course").textContent=student.course||"Not provided";
+        document.getElementById("yearLevel").textContent=student.year_level||"Not provided";
+        document.getElementById("email").textContent=student.email||user.email||"Not provided";
+        document.getElementById("birthdate").textContent=formatDate(student.birthdate);
 
-        const firstName = student.first_name || "";
-        const lastName = student.last_name || "";
+        if(student.profile_picture_path){
+            const {data:imageData,error:imageError}=await supabaseClient.storage
+                .from("student-profiles")
+                .createSignedUrl(student.profile_picture_path,3600);
 
-        const fullName = (firstName + " " + lastName).trim();
-
-        document.getElementById("fullName").textContent =
-            fullName || "Name not provided";
-
-        // STUDENT NUMBER
-
-        document.getElementById("studentNumber").textContent =
-            "Student No.: " + (student.student_number || "Not assigned");
-
-        // STUDENT DETAILS
-
-        document.getElementById("course").textContent =
-            student.course || "Not provided";
-
-        document.getElementById("yearLevel").textContent =
-            student.year_level || "Not provided";
-
-        document.getElementById("email").textContent =
-            student.email || user.email || "Not provided";
-
-        document.getElementById("birthdate").textContent =
-            formatDate(student.birthdate);
-
-        // STUDENT PROFILE PHOTO
-
-        const photoContainer = document.getElementById("photoContainer");
-
-        if (student.profile_picture_path) {
-
-            const { data: imageData, error: imageError } =
-                await supabaseClient.storage
-                    .from("student-profiles")
-                    .createSignedUrl(
-                        student.profile_picture_path,
-                        3600
-                    );
-
-            if (!imageError && imageData && imageData.signedUrl) {
-
-                const img = document.createElement("img");
-
-                img.src = imageData.signedUrl;
-                img.alt = "Student Photo";
-                img.className = "student-photo";
-
-                img.onerror = function() {
-                    photoContainer.innerHTML = `
-                        <div class="photo-placeholder">
-                            <span>👤</span>
-                            STUDENT PHOTO
-                        </div>
-                    `;
-                };
-
-                photoContainer.innerHTML = "";
-                photoContainer.appendChild(img);
-
+            if(!imageError&&imageData?.signedUrl){
+                const img=document.createElement("img");
+                img.src=imageData.signedUrl;
+                img.alt="Student Photo";
+                img.className="student-photo";
+                img.onerror=showPhotoPlaceholder;
+                const container=document.getElementById("photoContainer");
+                container.innerHTML="";
+                container.appendChild(img);
             }
-
         }
-
-    } catch (error) {
-
-        console.error("Student ID loading error:", error);
-
-        showMessage(
-            "Unable to load student information. Please refresh the page or check your Supabase connection.",
-            "error"
-        );
-
+    }catch(error){
+        console.error("Student ID loading error:",error);
+        showMessage("Unable to load student information: "+error.message);
     }
-
 }
 
-// ==========================================
-// PRINT STUDENT ID
-// ==========================================
+function printStudentID(){window.print();}
 
-function printStudentID() {
-    window.print();
+async function logout(){
+    if(!confirm("Are you sure you want to log out?"))return;
+    const {error}=await supabaseClient.auth.signOut();
+    if(error){alert("Unable to log out: "+error.message);return;}
+    window.location.href="index.html";
 }
 
-// ==========================================
-// LOG OUT
-// ==========================================
-
-async function logout() {
-
-    const confirmLogout = confirm(
-        "Are you sure you want to log out?"
-    );
-
-    if (!confirmLogout) return;
-
-    const { error } = await supabaseClient.auth.signOut();
-
-    if (error) {
-        alert("Unable to log out. Please try again.");
-        console.error(error);
-        return;
-    }
-
-    window.location.href = "index.html";
-}
-
-// ==========================================
-// INITIALIZE
-// ==========================================
-
-document.addEventListener("DOMContentLoaded", function() {
-    loadStudentID();
-});
-
+document.addEventListener("DOMContentLoaded",loadStudentID);
 </script>
-
 </body>
 </html>
