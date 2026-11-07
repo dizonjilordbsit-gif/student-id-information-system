@@ -14,7 +14,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Arial, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 :root {
@@ -23,375 +23,612 @@
     --light-green: #128052;
     --gold: #d4af37;
     --cream: #f8f6ef;
+    --white: #ffffff;
+    --text-dark: #123526;
 }
 
 body {
-    background: #f1f3f0;
-    color: #222;
+    background: #f5f3ec;
+    color: var(--text-dark);
+}
+
+/* HEADER */
+
+.top-header {
+    background: var(--dark-green);
+    color: white;
+    padding: 15px 5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 5px solid var(--gold);
+    position: relative;
+    z-index: 100;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.brand img {
+    width: 65px;
+    height: 65px;
+    object-fit: contain;
+}
+
+.brand-text h2 {
+    font-size: 22px;
+    letter-spacing: 1px;
+}
+
+.brand-text p {
+    font-size: 12px;
+    letter-spacing: 2px;
+    margin-top: 4px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logout-btn {
+    background: var(--gold);
+    color: var(--dark-green);
+    border: none;
+    padding: 11px 20px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.logout-btn:hover {
+    background: #f0ce55;
 }
 
 /* SIDEBAR */
 
 .sidebar {
     position: fixed;
+    top: 0;
+    left: 0;
     width: 255px;
     height: 100vh;
     background: var(--dark-green);
-    color: white;
-    padding: 25px 18px;
-    border-right: 4px solid var(--gold);
-    z-index: 100;
+    border-right: 3px solid var(--gold);
+    padding: 25px 15px;
+    z-index: 200;
+    overflow-y: auto;
+    transition: 0.3s;
 }
 
-.logo-area {
+.sidebar-brand {
     text-align: center;
+    color: white;
     padding-bottom: 25px;
-    border-bottom: 1px solid rgba(255,255,255,.2);
+    border-bottom: 1px solid rgba(255,255,255,0.2);
 }
 
-.logo-area img {
-    width: 75px;
-    height: 75px;
+.sidebar-brand img {
+    width: 65px;
+    height: 65px;
     object-fit: contain;
     margin-bottom: 10px;
 }
 
-.logo-area h2 {
+.sidebar-brand h3 {
     font-size: 17px;
-    color: var(--gold);
+    letter-spacing: 1px;
 }
 
-.logo-area p {
+.sidebar-brand p {
+    color: var(--gold);
     font-size: 11px;
     margin-top: 5px;
-    color: #ddd;
+    letter-spacing: 1px;
 }
 
-.menu {
-    margin-top: 30px;
+.sidebar-title {
+    color: var(--gold);
+    font-size: 12px;
+    font-weight: bold;
+    margin: 25px 10px 12px;
+    letter-spacing: 1px;
 }
 
-.menu a {
+.sidebar a {
     display: block;
     color: white;
     text-decoration: none;
     padding: 14px 15px;
-    margin-bottom: 9px;
-    border-radius: 7px;
-    transition: .3s;
+    margin-bottom: 7px;
+    border-radius: 5px;
     font-size: 14px;
+    transition: 0.2s;
 }
 
-.menu a:hover,
-.menu a.active {
+.sidebar a:hover,
+.sidebar a.active {
     background: var(--gold);
     color: var(--dark-green);
     font-weight: bold;
+}
+
+.sidebar a span {
+    margin-right: 10px;
+}
+
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 150;
+}
+
+.sidebar-overlay.show {
+    display: block;
+}
+
+.menu-btn {
+    display: none;
+    background: transparent;
+    border: 2px solid var(--gold);
+    color: white;
+    font-size: 23px;
+    width: 42px;
+    height: 42px;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
 /* MAIN CONTENT */
 
-.main {
+.container {
+    max-width: 1450px;
+    padding: 25px;
     margin-left: 255px;
-    min-height: 100vh;
 }
 
-.topbar {
-    background: white;
-    padding: 20px 30px;
-    border-bottom: 4px solid var(--gold);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.topbar h2 {
-    color: var(--dark-green);
-    font-size: 21px;
-}
-
-.topbar p {
-    font-size: 12px;
-    color: #777;
-    margin-top: 5px;
-}
-
-.content {
-    padding: 30px;
-}
-
-/* PAGE TITLE */
-
-.page-title {
+.page-heading {
     margin-bottom: 25px;
 }
 
-.page-title h1 {
+.page-heading h1 {
     color: var(--dark-green);
-    font-size: 27px;
+    font-size: 28px;
+    margin-bottom: 8px;
 }
 
-.page-title p {
-    color: #666;
-    margin-top: 8px;
+.page-heading p {
+    color: #65766c;
     font-size: 14px;
 }
 
-/* ID CARD */
+/* CONTENT CARD */
 
-.id-container {
+.card {
+    background: var(--white);
+    border: 1px solid #e5dfca;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 25px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+}
+
+.card-header {
+    background: var(--dark-green);
+    color: white;
+    padding: 18px 22px;
+    border-bottom: 4px solid var(--gold);
+}
+
+.card-header h2 {
+    font-size: 18px;
+}
+
+.card-body {
+    padding: 25px;
+}
+
+/* STUDENT ID */
+
+.id-wrapper {
     display: flex;
     justify-content: center;
-    padding: 20px 0 35px;
+    padding: 20px 10px;
 }
 
 .student-id {
     width: 100%;
-    max-width: 410px;
+    max-width: 580px;
     background: var(--cream);
-    border-radius: 15px;
+    border: 3px solid var(--dark-green);
+    border-radius: 12px;
     overflow: hidden;
-    border: 2px solid var(--gold);
-    box-shadow: 0 8px 25px rgba(0,0,0,.15);
+    box-shadow: 0 5px 18px rgba(0,0,0,0.12);
 }
 
-.id-header {
+.id-top {
     background: var(--dark-green);
     color: white;
-    text-align: center;
-    padding: 20px 15px;
+    padding: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
     border-bottom: 5px solid var(--gold);
 }
 
-.id-header img {
+.id-top img {
     width: 65px;
     height: 65px;
     object-fit: contain;
-    margin-bottom: 8px;
 }
 
-.id-header h2 {
-    font-size: 18px;
-    color: var(--gold);
-}
-
-.id-header p {
-    font-size: 10px;
-    margin-top: 5px;
+.id-school h2 {
+    font-size: 17px;
     letter-spacing: 1px;
 }
 
-.id-body {
-    padding: 25px;
+.id-school p {
+    font-size: 11px;
+    letter-spacing: 1px;
+    margin-top: 5px;
+    color: var(--gold);
+}
+
+.id-label {
     text-align: center;
-}
-
-.profile-photo {
-    width: 115px;
-    height: 115px;
-    border: 4px solid var(--gold);
-    border-radius: 10px;
-    object-fit: cover;
-    background: #ddd;
-    margin-bottom: 15px;
-}
-
-.student-name {
-    font-size: 21px;
+    background: #e9e5d7;
+    padding: 10px;
     color: var(--dark-green);
     font-weight: bold;
-    text-transform: uppercase;
-    margin-bottom: 7px;
+    font-size: 13px;
+    letter-spacing: 2px;
 }
 
-.student-number {
-    background: var(--dark-green);
-    color: var(--gold);
-    display: inline-block;
-    padding: 8px 18px;
-    border-radius: 5px;
-    font-weight: bold;
-    letter-spacing: 1px;
-    margin: 8px 0 20px;
-    font-size: 14px;
+.id-content {
+    padding: 25px;
 }
 
-.info-list {
-    text-align: left;
-    border-top: 1px solid #ddd;
-    padding-top: 15px;
+.id-photo-section {
+    text-align: center;
+    margin-bottom: 22px;
 }
 
-.info-row {
+.student-photo {
+    width: 145px;
+    height: 165px;
+    object-fit: cover;
+    border: 4px solid var(--gold);
+    border-radius: 8px;
+    background: #e5e5e5;
+}
+
+.photo-placeholder {
+    width: 145px;
+    height: 165px;
+    margin: auto;
     display: flex;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 9px 0;
-    border-bottom: 1px solid #e5e5e5;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 8px;
+    border: 4px solid var(--gold);
+    border-radius: 8px;
+    background: #e5e5e5;
+    color: #777;
     font-size: 13px;
 }
 
-.info-row span:first-child {
-    color: #666;
-    font-weight: bold;
+.photo-placeholder span {
+    font-size: 40px;
 }
 
-.info-row span:last-child {
+.student-fullname {
+    text-align: center;
     color: var(--dark-green);
+    font-size: 22px;
     font-weight: bold;
-    text-align: right;
+    text-transform: uppercase;
+    margin-bottom: 6px;
     overflow-wrap: anywhere;
 }
 
-.id-footer {
+.student-number {
+    text-align: center;
+    color: var(--main-green);
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 22px;
+}
+
+.id-details {
+    border-top: 2px solid var(--gold);
+    padding-top: 18px;
+}
+
+.detail-row {
+    display: grid;
+    grid-template-columns: 145px 1fr;
+    gap: 10px;
+    padding: 11px 5px;
+    border-bottom: 1px solid #dedacb;
+    font-size: 14px;
+}
+
+.detail-label {
+    color: var(--main-green);
+    font-weight: bold;
+}
+
+.detail-value {
+    color: var(--text-dark);
+    overflow-wrap: anywhere;
+}
+
+.id-bottom {
     background: var(--dark-green);
     color: white;
-    padding: 13px;
     text-align: center;
-    font-size: 11px;
+    padding: 13px;
     border-top: 4px solid var(--gold);
+    font-size: 11px;
+    letter-spacing: 1px;
 }
 
 /* BUTTONS */
 
-.actions {
+.action-buttons {
     display: flex;
     justify-content: center;
-    gap: 12px;
     flex-wrap: wrap;
-    margin-top: 15px;
+    gap: 12px;
+    margin-top: 25px;
 }
 
 .btn {
+    padding: 12px 22px;
     border: none;
-    padding: 12px 20px;
-    border-radius: 6px;
-    cursor: pointer;
+    border-radius: 5px;
     font-weight: bold;
-    font-size: 13px;
-    transition: .3s;
+    cursor: pointer;
+    font-size: 14px;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
 }
 
-.btn-print {
-    background: var(--dark-green);
+.btn-green {
+    background: var(--main-green);
     color: white;
 }
 
-.btn-print:hover {
+.btn-green:hover {
     background: var(--light-green);
 }
 
-.btn-profile {
+.btn-gold {
     background: var(--gold);
     color: var(--dark-green);
 }
 
-.btn-profile:hover {
-    background: #c49d25;
+.btn-gold:hover {
+    background: #f0ce55;
 }
 
-/* STATUS */
+.btn-outline {
+    background: white;
+    border: 2px solid var(--main-green);
+    color: var(--main-green);
+}
+
+.btn-outline:hover {
+    background: var(--main-green);
+    color: white;
+}
+
+/* STATUS MESSAGE */
 
 .message {
-    max-width: 500px;
-    margin: 15px auto;
     padding: 15px;
-    border-radius: 7px;
-    text-align: center;
+    border-radius: 5px;
+    margin-bottom: 18px;
     font-size: 14px;
     display: none;
 }
 
-.error {
-    background: #ffe5e5;
-    color: #a00000;
+.message.error {
+    display: block;
+    background: #fce8e6;
+    color: #a12622;
+    border: 1px solid #e5b5b1;
 }
 
-.loading {
-    background: #e5f2eb;
+.message.info {
+    display: block;
+    background: #e8f3ed;
     color: var(--dark-green);
+    border: 1px solid #b8d6c4;
+}
+
+/* FOOTER */
+
+.footer {
+    background: var(--dark-green);
+    color: white;
+    text-align: center;
+    padding: 18px;
+    border-top: 4px solid var(--gold);
+    margin-left: 255px;
+    font-size: 12px;
 }
 
 /* RESPONSIVE */
 
-@media(max-width: 768px) {
+@media (max-width: 850px) {
     .sidebar {
-        width: 100%;
-        height: auto;
-        position: relative;
-        border-right: none;
-        border-bottom: 4px solid var(--gold);
+        left: -260px;
     }
 
-    .logo-area {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 12px;
-        text-align: left;
+    .sidebar.open {
+        left: 0;
     }
 
-    .logo-area img {
-        width: 50px;
-        height: 50px;
-        margin: 0;
-    }
-
-    .menu {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        margin-top: 15px;
-    }
-
-    .menu a {
-        padding: 10px;
-        font-size: 12px;
-    }
-
-    .main {
+    .container {
         margin-left: 0;
     }
 
-    .topbar {
+    .footer {
+        margin-left: 0;
+    }
+
+    .menu-btn {
+        display: block;
+    }
+
+    .top-header {
+        padding: 12px 4%;
+    }
+}
+
+@media (max-width: 600px) {
+    .brand img {
+        width: 65px;
+        height: 65px;
+    }
+
+    .brand-text h2 {
+        font-size: 16px;
+    }
+
+    .brand-text p {
+        font-size: 9px;
+        letter-spacing: 1px;
+    }
+
+    .logout-btn {
+        display: none;
+    }
+
+    .container {
+        padding: 18px 12px;
+    }
+
+    .page-heading h1 {
+        font-size: 23px;
+    }
+
+    .card-body {
         padding: 15px;
     }
 
-    .content {
-        padding: 20px 15px;
+    .id-top {
+        gap: 10px;
+        padding: 15px 8px;
+    }
+
+    .id-top img {
+        width: 55px;
+        height: 55px;
+    }
+
+    .id-school h2 {
+        font-size: 13px;
+    }
+
+    .id-school p {
+        font-size: 9px;
+    }
+
+    .id-content {
+        padding: 18px 12px;
+    }
+
+    .detail-row {
+        grid-template-columns: 115px 1fr;
+        font-size: 12px;
+        gap: 5px;
+    }
+
+    .student-fullname {
+        font-size: 18px;
+    }
+
+    .student-number {
+        font-size: 14px;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
     }
 }
+
+@media (max-width: 360px) {
+    .brand-text h2 {
+        font-size: 13px;
+    }
+
+    .brand-text p {
+        font-size: 8px;
+    }
+
+    .detail-row {
+        grid-template-columns: 100px 1fr;
+        font-size: 11px;
+    }
+}
+
+/* PRINT */
 
 @media print {
     body {
         background: white;
     }
 
+    .top-header,
     .sidebar,
-    .topbar,
-    .page-title,
-    .actions,
-    .message {
+    .sidebar-overlay,
+    .page-heading,
+    .card-header,
+    .action-buttons,
+    .footer,
+    .menu-btn {
         display: none !important;
     }
 
-    .main {
+    .container {
+        margin: 0;
+        padding: 0;
+        max-width: none;
+    }
+
+    .card {
+        border: none;
+        box-shadow: none;
         margin: 0;
     }
 
-    .content {
+    .card-body {
         padding: 0;
     }
 
-    .id-container {
-        padding: 0;
+    .id-wrapper {
+        padding: 20px;
     }
 
     .student-id {
+        max-width: 580px;
         box-shadow: none;
-        border: 2px solid var(--gold);
-        print-color-adjust: exact;
-        -webkit-print-color-adjust: exact;
+        break-inside: avoid;
     }
 }
 </style>
@@ -399,131 +636,191 @@ body {
 
 <body>
 
-<!-- SIDEBAR -->
+<!-- HEADER -->
 
-<aside class="sidebar">
+<header class="top-header">
 
-    <div class="logo-area">
-        <img src="https://64.media.tumblr.com/33ca84afd52d5cd0ef7bb1bb66c6176b/tumblr_o4ti6j8k6r1unefbyo1_400.png" alt="PLMUN Logo">
+    <div class="brand">
+        <button class="menu-btn" onclick="toggleSidebar()">☰</button>
 
-        <div>
-            <h2>I-PILIMUN</h2>
+        <img
+            src="https://64.media.tumblr.com/33ca84afd52d5cd0ef7bb1bb66c6176b/tumblr_o4ti6j8k6r1unefbyo1_400.png"
+            alt="PLMUN Logo"
+        >
+
+        <div class="brand-text">
+            <h2>I-PILIMON</h2>
             <p>STUDENT ID INFORMATION</p>
         </div>
     </div>
 
-    <nav class="menu">
-        <a href="student-dashboard.html">Dashboard</a>
-        <a href="profile.html">My Profile</a>
-        <a href="id.html" class="active">My Student ID</a>
-        <a href="application.html">Application Status</a>
-        <a href="document.html">My Documents</a>
-        <a href="#" onclick="logout()">Log Out</a>
-    </nav>
+    <div class="header-right">
+        <button class="logout-btn" onclick="logout()">LOG OUT</button>
+    </div>
+
+</header>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="sidebar-brand">
+        <img
+            src="https://64.media.tumblr.com/33ca84afd52d5cd0ef7bb1bb66c6176b/tumblr_o4ti6j8k6r1unefbyo1_400.png"
+            alt="PLMUN Logo"
+        >
+
+        <h3>I-PILIMON</h3>
+        <p>STUDENT PORTAL</p>
+    </div>
+
+    <div class="sidebar-title">NAVIGATION MENU</div>
+
+    <a href="student-dashboard.html" onclick="closeSidebar()">
+        <span>▣</span> Dashboard
+    </a>
+
+    <a href="profile.html" onclick="closeSidebar()">
+        <span>◉</span> My Profile
+    </a>
+
+    <a href="id.html" class="active" onclick="closeSidebar()">
+        <span>▤</span> My Student ID
+    </a>
+
+    <a href="application.html" onclick="closeSidebar()">
+        <span>▧</span> Application Status
+    </a>
+
+    <a href="document.html" onclick="closeSidebar()">
+        <span>▣</span> My Documents
+    </a>
+
+    <a href="#" onclick="logout(); return false;">
+        <span>⇥</span> Log Out
+    </a>
 
 </aside>
 
-<!-- MAIN -->
+<!-- MAIN CONTENT -->
 
-<main class="main">
+<main class="container">
 
-    <header class="topbar">
-        <div>
-            <h2>My Student ID</h2>
-            <p>Pamantasan ng Lungsod ng Muntinlupa</p>
-        </div>
-    </header>
+    <div class="page-heading">
+        <h1>My Student ID</h1>
+        <p>View and print your digital student identification card.</p>
+    </div>
 
-    <section class="content">
+    <section class="card">
 
-        <div class="page-title">
-            <h1>Digital Student ID</h1>
-            <p>View your registered student information and digital ID.</p>
+        <div class="card-header">
+            <h2>Digital Student Identification Card</h2>
         </div>
 
-        <div id="loadingMessage" class="message loading">
-            Loading your student information...
-        </div>
+        <div class="card-body">
 
-        <div id="errorMessage" class="message error"></div>
+            <div id="message" class="message"></div>
 
-        <div class="id-container">
+            <div class="id-wrapper">
 
-            <div class="student-id" id="studentIDCard">
+                <div class="student-id" id="studentIDCard">
 
-                <div class="id-header">
+                    <div class="id-top">
 
-                    <img src="https://64.media.tumblr.com/33ca84afd52d5cd0ef7bb1bb66c6176b/tumblr_o4ti6j8k6r1unefbyo1_400.png" alt="PLMUN Logo">
+                        <img
+                            src="https://64.media.tumblr.com/33ca84afd52d5cd0ef7bb1bb66c6176b/tumblr_o4ti6j8k6r1unefbyo1_400.png"
+                            alt="PLMUN Logo"
+                        >
 
-                    <h2>PAMANTASAN NG LUNGSOD NG MUNTINLUPA</h2>
-                    <p>OFFICIAL STUDENT IDENTIFICATION</p>
-
-                </div>
-
-                <div class="id-body">
-
-                    <img
-                        id="profilePhoto"
-                        class="profile-photo"
-                        src="https://placehold.co/115x115?text=PHOTO"
-                        alt="Student Photo"
-                    >
-
-                    <div class="student-name" id="studentName">
-                        STUDENT NAME
-                    </div>
-
-                    <div class="student-number" id="studentNumber">
-                        STUDENT NUMBER
-                    </div>
-
-                    <div class="info-list">
-
-                        <div class="info-row">
-                            <span>COURSE</span>
-                            <span id="studentCourse">-</span>
-                        </div>
-
-                        <div class="info-row">
-                            <span>YEAR LEVEL</span>
-                            <span id="studentYear">-</span>
-                        </div>
-
-                        <div class="info-row">
-                            <span>EMAIL</span>
-                            <span id="studentEmail">-</span>
-                        </div>
-
-                        <div class="info-row">
-                            <span>BIRTHDATE</span>
-                            <span id="studentBirthdate">-</span>
+                        <div class="id-school">
+                            <h2>PAMANTASAN NG LUNGSOD NG MUNTINLUPA</h2>
+                            <p>STUDENT IDENTIFICATION CARD</p>
                         </div>
 
                     </div>
 
+                    <div class="id-label">
+                        OFFICIAL STUDENT IDENTIFICATION
+                    </div>
+
+                    <div class="id-content">
+
+                        <div class="id-photo-section" id="photoContainer">
+                            <div class="photo-placeholder">
+                                <span>👤</span>
+                                STUDENT PHOTO
+                            </div>
+                        </div>
+
+                        <h2 class="student-fullname" id="fullName">
+                            Loading Student Information...
+                        </h2>
+
+                        <p class="student-number" id="studentNumber">
+                            Student No.: Loading...
+                        </p>
+
+                        <div class="id-details">
+
+                            <div class="detail-row">
+                                <div class="detail-label">Course</div>
+                                <div class="detail-value" id="course">—</div>
+                            </div>
+
+                            <div class="detail-row">
+                                <div class="detail-label">Year Level</div>
+                                <div class="detail-value" id="yearLevel">—</div>
+                            </div>
+
+                            <div class="detail-row">
+                                <div class="detail-label">Email</div>
+                                <div class="detail-value" id="email">—</div>
+                            </div>
+
+                            <div class="detail-row">
+                                <div class="detail-label">Birthdate</div>
+                                <div class="detail-value" id="birthdate">—</div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="id-bottom">
+                        PAMANTASAN NG LUNGSOD NG MUNTINLUPA
+                    </div>
+
                 </div>
 
-                <div class="id-footer">
-                    PAMANTASAN NG LUNGSOD NG MUNTINLUPA
-                </div>
+            </div>
+
+            <div class="action-buttons">
+
+                <button class="btn btn-green" onclick="printStudentID()">
+                    🖨 PRINT STUDENT ID
+                </button>
+
+                <a href="profile.html" class="btn btn-gold">
+                    ✎ EDIT MY PROFILE
+                </a>
+
+                <a href="student-dashboard.html" class="btn btn-outline">
+                    ← BACK TO DASHBOARD
+                </a>
 
             </div>
 
         </div>
 
-        <div class="actions">
-            <button class="btn btn-print" onclick="window.print()">
-                PRINT STUDENT ID
-            </button>
-
-            <button class="btn btn-profile" onclick="location.href='profile.html'">
-                EDIT MY PROFILE
-            </button>
-        </div>
-
     </section>
 
 </main>
+
+<footer class="footer">
+    © 2026 I-PILIMON Student ID Information System | Pamantasan ng Lungsod ng Muntinlupa
+</footer>
 
 <script>
 
@@ -531,11 +828,9 @@ body {
 // SUPABASE CONFIGURATION
 // ==========================================
 
-const SUPABASE_URL =
-"https://mlrpkkmexmboqrnmjkuy.supabase.co";
+const SUPABASE_URL = "https://mlrpkkmexmboqrnmjkuy.supabase.co";
 
-const SUPABASE_ANON_KEY =
-"sb_publishable_-BIYMjip4Zon8HwZUCPT1Q_P0pDCMke";
+const SUPABASE_ANON_KEY = "sb_publishable_-BIYMjip4Zon8HwZUCPT1Q_P0pDCMke";
 
 const supabaseClient = window.supabase.createClient(
     SUPABASE_URL,
@@ -543,143 +838,221 @@ const supabaseClient = window.supabase.createClient(
 );
 
 // ==========================================
-// LOAD STUDENT INFORMATION
+// SIDEBAR
+// ==========================================
+
+function toggleSidebar() {
+    document.getElementById("sidebar").classList.toggle("open");
+    document.getElementById("sidebarOverlay").classList.toggle("show");
+}
+
+function closeSidebar() {
+    document.getElementById("sidebar").classList.remove("open");
+    document.getElementById("sidebarOverlay").classList.remove("show");
+}
+
+// ==========================================
+// MESSAGE
+// ==========================================
+
+function showMessage(message, type = "error") {
+    const box = document.getElementById("message");
+    box.textContent = message;
+    box.className = "message " + type;
+}
+
+// ==========================================
+// FORMAT DATE
+// ==========================================
+
+function formatDate(dateValue) {
+    if (!dateValue) return "Not provided";
+
+    const date = new Date(dateValue + "T00:00:00");
+
+    if (isNaN(date.getTime())) return dateValue;
+
+    return date.toLocaleDateString("en-PH", {
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+    });
+}
+
+// ==========================================
+// LOAD STUDENT ID
 // ==========================================
 
 async function loadStudentID() {
 
-    const loading = document.getElementById("loadingMessage");
-    const error = document.getElementById("errorMessage");
-
-    loading.style.display = "block";
-    error.style.display = "none";
-
     try {
 
-        const { data: sessionData, error: sessionError } =
-            await supabaseClient.auth.getSession();
+        const {
+            data: { session },
+            error: sessionError
+        } = await supabaseClient.auth.getSession();
 
         if (sessionError) throw sessionError;
 
-        const user = sessionData.session?.user;
-
-        if (!user) {
+        if (!session) {
             window.location.href = "index.html";
             return;
         }
 
-        const { data: student, error: studentError } =
-            await supabaseClient
-                .from("students")
-                .select(`
-                    id,
-                    student_number,
-                    first_name,
-                    last_name,
-                    email,
-                    course,
-                    year_level,
-                    birthdate,
-                    profile_picture_path
-                `)
-                .eq("id", user.id)
-                .maybeSingle();
+        const user = session.user;
 
-        if (studentError) throw studentError;
+        const { data: student, error } = await supabaseClient
+            .from("students")
+            .select(`
+                id,
+                student_number,
+                first_name,
+                last_name,
+                email,
+                course,
+                year_level,
+                birthdate,
+                profile_picture_path
+            `)
+            .eq("id", user.id)
+            .maybeSingle();
+
+        if (error) throw error;
 
         if (!student) {
-            throw new Error(
-                "Student information not found. Please complete your profile first."
+
+            showMessage(
+                "Student record not found. Please complete your student information first.",
+                "error"
             );
+
+            document.getElementById("fullName").textContent =
+                "Student Information Not Found";
+
+            document.getElementById("studentNumber").textContent =
+                "Student No.: Not available";
+
+            return;
         }
 
         // STUDENT NAME
 
-        const firstName =
-            student.first_name || user.user_metadata?.first_name || "";
+        const firstName = student.first_name || "";
+        const lastName = student.last_name || "";
 
-        const lastName =
-            student.last_name || user.user_metadata?.last_name || "";
+        const fullName = (firstName + " " + lastName).trim();
 
-        document.getElementById("studentName").textContent =
-            `${firstName} ${lastName}`.trim().toUpperCase() || "STUDENT NAME";
+        document.getElementById("fullName").textContent =
+            fullName || "Name not provided";
 
         // STUDENT NUMBER
 
         document.getElementById("studentNumber").textContent =
-            student.student_number || "NOT YET ASSIGNED";
+            "Student No.: " + (student.student_number || "Not assigned");
 
-        // OTHER INFORMATION
+        // STUDENT DETAILS
 
-        document.getElementById("studentCourse").textContent =
-            student.course || "-";
+        document.getElementById("course").textContent =
+            student.course || "Not provided";
 
-        document.getElementById("studentYear").textContent =
-            student.year_level || "-";
+        document.getElementById("yearLevel").textContent =
+            student.year_level || "Not provided";
 
-        document.getElementById("studentEmail").textContent =
-            student.email || user.email || "-";
+        document.getElementById("email").textContent =
+            student.email || user.email || "Not provided";
 
-        document.getElementById("studentBirthdate").textContent =
-            student.birthdate
-                ? new Date(student.birthdate + "T00:00:00").toLocaleDateString("en-PH", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric"
-                })
-                : "-";
+        document.getElementById("birthdate").textContent =
+            formatDate(student.birthdate);
 
-        // PROFILE PICTURE
+        // STUDENT PROFILE PHOTO
+
+        const photoContainer = document.getElementById("photoContainer");
 
         if (student.profile_picture_path) {
 
             const { data: imageData, error: imageError } =
                 await supabaseClient.storage
                     .from("student-profiles")
-                    .createSignedUrl(student.profile_picture_path, 3600);
+                    .createSignedUrl(
+                        student.profile_picture_path,
+                        3600
+                    );
 
-            if (!imageError && imageData?.signedUrl) {
-                document.getElementById("profilePhoto").src =
-                    imageData.signedUrl;
+            if (!imageError && imageData && imageData.signedUrl) {
+
+                const img = document.createElement("img");
+
+                img.src = imageData.signedUrl;
+                img.alt = "Student Photo";
+                img.className = "student-photo";
+
+                img.onerror = function() {
+                    photoContainer.innerHTML = `
+                        <div class="photo-placeholder">
+                            <span>👤</span>
+                            STUDENT PHOTO
+                        </div>
+                    `;
+                };
+
+                photoContainer.innerHTML = "";
+                photoContainer.appendChild(img);
+
             }
+
         }
 
-        loading.style.display = "none";
+    } catch (error) {
 
-    } catch (err) {
+        console.error("Student ID loading error:", error);
 
-        console.error("Student ID loading error:", err);
-
-        loading.style.display = "none";
-        error.textContent = err.message || "Unable to load student information.";
-        error.style.display = "block";
+        showMessage(
+            "Unable to load student information. Please refresh the page or check your Supabase connection.",
+            "error"
+        );
 
     }
 
 }
 
 // ==========================================
-// LOGOUT
+// PRINT STUDENT ID
+// ==========================================
+
+function printStudentID() {
+    window.print();
+}
+
+// ==========================================
+// LOG OUT
 // ==========================================
 
 async function logout() {
+
+    const confirmLogout = confirm(
+        "Are you sure you want to log out?"
+    );
+
+    if (!confirmLogout) return;
 
     const { error } = await supabaseClient.auth.signOut();
 
     if (error) {
         alert("Unable to log out. Please try again.");
+        console.error(error);
         return;
     }
 
     window.location.href = "index.html";
-
 }
 
 // ==========================================
 // INITIALIZE
 // ==========================================
 
-loadStudentID();
+document.addEventListener("DOMContentLoaded", function() {
+    loadStudentID();
+});
 
 </script>
 
