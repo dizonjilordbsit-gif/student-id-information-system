@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -72,6 +73,50 @@ body{min-height:100vh;background:#f5f3ec;color:var(--text-dark);width:100%}
 .detail-row{display:grid;grid-template-columns:135px minmax(0,1fr);gap:10px;padding:12px 5px;border-bottom:1px solid #e5dfca;font-size:14px}
 .detail-label{font-weight:bold;color:var(--main-green)}
 .detail-value{color:var(--text-dark);overflow-wrap:anywhere}
+
+/* DIGITAL SIGNATURE */
+.signature-display{
+    margin-top:22px;
+    padding:15px;
+    border:1px solid #e5d9b5;
+    border-radius:8px;
+    background:#fff;
+    text-align:center;
+}
+.signature-display h3{
+    color:var(--dark-green);
+    font-size:14px;
+    letter-spacing:1px;
+    margin-bottom:12px;
+}
+.signature-image{
+    display:block;
+    width:100%;
+    max-width:280px;
+    height:95px;
+    object-fit:contain;
+    margin:0 auto;
+    background:white;
+}
+.signature-placeholder{
+    width:100%;
+    max-width:280px;
+    height:95px;
+    margin:0 auto;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:#888;
+    border:1px dashed #c9d2c9;
+    border-radius:6px;
+    font-size:12px;
+}
+.signature-caption{
+    font-size:10px;
+    color:#52675b;
+    margin-top:8px;
+}
+
 .id-footer{background:var(--dark-green);color:white;text-align:center;padding:13px;border-top:4px solid var(--gold);font-size:11px;letter-spacing:1px}
 .action-buttons{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:22px}
 .action-btn{display:inline-block;text-decoration:none;text-align:center;border:0;border-radius:7px;padding:13px 20px;font-size:13px;font-weight:bold;cursor:pointer}
@@ -150,6 +195,7 @@ body{background:white}
 .card-body{padding:0}
 .id-area{padding:0}
 .student-id{max-width:600px;margin:0 auto;box-shadow:none;break-inside:avoid}
+.signature-display{break-inside:avoid}
 }
 img{max-width:100%}
 button{touch-action:manipulation}
@@ -220,6 +266,7 @@ button{touch-action:manipulation}
         <div class="card-body">
             <div class="id-area">
                 <div class="student-id" id="studentIDCard">
+
                     <div class="id-header">
                         <img src="https://64.media.tumblr.com/33ca84afd52d5cd0ef7bb1bb66c6176b/tumblr_o4ti6j8k6r1unefbyo1_400.png" alt="PLMUN Logo">
                         <div>
@@ -231,34 +278,64 @@ button{touch-action:manipulation}
                     <div class="id-ribbon">OFFICIAL STUDENT IDENTIFICATION</div>
 
                     <div class="id-content">
+
                         <div class="photo-area" id="photoContainer">
-                            <div class="photo-placeholder"><span>👤</span>STUDENT PHOTO</div>
+                            <div class="photo-placeholder">
+                                <span>👤</span>
+                                STUDENT PHOTO
+                            </div>
                         </div>
 
                         <h2 class="student-name" id="fullName">Loading Student Information...</h2>
                         <p class="student-number" id="studentNumber">Student No.: Loading...</p>
 
                         <div class="id-details">
+
                             <div class="detail-row">
                                 <div class="detail-label">Course</div>
                                 <div class="detail-value" id="course">—</div>
                             </div>
+
                             <div class="detail-row">
                                 <div class="detail-label">Year Level</div>
                                 <div class="detail-value" id="yearLevel">—</div>
                             </div>
+
                             <div class="detail-row">
                                 <div class="detail-label">Email</div>
                                 <div class="detail-value" id="email">—</div>
                             </div>
+
                             <div class="detail-row">
                                 <div class="detail-label">Birthdate</div>
                                 <div class="detail-value" id="birthdate">—</div>
                             </div>
+
                         </div>
+
+                        <!-- DIGITAL SIGNATURE DISPLAY -->
+                        <div class="signature-display">
+
+                            <h3>STUDENT SIGNATURE</h3>
+
+                            <div id="signatureContainer">
+                                <div class="signature-placeholder">
+                                    No signature uploaded
+                                </div>
+                            </div>
+
+                            <p class="signature-caption">
+                                STUDENT'S SIGNATURE
+                            </p>
+
+                        </div>
+
                     </div>
 
-                    <div class="id-footer">PAMANTASAN NG LUNGSOD NG MUNTINLUPA</div>
+                    <div class="id-footer">
+                        PAMANTASAN NG LUNGSOD NG MUNTINLUPA
+                    </div>
+
                 </div>
             </div>
 
@@ -276,96 +353,368 @@ button{touch-action:manipulation}
 </footer>
 
 <script>
+
+/* ==========================================
+   SUPABASE CONFIGURATION
+========================================== */
+
 const SUPABASE_URL = "https://mlrpkkmexmboqrnmjkuy.supabase.co";
+
 const SUPABASE_ANON_KEY = "sb_publishable_-BIYMjip4Zon8HwZUCPT1Q_P0pDCMke";
-const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+);
+
+
+/* ==========================================
+   SIDEBAR
+========================================== */
 
 function toggleSidebar(){
     document.getElementById("sidebar").classList.toggle("open");
     document.getElementById("sidebarOverlay").classList.toggle("show");
 }
+
 function closeSidebar(){
     document.getElementById("sidebar").classList.remove("open");
     document.getElementById("sidebarOverlay").classList.remove("show");
 }
+
+
+/* ==========================================
+   MESSAGE
+========================================== */
+
 function showMessage(message,isError=true){
-    const box=document.getElementById("message");
-    box.textContent=message;
-    box.className=isError?"message-error":"message-success";
+
+    const box = document.getElementById("message");
+
+    box.textContent = message;
+
+    box.className = isError
+        ? "message-error"
+        : "message-success";
 }
+
+
+/* ==========================================
+   FORMAT DATE
+========================================== */
+
 function formatDate(value){
-    if(!value)return "Not provided";
-    const date=new Date(value+"T00:00:00");
-    if(isNaN(date.getTime()))return value;
-    return date.toLocaleDateString("en-PH",{year:"numeric",month:"long",day:"numeric"});
+
+    if(!value) return "Not provided";
+
+    const date = new Date(value + "T00:00:00");
+
+    if(isNaN(date.getTime())) return value;
+
+    return date.toLocaleDateString("en-PH",{
+        year:"numeric",
+        month:"long",
+        day:"numeric"
+    });
 }
+
+
+/* ==========================================
+   PHOTO PLACEHOLDER
+========================================== */
+
 function showPhotoPlaceholder(){
-    document.getElementById("photoContainer").innerHTML =
-        '<div class="photo-placeholder"><span>👤</span>STUDENT PHOTO</div>';
+
+    document.getElementById("photoContainer").innerHTML = `
+        <div class="photo-placeholder">
+            <span>👤</span>
+            STUDENT PHOTO
+        </div>
+    `;
 }
 
-async function loadStudentID(){
+
+/* ==========================================
+   SIGNATURE PLACEHOLDER
+========================================== */
+
+function showSignaturePlaceholder(){
+
+    document.getElementById("signatureContainer").innerHTML = `
+        <div class="signature-placeholder">
+            No signature uploaded
+        </div>
+    `;
+}
+
+
+/* ==========================================
+   LOAD STUDENT SIGNATURE
+========================================== */
+
+async function loadStudentSignature(signaturePath){
+
+    const container = document.getElementById("signatureContainer");
+
+    showSignaturePlaceholder();
+
+    if(!signaturePath){
+        return;
+    }
+
     try{
-        const {data:{session},error:sessionError}=await supabaseClient.auth.getSession();
-        if(sessionError)throw sessionError;
-        if(!session){window.location.href="index.html";return;}
 
-        const user=session.user;
-        const {data:student,error}=await supabaseClient
-            .from("students")
-            .select("id,student_number,first_name,last_name,email,course,year_level,birthdate,profile_picture_path")
-            .eq("id",user.id)
-            .maybeSingle();
+        const {data,error} = await supabaseClient
+            .storage
+            .from("student-profiles")
+            .createSignedUrl(signaturePath,3600);
 
-        if(error)throw error;
+        if(error) throw error;
 
-        if(!student){
-            showMessage("Student record not found. Please contact the administrator or complete your student profile.");
-            document.getElementById("fullName").textContent="Student Information Not Found";
-            document.getElementById("studentNumber").textContent="Student No.: Not available";
-            return;
+        if(!data?.signedUrl){
+            throw new Error("Unable to create signature URL.");
         }
 
-        const fullName=[student.first_name,student.last_name].filter(Boolean).join(" ").trim();
-        document.getElementById("fullName").textContent=fullName||"Name not provided";
-        document.getElementById("studentNumber").textContent="Student No.: "+(student.student_number||"Not assigned");
-        document.getElementById("course").textContent=student.course||"Not provided";
-        document.getElementById("yearLevel").textContent=student.year_level||"Not provided";
-        document.getElementById("email").textContent=student.email||user.email||"Not provided";
-        document.getElementById("birthdate").textContent=formatDate(student.birthdate);
+        const img = document.createElement("img");
 
-        if(student.profile_picture_path){
-            const {data:imageData,error:imageError}=await supabaseClient.storage
-                .from("student-profiles")
-                .createSignedUrl(student.profile_picture_path,3600);
+        img.src = data.signedUrl;
+        img.alt = "Student Digital Signature";
+        img.className = "signature-image";
 
-            if(!imageError&&imageData?.signedUrl){
-                const img=document.createElement("img");
-                img.src=imageData.signedUrl;
-                img.alt="Student Photo";
-                img.className="student-photo";
-                img.onerror=showPhotoPlaceholder;
-                const container=document.getElementById("photoContainer");
-                container.innerHTML="";
-                container.appendChild(img);
-            }
-        }
+        img.onerror = function(){
+            showSignaturePlaceholder();
+        };
+
+        container.replaceChildren(img);
+
     }catch(error){
-        console.error("Student ID loading error:",error);
-        showMessage("Unable to load student information: "+error.message);
+
+        console.error("Signature loading error:",error);
+
+        showSignaturePlaceholder();
     }
 }
 
-function printStudentID(){window.print();}
 
-async function logout(){
-    if(!confirm("Are you sure you want to log out?"))return;
-    const {error}=await supabaseClient.auth.signOut();
-    if(error){alert("Unable to log out: "+error.message);return;}
-    window.location.href="index.html";
+/* ==========================================
+   LOAD STUDENT ID
+========================================== */
+
+async function loadStudentID(){
+
+    try{
+
+        const {
+            data:{session},
+            error:sessionError
+        } = await supabaseClient.auth.getSession();
+
+
+        if(sessionError) throw sessionError;
+
+
+        if(!session){
+
+            window.location.href = "index.html";
+
+            return;
+        }
+
+
+        const user = session.user;
+
+
+        const {data:student,error} = await supabaseClient
+            .from("students")
+            .select(`
+                id,
+                student_number,
+                first_name,
+                last_name,
+                email,
+                course,
+                year_level,
+                birthdate,
+                profile_picture_path,
+                signature_path
+            `)
+            .eq("id",user.id)
+            .maybeSingle();
+
+
+        if(error) throw error;
+
+
+        if(!student){
+
+            showMessage(
+                "Student record not found. Please complete your student profile first."
+            );
+
+            document.getElementById("fullName").textContent =
+                "Student Information Not Found";
+
+            document.getElementById("studentNumber").textContent =
+                "Student No.: Not available";
+
+            showPhotoPlaceholder();
+            showSignaturePlaceholder();
+
+            return;
+        }
+
+
+        /* STUDENT INFORMATION */
+
+        const fullName = [
+            student.first_name,
+            student.last_name
+        ].filter(Boolean).join(" ").trim();
+
+
+        document.getElementById("fullName").textContent =
+            fullName || "Name not provided";
+
+
+        document.getElementById("studentNumber").textContent =
+            "Student No.: " + (student.student_number || "Not assigned");
+
+
+        document.getElementById("course").textContent =
+            student.course || "Not provided";
+
+
+        document.getElementById("yearLevel").textContent =
+            student.year_level || "Not provided";
+
+
+        document.getElementById("email").textContent =
+            student.email || user.email || "Not provided";
+
+
+        document.getElementById("birthdate").textContent =
+            formatDate(student.birthdate);
+
+
+        /* PROFILE PHOTO */
+
+        showPhotoPlaceholder();
+
+        if(student.profile_picture_path){
+
+            const {
+                data:imageData,
+                error:imageError
+            } = await supabaseClient.storage
+                .from("student-profiles")
+                .createSignedUrl(
+                    student.profile_picture_path,
+                    3600
+                );
+
+
+            if(!imageError && imageData?.signedUrl){
+
+                const img = document.createElement("img");
+
+                img.src = imageData.signedUrl;
+                img.alt = "Student Photo";
+                img.className = "student-photo";
+
+                img.onerror = showPhotoPlaceholder;
+
+                const container =
+                    document.getElementById("photoContainer");
+
+                container.replaceChildren(img);
+            }
+        }
+
+
+        /* DIGITAL SIGNATURE */
+
+        await loadStudentSignature(student.signature_path);
+
+
+        /* PROFILE COMPLETENESS */
+
+        const incomplete =
+            !student.first_name ||
+            !student.last_name ||
+            !student.course ||
+            !student.year_level;
+
+        if(incomplete){
+
+            showMessage(
+                "Some student information is missing. Please update your profile.",
+                true
+            );
+
+        }else{
+
+            showMessage(
+                "Student ID loaded successfully.",
+                false
+            );
+        }
+
+    }catch(error){
+
+        console.error("Student ID loading error:",error);
+
+        showMessage(
+            "Unable to load student information: " + error.message,
+            true
+        );
+    }
 }
 
-document.addEventListener("DOMContentLoaded",loadStudentID);
+
+/* ==========================================
+   PRINT STUDENT ID
+========================================== */
+
+function printStudentID(){
+
+    window.print();
+}
+
+
+/* ==========================================
+   LOG OUT
+========================================== */
+
+async function logout(){
+
+    if(!confirm("Are you sure you want to log out?")) return;
+
+
+    const {error} = await supabaseClient.auth.signOut();
+
+
+    if(error){
+
+        alert("Unable to log out: " + error.message);
+
+        return;
+    }
+
+
+    window.location.href = "index.html";
+}
+
+
+/* ==========================================
+   START
+========================================== */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    loadStudentID
+);
+
 </script>
+
 </body>
 </html>
