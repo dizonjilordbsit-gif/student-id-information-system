@@ -1589,8 +1589,13 @@ const supabaseClient = window.supabase.createClient(
 // STUDENT DATA
 // ==========================================
 
-let currentStudent = null;
 
+// ==========================================
+// STUDENT DATA
+// ==========================================
+
+let currentStudent = null;
+let dashboardLoadPromise = null;
 
 // ==========================================
 // LOAD AUTHENTICATED STUDENT
@@ -1598,112 +1603,141 @@ let currentStudent = null;
 
 async function loadStudentDashboard() {
 
-    const loadingMessage = document.getElementById("loadingMessage");
-    loadingMessage.style.display = "block";
-    loadingMessage.textContent = "Refreshing student information...";
-
-    try {
-
-        // Check Supabase login session
-        const { data: sessionData, error: sessionError } =
-            await supabaseClient.auth.getSession();
-
-        if (sessionError) {
-            throw sessionError;
-        }
-
-        const session = sessionData.session;
-
-        // Redirect if not logged in
-        if (!session) {
-            window.location.href = "index.html";
-            return;
-        }
-
-        const user = session.user;
-
-        // Find student record using institutional email
-        const { data: student, error } = await supabaseClient
-    .from("students")
-    .select(`
-        id,
-        student_number,
-        first_name,
-        last_name,
-        email,
-        course,
-        year_level,
-        birthdate
-    `)
-    .eq("id", user.id)
-    .maybeSingle();
-        
-        if (error) {
-            throw error;
-        }
-
-        // Use registration metadata if profile record is not yet available
-        const metadata = user.user_metadata || {};
-
-        currentStudent = student || {};
-
-        const studentNumber =
-            currentStudent.student_number ||
-            metadata.student_number ||
-            "Not assigned";
-
-        const firstName =
-            currentStudent.first_name ||
-            metadata.first_name ||
-            "";
-
-        const lastName =
-            currentStudent.last_name ||
-            metadata.last_name ||
-            "";
-
-        const fullName =
-            (firstName + " " + lastName).trim() ||
-            user.email ||
-            "Student";
-
-        const email =
-            currentStudent.email ||
-            user.email ||
-            "Not provided";
-
-        const course =
-            currentStudent.course || "Not provided";
-
-        const yearLevel =
-            currentStudent.year_level || "Not provided";
-
-        const birthdate =
-            currentStudent.birthdate || "Not provided";
-
-        // Display the student information
-        displayStudentInformation({
-            studentNumber,
-            fullName,
-            email,
-            course,
-            yearLevel,
-            birthdate
-        });
-
-        loadingMessage.style.display = "none";
-
-    } catch (error) {
-
-        console.error("Dashboard loading error:", error);
-
-        loadingMessage.innerHTML = `
-            <p class="error-message">
-                Unable to load your student information.<br>
-                ${error.message}
-            </p>
-        `;
+    // Prevent multiple simultaneous requests
+    if (dashboardLoadPromise) {
+        return dashboardLoadPromise;
     }
+
+    dashboardLoadPromise = (async function () {
+
+        const loadingMessage = document.getElementById("loadingMessage");
+
+        loadingMessage.style.display = "block";
+        loadingMessage.textContent = "Connecting to student account...";
+
+        try {
+
+            // Wait for Supabase session restoration
+            const {
+                data: sessionData,
+                error: sessionError
+            } = await supabaseClient.auth.getSession();
+
+            if (sessionError) {
+                throw sessionError;
+            }
+
+            const session = sessionData.session;
+
+            // Redirect if there is no active session
+            if (!session || !session.user) {
+                window.location.replace("index.html");
+                return;
+            }
+
+            const user = session.user;
+
+            // Get the authenticated student's database record
+            const {
+                data: student,
+                error: studentError
+            } = await supabaseClient
+                .from("students")
+                .select(`
+                    id,
+                    student_number,
+                    first_name,
+                    last_name,
+                    email,
+                    course,
+                    year_level,
+                    birthdate
+                `)
+                .eq("id", user.id)
+                .maybeSingle();
+
+            if (studentError) {
+                throw studentError;
+            }
+
+            // Use registration metadata if some information is missing
+            const metadata = user.user_metadata || {};
+
+            currentStudent = student || {};
+
+            const studentNumber =
+                currentStudent.student_number ||
+                metadata.student_number ||
+                "Not assigned";
+
+            const firstName =
+                currentStudent.first_name ||
+                metadata.first_name ||
+                "";
+
+            const lastName =
+                currentStudent.last_name ||
+                metadata.last_name ||
+                "";
+
+            const fullName =
+                (firstName + " " + lastName).trim() ||
+                user.email ||
+                "Student";
+
+            const email =
+                currentStudent.email ||
+                user.email ||
+                "Not provided";
+
+            const course =
+                currentStudent.course ||
+                metadata.course ||
+                "Not provided";
+
+            const yearLevel =
+                currentStudent.year_level ||
+                metadata.year_level ||
+                "Not provided";
+
+            const birthdate =
+                currentStudent.birthdate ||
+                "Not provided";
+
+            // Display information
+            displayStudentInformation({
+                studentNumber,
+                fullName,
+                email,
+                course,
+                yearLevel,
+                birthdate
+            });
+
+            loadingMessage.style.display = "none";
+
+        } catch (error) {
+
+            console.error(
+                "Student dashboard loading error:",
+                error
+            );
+
+            loadingMessage.style.display = "block";
+            loadingMessage.textContent =
+                "Hindi ma-load ang student record. " +
+                "Please refresh the page. Error: " +
+                error.message;
+
+        } finally {
+
+            dashboardLoadPromise = null;
+
+        }
+
+    })();
+
+    return dashboardLoadPromise;
 }
 
 
@@ -1862,18 +1896,23 @@ async function logout() {
 // ==========================================
 
 // Load dashboard whenever the page is opened or restored
-window.addEventListener("pageshow", function () {
-    loadStudentDashboard();
-});
 
-// Refresh when the user returns to this browser tab
-document.addEventListener("visibilitychange", function () {
+// ==========================================
+// START DASHBOARD
+// ==========================================
 
-    if (document.visibilityState === "visible") {
+// Load dashboard once when page opens
+loadStudentDashboard();
+
+// Reload when page is restored from browser cache
+window.addEventListener("pageshow", function (event) {
+
+    if (event.persisted) {
         loadStudentDashboard();
     }
 
 });
+
 
 </script>
 
