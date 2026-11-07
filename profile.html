@@ -78,6 +78,89 @@ body{min-height:100vh;background:#f5f3ec;color:var(--text-dark);width:100%}
 
 footer{margin-left:255px;background:var(--dark-green);color:white;text-align:center;padding:20px;border-top:4px solid var(--gold);font-size:13px}
 
+/* SIGNATURE SECTION */
+.signature-section {
+    margin-top: 25px;
+    padding: 18px;
+    background: white;
+    border: 2px solid #e5d9b5;
+    border-radius: 10px;
+}
+
+.signature-section h3 {
+    color: var(--dark-green);
+    font-size: 17px;
+    margin-bottom: 8px;
+}
+
+.signature-section p {
+    color: #52675b;
+    font-size: 12px;
+    line-height: 1.6;
+    margin-bottom: 12px;
+}
+
+.signature-canvas-wrapper {
+    width: 100%;
+    border: 2px dashed #c9d2c9;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+}
+
+#signatureCanvas {
+    display: block;
+    width: 100%;
+    height: 200px;
+    touch-action: none;
+    cursor: crosshair;
+}
+
+.signature-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+}
+
+.signature-preview {
+    width: 100%;
+    max-width: 450px;
+    height: 150px;
+    object-fit: contain;
+    background: white;
+    border: 2px solid #e5d9b5;
+    border-radius: 8px;
+    margin-top: 12px;
+}
+
+.signature-upload {
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px solid #e5d9b5;
+}
+
+.signature-status {
+    font-size: 12px;
+    margin-top: 10px;
+    color: var(--main-green);
+    overflow-wrap: anywhere;
+}
+
+@media(max-width:600px) {
+    #signatureCanvas {
+        height: 160px;
+    }
+
+    .signature-actions {
+        flex-direction: column;
+    }
+
+    .signature-actions .btn {
+        width: 100%;
+    }
+}
+
 /* RESPONSIVE */
 @media(max-width:850px){
 .top-header{margin-left:0;padding:12px 15px}
@@ -263,6 +346,64 @@ footer{padding:17px 12px;font-size:10px;line-height:1.6}
                 </div>
 
             </form>
+        <!-- DIGITAL SIGNATURE -->
+<div class="signature-section">
+
+    <h3>Digital Signature</h3>
+
+    <p>
+        Draw your signature below using your mouse, touchscreen,
+        or stylus. You may also upload an existing signature image.
+    </p>
+
+    <div class="signature-canvas-wrapper">
+        <canvas id="signatureCanvas"></canvas>
+    </div>
+
+    <div class="signature-actions">
+        <button type="button" class="btn cancel-btn"
+            onclick="clearSignature()">
+            CLEAR SIGNATURE
+        </button>
+
+        <button type="button" class="btn save-btn"
+            id="saveSignatureBtn"
+            onclick="saveDrawnSignature()">
+            SAVE DRAWN SIGNATURE
+        </button>
+    </div>
+
+    <div class="signature-upload">
+
+        <h3>Upload Signature Image</h3>
+
+        <p>
+            Upload your signature as a JPG, JPEG, or PNG image.
+            Maximum file size: 3 MB.
+        </p>
+
+        <input
+            type="file"
+            id="signatureFile"
+            accept=".jpg,.jpeg,.png"
+        >
+
+        <div class="signature-actions">
+            <button type="button"
+                class="btn save-btn"
+                id="uploadSignatureBtn"
+                onclick="uploadSignature()">
+                UPLOAD SIGNATURE
+            </button>
+        </div>
+
+    </div>
+
+    <div id="savedSignatureContainer"></div>
+
+    <p id="signatureStatus" class="signature-status"></p>
+
+</div>
         </div>
     </section>
 </main>
@@ -287,6 +428,361 @@ const supabaseClient = window.supabase.createClient(
 
 let currentUser = null;
 let currentStudent = null;
+
+    /* ==========================================
+   DIGITAL SIGNATURE
+========================================== */
+
+const signatureCanvas = document.getElementById("signatureCanvas");
+const signatureContext = signatureCanvas.getContext("2d");
+
+let isDrawing = false;
+let hasSignature = false;
+
+function setupSignatureCanvas() {
+
+    const rect = signatureCanvas.getBoundingClientRect();
+    const pixelRatio = window.devicePixelRatio || 1;
+
+    signatureCanvas.width = rect.width * pixelRatio;
+    signatureCanvas.height = 200 * pixelRatio;
+
+    signatureContext.setTransform(
+        pixelRatio, 0, 0, pixelRatio, 0, 0
+    );
+
+    signatureContext.strokeStyle = "#003b24";
+    signatureContext.lineWidth = 2.5;
+    signatureContext.lineCap = "round";
+    signatureContext.lineJoin = "round";
+}
+
+function getSignaturePosition(event) {
+
+    const rect = signatureCanvas.getBoundingClientRect();
+
+    return {
+        x: event.clientX - rect.left,
+        y: event.clientY - rect.top
+    };
+}
+
+signatureCanvas.addEventListener("pointerdown", function(event) {
+
+    event.preventDefault();
+
+    isDrawing = true;
+    hasSignature = true;
+
+    signatureCanvas.setPointerCapture(event.pointerId);
+
+    const position = getSignaturePosition(event);
+
+    signatureContext.beginPath();
+
+    signatureContext.moveTo(
+        position.x,
+        position.y
+    );
+});
+
+signatureCanvas.addEventListener("pointermove", function(event) {
+
+    if (!isDrawing) return;
+
+    event.preventDefault();
+
+    const position = getSignaturePosition(event);
+
+    signatureContext.lineTo(
+        position.x,
+        position.y
+    );
+
+    signatureContext.stroke();
+});
+
+function stopDrawing() {
+    if (!isDrawing) return;
+
+    isDrawing = false;
+    signatureContext.closePath();
+}
+
+signatureCanvas.addEventListener("pointerup", stopDrawing);
+signatureCanvas.addEventListener("pointercancel", stopDrawing);
+signatureCanvas.addEventListener("lostpointercapture", stopDrawing);
+
+
+function clearSignature() {
+
+    signatureContext.clearRect(
+        0,
+        0,
+        signatureCanvas.width,
+        signatureCanvas.height
+    );
+
+    hasSignature = false;
+
+    document.getElementById("signatureStatus").textContent =
+        "Signature canvas cleared.";
+}
+
+
+function showSavedSignature(url) {
+
+    const container = document.getElementById(
+        "savedSignatureContainer"
+    );
+
+    container.innerHTML = "";
+
+    if (!url) return;
+
+    const title = document.createElement("h3");
+
+    title.textContent = "Saved Signature";
+    title.style.marginTop = "20px";
+
+    const image = document.createElement("img");
+
+    image.src = url;
+    image.alt = "Saved student signature";
+    image.className = "signature-preview";
+
+    container.appendChild(title);
+    container.appendChild(image);
+}
+
+
+async function saveSignatureBlob(blob) {
+
+    if (!currentUser) {
+        throw new Error("Please log in again.");
+    }
+
+    if (!currentStudent) {
+        throw new Error(
+            "Please save your student profile first."
+        );
+    }
+
+    const filePath =
+        currentUser.id +
+        "/signature_" +
+        Date.now() +
+        ".png";
+
+    const { error: uploadError } = await supabaseClient
+        .storage
+        .from("student-profiles")
+        .upload(filePath, blob, {
+            contentType: "image/png",
+            upsert: false
+        });
+
+    if (uploadError) throw uploadError;
+
+    const { data, error: updateError } = await supabaseClient
+        .from("students")
+        .update({
+            signature_path: filePath
+        })
+        .eq("id", currentUser.id)
+        .select()
+        .maybeSingle();
+
+    if (updateError) {
+        await supabaseClient.storage
+            .from("student-profiles")
+            .remove([filePath]);
+
+        throw updateError;
+    }
+
+    if (!data) {
+        await supabaseClient.storage
+            .from("student-profiles")
+            .remove([filePath]);
+
+        throw new Error(
+            "Signature uploaded but database record was not updated. Check your UPDATE policy."
+        );
+    }
+
+    currentStudent = data;
+
+    const { data: signedData, error: signedError } =
+        await supabaseClient.storage
+            .from("student-profiles")
+            .createSignedUrl(filePath, 3600);
+
+    if (signedError) throw signedError;
+
+    showSavedSignature(signedData.signedUrl);
+
+    document.getElementById("signatureStatus").textContent =
+        "Signature saved successfully!";
+}
+
+
+/* SAVE DRAWN SIGNATURE */
+
+async function saveDrawnSignature() {
+
+    if (!hasSignature) {
+        document.getElementById("signatureStatus").textContent =
+            "Please draw your signature first.";
+
+        return;
+    }
+
+    const button = document.getElementById("saveSignatureBtn");
+
+    button.disabled = true;
+    button.textContent = "SAVING...";
+
+    try {
+
+        const blob = await new Promise(resolve => {
+            signatureCanvas.toBlob(resolve, "image/png");
+        });
+
+        if (!blob) {
+            throw new Error("Unable to create signature image.");
+        }
+
+        await saveSignatureBlob(blob);
+
+    } catch (error) {
+
+        console.error(error);
+
+        document.getElementById("signatureStatus").textContent =
+            "Unable to save signature: " + error.message;
+
+    } finally {
+
+        button.disabled = false;
+        button.textContent = "SAVE DRAWN SIGNATURE";
+    }
+}
+
+
+/* UPLOAD SIGNATURE IMAGE */
+
+async function uploadSignature() {
+
+    const input = document.getElementById("signatureFile");
+    const file = input.files[0];
+
+    if (!file) {
+        document.getElementById("signatureStatus").textContent =
+            "Please select a signature image first.";
+
+        return;
+    }
+
+    const allowed = [
+        "image/jpeg",
+        "image/png"
+    ];
+
+    if (!allowed.includes(file.type)) {
+        document.getElementById("signatureStatus").textContent =
+            "Only JPG, JPEG, and PNG images are allowed.";
+
+        return;
+    }
+
+    if (file.size > 3 * 1024 * 1024) {
+        document.getElementById("signatureStatus").textContent =
+            "Signature image must not exceed 3 MB.";
+
+        return;
+    }
+
+    const button = document.getElementById("uploadSignatureBtn");
+
+    button.disabled = true;
+    button.textContent = "UPLOADING...";
+
+    try {
+
+        let blob = file;
+
+        if (file.type !== "image/png") {
+            const image = new Image();
+
+            const objectUrl = URL.createObjectURL(file);
+
+            try {
+                await new Promise((resolve, reject) => {
+                    image.onload = resolve;
+                    image.onerror = reject;
+                    image.src = objectUrl;
+                });
+
+                const canvas = document.createElement("canvas");
+
+                canvas.width = image.naturalWidth;
+                canvas.height = image.naturalHeight;
+
+                canvas.getContext("2d").drawImage(image, 0, 0);
+
+                blob = await new Promise(resolve => {
+                    canvas.toBlob(resolve, "image/png");
+                });
+
+                if (!blob) {
+                    throw new Error("Unable to convert signature image.");
+                }
+
+            } finally {
+                URL.revokeObjectURL(objectUrl);
+            }
+        }
+
+        await saveSignatureBlob(blob);
+
+        input.value = "";
+
+    } catch (error) {
+
+        console.error(error);
+
+        document.getElementById("signatureStatus").textContent =
+            "Signature upload failed: " + error.message;
+
+    } finally {
+
+        button.disabled = false;
+        button.textContent = "UPLOAD SIGNATURE";
+    }
+}
+
+
+/* LOAD SAVED SIGNATURE */
+
+async function loadSavedSignature() {
+
+    if (!currentStudent?.signature_path) {
+        showSavedSignature(null);
+        return;
+    }
+
+    const { data, error } = await supabaseClient.storage
+        .from("student-profiles")
+        .createSignedUrl(currentStudent.signature_path, 3600);
+
+    if (error) {
+        console.error(error);
+        return;
+    }
+
+    showSavedSignature(data.signedUrl);
+}
 
 
 /* ==========================================
@@ -408,6 +904,7 @@ async function loadProfile() {
         if (error) throw error;
 
         currentStudent = student || null;
+        await loadSavedSignature();
 
         // Always show the authenticated email.
         document.getElementById("email").value =
@@ -423,6 +920,7 @@ async function loadProfile() {
             document.getElementById("birthdate").value = "";
 
             displayPhoto(null);
+            showSavedSignature(null);
 
             showMessage(
                 "Your student information is not yet complete. Please fill in the required fields and click SAVE PROFILE."
@@ -760,10 +1258,13 @@ async function logout() {
    START
 ========================================== */
 
-document.addEventListener(
-    "DOMContentLoaded",
-    initializePage
-);
+document.addEventListener("DOMContentLoaded", function() {
+
+    setupSignatureCanvas();
+
+    initializePage();
+
+});
 </script>
 
 </body>
