@@ -4,1854 +4,433 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>My Profile | I-PILIMON Student ID INFORMATION</title>
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-:root {
-    --dark-green: #003b24;
-    --main-green: #075c3b;
-    --light-green: #128052;
-    --gold: #d4af37;
-    --cream: #f8f6ef;
-    --white: #ffffff;
-    --dark-bg: #24231f;
-    --card-bg: #292821;
-    --input-bg: #151513;
-    --text-light: #d7eee2;
-}
-
-body {
-    min-height: 100vh;
-    background: var(--dark-bg);
-    color: var(--text-light);
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
+:root{--dark-green:#003b24;--main-green:#075c3b;--light-green:#128052;--gold:#d4af37;--cream:#f8f6ef;--white:#fff;--text-dark:#123526}
+body{min-height:100vh;background:#f5f3ec;color:var(--text-dark);width:100%}
+.top-header{background:var(--dark-green);color:white;padding:15px 5%;display:flex;align-items:center;justify-content:space-between;border-bottom:5px solid var(--gold);gap:15px;margin-left:255px}
+.brand{display:flex;align-items:center;gap:15px}
+.brand img{width:65px;height:65px;object-fit:contain;filter:drop-shadow(0 0 7px #00ff66)}
+.brand-text h1{font-size:27px;letter-spacing:1px}
+.brand-text p{color:var(--gold);font-size:13px;font-weight:bold;letter-spacing:2px}
+.header-right{display:flex;align-items:center;gap:18px}
+.header-right button{background:transparent;border:none;color:white;font-size:15px;cursor:pointer}
+.menu-toggle{display:none;border:1px solid var(--gold);background:transparent;color:white;border-radius:6px;padding:8px 11px;font-size:21px;cursor:pointer}
 
 /* SIDEBAR */
-
-.sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: 255px;
-    background: var(--dark-green);
-    color: white;
-    z-index: 1000;
-    display: flex;
-    flex-direction: column;
-    border-right: 2px solid var(--gold);
-    transition: transform .3s ease;
-}
-
-.sidebar-heading {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 25px 15px 22px;
-    border-bottom: 1px solid rgba(212,175,55,.35);
-}
-
-.sidebar-heading img {
-    width: 75px;
-    height: 75px;
-    object-fit: contain;
-    margin-bottom: 12px;
-    filter: drop-shadow(0 0 7px #00ff66);
-}
-
-.sidebar-heading h3 {
-    color: var(--gold);
-    font-size: 17px;
-    margin-bottom: 5px;
-}
-
-.sidebar-heading p {
-    color: white;
-    font-size: 11px;
-}
-
-.sidebar-section {
-    color: var(--gold);
-    font-size: 11px;
-    font-weight: bold;
-    letter-spacing: 1px;
-    padding: 23px 25px 10px;
-}
-
-.sidebar-nav {
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
-    padding: 10px 14px;
-}
-
-.sidebar-link {
-    display: flex;
-    align-items: center;
-    gap: 13px;
-    padding: 14px;
-    border-radius: 8px;
-    color: white;
-    text-decoration: none;
-    font-size: 14px;
-    transition: .2s;
-    border: none;
-    background: transparent;
-    width: 100%;
-    text-align: left;
-    cursor: pointer;
-}
-
-.sidebar-link span {
-    width: 22px;
-    text-align: center;
-    font-size: 17px;
-}
-
-.sidebar-link:hover,
-.sidebar-link.active {
-    background: var(--gold);
-    color: var(--dark-green);
-    font-weight: bold;
-}
-
-.sidebar-divider {
-    height: 1px;
-    background: rgba(212,175,55,.5);
-    margin: 14px 5px;
-}
-
-.logout-link {
-    color: #ffb4a9;
-}
-
-.sidebar-footer {
-    margin-top: auto;
-    padding: 20px 12px;
-    border-top: 1px solid rgba(212,175,55,.35);
-    text-align: center;
-    font-size: 11px;
-    color: white;
-    line-height: 1.5;
-}
-
-/* HEADER */
-
-.top-header {
-    height: 96px;
-    margin-left: 255px;
-    background: var(--dark-green);
-    border-bottom: 5px solid var(--gold);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 15px 35px;
-    gap: 15px;
-}
-
-.brand {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.brand img {
-    width: 65px;
-    height: 65px;
-    object-fit: contain;
-    filter: drop-shadow(0 0 7px #00ff66);
-}
-
-.brand-text h1 {
-    font-size: 25px;
-    color: white;
-    letter-spacing: 1px;
-}
-
-.brand-text p {
-    color: var(--gold);
-    font-size: 12px;
-    font-weight: bold;
-    letter-spacing: 2px;
-    margin-top: 3px;
-}
-
-.header-right button {
-    background: transparent;
-    border: none;
-    color: white;
-    font-size: 14px;
-    cursor: pointer;
-}
-
-.menu-toggle {
-    display: none;
-    background: transparent;
-    border: 1px solid var(--gold);
-    color: white;
-    border-radius: 6px;
-    padding: 8px 12px;
-    font-size: 20px;
-    cursor: pointer;
-}
+.sidebar{position:fixed;top:0;left:0;bottom:0;width:255px;background:var(--dark-green);color:white;z-index:1000;display:flex;flex-direction:column;border-right:3px solid var(--gold);transition:transform .3s ease}
+.sidebar-heading{display:flex;align-items:center;gap:12px;padding:22px 16px;border-bottom:1px solid rgba(212,175,55,.4)}
+.sidebar-heading img{width:48px;height:48px;object-fit:contain;filter:drop-shadow(0 0 6px #00ff66)}
+.sidebar-heading h3{color:var(--gold);font-size:14px}
+.sidebar-heading p{font-size:11px;margin-top:5px;color:#dce9df}
+.sidebar-nav{display:flex;flex-direction:column;gap:7px;padding:20px 12px}
+.sidebar-link{width:100%;display:flex;align-items:center;gap:13px;padding:13px 14px;border:none;border-radius:7px;background:transparent;color:white;text-align:left;font-size:14px;cursor:pointer;transition:.2s}
+.sidebar-link span{width:22px;text-align:center;font-size:17px}
+.sidebar-link:hover,.sidebar-link.active{background:var(--gold);color:var(--dark-green);font-weight:bold}
+.sidebar-divider{height:1px;background:rgba(212,175,55,.4);margin:12px 4px}
+.logout-link{color:#ffb4a9}
+.sidebar-footer{margin-top:auto;padding:18px 15px;border-top:1px solid rgba(212,175,55,.4);text-align:center}
+.sidebar-footer p{color:var(--gold);font-weight:bold;font-size:14px}
+.sidebar-footer small{display:block;color:#dce9df;font-size:10px;margin-top:5px}
+.sidebar-overlay{display:none}
 
 /* MAIN */
-
-.main-content {
-    margin-left: 255px;
-    padding: 30px;
-    min-height: calc(100vh - 156px);
-}
-
-.page-heading {
-    margin-bottom: 25px;
-}
-
-.page-heading h2 {
-    color: #b9e9d2;
-    font-size: 27px;
-    margin-bottom: 8px;
-}
-
-.page-heading p {
-    color: #9eaaa3;
-    font-size: 14px;
-}
-
-/* MESSAGE */
-
-.message {
-    display: none;
-    padding: 14px 17px;
-    border-radius: 7px;
-    margin-bottom: 20px;
-    line-height: 1.5;
-    font-size: 13px;
-}
-
-.message.success {
-    display: block;
-    background: #123e2b;
-    color: #a9efc7;
-    border-left: 4px solid #22a866;
-}
-
-.message.error {
-    display: block;
-    background: #481f1c;
-    color: #ffbdb5;
-    border-left: 4px solid #e05245;
-}
-
-.message.info {
-    display: block;
-    background: #39331d;
-    color: #f5dc8b;
-    border-left: 4px solid var(--gold);
-}
-
-/* PROFILE LAYOUT */
-
-.profile-layout {
-    display: grid;
-    grid-template-columns: 320px minmax(0, 1fr);
-    gap: 22px;
-    align-items: start;
-}
-
-/* CARD */
-
-.card {
-    background: var(--card-bg);
-    border: 1px solid #454137;
-    border-radius: 13px;
-    overflow: hidden;
-    margin-bottom: 20px;
-    box-shadow: 0 3px 12px rgba(0,0,0,.12);
-}
-
-.card-header {
-    background: var(--dark-green);
-    color: white;
-    padding: 17px 22px;
-    border-bottom: 2px solid var(--gold);
-}
-
-.card-header h3 {
-    font-size: 17px;
-}
-
-.card-body {
-    padding: 23px;
-}
+.container{margin-left:255px;max-width:none;padding:25px 30px}
+.page-heading{margin-bottom:23px}
+.page-heading h2{font-size:27px;color:var(--dark-green);margin-bottom:8px}
+.page-heading p{color:#52675b;font-size:14px;line-height:1.6}
+.card{background:var(--cream);border:2px solid #e5d9b5;border-radius:13px;margin-bottom:20px;overflow:hidden;box-shadow:0 3px 10px rgba(0,0,0,.07)}
+.card-header{background:var(--dark-green);color:white;padding:13px 20px;border-bottom:2px solid var(--gold);display:flex;align-items:center;justify-content:space-between;gap:10px}
+.card-header h2{font-size:21px}
+.card-header h2::before{content:"";display:inline-block;width:7px;height:25px;background:var(--gold);margin-right:13px;vertical-align:middle}
+.card-body{padding:20px}
+.notice{background:#fff8df;border:1px solid #e5d9b5;border-left:5px solid var(--gold);border-radius:8px;padding:16px 18px;margin-bottom:22px;color:#5c5130;font-size:14px;line-height:1.6}
+#message{margin:0 0 17px;font-size:14px;font-weight:bold;overflow-wrap:anywhere}
 
 /* PROFILE PHOTO */
+.profile-photo-section{display:flex;align-items:center;gap:22px;flex-wrap:wrap;margin-bottom:25px;padding:18px;background:white;border:2px solid #e5d9b5;border-radius:10px}
+.photo-preview{width:125px;height:145px;object-fit:cover;border:4px solid var(--gold);border-radius:9px;background:#eee}
+.photo-placeholder{width:125px;height:145px;display:flex;align-items:center;justify-content:center;flex-direction:column;border:4px solid var(--gold);border-radius:9px;background:#eee;color:#777;gap:8px}
+.photo-placeholder span{font-size:38px}
+.photo-info{flex:1;min-width:200px}
+.photo-info h3{color:var(--dark-green);font-size:17px;margin-bottom:8px}
+.photo-info p{font-size:12px;color:#52675b;line-height:1.6;margin-bottom:12px}
+.photo-info input{max-width:100%;font-size:12px}
 
-.photo-card {
-    text-align: center;
+/* FORM */
+.profile-form{display:grid;grid-template-columns:1fr 1fr;gap:17px}
+.form-group{display:flex;flex-direction:column;gap:8px;min-width:0}
+.form-group.full-width{grid-column:1/-1}
+.form-group label{font-size:13px;font-weight:bold;color:var(--dark-green)}
+.form-group input,.form-group select{width:100%;padding:12px;border:1px solid #c9d2c9;border-radius:7px;background:white;font-size:14px;color:var(--text-dark)}
+.form-group input:focus,.form-group select:focus{outline:2px solid rgba(7,92,59,.2);border-color:var(--main-green)}
+.form-group input:disabled{background:#eee;color:#666;cursor:not-allowed}
+.field-note{font-size:11px;color:#68766c;line-height:1.5}
+.form-actions{grid-column:1/-1;display:flex;gap:12px;flex-wrap:wrap;margin-top:5px}
+.btn{padding:13px 20px;border-radius:8px;font-size:13px;font-weight:bold;cursor:pointer;text-decoration:none;text-align:center;border:2px solid var(--gold)}
+.save-btn{background:linear-gradient(120deg,#003b24,#087448);color:white}
+.cancel-btn{background:white;border-color:var(--main-green);color:var(--main-green)}
+.btn:disabled{opacity:.6;cursor:not-allowed}
+footer{margin-left:255px;background:var(--dark-green);color:white;text-align:center;padding:20px;border-top:4px solid var(--gold);font-size:13px}
+
+/* RESPONSIVE */
+@media(max-width:850px){
+.top-header{margin-left:0;padding:12px 15px}
+.menu-toggle{display:block;flex-shrink:0}
+.sidebar{transform:translateX(-100%)}
+.sidebar.open{transform:translateX(0)}
+.sidebar-overlay.show{display:block;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:999}
+.container{margin-left:0;width:100%;padding:16px}
+footer{margin-left:0}
+.top-header .header-right{margin-left:auto}
 }
-
-.profile-image-wrapper {
-    width: 145px;
-    height: 145px;
-    border: 4px solid var(--gold);
-    border-radius: 50%;
-    margin: 7px auto 17px;
-    overflow: hidden;
-    background: #34342f;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+@media(max-width:600px){
+body{width:100%;overflow-x:hidden;font-size:14px}
+.top-header{width:100%;padding:12px;gap:10px}
+.brand{gap:8px;min-width:0}
+.brand img{width:42px;height:42px;flex-shrink:0}
+.brand-text h1{font-size:clamp(15px,4vw,19px)}
+.brand-text p{font-size:8px;letter-spacing:.5px}
+.header-right button{font-size:12px;padding:8px 5px}
+.container{width:100%;max-width:100%;padding:12px}
+.page-heading h2{font-size:22px}
+.page-heading p{font-size:12px}
+.card{width:100%;border-radius:10px}
+.card-header{padding:12px}
+.card-header h2{font-size:16px}
+.card-body{padding:13px}
+.notice{padding:13px;font-size:12px}
+.profile-photo-section{padding:13px;gap:13px}
+.photo-preview,.photo-placeholder{width:105px;height:125px}
+.profile-form{grid-template-columns:1fr;gap:13px}
+.form-group.full-width{grid-column:auto}
+.form-actions{grid-column:auto;flex-direction:column}
+.btn{width:100%}
+.sidebar{width:min(280px,82vw)}
+footer{padding:17px 12px;font-size:10px;line-height:1.6}
 }
-
-.profile-image-wrapper img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+@media(max-width:480px){
+.menu-toggle{padding:7px 9px;font-size:18px}
+.brand{gap:7px}
+.brand img{width:37px;height:37px}
+.brand-text h1{font-size:15px}
+.brand-text p{font-size:7px}
+.header-right button{font-size:10px}
 }
-
-.photo-placeholder {
-    font-size: 65px;
-    color: #7251a8;
-}
-
-.profile-name {
-    color: #b9e9d2;
-    font-size: 20px;
-    margin-bottom: 7px;
-    overflow-wrap: anywhere;
-}
-
-.profile-course {
-    color: #a4b2aa;
-    font-size: 13px;
-    margin-bottom: 22px;
-}
-
-.upload-button {
-    display: block;
-    width: 100%;
-    padding: 12px;
-    background: linear-gradient(110deg, var(--main-green), #087448);
-    border: 1px solid var(--gold);
-    border-radius: 7px;
-    color: white;
-    font-weight: bold;
-    font-size: 13px;
-    cursor: pointer;
-    transition: .2s;
-}
-
-.upload-button:hover {
-    background: var(--light-green);
-}
-
-.upload-button:disabled {
-    opacity: .6;
-    cursor: not-allowed;
-}
-
-.delete-photo-button {
-    margin-top: 10px;
-    background: transparent;
-    border: 1px solid #a64b42;
-    color: #ffb4a9;
-    padding: 10px;
-    width: 100%;
-    border-radius: 7px;
-    cursor: pointer;
-    font-size: 12px;
-}
-
-.delete-photo-button:hover {
-    background: #481f1c;
-}
-
-.photo-note {
-    color: #89958e;
-    font-size: 11px;
-    line-height: 1.6;
-    margin-top: 13px;
-}
-
-#photoInput {
-    display: none;
-}
-
-/* PERSONAL INFORMATION */
-
-.section-label {
-    color: #a9e7c9;
-    font-size: 14px;
-    font-weight: bold;
-    padding-bottom: 13px;
-    margin-bottom: 17px;
-    border-bottom: 1px solid #49453b;
-}
-
-.info-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 15px;
-}
-
-.info-item {
-    background: var(--input-bg);
-    border-left: 4px solid #806d28;
-    border-radius: 8px;
-    padding: 15px;
-    min-width: 0;
-}
-
-.info-item.full {
-    grid-column: 1 / -1;
-}
-
-.info-item small {
-    display: block;
-    color: #82d6ad;
-    font-size: 11px;
-    font-weight: bold;
-    margin-bottom: 8px;
-    letter-spacing: .5px;
-}
-
-.info-item strong {
-    display: block;
-    color: #d8eee2;
-    font-size: 14px;
-    overflow-wrap: anywhere;
-}
-
-.edit-button,
-.save-button {
-    background: var(--gold);
-    color: var(--dark-green);
-    border: none;
-    border-radius: 7px;
-    padding: 13px 20px;
-    font-size: 13px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 22px;
-}
-
-.edit-button:hover,
-.save-button:hover {
-    background: #e7c84c;
-}
-
-.cancel-button {
-    background: #46443d;
-    color: white;
-    border: 1px solid #777064;
-    border-radius: 7px;
-    padding: 13px 20px;
-    font-size: 13px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 22px;
-    margin-left: 8px;
-}
-
-/* EDIT FORM */
-
-.edit-form {
-    display: none;
-    margin-top: 22px;
-    padding-top: 22px;
-    border-top: 1px solid #49453b;
-}
-
-.edit-form.show {
-    display: block;
-}
-
-.form-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 17px;
-}
-
-.form-group {
-    min-width: 0;
-}
-
-.form-group.full {
-    grid-column: 1 / -1;
-}
-
-.form-group label {
-    display: block;
-    color: #a9e7c9;
-    font-size: 12px;
-    font-weight: bold;
-    margin-bottom: 8px;
-}
-
-.form-group input,
-.form-group select {
-    width: 100%;
-    padding: 13px;
-    background: var(--input-bg);
-    color: white;
-    border: 1px solid #625c4b;
-    border-radius: 7px;
-    outline: none;
-    font-size: 14px;
-}
-
-.form-group input:focus,
-.form-group select:focus {
-    border-color: var(--gold);
-    box-shadow: 0 0 0 2px rgba(212,175,55,.13);
-}
-
-.form-group input:disabled {
-    opacity: .65;
-    cursor: not-allowed;
-}
-
-.form-group input::placeholder {
-    color: #77776e;
-}
-
-.form-note {
-    color: #969d96;
-    font-size: 11px;
-    margin-top: 7px;
-}
-
-.form-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-}
-
-button:disabled {
-    opacity: .6;
-    cursor: not-allowed;
-}
-
-/* LOADING */
-
-.loading {
-    text-align: center;
-    padding: 50px 15px;
-    color: #b9e9d2;
-    font-weight: bold;
-}
-
-/* FOOTER */
-
-footer {
-    margin-left: 255px;
-    background: var(--dark-green);
-    color: white;
-    text-align: center;
-    padding: 20px;
-    border-top: 4px solid var(--gold);
-    font-size: 12px;
-}
-
-/* OVERLAY */
-
-.sidebar-overlay {
-    display: none;
-}
-
-/* TABLET */
-
-@media(max-width: 1050px) {
-    .profile-layout {
-        grid-template-columns: 270px minmax(0, 1fr);
-    }
-
-    .main-content {
-        padding: 22px;
-    }
-}
-
-@media(max-width: 850px) {
-    .sidebar {
-        transform: translateX(-100%);
-    }
-
-    .sidebar.open {
-        transform: translateX(0);
-    }
-
-    .sidebar-overlay.show {
-        display: block;
-        position: fixed;
-        inset: 0;
-        background: rgba(0,0,0,.55);
-        z-index: 999;
-    }
-
-    .top-header {
-        margin-left: 0;
-        padding: 12px 18px;
-        height: 85px;
-    }
-
-    .menu-toggle {
-        display: block;
-        flex-shrink: 0;
-    }
-
-    .main-content {
-        margin-left: 0;
-    }
-
-    footer {
-        margin-left: 0;
-    }
-}
-
-/* MOBILE */
-
-@media(max-width: 650px) {
-    .top-header {
-        gap: 9px;
-        padding: 10px;
-    }
-
-    .brand {
-        gap: 8px;
-    }
-
-    .brand img {
-        width: 43px;
-        height: 43px;
-    }
-
-    .brand-text h1 {
-        font-size: 17px;
-    }
-
-    .brand-text p {
-        font-size: 8px;
-        letter-spacing: .8px;
-    }
-
-    .header-right button {
-        font-size: 10px;
-    }
-
-    .main-content {
-        padding: 15px;
-    }
-
-    .page-heading h2 {
-        font-size: 23px;
-    }
-
-    .profile-layout {
-        grid-template-columns: 1fr;
-    }
-
-    .photo-card .card-body {
-        padding: 20px;
-    }
-
-    .info-grid,
-    .form-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .info-item.full,
-    .form-group.full {
-        grid-column: auto;
-    }
-
-    .card-body {
-        padding: 16px;
-    }
-
-    .cancel-button,
-    .save-button {
-        margin-left: 0;
-    }
-
-    .form-actions button {
-        flex: 1;
-    }
-
-    footer {
-        padding: 17px 10px;
-        font-size: 10px;
-        line-height: 1.5;
-    }
+@media(max-width:360px){
+.brand img{width:35px;height:35px}
+.brand-text h1{font-size:14px}
+.container{padding:9px}
 }
 </style>
 </head>
 
 <body>
-
-<!-- SIDEBAR -->
-
-<aside class="sidebar" id="sidebar">
-
-    <div class="sidebar-heading">
-        <img
-            src="https://64.media.tumblr.com/33ca84afd52d5cd0ef7bb1bb66c6176b/tumblr_o4ti6j8k6r1unefbyo1_400.png"
-            alt="PLMUN Logo"
-        >
-
-        <h3>I-PILIMUN</h3>
-        <p>STUDENT ID INFORMATION SYSTEM</p>
-    </div>
-
-    <div class="sidebar-section">MAIN MENU</div>
-
-    <nav class="sidebar-nav">
-
-        <a class="sidebar-link" href="student-dashboard.html">
-            <span>▦</span> Dashboard
-        </a>
-
-        <a class="sidebar-link active" href="profile.html">
-            <span>👤</span> My Profile
-        </a>
-
-        <a class="sidebar-link" href="id.html">
-            <span>▣</span> My Student ID
-        </a>
-
-        <a class="sidebar-link" href="application.html">
-            <span>☑</span> Application Status
-        </a>
-
-        <a class="sidebar-link" href="document.html">
-            <span>📁</span> My Documents
-        </a>
-
-        <div class="sidebar-divider"></div>
-
-        <button class="sidebar-link logout-link" onclick="logout()">
-            <span>↪</span> Log Out
-        </button>
-
-    </nav>
-
-    <div class="sidebar-footer">
-        Pamantasan ng Lungsod ng Muntinlupa<br>
-        Student Portal
-    </div>
-
-</aside>
-
-<div
-    class="sidebar-overlay"
-    id="sidebarOverlay"
-    onclick="closeSidebar()"
-></div>
-
-<!-- HEADER -->
-
 <header class="top-header">
-
-    <button
-        class="menu-toggle"
-        type="button"
-        onclick="toggleSidebar()"
-        aria-label="Open menu"
-    >☰</button>
-
+    <button type="button" class="menu-toggle" onclick="toggleSidebar()" aria-label="Open navigation menu">☰</button>
     <div class="brand">
-
-        <img
-            src="https://64.media.tumblr.com/33ca84afd52d5cd0ef7bb1bb66c6176b/tumblr_o4ti6j8k6r1unefbyo1_400.png"
-            alt="PLMUN Logo"
-        >
-
-        <div class="brand-text">
-            <h1>I-PILIMON</h1>
-            <p>STUDENT ID INFORMATION</p>
-        </div>
-
+        <img src="https://64.media.tumblr.com/33ca84afd52d5cd0ef7bb1bb66c6176b/tumblr_o4ti6j8k6r1unefbyo1_400.png" alt="PLMUN Logo">
+        <div class="brand-text"><h1>I-PILIMON</h1><p>STUDENT ID INFORMATION</p></div>
     </div>
-
-    <div class="header-right">
-        <button type="button" onclick="logout()">LOG OUT ↗</button>
-    </div>
-
+    <div class="header-right"><button type="button" onclick="logout()">LOG OUT ↗</button></div>
 </header>
 
-<!-- MAIN CONTENT -->
+<div id="sidebarOverlay" class="sidebar-overlay" onclick="closeSidebar()"></div>
 
-<main class="main-content">
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-heading">
+        <img src="https://64.media.tumblr.com/33ca84afd52d5cd0ef7bb1bb66c6176b/tumblr_o4ti6j8k6r1unefbyo1_400.png" alt="PLMUN Logo">
+        <div><h3>STUDENT PORTAL</h3><p>Navigation Menu</p></div>
+    </div>
+    <nav class="sidebar-nav">
+        <button class="sidebar-link" onclick="location.href='student-dashboard.html'"><span>▦</span> Dashboard</button>
+        <button class="sidebar-link active" onclick="location.href='profile.html'"><span>👤</span> My Profile</button>
+        <button class="sidebar-link" onclick="location.href='id.html'"><span>▣</span> My Student ID</button>
+        <button class="sidebar-link" onclick="location.href='application.html'"><span>☑</span> Application Status</button>
+        <button class="sidebar-link" onclick="location.href='document.html'"><span>📁</span> My Documents</button>
+        <div class="sidebar-divider"></div>
+        <button class="sidebar-link logout-link" onclick="logout()"><span>↗</span> Log Out</button>
+    </nav>
+    <div class="sidebar-footer"><p>I-PILIMON</p><small>Student ID Information System</small></div>
+</aside>
 
-    <div class="page-heading">
+<main class="container">
+    <section class="page-heading">
         <h2>My Profile</h2>
-        <p>View and manage your personal student information.</p>
-    </div>
+        <p>View and update your personal and academic information.</p>
+    </section>
 
-    <div id="message" class="message"></div>
+    <div class="notice"><strong>PROFILE REMINDER:</strong> Keep your information accurate and updated. The details saved here will be used for your Student ID application.</div>
+    <div id="message"></div>
 
-    <div id="loading" class="loading">
-        Loading student profile...
-    </div>
+    <section class="card">
+        <div class="card-header"><h2>Profile Information</h2></div>
+        <div class="card-body">
 
-    <div class="profile-layout" id="profileContent" hidden>
-
-        <!-- PROFILE PHOTO -->
-
-        <section class="card photo-card">
-
-            <div class="card-header">
-                <h3>PROFILE PHOTO</h3>
+            <div class="profile-photo-section">
+                <div id="photoContainer">
+                    <div class="photo-placeholder"><span>👤</span>PROFILE PHOTO</div>
+                </div>
+                <div class="photo-info">
+                    <h3>Profile Picture</h3>
+                    <p>Upload a clear JPG, PNG, or WEBP image. Maximum file size: 3 MB.</p>
+                    <input type="file" id="profilePhoto" accept=".jpg,.jpeg,.png,.webp">
+                    <p class="field-note" id="photoStatus"></p>
+                </div>
             </div>
 
-            <div class="card-body">
-
-                <div class="profile-image-wrapper">
-                    <img
-                        id="profileImage"
-                        alt="Student Profile Photo"
-                        hidden
-                    >
-
-                    <div id="photoPlaceholder" class="photo-placeholder">
-                        👤
-                    </div>
+            <form id="profileForm" class="profile-form">
+                <div class="form-group">
+                    <label for="studentNumber">Student ID Number</label>
+                    <input type="text" id="studentNumber" placeholder="Enter student ID number">
                 </div>
 
-                <h2 class="profile-name" id="photoName">
-                    Student Name
-                </h2>
-
-                <p class="profile-course" id="photoCourse">
-                    Course not provided
-                </p>
-
-                <input
-                    type="file"
-                    id="photoInput"
-                    accept="image/jpeg,image/png,image/webp"
-                    onchange="uploadProfilePhoto(event)"
-                >
-
-                <button
-                    type="button"
-                    class="upload-button"
-                    id="uploadButton"
-                    onclick="document.getElementById('photoInput').click()"
-                >
-                    📷 Upload / Change Photo
-                </button>
-
-                <button
-                    type="button"
-                    class="delete-photo-button"
-                    id="deletePhotoButton"
-                    onclick="deleteProfilePhoto()"
-                    hidden
-                >
-                    Remove Profile Photo
-                </button>
-
-                <p class="photo-note">
-                    Accepted formats: JPG, PNG, WEBP<br>
-                    Maximum file size: 3 MB
-                </p>
-
-            </div>
-
-        </section>
-
-        <!-- PERSONAL INFORMATION -->
-
-        <section class="card">
-
-            <div class="card-header">
-                <h3>PERSONAL INFORMATION</h3>
-            </div>
-
-            <div class="card-body">
-
-                <div class="section-label">
-                    Student Information
+                <div class="form-group">
+                    <label for="email">Institutional Email</label>
+                    <input type="email" id="email" disabled>
+                    <small class="field-note">Your email is connected to your login account and cannot be changed here.</small>
                 </div>
 
-                <div class="info-grid">
-
-                    <div class="info-item">
-                        <small>STUDENT ID / STUDENT NUMBER</small>
-                        <strong id="displayStudentNumber">Not assigned</strong>
-                    </div>
-
-                    <div class="info-item">
-                        <small>FIRST NAME</small>
-                        <strong id="displayFirstName">Not provided</strong>
-                    </div>
-
-                    <div class="info-item">
-                        <small>LAST NAME</small>
-                        <strong id="displayLastName">Not provided</strong>
-                    </div>
-
-                    <div class="info-item full">
-                        <small>EMAIL ADDRESS</small>
-                        <strong id="displayEmail">Not provided</strong>
-                    </div>
-
-                    <div class="info-item">
-                        <small>COURSE</small>
-                        <strong id="displayCourse">Not provided</strong>
-                    </div>
-
-                    <div class="info-item">
-                        <small>YEAR LEVEL</small>
-                        <strong id="displayYear">Not provided</strong>
-                    </div>
-
-                    <div class="info-item">
-                        <small>BIRTHDATE</small>
-                        <strong id="displayBirthdate">Not provided</strong>
-                    </div>
-
+                <div class="form-group">
+                    <label for="firstName">First Name</label>
+                    <input type="text" id="firstName" required>
                 </div>
 
-                <button
-                    type="button"
-                    class="edit-button"
-                    id="editButton"
-                    onclick="toggleEditForm(true)"
-                >
-                    ✎ Edit Profile
-                </button>
+                <div class="form-group">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" id="lastName" required>
+                </div>
 
-                <!-- EDIT FORM -->
+                <div class="form-group">
+                    <label for="course">Course / Program</label>
+                    <input type="text" id="course" placeholder="Enter your course" required>
+                </div>
 
-                <form id="editForm" class="edit-form">
+                <div class="form-group">
+                    <label for="yearLevel">Year Level</label>
+                    <select id="yearLevel" required>
+                        <option value="">Select year level</option>
+                        <option value="1st Year">1st Year</option>
+                        <option value="2nd Year">2nd Year</option>
+                        <option value="3rd Year">3rd Year</option>
+                        <option value="4th Year">4th Year</option>
+                        <option value="5th Year">5th Year</option>
+                    </select>
+                </div>
 
-                    <div class="section-label">
-                        Edit Student Information
-                    </div>
+                <div class="form-group">
+                    <label for="birthdate">Birthdate</label>
+                    <input type="date" id="birthdate">
+                </div>
 
-                    <div class="form-grid">
-
-                        <div class="form-group full">
-                            <label for="editStudentNumber">
-                                STUDENT ID / STUDENT NUMBER
-                            </label>
-
-                            <input
-                                type="text"
-                                id="editStudentNumber"
-                                placeholder="Enter your student number"
-                            >
-
-                            <p class="form-note">
-                                Enter your official student number.
-                            </p>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="editFirstName">FIRST NAME</label>
-
-                            <input
-                                type="text"
-                                id="editFirstName"
-                                placeholder="Enter first name"
-                                required
-                            >
-                        </div>
-
-                        <div class="form-group">
-                            <label for="editLastName">LAST NAME</label>
-
-                            <input
-                                type="text"
-                                id="editLastName"
-                                placeholder="Enter last name"
-                                required
-                            >
-                        </div>
-
-                        <div class="form-group full">
-                            <label for="editEmail">EMAIL ADDRESS</label>
-
-                            <input
-                                type="email"
-                                id="editEmail"
-                                disabled
-                            >
-
-                            <p class="form-note">
-                                Your registered email address cannot be
-                                changed on this page.
-                            </p>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="editCourse">COURSE</label>
-
-                            <input
-                                type="text"
-                                id="editCourse"
-                                placeholder="Enter your course"
-                                required
-                            >
-                        </div>
-
-                        <div class="form-group">
-                            <label for="editYear">YEAR LEVEL</label>
-
-                            <select id="editYear" required>
-                                <option value="">Select Year Level</option>
-                                <option value="1st Year">1st Year</option>
-                                <option value="2nd Year">2nd Year</option>
-                                <option value="3rd Year">3rd Year</option>
-                                <option value="4th Year">4th Year</option>
-                                <option value="5th Year">5th Year</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="editBirthdate">BIRTHDATE</label>
-
-                            <input
-                                type="date"
-                                id="editBirthdate"
-                            >
-                        </div>
-
-                    </div>
-
-                    <div class="form-actions">
-
-                        <button
-                            type="submit"
-                            class="save-button"
-                            id="saveButton"
-                        >
-                            SAVE CHANGES
-                        </button>
-
-                        <button
-                            type="button"
-                            class="cancel-button"
-                            onclick="toggleEditForm(false)"
-                        >
-                            CANCEL
-                        </button>
-
-                    </div>
-
-                </form>
-
-            </div>
-
-        </section>
-
-    </div>
-
+                <div class="form-actions">
+                    <button type="submit" class="btn save-btn" id="saveBtn">SAVE PROFILE</button>
+                    <button type="button" class="btn cancel-btn" onclick="loadProfile()">RESET CHANGES</button>
+                </div>
+            </form>
+        </div>
+    </section>
 </main>
 
-<footer>
-    © 2026 Pamantasan ng Lungsod ng Muntinlupa |
-    I-PILIMON Student ID Information System
-</footer>
+<footer>© 2026 Pamantasan ng Lungsod ng Muntinlupa | I-PILIMON Student ID Information System</footer>
 
 <script>
+const SUPABASE_URL="https://mlrpkkmexmboqrnmjkuy.supabase.co";
+const SUPABASE_ANON_KEY="sb_publishable_-BIYMjip4Zon8HwZUCPT1Q_P0pDCMke";
+const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
 
-// ==========================================
-// SUPABASE CONFIGURATION
-// ==========================================
+let currentUser=null;
+let currentStudent=null;
 
-const SUPABASE_URL =
-    "https://mlrpkkmexmboqrnmjkuy.supabase.co";
-
-const SUPABASE_ANON_KEY =
-    "sb_publishable_-BIYMjip4Zon8HwZUCPT1Q_P0pDCMke";
-
-const db = window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_ANON_KEY
-);
-
-const PHOTO_BUCKET = "student-profiles";
-const MAX_PHOTO_SIZE = 3 * 1024 * 1024;
-
-let currentUser = null;
-let currentStudent = null;
-let currentPhotoPath = null;
-let profileLoadPromise = null;
-
-
-// ==========================================
-// SIDEBAR
-// ==========================================
-
-function toggleSidebar() {
-    document.getElementById("sidebar").classList.toggle("open");
-    document.getElementById("sidebarOverlay").classList.toggle("show");
+function toggleSidebar(){
+ document.getElementById("sidebar").classList.toggle("open");
+ document.getElementById("sidebarOverlay").classList.toggle("show");
+}
+function closeSidebar(){
+ document.getElementById("sidebar").classList.remove("open");
+ document.getElementById("sidebarOverlay").classList.remove("show");
+}
+function showMessage(message,isError=false){
+ const box=document.getElementById("message");
+ box.textContent=message;
+ box.style.color=isError?"#a00000":"#075c3b";
+}
+function displayPhoto(url){
+ const container=document.getElementById("photoContainer");
+ if(!url){
+  container.innerHTML='<div class="photo-placeholder"><span>👤</span>PROFILE PHOTO</div>';
+  return;
+ }
+ const img=document.createElement("img");
+ img.src=url;
+ img.alt="Student profile photo";
+ img.className="photo-preview";
+ img.onerror=()=>displayPhoto(null);
+ container.replaceChildren(img);
 }
 
-function closeSidebar() {
-    document.getElementById("sidebar").classList.remove("open");
-    document.getElementById("sidebarOverlay").classList.remove("show");
+async function initializePage(){
+ try{
+  const {data,error}=await supabaseClient.auth.getSession();
+  if(error)throw error;
+  if(!data.session){location.href="index.html";return;}
+  currentUser=data.session.user;
+  await loadProfile();
+ }catch(error){
+  console.error(error);
+  showMessage("Unable to connect to your account: "+error.message,true);
+ }
 }
 
+async function loadProfile(){
+ if(!currentUser)return;
+ showMessage("Loading profile...");
+ try{
+  const {data:student,error}=await supabaseClient.from("students")
+   .select("id,student_number,first_name,last_name,email,course,year_level,birthdate,profile_picture_path")
+   .eq("id",currentUser.id).maybeSingle();
 
-// ==========================================
-// MESSAGE
-// ==========================================
+  if(error)throw error;
 
-function showMessage(message, type = "info") {
+  if(!student){
+   currentStudent=null;
+   document.getElementById("profileForm").reset();
+   document.getElementById("email").value=currentUser.email||"";
+   displayPhoto(null);
+   showMessage("No student record was found. Your student record must be created before this profile can be saved.",true);
+   return;
+  }
 
-    const element = document.getElementById("message");
+  currentStudent=student;
+  document.getElementById("studentNumber").value=student.student_number||"";
+  document.getElementById("firstName").value=student.first_name||"";
+  document.getElementById("lastName").value=student.last_name||"";
+  document.getElementById("email").value=student.email||currentUser.email||"";
+  document.getElementById("course").value=student.course||"";
+  document.getElementById("yearLevel").value=student.year_level||"";
+  document.getElementById("birthdate").value=student.birthdate||"";
 
-    element.textContent = message;
-    element.className = "message " + type;
+  displayPhoto(null);
+  if(student.profile_picture_path){
+   const {data:imageData,error:imageError}=await supabaseClient.storage
+    .from("student-profiles").createSignedUrl(student.profile_picture_path,3600);
+   if(!imageError&&imageData?.signedUrl)displayPhoto(imageData.signedUrl);
+  }
+  showMessage("");
+ }catch(error){
+  console.error(error);
+  showMessage("Unable to load profile: "+error.message,true);
+ }
 }
 
-function clearMessage() {
-
-    const element = document.getElementById("message");
-
-    element.textContent = "";
-    element.className = "message";
-}
-
-
-// ==========================================
-// LOAD STUDENT PROFILE
-// ==========================================
-
-async function loadProfile() {
-
-    if (profileLoadPromise) {
-        return profileLoadPromise;
-    }
-
-    profileLoadPromise = (async () => {
-
-        const loading = document.getElementById("loading");
-        const content = document.getElementById("profileContent");
-
-        loading.style.display = "block";
-        loading.textContent = "Loading student profile...";
-        content.hidden = true;
-
-        clearMessage();
-
-        try {
-
-            const {
-                data: sessionData,
-                error: sessionError
-            } = await db.auth.getSession();
-
-            if (sessionError) {
-                throw sessionError;
-            }
-
-            const session = sessionData.session;
-
-            if (!session || !session.user) {
-                location.replace("index.html");
-                return null;
-            }
-
-            currentUser = session.user;
-
-            const {
-                data: student,
-                error: studentError
-            } = await db
-                .from("students")
-                .select(`
-                    id,
-                    student_number,
-                    first_name,
-                    last_name,
-                    email,
-                    course,
-                    year_level,
-                    birthdate,
-                    profile_picture_path
-                `)
-                .eq("id", currentUser.id)
-                .maybeSingle();
-
-            if (studentError) {
-                throw studentError;
-            }
-
-            if (!student) {
-
-                throw new Error(
-                    "Student record not found. Please contact the administrator."
-                );
-            }
-
-            currentStudent = student;
-
-            displayProfile(student);
-
-            loading.style.display = "none";
-            content.hidden = false;
-
-            return student;
-
-        } catch (error) {
-
-            console.error("Profile loading error:", error);
-
-            loading.style.display = "none";
-
-            showMessage(
-                "Unable to load profile: " + error.message,
-                "error"
-            );
-
-            const retry = document.createElement("button");
-            retry.type = "button";
-            retry.className = "edit-button";
-            retry.textContent = "TRY AGAIN";
-            retry.onclick = () => loadProfile();
-
-            loading.style.display = "block";
-            loading.textContent = "";
-            loading.appendChild(document.createTextNode(
-                "Unable to load your profile. "
-            ));
-            loading.appendChild(retry);
-
-            return null;
-        }
-
-    })();
-
-    try {
-        return await profileLoadPromise;
-    } finally {
-        profileLoadPromise = null;
-    }
-}
-
-
-// ==========================================
-// DISPLAY PROFILE INFORMATION
-// ==========================================
-
-function displayProfile(student) {
-
-    const fullName = [
-        student.first_name,
-        student.last_name
-    ].filter(Boolean).join(" ").trim();
-
-    document.getElementById("displayStudentNumber").textContent =
-        student.student_number || "Not assigned";
-
-    document.getElementById("displayFirstName").textContent =
-        student.first_name || "Not provided";
-
-    document.getElementById("displayLastName").textContent =
-        student.last_name || "Not provided";
-
-    document.getElementById("displayEmail").textContent =
-        student.email || currentUser.email || "Not provided";
-
-    document.getElementById("displayCourse").textContent =
-        student.course || "Not provided";
-
-    document.getElementById("displayYear").textContent =
-        student.year_level || "Not provided";
-
-    document.getElementById("displayBirthdate").textContent =
-        formatBirthdate(student.birthdate);
-
-    document.getElementById("photoName").textContent =
-        fullName || "Student Name";
-
-    document.getElementById("photoCourse").textContent =
-        student.course || "Course not provided";
-
-    currentPhotoPath = student.profile_picture_path || null;
-
-    // Fill edit form
-
-    document.getElementById("editStudentNumber").value =
-        student.student_number || "";
-
-    document.getElementById("editFirstName").value =
-        student.first_name || "";
-
-    document.getElementById("editLastName").value =
-        student.last_name || "";
-
-    document.getElementById("editEmail").value =
-        student.email || currentUser.email || "";
-
-    document.getElementById("editCourse").value =
-        student.course || "";
-
-    document.getElementById("editYear").value =
-        student.year_level || "";
-
-    document.getElementById("editBirthdate").value =
-        student.birthdate || "";
-
-    loadProfilePicture(currentPhotoPath);
-}
-
-
-// ==========================================
-// FORMAT BIRTHDATE
-// ==========================================
-
-function formatBirthdate(date) {
-
-    if (!date) {
-        return "Not provided";
-    }
-
-    const parsed = new Date(date + "T00:00:00");
-
-    if (isNaN(parsed.getTime())) {
-        return date;
-    }
-
-    return parsed.toLocaleDateString("en-PH", {
-        year: "numeric",
-        month: "long",
-        day: "numeric"
-    });
-}
-
-
-// ==========================================
-// LOAD PROFILE PHOTO
-// ==========================================
-
-async function loadProfilePicture(path) {
-
-    const image = document.getElementById("profileImage");
-    const placeholder = document.getElementById("photoPlaceholder");
-    const deleteButton = document.getElementById("deletePhotoButton");
-
-    image.hidden = true;
-    placeholder.hidden = false;
-
-    deleteButton.hidden = !path;
-
-    if (!path) {
-        return;
-    }
-
-    try {
-
-        const {
-            data,
-            error
-        } = await db.storage
-            .from(PHOTO_BUCKET)
-            .createSignedUrl(path, 3600);
-
-        if (error) {
-            throw error;
-        }
-
-        image.onload = function() {
-            image.hidden = false;
-            placeholder.hidden = true;
-        };
-
-        image.onerror = function() {
-            image.hidden = true;
-            placeholder.hidden = false;
-        };
-
-        image.src = data.signedUrl;
-
-    } catch (error) {
-
-        console.error("Profile photo loading error:", error);
-
-        image.hidden = true;
-        placeholder.hidden = false;
-    }
-}
-
-
-// ==========================================
-// OPEN / CLOSE EDIT FORM
-// ==========================================
-
-function toggleEditForm(show) {
-
-    const form = document.getElementById("editForm");
-
-    form.classList.toggle("show", show);
-
-    document.getElementById("editButton").hidden = show;
-
-    if (show) {
-        form.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-        });
-    } else if (currentStudent) {
-        displayProfile(currentStudent);
-        clearMessage();
-    }
-}
-
-
-// ==========================================
-// UPDATE PROFILE
-// ==========================================
-
-document.getElementById("editForm").addEventListener(
-    "submit",
-    async function(event) {
-
-        event.preventDefault();
-
-        if (!currentUser || !currentStudent) {
-            showMessage("Student information is not loaded.", "error");
-            return;
-        }
-
-        const saveButton = document.getElementById("saveButton");
-
-        const studentNumber =
-            document.getElementById("editStudentNumber").value.trim();
-
-        const firstName =
-            document.getElementById("editFirstName").value.trim();
-
-        const lastName =
-            document.getElementById("editLastName").value.trim();
-
-        const course =
-            document.getElementById("editCourse").value.trim();
-
-        const yearLevel =
-            document.getElementById("editYear").value;
-
-        const birthdate =
-            document.getElementById("editBirthdate").value || null;
-
-        if (!firstName || !lastName || !course || !yearLevel) {
-
-            showMessage(
-                "Please complete all required fields.",
-                "error"
-            );
-
-            return;
-        }
-
-        const originalText = saveButton.textContent;
-
-        saveButton.disabled = true;
-        saveButton.textContent = "SAVING...";
-
-        try {
-
-            const updates = {
-                student_number: studentNumber || null,
-                first_name: firstName,
-                last_name: lastName,
-                course: course,
-                year_level: yearLevel,
-                birthdate: birthdate
-            };
-
-            const {
-                data,
-                error
-            } = await db
-                .from("students")
-                .update(updates)
-                .eq("id", currentUser.id)
-                .select(`
-                    id,
-                    student_number,
-                    first_name,
-                    last_name,
-                    email,
-                    course,
-                    year_level,
-                    birthdate,
-                    profile_picture_path
-                `)
-                .single();
-
-            if (error) {
-                throw error;
-            }
-
-            currentStudent = data;
-
-            displayProfile(currentStudent);
-
-            toggleEditForm(false);
-
-            showMessage(
-                "Your profile information has been successfully updated.",
-                "success"
-            );
-
-        } catch (error) {
-
-            console.error("Profile update error:", error);
-
-            showMessage(
-                "Unable to update profile: " + error.message,
-                "error"
-            );
-
-        } finally {
-
-            saveButton.disabled = false;
-            saveButton.textContent = originalText;
-        }
-    }
-);
-
-
-// ==========================================
-// UPLOAD PROFILE PHOTO
-// ==========================================
-
-async function uploadProfilePhoto(event) {
-
-    const file = event.target.files[0];
-
-    if (!file) {
-        return;
-    }
-
-    const input = document.getElementById("photoInput");
-    const uploadButton = document.getElementById("uploadButton");
-
-    if (!currentUser || !currentStudent) {
-        showMessage("Student information is not loaded.", "error");
-        input.value = "";
-        return;
-    }
-
-    const allowedTypes = [
-        "image/jpeg",
-        "image/png",
-        "image/webp"
-    ];
-
-    if (!allowedTypes.includes(file.type)) {
-
-        showMessage(
-            "Invalid file format. Please upload JPG, PNG, or WEBP.",
-            "error"
-        );
-
-        input.value = "";
-        return;
-    }
-
-    if (file.size > MAX_PHOTO_SIZE) {
-
-        showMessage(
-            "File is too large. Maximum allowed size is 3 MB.",
-            "error"
-        );
-
-        input.value = "";
-        return;
-    }
-
-    const originalText = uploadButton.textContent;
-
-    input.disabled = true;
-    uploadButton.disabled = true;
-    uploadButton.textContent = "UPLOADING...";
-
-    let newPath = null;
-
-    try {
-
-        const extension = file.type === "image/jpeg"
-            ? "jpg"
-            : file.type === "image/png"
-                ? "png"
-                : "webp";
-
-        newPath =
-            currentUser.id +
-            "/profile-" +
-            Date.now() +
-            "." +
-            extension;
-
-        // Upload new image
-
-        const {
-            error: uploadError
-        } = await db.storage
-            .from(PHOTO_BUCKET)
-            .upload(newPath, file, {
-                cacheControl: "3600",
-                upsert: false,
-                contentType: file.type
-            });
-
-        if (uploadError) {
-            throw uploadError;
-        }
-
-        // Update database path
-
-        const oldPath = currentPhotoPath;
-
-        const {
-            data,
-            error: updateError
-        } = await db
-            .from("students")
-            .update({
-                profile_picture_path: newPath
-            })
-            .eq("id", currentUser.id)
-            .select(`
-                id,
-                student_number,
-                first_name,
-                last_name,
-                email,
-                course,
-                year_level,
-                birthdate,
-                profile_picture_path
-            `)
-            .single();
-
-        if (updateError) {
-            throw updateError;
-        }
-
-        currentStudent = data;
-        currentPhotoPath = newPath;
-
-        // Remove old image only after database update succeeds
-
-        if (oldPath) {
-
-            const {
-                error: removeError
-            } = await db.storage
-                .from(PHOTO_BUCKET)
-                .remove([oldPath]);
-
-            if (removeError) {
-                console.warn("Old photo cleanup error:", removeError);
-            }
-        }
-
-        displayProfile(currentStudent);
-
-        showMessage(
-            "Profile photo successfully updated.",
-            "success"
-        );
-
-    } catch (error) {
-
-        console.error("Photo upload error:", error);
-
-        // Remove newly uploaded file if database update failed
-
-        if (newPath) {
-            await db.storage
-                .from(PHOTO_BUCKET)
-                .remove([newPath]);
-        }
-
-        showMessage(
-            "Photo upload failed: " + error.message,
-            "error"
-        );
-
-    } finally {
-
-        input.disabled = false;
-        input.value = "";
-
-        uploadButton.disabled = false;
-        uploadButton.textContent = originalText;
-    }
-}
-
-
-// ==========================================
-// DELETE PROFILE PHOTO
-// ==========================================
-
-async function deleteProfilePhoto() {
-
-    if (!currentPhotoPath || !currentUser) {
-        return;
-    }
-
-    const confirmed = confirm(
-        "Are you sure you want to remove your profile photo?"
-    );
-
-    if (!confirmed) {
-        return;
-    }
-
-    const deleteButton =
-        document.getElementById("deletePhotoButton");
-
-    deleteButton.disabled = true;
-    deleteButton.textContent = "REMOVING...";
-
-    try {
-
-        const oldPath = currentPhotoPath;
-
-        // Clear database path first
-
-        const {
-            data,
-            error: updateError
-        } = await db
-            .from("students")
-            .update({
-                profile_picture_path: null
-            })
-            .eq("id", currentUser.id)
-            .select(`
-                id,
-                student_number,
-                first_name,
-                last_name,
-                email,
-                course,
-                year_level,
-                birthdate,
-                profile_picture_path
-            `)
-            .single();
-
-        if (updateError) {
-            throw updateError;
-        }
-
-        currentStudent = data;
-        currentPhotoPath = null;
-
-        // Remove file from storage
-
-        const {
-            error: removeError
-        } = await db.storage
-            .from(PHOTO_BUCKET)
-            .remove([oldPath]);
-
-        displayProfile(currentStudent);
-
-        if (removeError) {
-
-            showMessage(
-                "Your profile photo reference was cleared, but the old storage file could not be removed: " +
-                removeError.message,
-                "error"
-            );
-
-        } else {
-
-            showMessage(
-                "Profile photo successfully removed.",
-                "success"
-            );
-        }
-
-    } catch (error) {
-
-        console.error("Photo deletion error:", error);
-
-        showMessage(
-            "Unable to remove profile photo: " + error.message,
-            "error"
-        );
-
-    } finally {
-
-        deleteButton.disabled = false;
-        deleteButton.textContent = "Remove Profile Photo";
-    }
-}
-
-
-// ==========================================
-// LOGOUT
-// ==========================================
-
-async function logout() {
-
-    const confirmed = confirm(
-        "Are you sure you want to log out?"
-    );
-
-    if (!confirmed) {
-        return;
-    }
-
-    try {
-
-        const { error } = await db.auth.signOut();
-
-        if (error) {
-            throw error;
-        }
-
-        location.replace("index.html");
-
-    } catch (error) {
-
-        console.error("Logout error:", error);
-
-        alert("Unable to log out: " + error.message);
-    }
-}
-
-
-// ==========================================
-// INITIALIZE PAGE
-// ==========================================
-
-async function initializeProfile() {
-    await loadProfile();
-}
-
-initializeProfile();
-
-window.addEventListener("pageshow", function(event) {
-    if (event.persisted) {
-        initializeProfile();
-    }
+document.getElementById("profileForm").addEventListener("submit",async function(event){
+ event.preventDefault();
+ if(!currentUser){showMessage("Please log in again.",true);return;}
+ if(!currentStudent){showMessage("Student record not found. Please contact the administrator to create your student record.",true);return;}
+
+ const button=document.getElementById("saveBtn");
+ button.disabled=true;
+ button.textContent="SAVING...";
+
+ const updates={
+  student_number:document.getElementById("studentNumber").value.trim()||null,
+  first_name:document.getElementById("firstName").value.trim(),
+  last_name:document.getElementById("lastName").value.trim(),
+  course:document.getElementById("course").value.trim(),
+  year_level:document.getElementById("yearLevel").value,
+  birthdate:document.getElementById("birthdate").value||null
+ };
+
+ try{
+  if(!updates.first_name||!updates.last_name||!updates.course||!updates.year_level){
+   throw new Error("Please complete all required fields.");
+  }
+
+  const {data,error}=await supabaseClient.from("students")
+   .update(updates)
+   .eq("id",currentUser.id)
+   .select()
+   .maybeSingle();
+
+  if(error)throw error;
+  if(!data)throw new Error("Profile was not updated. Check your students table UPDATE policy for this account.");
+
+  currentStudent=data;
+  showMessage("Your profile has been updated successfully!");
+ }catch(error){
+  console.error(error);
+  showMessage("Unable to save profile: "+error.message,true);
+ }finally{
+  button.disabled=false;
+  button.textContent="SAVE PROFILE";
+ }
 });
 
-</script>
+document.getElementById("profilePhoto").addEventListener("change",async function(){
+ const file=this.files[0];
+ if(!file)return;
+ if(!currentUser){showMessage("Please log in again.",true);return;}
+ if(!currentStudent){showMessage("Student record not found. Please contact the administrator.",true);this.value="";return;}
 
+ const allowed=["image/jpeg","image/png","image/webp"];
+ if(!allowed.includes(file.type)){
+  showMessage("Only JPG, PNG, and WEBP images are allowed.",true);
+  this.value="";
+  return;
+ }
+ if(file.size>3*1024*1024){
+  showMessage("Profile picture must not exceed 3 MB.",true);
+  this.value="";
+  return;
+ }
+
+ const status=document.getElementById("photoStatus");
+ status.textContent="Uploading photo...";
+
+ try{
+  const extension=file.name.split(".").pop().toLowerCase();
+  const filePath=currentUser.id+"/profile_"+Date.now()+"."+extension;
+
+  const {error:uploadError}=await supabaseClient.storage
+   .from("student-profiles").upload(filePath,file,{upsert:true,contentType:file.type});
+  if(uploadError)throw uploadError;
+
+  const {error:updateError}=await supabaseClient.from("students")
+   .update({profile_picture_path:filePath})
+   .eq("id",currentUser.id);
+  if(updateError){
+   await supabaseClient.storage.from("student-profiles").remove([filePath]);
+   throw updateError;
+  }
+
+  currentStudent.profile_picture_path=filePath;
+  const {data:imageData,error:imageError}=await supabaseClient.storage
+   .from("student-profiles").createSignedUrl(filePath,3600);
+  if(imageError)throw imageError;
+
+  displayPhoto(imageData.signedUrl);
+  status.textContent="Profile picture uploaded successfully.";
+  showMessage("Profile picture updated successfully!");
+  this.value="";
+ }catch(error){
+  console.error(error);
+  status.textContent="";
+  showMessage("Photo upload failed: "+error.message,true);
+ }
+});
+
+async function logout(){
+ if(!confirm("Are you sure you want to log out?"))return;
+ const {error}=await supabaseClient.auth.signOut();
+ if(error){showMessage("Unable to log out: "+error.message,true);return;}
+ location.href="index.html";
+}
+
+document.addEventListener("DOMContentLoaded",initializePage);
+</script>
 </body>
 </html>
+
