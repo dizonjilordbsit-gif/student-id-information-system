@@ -11,6 +11,7 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
 :root{--dark-green:#003b24;--main-green:#075c3b;--light-green:#128052;--gold:#d4af37;--cream:#f8f6ef;--white:#fff;--text-dark:#123526}
 body{min-height:100vh;background:#f5f3ec;color:var(--text-dark);width:100%}
+
 .top-header{background:var(--dark-green);color:white;padding:15px 5%;display:flex;align-items:center;justify-content:space-between;border-bottom:5px solid var(--gold);gap:15px;margin-left:255px}
 .brand{display:flex;align-items:center;gap:15px}
 .brand img{width:65px;height:65px;object-fit:contain;filter:drop-shadow(0 0 7px #00ff66)}
@@ -48,7 +49,7 @@ body{min-height:100vh;background:#f5f3ec;color:var(--text-dark);width:100%}
 .card-header h2::before{content:"";display:inline-block;width:7px;height:25px;background:var(--gold);margin-right:13px;vertical-align:middle}
 .card-body{padding:20px}
 .notice{background:#fff8df;border:1px solid #e5d9b5;border-left:5px solid var(--gold);border-radius:8px;padding:16px 18px;margin-bottom:22px;color:#5c5130;font-size:14px;line-height:1.6}
-#message{margin:0 0 17px;font-size:14px;font-weight:bold;overflow-wrap:anywhere}
+#message{margin:0 0 17px;font-size:14px;font-weight:bold;overflow-wrap:anywhere;line-height:1.6}
 
 /* PROFILE PHOTO */
 .profile-photo-section{display:flex;align-items:center;gap:22px;flex-wrap:wrap;margin-bottom:25px;padding:18px;background:white;border:2px solid #e5d9b5;border-radius:10px}
@@ -74,6 +75,7 @@ body{min-height:100vh;background:#f5f3ec;color:var(--text-dark);width:100%}
 .save-btn{background:linear-gradient(120deg,#003b24,#087448);color:white}
 .cancel-btn{background:white;border-color:var(--main-green);color:var(--main-green)}
 .btn:disabled{opacity:.6;cursor:not-allowed}
+
 footer{margin-left:255px;background:var(--dark-green);color:white;text-align:center;padding:20px;border-top:4px solid var(--gold);font-size:13px}
 
 /* RESPONSIVE */
@@ -129,13 +131,21 @@ footer{padding:17px 12px;font-size:10px;line-height:1.6}
 </head>
 
 <body>
+
 <header class="top-header">
     <button type="button" class="menu-toggle" onclick="toggleSidebar()" aria-label="Open navigation menu">☰</button>
+
     <div class="brand">
         <img src="https://64.media.tumblr.com/33ca84afd52d5cd0ef7bb1bb66c6176b/tumblr_o4ti6j8k6r1unefbyo1_400.png" alt="PLMUN Logo">
-        <div class="brand-text"><h1>I-PILIMON</h1><p>STUDENT ID INFORMATION</p></div>
+        <div class="brand-text">
+            <h1>I-PILIMON</h1>
+            <p>STUDENT ID INFORMATION</p>
+        </div>
     </div>
-    <div class="header-right"><button type="button" onclick="logout()">LOG OUT ↗</button></div>
+
+    <div class="header-right">
+        <button type="button" onclick="logout()">LOG OUT ↗</button>
+    </div>
 </header>
 
 <div id="sidebarOverlay" class="sidebar-overlay" onclick="closeSidebar()"></div>
@@ -143,8 +153,12 @@ footer{padding:17px 12px;font-size:10px;line-height:1.6}
 <aside class="sidebar" id="sidebar">
     <div class="sidebar-heading">
         <img src="https://64.media.tumblr.com/33ca84afd52d5cd0ef7bb1bb66c6176b/tumblr_o4ti6j8k6r1unefbyo1_400.png" alt="PLMUN Logo">
-        <div><h3>STUDENT PORTAL</h3><p>Navigation Menu</p></div>
+        <div>
+            <h3>STUDENT PORTAL</h3>
+            <p>Navigation Menu</p>
+        </div>
     </div>
+
     <nav class="sidebar-nav">
         <button class="sidebar-link" onclick="location.href='student-dashboard.html'"><span>▦</span> Dashboard</button>
         <button class="sidebar-link active" onclick="location.href='profile.html'"><span>👤</span> My Profile</button>
@@ -154,26 +168,42 @@ footer{padding:17px 12px;font-size:10px;line-height:1.6}
         <div class="sidebar-divider"></div>
         <button class="sidebar-link logout-link" onclick="logout()"><span>↗</span> Log Out</button>
     </nav>
-    <div class="sidebar-footer"><p>I-PILIMON</p><small>Student ID Information System</small></div>
+
+    <div class="sidebar-footer">
+        <p>I-PILIMON</p>
+        <small>Student ID Information System</small>
+    </div>
 </aside>
 
 <main class="container">
+
     <section class="page-heading">
         <h2>My Profile</h2>
         <p>View and update your personal and academic information.</p>
     </section>
 
-    <div class="notice"><strong>PROFILE REMINDER:</strong> Keep your information accurate and updated. The details saved here will be used for your Student ID application.</div>
+    <div class="notice">
+        <strong>PROFILE REMINDER:</strong>
+        Keep your information accurate and updated. The details saved here will be used for your Student ID application.
+    </div>
+
     <div id="message"></div>
 
     <section class="card">
-        <div class="card-header"><h2>Profile Information</h2></div>
+        <div class="card-header">
+            <h2>Profile Information</h2>
+        </div>
+
         <div class="card-body">
 
             <div class="profile-photo-section">
                 <div id="photoContainer">
-                    <div class="photo-placeholder"><span>👤</span>PROFILE PHOTO</div>
+                    <div class="photo-placeholder">
+                        <span>👤</span>
+                        PROFILE PHOTO
+                    </div>
                 </div>
+
                 <div class="photo-info">
                     <h3>Profile Picture</h3>
                     <p>Upload a clear JPG, PNG, or WEBP image. Maximum file size: 3 MB.</p>
@@ -183,6 +213,7 @@ footer{padding:17px 12px;font-size:10px;line-height:1.6}
             </div>
 
             <form id="profileForm" class="profile-form">
+
                 <div class="form-group">
                     <label for="studentNumber">Student ID Number</label>
                     <input type="text" id="studentNumber" placeholder="Enter student ID number">
@@ -195,22 +226,22 @@ footer{padding:17px 12px;font-size:10px;line-height:1.6}
                 </div>
 
                 <div class="form-group">
-                    <label for="firstName">First Name</label>
-                    <input type="text" id="firstName" required>
+                    <label for="firstName">First Name *</label>
+                    <input type="text" id="firstName" placeholder="Enter first name" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="lastName">Last Name</label>
-                    <input type="text" id="lastName" required>
+                    <label for="lastName">Last Name *</label>
+                    <input type="text" id="lastName" placeholder="Enter last name" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="course">Course / Program</label>
-                    <input type="text" id="course" placeholder="Enter your course" required>
+                    <label for="course">Course / Program *</label>
+                    <input type="text" id="course" placeholder="Example: BSIT" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="yearLevel">Year Level</label>
+                    <label for="yearLevel">Year Level *</label>
                     <select id="yearLevel" required>
                         <option value="">Select year level</option>
                         <option value="1st Year">1st Year</option>
@@ -230,207 +261,510 @@ footer{padding:17px 12px;font-size:10px;line-height:1.6}
                     <button type="submit" class="btn save-btn" id="saveBtn">SAVE PROFILE</button>
                     <button type="button" class="btn cancel-btn" onclick="loadProfile()">RESET CHANGES</button>
                 </div>
+
             </form>
         </div>
     </section>
 </main>
 
-<footer>© 2026 Pamantasan ng Lungsod ng Muntinlupa | I-PILIMON Student ID Information System</footer>
+<footer>
+    © 2026 Pamantasan ng Lungsod ng Muntinlupa | I-PILIMON Student ID Information System
+</footer>
 
 <script>
-const SUPABASE_URL="https://mlrpkkmexmboqrnmjkuy.supabase.co";
-const SUPABASE_ANON_KEY="sb_publishable_-BIYMjip4Zon8HwZUCPT1Q_P0pDCMke";
-const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+/* ==========================================
+   SUPABASE CONFIGURATION
+========================================== */
 
-let currentUser=null;
-let currentStudent=null;
+const SUPABASE_URL = "https://mlrpkkmexmboqrnmjkuy.supabase.co";
 
-function toggleSidebar(){
- document.getElementById("sidebar").classList.toggle("open");
- document.getElementById("sidebarOverlay").classList.toggle("show");
-}
-function closeSidebar(){
- document.getElementById("sidebar").classList.remove("open");
- document.getElementById("sidebarOverlay").classList.remove("show");
-}
-function showMessage(message,isError=false){
- const box=document.getElementById("message");
- box.textContent=message;
- box.style.color=isError?"#a00000":"#075c3b";
-}
-function displayPhoto(url){
- const container=document.getElementById("photoContainer");
- if(!url){
-  container.innerHTML='<div class="photo-placeholder"><span>👤</span>PROFILE PHOTO</div>';
-  return;
- }
- const img=document.createElement("img");
- img.src=url;
- img.alt="Student profile photo";
- img.className="photo-preview";
- img.onerror=()=>displayPhoto(null);
- container.replaceChildren(img);
+const SUPABASE_ANON_KEY = "sb_publishable_-BIYMjip4Zon8HwZUCPT1Q_P0pDCMke";
+
+const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+);
+
+let currentUser = null;
+let currentStudent = null;
+
+
+/* ==========================================
+   SIDEBAR
+========================================== */
+
+function toggleSidebar() {
+    document.getElementById("sidebar").classList.toggle("open");
+    document.getElementById("sidebarOverlay").classList.toggle("show");
 }
 
-async function initializePage(){
- try{
-  const {data,error}=await supabaseClient.auth.getSession();
-  if(error)throw error;
-  if(!data.session){location.href="index.html";return;}
-  currentUser=data.session.user;
-  await loadProfile();
- }catch(error){
-  console.error(error);
-  showMessage("Unable to connect to your account: "+error.message,true);
- }
+function closeSidebar() {
+    document.getElementById("sidebar").classList.remove("open");
+    document.getElementById("sidebarOverlay").classList.remove("show");
 }
 
-async function loadProfile(){
- if(!currentUser)return;
- showMessage("Loading profile...");
- try{
-  const {data:student,error}=await supabaseClient.from("students")
-   .select("id,student_number,first_name,last_name,email,course,year_level,birthdate,profile_picture_path")
-   .eq("id",currentUser.id).maybeSingle();
 
-  if(error)throw error;
+/* ==========================================
+   MESSAGE
+========================================== */
 
-  if(!student){
-   currentStudent=null;
-   document.getElementById("profileForm").reset();
-   document.getElementById("email").value=currentUser.email||"";
-   displayPhoto(null);
-   showMessage("No student record was found. Your student record must be created before this profile can be saved.",true);
-   return;
-  }
+function showMessage(message, isError = false) {
+    const box = document.getElementById("message");
 
-  currentStudent=student;
-  document.getElementById("studentNumber").value=student.student_number||"";
-  document.getElementById("firstName").value=student.first_name||"";
-  document.getElementById("lastName").value=student.last_name||"";
-  document.getElementById("email").value=student.email||currentUser.email||"";
-  document.getElementById("course").value=student.course||"";
-  document.getElementById("yearLevel").value=student.year_level||"";
-  document.getElementById("birthdate").value=student.birthdate||"";
-
-  displayPhoto(null);
-  if(student.profile_picture_path){
-   const {data:imageData,error:imageError}=await supabaseClient.storage
-    .from("student-profiles").createSignedUrl(student.profile_picture_path,3600);
-   if(!imageError&&imageData?.signedUrl)displayPhoto(imageData.signedUrl);
-  }
-  showMessage("");
- }catch(error){
-  console.error(error);
-  showMessage("Unable to load profile: "+error.message,true);
- }
+    box.textContent = message;
+    box.style.color = isError ? "#a00000" : "#075c3b";
 }
 
-document.getElementById("profileForm").addEventListener("submit",async function(event){
- event.preventDefault();
- if(!currentUser){showMessage("Please log in again.",true);return;}
- if(!currentStudent){showMessage("Student record not found. Please contact the administrator to create your student record.",true);return;}
 
- const button=document.getElementById("saveBtn");
- button.disabled=true;
- button.textContent="SAVING...";
+/* ==========================================
+   PROFILE PHOTO DISPLAY
+========================================== */
 
- const updates={
-  student_number:document.getElementById("studentNumber").value.trim()||null,
-  first_name:document.getElementById("firstName").value.trim(),
-  last_name:document.getElementById("lastName").value.trim(),
-  course:document.getElementById("course").value.trim(),
-  year_level:document.getElementById("yearLevel").value,
-  birthdate:document.getElementById("birthdate").value||null
- };
+function displayPhoto(url) {
+    const container = document.getElementById("photoContainer");
 
- try{
-  if(!updates.first_name||!updates.last_name||!updates.course||!updates.year_level){
-   throw new Error("Please complete all required fields.");
-  }
+    if (!url) {
+        container.innerHTML = `
+            <div class="photo-placeholder">
+                <span>👤</span>
+                PROFILE PHOTO
+            </div>
+        `;
+        return;
+    }
 
-  const {data,error}=await supabaseClient.from("students")
-   .update(updates)
-   .eq("id",currentUser.id)
-   .select()
-   .maybeSingle();
+    const img = document.createElement("img");
 
-  if(error)throw error;
-  if(!data)throw new Error("Profile was not updated. Check your students table UPDATE policy for this account.");
+    img.src = url;
+    img.alt = "Student profile photo";
+    img.className = "photo-preview";
 
-  currentStudent=data;
-  showMessage("Your profile has been updated successfully!");
- }catch(error){
-  console.error(error);
-  showMessage("Unable to save profile: "+error.message,true);
- }finally{
-  button.disabled=false;
-  button.textContent="SAVE PROFILE";
- }
-});
+    img.onerror = function() {
+        displayPhoto(null);
+    };
 
-document.getElementById("profilePhoto").addEventListener("change",async function(){
- const file=this.files[0];
- if(!file)return;
- if(!currentUser){showMessage("Please log in again.",true);return;}
- if(!currentStudent){showMessage("Student record not found. Please contact the administrator.",true);this.value="";return;}
-
- const allowed=["image/jpeg","image/png","image/webp"];
- if(!allowed.includes(file.type)){
-  showMessage("Only JPG, PNG, and WEBP images are allowed.",true);
-  this.value="";
-  return;
- }
- if(file.size>3*1024*1024){
-  showMessage("Profile picture must not exceed 3 MB.",true);
-  this.value="";
-  return;
- }
-
- const status=document.getElementById("photoStatus");
- status.textContent="Uploading photo...";
-
- try{
-  const extension=file.name.split(".").pop().toLowerCase();
-  const filePath=currentUser.id+"/profile_"+Date.now()+"."+extension;
-
-  const {error:uploadError}=await supabaseClient.storage
-   .from("student-profiles").upload(filePath,file,{upsert:true,contentType:file.type});
-  if(uploadError)throw uploadError;
-
-  const {error:updateError}=await supabaseClient.from("students")
-   .update({profile_picture_path:filePath})
-   .eq("id",currentUser.id);
-  if(updateError){
-   await supabaseClient.storage.from("student-profiles").remove([filePath]);
-   throw updateError;
-  }
-
-  currentStudent.profile_picture_path=filePath;
-  const {data:imageData,error:imageError}=await supabaseClient.storage
-   .from("student-profiles").createSignedUrl(filePath,3600);
-  if(imageError)throw imageError;
-
-  displayPhoto(imageData.signedUrl);
-  status.textContent="Profile picture uploaded successfully.";
-  showMessage("Profile picture updated successfully!");
-  this.value="";
- }catch(error){
-  console.error(error);
-  status.textContent="";
-  showMessage("Photo upload failed: "+error.message,true);
- }
-});
-
-async function logout(){
- if(!confirm("Are you sure you want to log out?"))return;
- const {error}=await supabaseClient.auth.signOut();
- if(error){showMessage("Unable to log out: "+error.message,true);return;}
- location.href="index.html";
+    container.replaceChildren(img);
 }
 
-document.addEventListener("DOMContentLoaded",initializePage);
+
+/* ==========================================
+   INITIALIZE PAGE
+========================================== */
+
+async function initializePage() {
+    try {
+        const { data, error } = await supabaseClient.auth.getSession();
+
+        if (error) throw error;
+
+        if (!data.session) {
+            location.href = "index.html";
+            return;
+        }
+
+        currentUser = data.session.user;
+
+        document.getElementById("email").value = currentUser.email || "";
+
+        await loadProfile();
+
+    } catch (error) {
+        console.error(error);
+
+        showMessage(
+            "Unable to connect to your account: " + error.message,
+            true
+        );
+    }
+}
+
+
+/* ==========================================
+   LOAD PROFILE
+========================================== */
+
+async function loadProfile() {
+    if (!currentUser) return;
+
+    showMessage("Loading profile...");
+
+    try {
+        const { data: student, error } = await supabaseClient
+            .from("students")
+            .select(`
+                id,
+                student_number,
+                first_name,
+                last_name,
+                email,
+                course,
+                year_level,
+                birthdate,
+                profile_picture_path
+            `)
+            .eq("id", currentUser.id)
+            .maybeSingle();
+
+        if (error) throw error;
+
+        currentStudent = student || null;
+
+        // Always show the authenticated email.
+        document.getElementById("email").value =
+            student?.email || currentUser.email || "";
+
+        // If no student row exists yet, allow the user to complete the form.
+        if (!student) {
+            document.getElementById("studentNumber").value = "";
+            document.getElementById("firstName").value = "";
+            document.getElementById("lastName").value = "";
+            document.getElementById("course").value = "";
+            document.getElementById("yearLevel").value = "";
+            document.getElementById("birthdate").value = "";
+
+            displayPhoto(null);
+
+            showMessage(
+                "Your student information is not yet complete. Please fill in the required fields and click SAVE PROFILE."
+            );
+
+            return;
+        }
+
+        // Load existing student information.
+        document.getElementById("studentNumber").value =
+            student.student_number || "";
+
+        document.getElementById("firstName").value =
+            student.first_name || "";
+
+        document.getElementById("lastName").value =
+            student.last_name || "";
+
+        document.getElementById("course").value =
+            student.course || "";
+
+        document.getElementById("yearLevel").value =
+            student.year_level || "";
+
+        document.getElementById("birthdate").value =
+            student.birthdate || "";
+
+        displayPhoto(null);
+
+        // Load saved profile picture.
+        if (student.profile_picture_path) {
+            const { data: imageData, error: imageError } =
+                await supabaseClient.storage
+                    .from("student-profiles")
+                    .createSignedUrl(student.profile_picture_path, 3600);
+
+            if (!imageError && imageData?.signedUrl) {
+                displayPhoto(imageData.signedUrl);
+            }
+        }
+
+        const incomplete =
+            !student.first_name ||
+            !student.last_name ||
+            !student.course ||
+            !student.year_level;
+
+        if (incomplete) {
+            showMessage(
+                "Some profile information is missing. Please complete the required fields and save your profile."
+            );
+        } else {
+            showMessage("Profile loaded successfully.");
+        }
+
+    } catch (error) {
+        console.error(error);
+
+        showMessage(
+            "Unable to load profile: " + error.message,
+            true
+        );
+    }
+}
+
+
+/* ==========================================
+   SAVE PROFILE
+   UPSERT = UPDATE EXISTING OR INSERT NEW
+========================================== */
+
+document.getElementById("profileForm").addEventListener(
+    "submit",
+    async function(event) {
+
+        event.preventDefault();
+
+        if (!currentUser) {
+            showMessage("Please log in again.", true);
+            return;
+        }
+
+        const button = document.getElementById("saveBtn");
+
+        const updates = {
+            id: currentUser.id,
+
+            student_number:
+                document.getElementById("studentNumber").value.trim() || null,
+
+            first_name:
+                document.getElementById("firstName").value.trim(),
+
+            last_name:
+                document.getElementById("lastName").value.trim(),
+
+            email:
+                currentUser.email,
+
+            course:
+                document.getElementById("course").value.trim(),
+
+            year_level:
+                document.getElementById("yearLevel").value,
+
+            birthdate:
+                document.getElementById("birthdate").value || null
+        };
+
+        // Validate required fields.
+        if (
+            !updates.first_name ||
+            !updates.last_name ||
+            !updates.email ||
+            !updates.course ||
+            !updates.year_level
+        ) {
+            showMessage(
+                "Please complete First Name, Last Name, Course, and Year Level.",
+                true
+            );
+            return;
+        }
+
+        button.disabled = true;
+        button.textContent = "SAVING...";
+
+        showMessage("Saving your student information...");
+
+        try {
+            const { data, error } = await supabaseClient
+                .from("students")
+                .upsert(updates, {
+                    onConflict: "id"
+                })
+                .select()
+                .single();
+
+            if (error) throw error;
+
+            currentStudent = data;
+
+            showMessage(
+                "Your student profile has been saved successfully!"
+            );
+
+            // Reload saved information and profile photo.
+            await loadProfile();
+
+        } catch (error) {
+            console.error(error);
+
+            showMessage(
+                "Unable to save profile: " + error.message,
+                true
+            );
+
+        } finally {
+            button.disabled = false;
+            button.textContent = "SAVE PROFILE";
+        }
+    }
+);
+
+
+/* ==========================================
+   UPLOAD PROFILE PHOTO
+========================================== */
+
+document.getElementById("profilePhoto").addEventListener(
+    "change",
+    async function() {
+
+        const file = this.files[0];
+
+        if (!file) return;
+
+        if (!currentUser) {
+            showMessage("Please log in again.", true);
+            this.value = "";
+            return;
+        }
+
+        // A student record must exist before saving the photo path.
+        if (!currentStudent) {
+            showMessage(
+                "Please save your required student information first before uploading a profile picture.",
+                true
+            );
+
+            this.value = "";
+            return;
+        }
+
+        const allowed = [
+            "image/jpeg",
+            "image/png",
+            "image/webp"
+        ];
+
+        if (!allowed.includes(file.type)) {
+            showMessage(
+                "Only JPG, PNG, and WEBP images are allowed.",
+                true
+            );
+
+            this.value = "";
+            return;
+        }
+
+        if (file.size > 3 * 1024 * 1024) {
+            showMessage(
+                "Profile picture must not exceed 3 MB.",
+                true
+            );
+
+            this.value = "";
+            return;
+        }
+
+        const status = document.getElementById("photoStatus");
+
+        status.textContent = "Uploading photo...";
+
+        try {
+            const extension = file.name
+                .split(".")
+                .pop()
+                .toLowerCase();
+
+            const filePath =
+                currentUser.id +
+                "/profile_" +
+                Date.now() +
+                "." +
+                extension;
+
+            // Upload image to Supabase Storage.
+            const { error: uploadError } = await supabaseClient
+                .storage
+                .from("student-profiles")
+                .upload(filePath, file, {
+                    upsert: true,
+                    contentType: file.type
+                });
+
+            if (uploadError) throw uploadError;
+
+            // Save uploaded image path to students table.
+            const { data: updatedStudent, error: updateError } =
+                await supabaseClient
+                    .from("students")
+                    .update({
+                        profile_picture_path: filePath
+                    })
+                    .eq("id", currentUser.id)
+                    .select()
+                    .maybeSingle();
+
+            if (updateError) {
+                await supabaseClient
+                    .storage
+                    .from("student-profiles")
+                    .remove([filePath]);
+
+                throw updateError;
+            }
+
+            if (!updatedStudent) {
+                throw new Error(
+                    "The photo was uploaded, but the student record could not be updated. Check your students UPDATE policy."
+                );
+            }
+
+            currentStudent = updatedStudent;
+
+            const { data: imageData, error: imageError } =
+                await supabaseClient.storage
+                    .from("student-profiles")
+                    .createSignedUrl(filePath, 3600);
+
+            if (imageError) throw imageError;
+
+            displayPhoto(imageData.signedUrl);
+
+            status.textContent =
+                "Profile picture uploaded successfully.";
+
+            showMessage(
+                "Your profile picture has been updated successfully!"
+            );
+
+            this.value = "";
+
+        } catch (error) {
+            console.error(error);
+
+            status.textContent = "";
+
+            showMessage(
+                "Photo upload failed: " + error.message,
+                true
+            );
+
+            this.value = "";
+        }
+    }
+);
+
+
+/* ==========================================
+   LOG OUT
+========================================== */
+
+async function logout() {
+    if (!confirm("Are you sure you want to log out?")) {
+        return;
+    }
+
+    const { error } = await supabaseClient.auth.signOut();
+
+    if (error) {
+        showMessage(
+            "Unable to log out: " + error.message,
+            true
+        );
+        return;
+    }
+
+    location.href = "index.html";
+}
+
+
+/* ==========================================
+   START
+========================================== */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    initializePage
+);
 </script>
+
 </body>
 </html>
-
