@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,14 +24,14 @@
     --gold: #d4af37;
     --cream: #f8f6ef;
     --white: #ffffff;
-    --text: #26352d;
+    --text: #123526;
     --muted: #718078;
     --border: #e3e9e4;
     --danger: #c0392b;
 }
 
 body {
-    background: var(--cream);
+    background: #f5f3ec;
     color: var(--text);
     min-height: 100vh;
 }
@@ -47,14 +48,14 @@ body {
     z-index: 1000;
     padding: 25px 17px;
     border-right: 3px solid var(--gold);
-    transition: transform 0.3s ease;
+    transition: transform .3s ease;
     overflow-y: auto;
 }
 
 .sidebar-logo {
     text-align: center;
     padding-bottom: 25px;
-    border-bottom: 1px solid rgba(212,175,55,0.4);
+    border-bottom: 1px solid rgba(212,175,55,.4);
 }
 
 .sidebar-logo img {
@@ -104,13 +105,14 @@ body {
     text-decoration: none;
     border-radius: 8px;
     font-size: 14px;
-    transition: 0.2s;
+    transition: .2s;
 }
 
 .sidebar-menu a:hover,
 .sidebar-menu a.active {
-    background: var(--main-green);
-    color: var(--gold);
+    background: var(--gold);
+    color: var(--dark-green);
+    font-weight: bold;
     border-left: 3px solid var(--gold);
 }
 
@@ -123,7 +125,7 @@ body {
 .sidebar-footer {
     margin-top: 35px;
     padding: 15px 10px;
-    border-top: 1px solid rgba(255,255,255,0.15);
+    border-top: 1px solid rgba(255,255,255,.15);
     color: #cbd7cf;
     font-size: 11px;
     text-align: center;
@@ -137,14 +139,15 @@ body {
 }
 
 .top-header {
-    height: 75px;
-    background: var(--white);
-    border-bottom: 3px solid var(--gold);
+    min-height: 75px;
+    background: var(--dark-green);
+    color: white;
+    border-bottom: 5px solid var(--gold);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 35px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    padding: 12px 35px;
+    gap: 15px;
 }
 
 .header-left {
@@ -154,26 +157,26 @@ body {
 }
 
 .header-left h2 {
-    color: var(--dark-green);
+    color: white;
     font-size: 19px;
 }
 
 .header-left p {
-    color: var(--muted);
+    color: var(--gold);
     font-size: 11px;
     margin-top: 4px;
 }
 
 .header-right {
-    color: var(--main-green);
+    color: var(--gold);
     font-size: 13px;
     font-weight: bold;
 }
 
 .menu-toggle {
     display: none;
-    border: none;
-    background: var(--dark-green);
+    border: 1px solid var(--gold);
+    background: transparent;
     color: white;
     padding: 9px 12px;
     border-radius: 5px;
@@ -185,7 +188,7 @@ body {
 
 .page-container {
     padding: 30px 35px;
-    max-width: 1300px;
+    max-width: 1450px;
     margin: auto;
 }
 
@@ -195,7 +198,7 @@ body {
 
 .page-heading h1 {
     color: var(--dark-green);
-    font-size: 26px;
+    font-size: 27px;
     margin-bottom: 7px;
 }
 
@@ -240,16 +243,16 @@ body {
 
 .profile-layout {
     display: grid;
-    grid-template-columns: 320px 1fr;
+    grid-template-columns: 320px minmax(0, 1fr);
     gap: 23px;
     align-items: start;
 }
 
 .card {
-    background: white;
-    border-radius: 12px;
-    border: 1px solid var(--border);
-    box-shadow: 0 3px 12px rgba(0,0,0,0.04);
+    background: var(--cream);
+    border-radius: 13px;
+    border: 2px solid #e5d9b5;
+    box-shadow: 0 3px 10px rgba(0,0,0,.07);
     overflow: hidden;
 }
 
@@ -261,8 +264,8 @@ body {
 }
 
 .card-header h3 {
-    font-size: 15px;
-    letter-spacing: 0.3px;
+    font-size: 16px;
+    letter-spacing: .3px;
 }
 
 .card-body {
@@ -334,13 +337,14 @@ body {
     font-size: 13px;
     font-weight: bold;
     text-align: center;
-    transition: 0.2s;
+    transition: .2s;
 }
 
 .file-label {
     display: block;
-    background: var(--main-green);
+    background: linear-gradient(120deg, #003b24, #087448);
     color: white;
+    border: 1px solid var(--gold);
 }
 
 .file-label:hover {
@@ -375,7 +379,7 @@ body {
     font-weight: bold;
     margin-bottom: 18px;
     padding-bottom: 12px;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 2px solid #e5d9b5;
 }
 
 .info-grid {
@@ -386,15 +390,20 @@ body {
 
 .info-item {
     min-width: 0;
+    background: white;
+    padding: 15px;
+    border-left: 4px solid var(--gold);
+    border-radius: 7px;
+    overflow-wrap: anywhere;
 }
 
 .info-label {
     display: block;
-    color: var(--muted);
+    color: var(--main-green);
     font-size: 11px;
     font-weight: bold;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: .5px;
     margin-bottom: 7px;
 }
 
@@ -414,8 +423,8 @@ body {
     background: var(--gold);
     color: var(--dark-green);
     border: none;
-    padding: 11px 20px;
-    border-radius: 6px;
+    padding: 12px 20px;
+    border-radius: 7px;
     font-size: 13px;
     font-weight: bold;
     cursor: pointer;
@@ -423,7 +432,7 @@ body {
 }
 
 .edit-button:hover {
-    background: #c5a12d;
+    background: #edcc62;
 }
 
 /* EDIT FORM */
@@ -432,7 +441,7 @@ body {
     display: none;
     margin-top: 25px;
     padding-top: 23px;
-    border-top: 1px solid var(--border);
+    border-top: 2px solid #e5d9b5;
 }
 
 .edit-form.show {
@@ -476,7 +485,7 @@ body {
 .form-group input:focus,
 .form-group select:focus {
     border-color: var(--light-green);
-    box-shadow: 0 0 0 2px rgba(18,128,82,0.1);
+    box-shadow: 0 0 0 2px rgba(18,128,82,.1);
 }
 
 .form-group input[readonly] {
@@ -500,15 +509,16 @@ body {
 .save-button,
 .cancel-button {
     border: none;
-    border-radius: 6px;
-    padding: 11px 20px;
+    border-radius: 7px;
+    padding: 12px 20px;
     font-size: 13px;
     font-weight: bold;
     cursor: pointer;
 }
 
 .save-button {
-    background: var(--main-green);
+    background: linear-gradient(120deg, #003b24, #087448);
+    border: 1px solid var(--gold);
     color: white;
 }
 
@@ -522,21 +532,22 @@ body {
 }
 
 .save-button:disabled,
-.file-label:has(input:disabled) {
-    opacity: 0.6;
+.cancel-button:disabled,
+.action-button:disabled {
+    opacity: .6;
     cursor: not-allowed;
 }
 
 /* LOADING */
 
 .loading-box {
-    background: white;
+    background: var(--cream);
     padding: 35px;
-    border-radius: 10px;
+    border-radius: 13px;
     text-align: center;
     color: var(--main-green);
     font-size: 14px;
-    border: 1px solid var(--border);
+    border: 2px solid #e5d9b5;
 }
 
 .spinner {
@@ -546,7 +557,7 @@ body {
     border-top-color: var(--main-green);
     border-radius: 50%;
     margin: 0 auto 13px;
-    animation: spin 0.8s linear infinite;
+    animation: spin .8s linear infinite;
 }
 
 @keyframes spin {
@@ -561,7 +572,7 @@ body {
 
 @media(max-width: 1000px) {
     .profile-layout {
-        grid-template-columns: 280px 1fr;
+        grid-template-columns: 280px minmax(0, 1fr);
     }
 
     .page-container {
@@ -582,7 +593,7 @@ body {
         display: block;
         position: fixed;
         inset: 0;
-        background: rgba(0,0,0,0.45);
+        background: rgba(0,0,0,.5);
         z-index: 999;
     }
 
@@ -595,7 +606,7 @@ body {
     }
 
     .top-header {
-        padding: 0 18px;
+        padding: 12px 18px;
     }
 
     .profile-layout {
@@ -609,8 +620,8 @@ body {
     }
 
     .top-header {
-        height: 65px;
-        padding: 0 13px;
+        min-height: 65px;
+        padding: 10px 13px;
     }
 
     .header-left h2 {
@@ -657,10 +668,8 @@ body {
 
 <body>
 
-<!-- SIDEBAR OVERLAY -->
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 
-<!-- SIDEBAR -->
 <aside class="sidebar" id="sidebar">
 
     <div class="sidebar-logo">
@@ -725,13 +734,17 @@ body {
 
 </aside>
 
-<!-- MAIN CONTENT -->
 <main class="main-content">
 
     <header class="top-header">
 
         <div class="header-left">
-            <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+            <button
+                type="button"
+                class="menu-toggle"
+                id="menuToggle"
+                aria-label="Open navigation menu"
+            >☰</button>
 
             <div>
                 <h2>I-PILIMUN Student Portal</h2>
@@ -752,7 +765,7 @@ body {
             <p>View and manage your personal student information.</p>
         </div>
 
-        <div id="message" class="message"></div>
+        <div id="message" class="message" role="status" aria-live="polite"></div>
 
         <div id="loadingBox" class="loading-box">
             <div class="spinner"></div>
@@ -761,7 +774,6 @@ body {
 
         <div class="profile-layout" id="profileLayout" style="display:none;">
 
-            <!-- PROFILE PICTURE CARD -->
             <section class="card profile-card">
 
                 <div class="card-header">
@@ -786,9 +798,7 @@ body {
 
                     </div>
 
-                    <h2 class="profile-name" id="profileName">
-                        Student Name
-                    </h2>
+                    <h2 class="profile-name" id="profileName">Student Name</h2>
 
                     <p class="profile-course" id="profileCourse">
                         Course not provided
@@ -825,7 +835,6 @@ body {
 
             </section>
 
-            <!-- PROFILE INFORMATION CARD -->
             <section class="card">
 
                 <div class="card-header">
@@ -878,50 +887,25 @@ body {
                         ✎ Edit Profile
                     </button>
 
-                    <!-- EDIT FORM -->
                     <form id="editProfileForm" class="edit-form">
 
                         <h3 class="section-title">Edit Student Information</h3>
 
                         <div class="form-grid">
 
-                            <div class="form-group full">
-                                <label for="editStudentNumber">
-                                    Student Number
-                                </label>
-
-                                <input
-                                    type="text"
-                                    id="editStudentNumber"
-                                    placeholder="Enter your student number"
-                                >
-                            </div>
-
                             <div class="form-group">
                                 <label for="editFirstName">First Name *</label>
-                                <input
-                                    type="text"
-                                    id="editFirstName"
-                                    required
-                                >
+                                <input type="text" id="editFirstName" maxlength="100" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="editLastName">Last Name *</label>
-                                <input
-                                    type="text"
-                                    id="editLastName"
-                                    required
-                                >
+                                <input type="text" id="editLastName" maxlength="100" required>
                             </div>
 
                             <div class="form-group full">
                                 <label for="editEmail">Email Address</label>
-                                <input
-                                    type="email"
-                                    id="editEmail"
-                                    readonly
-                                >
+                                <input type="email" id="editEmail" readonly>
                                 <p class="form-note">
                                     Your registered email address cannot be changed here.
                                 </p>
@@ -933,6 +917,7 @@ body {
                                     type="text"
                                     id="editCourse"
                                     placeholder="Example: BSIT"
+                                    maxlength="100"
                                     required
                                 >
                             </div>
@@ -951,10 +936,7 @@ body {
 
                             <div class="form-group full">
                                 <label for="editBirthdate">Birthdate</label>
-                                <input
-                                    type="date"
-                                    id="editBirthdate"
-                                >
+                                <input type="date" id="editBirthdate">
                             </div>
 
                         </div>
@@ -1015,6 +997,9 @@ let currentUser = null;
 let currentStudent = null;
 let currentProfilePicturePath = null;
 let profileLoadPromise = null;
+let isUploadingPicture = false;
+let isDeletingPicture = false;
+let isSavingProfile = false;
 
 const BUCKET_NAME = "student-profiles";
 const MAX_FILE_SIZE = 3 * 1024 * 1024;
@@ -1070,6 +1055,8 @@ function closeSidebar() {
     document.getElementById("sidebarOverlay").classList.remove("show");
 }
 
+document.getElementById("menuToggle").addEventListener("click", toggleSidebar);
+
 // ==========================================
 // DATE FORMAT
 // ==========================================
@@ -1096,12 +1083,12 @@ function formatDate(dateValue) {
 
 async function getStudent() {
 
-    const { data: sessionData, error: sessionError } =
-        await db.auth.getSession();
+    const {
+        data: sessionData,
+        error: sessionError
+    } = await db.auth.getSession();
 
-    if (sessionError) {
-        throw sessionError;
-    }
+    if (sessionError) throw sessionError;
 
     const session = sessionData.session;
 
@@ -1112,11 +1099,13 @@ async function getStudent() {
 
     currentUser = session.user;
 
-    const { data: student, error: studentError } = await db
+    const {
+        data: student,
+        error: studentError
+    } = await db
         .from("students")
         .select(`
             id,
-            student_number,
             first_name,
             last_name,
             email,
@@ -1128,9 +1117,7 @@ async function getStudent() {
         .eq("id", currentUser.id)
         .maybeSingle();
 
-    if (studentError) {
-        throw studentError;
-    }
+    if (studentError) throw studentError;
 
     if (!student) {
         throw new Error(
@@ -1179,45 +1166,53 @@ async function displayProfile(student) {
     document.getElementById("displayBirthdate").textContent =
         formatDate(student.birthdate);
 
-    // STUDENT NUMBER IS INTENTIONALLY NOT DISPLAYED.
-
-    await loadProfilePicture(student.profile_picture_path);
+    // Student number is intentionally not displayed.
 
     profileLayout.style.display = "grid";
     loadingBox.style.display = "none";
+
+    // Picture errors should not prevent the rest of the profile from displaying.
+    try {
+        await loadProfilePicture(student.profile_picture_path);
+    } catch (error) {
+        console.error("Profile picture loading error:", error);
+        showPicturePlaceholder();
+    }
 }
 
 // ==========================================
-// LOAD PROFILE PICTURE
+// PROFILE PICTURE DISPLAY
 // ==========================================
+
+function showPicturePlaceholder() {
+    profilePicture.style.display = "none";
+    profilePicture.removeAttribute("src");
+    profilePlaceholder.style.display = "flex";
+}
 
 async function loadProfilePicture(path) {
 
     currentProfilePicturePath = path || null;
 
     if (!path) {
-        profilePicture.style.display = "none";
-        profilePicture.removeAttribute("src");
-        profilePlaceholder.style.display = "flex";
+        showPicturePlaceholder();
         deletePictureButton.style.display = "none";
         return;
     }
 
-    const { data, error } = await db.storage
+    const {
+        data,
+        error
+    } = await db.storage
         .from(BUCKET_NAME)
         .createSignedUrl(path, 3600);
 
     if (error || !data || !data.signedUrl) {
-        console.error("Profile picture loading error:", error);
-
-        profilePicture.style.display = "none";
-        profilePlaceholder.style.display = "flex";
+        console.error("Signed URL error:", error);
+        showPicturePlaceholder();
         deletePictureButton.style.display = "block";
-
         return;
     }
-
-    profilePicture.src = data.signedUrl;
 
     profilePicture.onload = function() {
         profilePicture.style.display = "block";
@@ -1225,11 +1220,14 @@ async function loadProfilePicture(path) {
     };
 
     profilePicture.onerror = function() {
-        profilePicture.style.display = "none";
-        profilePlaceholder.style.display = "flex";
+        showPicturePlaceholder();
     };
 
+    profilePicture.style.display = "none";
+    profilePlaceholder.style.display = "flex";
     deletePictureButton.style.display = "block";
+
+    profilePicture.src = data.signedUrl;
 }
 
 // ==========================================
@@ -1249,7 +1247,6 @@ async function initializeProfile() {
         hideMessage();
 
         try {
-
             const student = await getStudent();
 
             if (!student) return;
@@ -1264,7 +1261,8 @@ async function initializeProfile() {
             profileLayout.style.display = "none";
 
             showMessage(
-                error.message || "Unable to load your profile. Please refresh the page.",
+                error.message ||
+                "Unable to load your profile. Please refresh the page.",
                 "error"
             );
 
@@ -1287,9 +1285,6 @@ function openEditForm() {
         showMessage("Student information is not available.", "error");
         return;
     }
-
-    document.getElementById("editStudentNumber").value =
-        currentStudent.student_number || "";
 
     document.getElementById("editFirstName").value =
         currentStudent.first_name || "";
@@ -1323,10 +1318,8 @@ function openEditForm() {
 // ==========================================
 
 function closeEditForm() {
-
     editProfileForm.classList.remove("show");
     editProfileButton.style.display = "inline-block";
-
     editProfileForm.reset();
 }
 
@@ -1338,13 +1331,15 @@ editProfileForm.addEventListener("submit", async function(event) {
 
     event.preventDefault();
 
+    if (isSavingProfile) return;
+
     if (!currentUser || !currentStudent) {
-        showMessage("Your student session is not available. Please log in again.", "error");
+        showMessage(
+            "Your student session is not available. Please log in again.",
+            "error"
+        );
         return;
     }
-
-    const studentNumber =
-        document.getElementById("editStudentNumber").value.trim();
 
     const firstName =
         document.getElementById("editFirstName").value.trim();
@@ -1367,7 +1362,6 @@ editProfileForm.addEventListener("submit", async function(event) {
     }
 
     const updates = {
-        student_number: studentNumber || null,
         first_name: firstName,
         last_name: lastName,
         course: course,
@@ -1375,20 +1369,24 @@ editProfileForm.addEventListener("submit", async function(event) {
         birthdate: birthdate
     };
 
+    isSavingProfile = true;
     saveProfileButton.disabled = true;
+    cancelEditButton.disabled = true;
     saveProfileButton.textContent = "Saving...";
 
     hideMessage();
 
     try {
 
-        const { data, error } = await db
+        const {
+            data,
+            error
+        } = await db
             .from("students")
             .update(updates)
             .eq("id", currentUser.id)
             .select(`
                 id,
-                student_number,
                 first_name,
                 last_name,
                 email,
@@ -1399,9 +1397,7 @@ editProfileForm.addEventListener("submit", async function(event) {
             `)
             .maybeSingle();
 
-        if (error) {
-            throw error;
-        }
+        if (error) throw error;
 
         if (!data) {
             throw new Error(
@@ -1431,7 +1427,9 @@ editProfileForm.addEventListener("submit", async function(event) {
 
     } finally {
 
+        isSavingProfile = false;
         saveProfileButton.disabled = false;
+        cancelEditButton.disabled = false;
         saveProfileButton.textContent = "Save Changes";
 
     }
@@ -1444,9 +1442,14 @@ editProfileForm.addEventListener("submit", async function(event) {
 
 profilePictureInput.addEventListener("change", async function() {
 
-    const file = this.files[0];
+    const file = this.files && this.files[0];
 
     if (!file) return;
+
+    if (isUploadingPicture || isDeletingPicture) {
+        this.value = "";
+        return;
+    }
 
     const allowedTypes = [
         "image/jpeg",
@@ -1459,7 +1462,6 @@ profilePictureInput.addEventListener("change", async function() {
             "Invalid image format. Please use JPG, PNG, or WEBP.",
             "error"
         );
-
         this.value = "";
         return;
     }
@@ -1469,7 +1471,6 @@ profilePictureInput.addEventListener("change", async function() {
             "File is too large. Maximum allowed size is 3 MB.",
             "error"
         );
-
         this.value = "";
         return;
     }
@@ -1480,24 +1481,33 @@ profilePictureInput.addEventListener("change", async function() {
         return;
     }
 
-    const extension = file.name.split(".").pop().toLowerCase();
+    const extensionMap = {
+        "image/jpeg": "jpg",
+        "image/png": "png",
+        "image/webp": "webp"
+    };
 
-    // Use a unique filename to avoid browser caching problems.
+    const extension = extensionMap[file.type];
+
     const newPath =
         currentUser.id + "/profile-" + Date.now() + "." + extension;
 
     const oldPath = currentProfilePicturePath;
 
-    uploadLabel.style.pointerEvents = "none";
+    isUploadingPicture = true;
+    profilePictureInput.disabled = true;
+    deletePictureButton.disabled = true;
     uploadLabel.style.opacity = "0.6";
+    uploadLabel.style.cursor = "not-allowed";
 
     showMessage("Uploading your profile picture...", "info");
 
     try {
 
-        // STEP 1: UPLOAD NEW FILE
-
-        const { error: uploadError } = await db.storage
+        // Upload new image first.
+        const {
+            error: uploadError
+        } = await db.storage
             .from(BUCKET_NAME)
             .upload(newPath, file, {
                 cacheControl: "3600",
@@ -1505,13 +1515,13 @@ profilePictureInput.addEventListener("change", async function() {
                 contentType: file.type
             });
 
-        if (uploadError) {
-            throw uploadError;
-        }
+        if (uploadError) throw uploadError;
 
-        // STEP 2: UPDATE DATABASE AND VERIFY ROW
-
-        const { data, error: updateError } = await db
+        // Update database path and verify the row.
+        const {
+            data,
+            error: updateError
+        } = await db
             .from("students")
             .update({
                 profile_picture_path: newPath
@@ -1520,41 +1530,35 @@ profilePictureInput.addEventListener("change", async function() {
             .select("id, profile_picture_path")
             .maybeSingle();
 
-        if (updateError) {
+        if (updateError || !data) {
 
-            // Remove the newly uploaded file if database update failed.
-            await db.storage
+            // Roll back the new upload if DB update fails.
+            const { error: cleanupError } = await db.storage
                 .from(BUCKET_NAME)
                 .remove([newPath]);
 
-            throw updateError;
-        }
+            if (cleanupError) {
+                console.warn("New image cleanup error:", cleanupError);
+            }
 
-        if (!data) {
-
-            await db.storage
-                .from(BUCKET_NAME)
-                .remove([newPath]);
+            if (updateError) throw updateError;
 
             throw new Error(
-                "The profile picture was uploaded, but no student record was updated. Please check your students table UPDATE policy."
+                "No student record was updated. Please check your students table UPDATE policy."
             );
         }
-
-        // STEP 3: UPDATE LOCAL DATA
 
         currentStudent.profile_picture_path = newPath;
         currentProfilePicturePath = newPath;
 
-        // STEP 4: DISPLAY NEW IMAGE
-
         await loadProfilePicture(newPath);
 
-        // STEP 5: REMOVE OLD FILE ONLY AFTER SUCCESSFUL UPDATE
-
+        // Remove old image only after successful database update.
         if (oldPath && oldPath !== newPath) {
 
-            const { error: removeOldError } = await db.storage
+            const {
+                error: removeOldError
+            } = await db.storage
                 .from(BUCKET_NAME)
                 .remove([oldPath]);
 
@@ -1563,13 +1567,24 @@ profilePictureInput.addEventListener("change", async function() {
                     "Old profile picture could not be deleted:",
                     removeOldError
                 );
-            }
-        }
 
-        showMessage(
-            "Your profile picture has been successfully updated.",
-            "success"
-        );
+                showMessage(
+                    "Your new profile picture was saved, but the previous image could not be deleted. Please check your Storage DELETE policy.",
+                    "info"
+                );
+            } else {
+                showMessage(
+                    "Your profile picture has been successfully updated.",
+                    "success"
+                );
+            }
+
+        } else {
+            showMessage(
+                "Your profile picture has been successfully updated.",
+                "success"
+            );
+        }
 
     } catch (error) {
 
@@ -1582,9 +1597,11 @@ profilePictureInput.addEventListener("change", async function() {
 
     } finally {
 
-        uploadLabel.style.pointerEvents = "auto";
+        isUploadingPicture = false;
+        profilePictureInput.disabled = false;
+        deletePictureButton.disabled = false;
         uploadLabel.style.opacity = "1";
-
+        uploadLabel.style.cursor = "pointer";
         profilePictureInput.value = "";
 
     }
@@ -1602,6 +1619,8 @@ deletePictureButton.addEventListener("click", async function() {
         return;
     }
 
+    if (isDeletingPicture || isUploadingPicture) return;
+
     const confirmed = confirm(
         "Are you sure you want to delete your profile picture?"
     );
@@ -1610,16 +1629,20 @@ deletePictureButton.addEventListener("click", async function() {
 
     const oldPath = currentProfilePicturePath;
 
+    isDeletingPicture = true;
     deletePictureButton.disabled = true;
+    profilePictureInput.disabled = true;
     deletePictureButton.textContent = "Deleting...";
 
     hideMessage();
 
     try {
 
-        // STEP 1: CLEAR DATABASE PATH FIRST
-
-        const { data, error: updateError } = await db
+        // Clear database path first.
+        const {
+            data,
+            error: updateError
+        } = await db
             .from("students")
             .update({
                 profile_picture_path: null
@@ -1628,9 +1651,7 @@ deletePictureButton.addEventListener("click", async function() {
             .select("id, profile_picture_path")
             .maybeSingle();
 
-        if (updateError) {
-            throw updateError;
-        }
+        if (updateError) throw updateError;
 
         if (!data) {
             throw new Error(
@@ -1638,36 +1659,31 @@ deletePictureButton.addEventListener("click", async function() {
             );
         }
 
-        // STEP 2: UPDATE LOCAL DATA
-
         currentStudent.profile_picture_path = null;
         currentProfilePicturePath = null;
 
-        // STEP 3: REMOVE OLD STORAGE FILE
+        await loadProfilePicture(null);
 
-        const { error: removeError } = await db.storage
+        // Delete old Storage object after DB path is cleared.
+        const {
+            error: removeError
+        } = await db.storage
             .from(BUCKET_NAME)
             .remove([oldPath]);
 
         if (removeError) {
-
             console.warn("Storage deletion error:", removeError);
 
             showMessage(
                 "Your profile picture was removed from your profile, but the old storage file could not be deleted. Please check your Storage DELETE policy.",
                 "info"
             );
-
         } else {
-
             showMessage(
                 "Your profile picture has been successfully deleted.",
                 "success"
             );
-
         }
-
-        await loadProfilePicture(null);
 
     } catch (error) {
 
@@ -1680,7 +1696,9 @@ deletePictureButton.addEventListener("click", async function() {
 
     } finally {
 
+        isDeletingPicture = false;
         deletePictureButton.disabled = false;
+        profilePictureInput.disabled = false;
         deletePictureButton.textContent = "Delete Profile Picture";
 
     }
@@ -1694,6 +1712,8 @@ deletePictureButton.addEventListener("click", async function() {
 editProfileButton.addEventListener("click", openEditForm);
 
 cancelEditButton.addEventListener("click", function() {
+    if (isSavingProfile) return;
+
     closeEditForm();
     hideMessage();
 });
@@ -1714,9 +1734,7 @@ document.getElementById("logoutButton").addEventListener("click", async function
 
         const { error } = await db.auth.signOut();
 
-        if (error) {
-            throw error;
-        }
+        if (error) throw error;
 
         window.location.replace("index.html");
 
