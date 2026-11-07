@@ -23,13 +23,11 @@
     --light-green: #128052;
     --gold: #d4af37;
     --cream: #f8f6ef;
+    --white: #ffffff;
     --dark-bg: #24231f;
     --card-bg: #292821;
-    --input-bg: #151515;
-    --border: #4a4434;
-    --white: #ffffff;
-    --muted: #a9b8ae;
-    --text-light: #d8eee1;
+    --input-bg: #151513;
+    --text-light: #d7eee2;
 }
 
 body {
@@ -38,21 +36,128 @@ body {
     color: var(--text-light);
 }
 
-/* ==========================================
-   HEADER - SAME AS STUDENT DASHBOARD
-========================================== */
+/* SIDEBAR */
 
-.top-header {
-    min-height: 98px;
-    margin-left: 255px;
-    padding: 15px 5%;
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 255px;
     background: var(--dark-green);
     color: white;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    border-right: 2px solid var(--gold);
+    transition: transform .3s ease;
+}
+
+.sidebar-heading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 25px 15px 22px;
+    border-bottom: 1px solid rgba(212,175,55,.35);
+}
+
+.sidebar-heading img {
+    width: 75px;
+    height: 75px;
+    object-fit: contain;
+    margin-bottom: 12px;
+    filter: drop-shadow(0 0 7px #00ff66);
+}
+
+.sidebar-heading h3 {
+    color: var(--gold);
+    font-size: 17px;
+    margin-bottom: 5px;
+}
+
+.sidebar-heading p {
+    color: white;
+    font-size: 11px;
+}
+
+.sidebar-section {
+    color: var(--gold);
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    padding: 23px 25px 10px;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    padding: 10px 14px;
+}
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 14px;
+    border-radius: 8px;
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    transition: .2s;
+    border: none;
+    background: transparent;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+}
+
+.sidebar-link span {
+    width: 22px;
+    text-align: center;
+    font-size: 17px;
+}
+
+.sidebar-link:hover,
+.sidebar-link.active {
+    background: var(--gold);
+    color: var(--dark-green);
+    font-weight: bold;
+}
+
+.sidebar-divider {
+    height: 1px;
+    background: rgba(212,175,55,.5);
+    margin: 14px 5px;
+}
+
+.logout-link {
+    color: #ffb4a9;
+}
+
+.sidebar-footer {
+    margin-top: auto;
+    padding: 20px 12px;
+    border-top: 1px solid rgba(212,175,55,.35);
+    text-align: center;
+    font-size: 11px;
+    color: white;
+    line-height: 1.5;
+}
+
+/* HEADER */
+
+.top-header {
+    height: 96px;
+    margin-left: 255px;
+    background: var(--dark-green);
+    border-bottom: 5px solid var(--gold);
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding: 15px 35px;
     gap: 15px;
-    border-bottom: 5px solid var(--gold);
 }
 
 .brand {
@@ -69,14 +174,14 @@ body {
 }
 
 .brand-text h1 {
+    font-size: 25px;
     color: white;
-    font-size: 27px;
     letter-spacing: 1px;
 }
 
 .brand-text p {
     color: var(--gold);
-    font-size: 13px;
+    font-size: 12px;
     font-weight: bold;
     letter-spacing: 2px;
     margin-top: 3px;
@@ -86,357 +191,195 @@ body {
     background: transparent;
     border: none;
     color: white;
-    font-size: 15px;
+    font-size: 14px;
     cursor: pointer;
-}
-
-.header-right button:hover {
-    color: var(--gold);
 }
 
 .menu-toggle {
     display: none;
-    border: 1px solid var(--gold);
     background: transparent;
+    border: 1px solid var(--gold);
     color: white;
     border-radius: 6px;
-    padding: 8px 11px;
-    font-size: 21px;
+    padding: 8px 12px;
+    font-size: 20px;
     cursor: pointer;
 }
 
-/* ==========================================
-   SIDEBAR - SAME AS STUDENT DASHBOARD
-========================================== */
+/* MAIN */
 
-.sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: 255px;
-    background: var(--dark-green);
-    color: white;
-    z-index: 1000;
-    display: flex;
-    flex-direction: column;
-    border-right: 3px solid var(--gold);
-    transition: transform .3s ease;
-}
-
-.sidebar-heading {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 22px 16px;
-    border-bottom: 1px solid rgba(212,175,55,.4);
-}
-
-.sidebar-heading img {
-    width: 48px;
-    height: 48px;
-    object-fit: contain;
-    filter: drop-shadow(0 0 6px #00ff66);
-}
-
-.sidebar-heading h3 {
-    color: var(--gold);
-    font-size: 14px;
-}
-
-.sidebar-heading p {
-    font-size: 11px;
-    margin-top: 5px;
-    color: #dce9df;
-}
-
-.sidebar-nav {
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
-    padding: 20px 12px;
-}
-
-.sidebar-link {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 13px;
-    padding: 13px 14px;
-    border: none;
-    border-radius: 7px;
-    background: transparent;
-    color: white;
-    text-decoration: none;
-    text-align: left;
-    font-size: 14px;
-    cursor: pointer;
-    transition: .2s;
-}
-
-.sidebar-link span {
-    width: 22px;
-    text-align: center;
-    font-size: 17px;
-    flex-shrink: 0;
-}
-
-.sidebar-link:hover,
-.sidebar-link.active {
-    background: var(--gold);
-    color: var(--dark-green);
-    font-weight: bold;
-}
-
-.sidebar-divider {
-    height: 1px;
-    background: rgba(212,175,55,.4);
-    margin: 12px 4px;
-}
-
-.logout-link {
-    color: #ffb4a9;
-}
-
-.sidebar-footer {
-    margin-top: auto;
-    padding: 18px 15px;
-    border-top: 1px solid rgba(212,175,55,.4);
-    text-align: center;
-}
-
-.sidebar-footer p {
-    color: var(--gold);
-    font-weight: bold;
-    font-size: 14px;
-}
-
-.sidebar-footer small {
-    display: block;
-    color: #dce9df;
-    font-size: 10px;
-    margin-top: 5px;
-}
-
-.sidebar-overlay {
-    display: none;
-}
-
-/* ==========================================
-   MAIN CONTENT
-========================================== */
-
-.container {
+.main-content {
     margin-left: 255px;
-    min-height: calc(100vh - 205px);
     padding: 30px;
+    min-height: calc(100vh - 156px);
 }
 
 .page-heading {
-    background: linear-gradient(110deg, #003b24, #087448);
-    color: white;
-    border: 2px solid var(--gold);
-    border-radius: 15px;
-    padding: 28px 30px;
-    margin-bottom: 23px;
-}
-
-.eyebrow {
-    color: var(--gold);
-    font-size: 12px;
-    font-weight: bold;
-    letter-spacing: 2px;
-    margin-bottom: 10px;
+    margin-bottom: 25px;
 }
 
 .page-heading h2 {
-    font-size: 30px;
+    color: #b9e9d2;
+    font-size: 27px;
     margin-bottom: 8px;
 }
 
 .page-heading p {
-    color: #e7eee9;
+    color: #9eaaa3;
     font-size: 14px;
-    line-height: 1.5;
 }
 
-/* ==========================================
-   MESSAGE
-========================================== */
+/* MESSAGE */
 
 .message {
     display: none;
     padding: 14px 17px;
-    border-radius: 8px;
+    border-radius: 7px;
     margin-bottom: 20px;
     line-height: 1.5;
-    font-size: 14px;
+    font-size: 13px;
 }
 
 .message.success {
     display: block;
     background: #123e2b;
-    color: #baf3cf;
-    border: 1px solid #218653;
+    color: #a9efc7;
+    border-left: 4px solid #22a866;
 }
 
 .message.error {
     display: block;
-    background: #451d1b;
-    color: #ffc3bd;
-    border: 1px solid #a7473e;
+    background: #481f1c;
+    color: #ffbdb5;
+    border-left: 4px solid #e05245;
 }
 
 .message.info {
     display: block;
-    background: #3d351c;
-    color: #f5dfa0;
-    border: 1px solid var(--gold);
+    background: #39331d;
+    color: #f5dc8b;
+    border-left: 4px solid var(--gold);
 }
 
-/* ==========================================
-   PROFILE LAYOUT
-========================================== */
+/* PROFILE LAYOUT */
 
 .profile-layout {
     display: grid;
-    grid-template-columns: 290px minmax(0, 1fr);
-    gap: 20px;
+    grid-template-columns: 320px minmax(0, 1fr);
+    gap: 22px;
     align-items: start;
 }
 
-/* ==========================================
-   CARDS
-========================================== */
+/* CARD */
 
 .card {
     background: var(--card-bg);
-    border: 2px solid var(--border);
+    border: 1px solid #454137;
     border-radius: 13px;
-    margin-bottom: 20px;
     overflow: hidden;
-    box-shadow: 0 3px 10px rgba(0,0,0,.12);
+    margin-bottom: 20px;
+    box-shadow: 0 3px 12px rgba(0,0,0,.12);
 }
 
 .card-header {
     background: var(--dark-green);
     color: white;
-    padding: 15px 20px;
+    padding: 17px 22px;
     border-bottom: 2px solid var(--gold);
 }
 
-.card-header h2 {
-    font-size: 19px;
-}
-
-.card-header h2::before {
-    content: "";
-    display: inline-block;
-    width: 7px;
-    height: 23px;
-    background: var(--gold);
-    margin-right: 12px;
-    vertical-align: middle;
+.card-header h3 {
+    font-size: 17px;
 }
 
 .card-body {
     padding: 23px;
 }
 
-/* ==========================================
-   PROFILE PHOTO
-========================================== */
+/* PROFILE PHOTO */
 
 .photo-card {
     text-align: center;
 }
 
-.profile-photo-wrapper {
+.profile-image-wrapper {
     width: 145px;
     height: 145px;
-    margin: 8px auto 17px;
     border: 4px solid var(--gold);
     border-radius: 50%;
-    background: #333229;
+    margin: 7px auto 17px;
+    overflow: hidden;
+    background: #34342f;
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
 }
 
-.profile-photo-wrapper img {
+.profile-image-wrapper img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: none;
 }
 
 .photo-placeholder {
     font-size: 65px;
-    color: #7750a6;
+    color: #7251a8;
 }
 
 .profile-name {
-    color: #b8efd0;
-    font-size: 21px;
+    color: #b9e9d2;
+    font-size: 20px;
     margin-bottom: 7px;
     overflow-wrap: anywhere;
 }
 
 .profile-course {
-    color: var(--muted);
+    color: #a4b2aa;
     font-size: 13px;
-    margin-bottom: 20px;
-}
-
-.photo-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.upload-button,
-.delete-photo-button {
-    display: block;
-    width: 100%;
-    padding: 12px 10px;
-    border-radius: 7px;
-    font-size: 13px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: .2s;
+    margin-bottom: 22px;
 }
 
 .upload-button {
-    background: linear-gradient(110deg, #075c3b, #087448);
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(110deg, var(--main-green), #087448);
     border: 1px solid var(--gold);
+    border-radius: 7px;
     color: white;
+    font-weight: bold;
+    font-size: 13px;
+    cursor: pointer;
+    transition: .2s;
 }
 
 .upload-button:hover {
     background: var(--light-green);
 }
 
-.delete-photo-button {
-    background: #47201d;
-    color: #ffc3bd;
-    border: 1px solid #9d4940;
-}
-
-.delete-photo-button:hover {
-    background: #682b25;
-}
-
-.upload-button:disabled,
-.delete-photo-button:disabled,
-.save-button:disabled,
-.cancel-button:disabled {
-    opacity: .55;
+.upload-button:disabled {
+    opacity: .6;
     cursor: not-allowed;
 }
 
+.delete-photo-button {
+    margin-top: 10px;
+    background: transparent;
+    border: 1px solid #a64b42;
+    color: #ffb4a9;
+    padding: 10px;
+    width: 100%;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.delete-photo-button:hover {
+    background: #481f1c;
+}
+
 .photo-note {
-    color: #9aaba0;
+    color: #89958e;
     font-size: 11px;
     line-height: 1.6;
     margin-top: 13px;
@@ -446,17 +389,15 @@ body {
     display: none;
 }
 
-/* ==========================================
-   PERSONAL INFORMATION
-========================================== */
+/* PERSONAL INFORMATION */
 
 .section-label {
-    color: #b8efd0;
-    font-size: 15px;
+    color: #a9e7c9;
+    font-size: 14px;
     font-weight: bold;
-    padding-bottom: 12px;
+    padding-bottom: 13px;
     margin-bottom: 17px;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid #49453b;
 }
 
 .info-grid {
@@ -467,11 +408,10 @@ body {
 
 .info-item {
     background: var(--input-bg);
-    border-left: 4px solid var(--gold);
+    border-left: 4px solid #806d28;
     border-radius: 8px;
     padding: 15px;
     min-width: 0;
-    overflow-wrap: anywhere;
 }
 
 .info-item.full {
@@ -480,45 +420,58 @@ body {
 
 .info-item small {
     display: block;
-    color: #7bd4a4;
+    color: #82d6ad;
     font-size: 11px;
     font-weight: bold;
-    letter-spacing: .6px;
-    margin-bottom: 7px;
+    margin-bottom: 8px;
+    letter-spacing: .5px;
 }
 
 .info-item strong {
-    color: #d8eee1;
+    display: block;
+    color: #d8eee2;
     font-size: 14px;
     overflow-wrap: anywhere;
 }
 
-.edit-button {
-    margin-top: 22px;
-    padding: 13px 20px;
+.edit-button,
+.save-button {
     background: var(--gold);
     color: var(--dark-green);
     border: none;
     border-radius: 7px;
-    cursor: pointer;
-    font-weight: bold;
+    padding: 13px 20px;
     font-size: 13px;
-    transition: .2s;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 22px;
 }
 
-.edit-button:hover {
-    background: #e8c64d;
+.edit-button:hover,
+.save-button:hover {
+    background: #e7c84c;
 }
 
-/* ==========================================
-   EDIT FORM
-========================================== */
+.cancel-button {
+    background: #46443d;
+    color: white;
+    border: 1px solid #777064;
+    border-radius: 7px;
+    padding: 13px 20px;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 22px;
+    margin-left: 8px;
+}
+
+/* EDIT FORM */
 
 .edit-form {
     display: none;
-    margin-top: 23px;
+    margin-top: 22px;
     padding-top: 22px;
-    border-top: 1px solid var(--border);
+    border-top: 1px solid #49453b;
 }
 
 .edit-form.show {
@@ -528,7 +481,7 @@ body {
 .form-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 16px;
+    gap: 17px;
 }
 
 .form-group {
@@ -541,7 +494,7 @@ body {
 
 .form-group label {
     display: block;
-    color: #7bd4a4;
+    color: #a9e7c9;
     font-size: 12px;
     font-weight: bold;
     margin-bottom: 8px;
@@ -550,11 +503,10 @@ body {
 .form-group input,
 .form-group select {
     width: 100%;
-    min-width: 0;
     padding: 13px;
     background: var(--input-bg);
     color: white;
-    border: 1px solid #655b40;
+    border: 1px solid #625c4b;
     border-radius: 7px;
     outline: none;
     font-size: 14px;
@@ -563,92 +515,45 @@ body {
 .form-group input:focus,
 .form-group select:focus {
     border-color: var(--gold);
-    box-shadow: 0 0 0 2px rgba(212,175,55,.12);
+    box-shadow: 0 0 0 2px rgba(212,175,55,.13);
 }
 
-.form-group input[readonly] {
-    opacity: .7;
+.form-group input:disabled {
+    opacity: .65;
     cursor: not-allowed;
 }
 
-.form-group select option {
-    background: var(--input-bg);
-    color: white;
+.form-group input::placeholder {
+    color: #77776e;
+}
+
+.form-note {
+    color: #969d96;
+    font-size: 11px;
+    margin-top: 7px;
 }
 
 .form-actions {
     display: flex;
-    gap: 10px;
     flex-wrap: wrap;
-    margin-top: 22px;
+    gap: 8px;
 }
 
-.save-button,
-.cancel-button {
-    padding: 13px 22px;
-    border-radius: 7px;
-    border: none;
-    font-size: 13px;
-    font-weight: bold;
-    cursor: pointer;
+button:disabled {
+    opacity: .6;
+    cursor: not-allowed;
 }
 
-.save-button {
-    background: var(--gold);
-    color: var(--dark-green);
-}
+/* LOADING */
 
-.save-button:hover {
-    background: #e8c64d;
-}
-
-.cancel-button {
-    background: #414039;
-    color: white;
-    border: 1px solid #77705d;
-}
-
-.cancel-button:hover {
-    background: #555247;
-}
-
-/* ==========================================
-   LOADING AND EMPTY STATE
-========================================== */
-
-.loading-box {
+.loading {
     text-align: center;
-    padding: 45px 15px;
-    color: #b8efd0;
-    font-weight: bold;
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-}
-
-.error-box {
-    background: #451d1b;
-    color: #ffc3bd;
-    border: 1px solid #a7473e;
-    border-radius: 9px;
-    padding: 20px;
-    line-height: 1.7;
-}
-
-.retry-button {
-    margin-top: 13px;
-    padding: 11px 18px;
-    background: var(--gold);
-    color: var(--dark-green);
-    border: none;
-    border-radius: 7px;
-    cursor: pointer;
+    padding: 50px 15px;
+    color: #b9e9d2;
     font-weight: bold;
 }
 
-/* ==========================================
-   FOOTER
-========================================== */
+/* FOOTER */
 
 footer {
     margin-left: 255px;
@@ -657,39 +562,28 @@ footer {
     text-align: center;
     padding: 20px;
     border-top: 4px solid var(--gold);
-    font-size: 13px;
+    font-size: 12px;
 }
 
-/* ==========================================
-   TABLET
-========================================== */
+/* OVERLAY */
+
+.sidebar-overlay {
+    display: none;
+}
+
+/* TABLET */
 
 @media(max-width: 1050px) {
     .profile-layout {
-        grid-template-columns: 250px minmax(0, 1fr);
+        grid-template-columns: 270px minmax(0, 1fr);
     }
 
-    .container {
-        padding: 23px;
-    }
-
-    .card-body {
-        padding: 18px;
+    .main-content {
+        padding: 22px;
     }
 }
 
 @media(max-width: 850px) {
-    .top-header {
-        margin-left: 0;
-        padding: 12px 15px;
-        min-height: 80px;
-    }
-
-    .menu-toggle {
-        display: block;
-        flex-shrink: 0;
-    }
-
     .sidebar {
         transform: translateX(-100%);
     }
@@ -706,39 +600,41 @@ footer {
         z-index: 999;
     }
 
-    .container {
+    .top-header {
         margin-left: 0;
-        width: 100%;
-        padding: 20px;
+        padding: 12px 18px;
+        height: 85px;
+    }
+
+    .menu-toggle {
+        display: block;
+        flex-shrink: 0;
+    }
+
+    .main-content {
+        margin-left: 0;
     }
 
     footer {
         margin-left: 0;
     }
-
-    .profile-layout {
-        grid-template-columns: 250px minmax(0, 1fr);
-    }
 }
 
-/* ==========================================
-   MOBILE
-========================================== */
+/* MOBILE */
 
 @media(max-width: 650px) {
     .top-header {
-        padding: 12px;
-        gap: 8px;
+        gap: 9px;
+        padding: 10px;
     }
 
     .brand {
         gap: 8px;
-        min-width: 0;
     }
 
     .brand img {
-        width: 42px;
-        height: 42px;
+        width: 43px;
+        height: 43px;
     }
 
     .brand-text h1 {
@@ -747,105 +643,56 @@ footer {
 
     .brand-text p {
         font-size: 8px;
-        letter-spacing: .7px;
+        letter-spacing: .8px;
     }
 
     .header-right button {
-        font-size: 11px;
+        font-size: 10px;
     }
 
-    .container {
-        padding: 13px;
-    }
-
-    .page-heading {
-        padding: 21px 17px;
+    .main-content {
+        padding: 15px;
     }
 
     .page-heading h2 {
         font-size: 23px;
     }
 
-    .page-heading p {
-        font-size: 12px;
-    }
-
     .profile-layout {
         grid-template-columns: 1fr;
-        gap: 5px;
     }
 
     .photo-card .card-body {
         padding: 20px;
     }
 
-    .profile-photo-wrapper {
-        width: 125px;
-        height: 125px;
-    }
-
-    .profile-layout .photo-card {
-        max-width: 100%;
-    }
-
-    .info-grid {
-        grid-template-columns: 1fr;
-        gap: 10px;
-    }
-
-    .info-item.full {
-        grid-column: auto;
-    }
-
+    .info-grid,
     .form-grid {
         grid-template-columns: 1fr;
-        gap: 13px;
     }
 
+    .info-item.full,
     .form-group.full {
         grid-column: auto;
     }
 
-    .form-actions {
-        flex-direction: column;
-    }
-
-    .save-button,
-    .cancel-button {
-        width: 100%;
-    }
-
-    .card-header h2 {
-        font-size: 17px;
-    }
-
     .card-body {
-        padding: 15px;
+        padding: 16px;
+    }
+
+    .cancel-button,
+    .save-button {
+        margin-left: 0;
+    }
+
+    .form-actions button {
+        flex: 1;
     }
 
     footer {
-        padding: 17px 12px;
+        padding: 17px 10px;
         font-size: 10px;
-        line-height: 1.6;
-    }
-}
-
-@media(max-width: 360px) {
-    .brand img {
-        width: 35px;
-        height: 35px;
-    }
-
-    .brand-text h1 {
-        font-size: 14px;
-    }
-
-    .brand-text p {
-        font-size: 7px;
-    }
-
-    .container {
-        padding: 10px;
+        line-height: 1.5;
     }
 }
 </style>
@@ -853,70 +700,21 @@ footer {
 
 <body>
 
-<!-- ==========================================
-     HEADER
-========================================== -->
-
-<header class="top-header">
-
-    <button
-        type="button"
-        class="menu-toggle"
-        onclick="toggleSidebar()"
-        aria-label="Open navigation menu"
-    >
-        ☰
-    </button>
-
-    <div class="brand">
-
-        <img
-            src="https://64.media.tumblr.com/33ca84afd52d5cd0ef7bb1bb66c6176b/tumblr_o4ti6j8k6r1unefbyo1_400.png"
-            alt="PLMUN Logo"
-        >
-
-        <div class="brand-text">
-            <h1>I-PILIMON</h1>
-            <p>STUDENT ID INFORMATION</p>
-        </div>
-
-    </div>
-
-    <div class="header-right">
-        <button type="button" onclick="logout()">
-            LOG OUT ↗
-        </button>
-    </div>
-
-</header>
-
-<!-- SIDEBAR OVERLAY -->
-
-<div
-    id="sidebarOverlay"
-    class="sidebar-overlay"
-    onclick="closeSidebar()"
-></div>
-
-<!-- ==========================================
-     SIDEBAR
-========================================== -->
+<!-- SIDEBAR -->
 
 <aside class="sidebar" id="sidebar">
 
     <div class="sidebar-heading">
-
         <img
             src="https://64.media.tumblr.com/33ca84afd52d5cd0ef7bb1bb66c6176b/tumblr_o4ti6j8k6r1unefbyo1_400.png"
             alt="PLMUN Logo"
         >
 
-        <div>
-            <h3>STUDENT PORTAL</h3>
-            <p>Navigation Menu</p>
-        </div>
-
+        <h3>I-PILIMUN</h3>
+        <p>STUDENT ID INFORMATION SYSTEM</p>
     </div>
+
+    <div class="sidebar-section">MAIN MENU</div>
 
     <nav class="sidebar-nav">
 
@@ -942,111 +740,128 @@ footer {
 
         <div class="sidebar-divider"></div>
 
-        <button
-            type="button"
-            class="sidebar-link logout-link"
-            onclick="logout()"
-        >
-            <span>↗</span> Log Out
+        <button class="sidebar-link logout-link" onclick="logout()">
+            <span>↪</span> Log Out
         </button>
 
     </nav>
 
     <div class="sidebar-footer">
-        <p>I-PILIMON</p>
-        <small>Student ID Information System</small>
+        Pamantasan ng Lungsod ng Muntinlupa<br>
+        Student Portal
     </div>
 
 </aside>
 
-<!-- ==========================================
-     MAIN CONTENT
-========================================== -->
+<div
+    class="sidebar-overlay"
+    id="sidebarOverlay"
+    onclick="closeSidebar()"
+></div>
 
-<main class="container">
+<!-- HEADER -->
 
-    <section class="page-heading">
+<header class="top-header">
 
-        <div class="eyebrow">STUDENT PORTAL</div>
+    <button
+        class="menu-toggle"
+        type="button"
+        onclick="toggleSidebar()"
+        aria-label="Open menu"
+    >☰</button>
 
-        <h2>MY PROFILE</h2>
+    <div class="brand">
 
-        <p>
-            View and manage your personal student information.
-        </p>
+        <img
+            src="https://64.media.tumblr.com/33ca84afd52d5cd0ef7bb1bb66c6176b/tumblr_o4ti6j8k6r1unefbyo1_400.png"
+            alt="PLMUN Logo"
+        >
 
-    </section>
+        <div class="brand-text">
+            <h1>I-PILIMON</h1>
+            <p>STUDENT ID INFORMATION</p>
+        </div>
+
+    </div>
+
+    <div class="header-right">
+        <button type="button" onclick="logout()">LOG OUT ↗</button>
+    </div>
+
+</header>
+
+<!-- MAIN CONTENT -->
+
+<main class="main-content">
+
+    <div class="page-heading">
+        <h2>My Profile</h2>
+        <p>View and manage your personal student information.</p>
+    </div>
 
     <div id="message" class="message"></div>
 
-    <div id="loadingBox" class="loading-box">
-        Loading your student profile...
+    <div id="loading" class="loading">
+        Loading student profile...
     </div>
 
-    <div id="profileContent" class="profile-layout" hidden>
+    <div class="profile-layout" id="profileContent" hidden>
 
-        <!-- PROFILE PHOTO CARD -->
+        <!-- PROFILE PHOTO -->
 
         <section class="card photo-card">
 
             <div class="card-header">
-                <h2>PROFILE PHOTO</h2>
+                <h3>PROFILE PHOTO</h3>
             </div>
 
             <div class="card-body">
 
-                <div class="profile-photo-wrapper">
-
-                    <div
-                        class="photo-placeholder"
-                        id="photoPlaceholder"
+                <div class="profile-image-wrapper">
+                    <img
+                        id="profileImage"
+                        alt="Student Profile Photo"
+                        hidden
                     >
+
+                    <div id="photoPlaceholder" class="photo-placeholder">
                         👤
                     </div>
-
-                    <img
-                        id="profilePhoto"
-                        alt="Student Profile Photo"
-                    >
-
                 </div>
 
-                <h2 class="profile-name" id="profileName">
+                <h2 class="profile-name" id="photoName">
                     Student Name
                 </h2>
 
-                <p class="profile-course" id="profileCourse">
+                <p class="profile-course" id="photoCourse">
                     Course not provided
                 </p>
 
-                <div class="photo-actions">
+                <input
+                    type="file"
+                    id="photoInput"
+                    accept="image/jpeg,image/png,image/webp"
+                    onchange="uploadProfilePhoto(event)"
+                >
 
-                    <input
-                        type="file"
-                        id="photoInput"
-                        accept="image/jpeg,image/png,image/webp"
-                    >
+                <button
+                    type="button"
+                    class="upload-button"
+                    id="uploadButton"
+                    onclick="document.getElementById('photoInput').click()"
+                >
+                    📷 Upload / Change Photo
+                </button>
 
-                    <button
-                        type="button"
-                        class="upload-button"
-                        id="uploadButton"
-                        onclick="document.getElementById('photoInput').click()"
-                    >
-                        📷 Upload / Change Photo
-                    </button>
-
-                    <button
-                        type="button"
-                        class="delete-photo-button"
-                        id="deletePhotoButton"
-                        onclick="deleteProfilePhoto()"
-                        hidden
-                    >
-                        🗑 Remove Photo
-                    </button>
-
-                </div>
+                <button
+                    type="button"
+                    class="delete-photo-button"
+                    id="deletePhotoButton"
+                    onclick="deleteProfilePhoto()"
+                    hidden
+                >
+                    Remove Profile Photo
+                </button>
 
                 <p class="photo-note">
                     Accepted formats: JPG, PNG, WEBP<br>
@@ -1057,12 +872,12 @@ footer {
 
         </section>
 
-        <!-- PERSONAL INFORMATION CARD -->
+        <!-- PERSONAL INFORMATION -->
 
         <section class="card">
 
             <div class="card-header">
-                <h2>PERSONAL INFORMATION</h2>
+                <h3>PERSONAL INFORMATION</h3>
             </div>
 
             <div class="card-body">
@@ -1072,6 +887,11 @@ footer {
                 </div>
 
                 <div class="info-grid">
+
+                    <div class="info-item">
+                        <small>STUDENT ID / STUDENT NUMBER</small>
+                        <strong id="displayStudentNumber">Not assigned</strong>
+                    </div>
 
                     <div class="info-item">
                         <small>FIRST NAME</small>
@@ -1124,62 +944,72 @@ footer {
 
                     <div class="form-grid">
 
-                        <div class="form-group">
-                            <label for="editFirstName">
-                                FIRST NAME
+                        <div class="form-group full">
+                            <label for="editStudentNumber">
+                                STUDENT ID / STUDENT NUMBER
                             </label>
+
+                            <input
+                                type="text"
+                                id="editStudentNumber"
+                                placeholder="Enter your student number"
+                            >
+
+                            <p class="form-note">
+                                Enter your official student number.
+                            </p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="editFirstName">FIRST NAME</label>
 
                             <input
                                 type="text"
                                 id="editFirstName"
+                                placeholder="Enter first name"
                                 required
-                                maxlength="100"
                             >
                         </div>
 
                         <div class="form-group">
-                            <label for="editLastName">
-                                LAST NAME
-                            </label>
+                            <label for="editLastName">LAST NAME</label>
 
                             <input
                                 type="text"
                                 id="editLastName"
+                                placeholder="Enter last name"
                                 required
-                                maxlength="100"
                             >
                         </div>
 
                         <div class="form-group full">
-                            <label for="editEmail">
-                                EMAIL ADDRESS
-                            </label>
+                            <label for="editEmail">EMAIL ADDRESS</label>
 
                             <input
                                 type="email"
                                 id="editEmail"
-                                readonly
+                                disabled
                             >
+
+                            <p class="form-note">
+                                Your registered email address cannot be
+                                changed on this page.
+                            </p>
                         </div>
 
                         <div class="form-group">
-                            <label for="editCourse">
-                                COURSE
-                            </label>
+                            <label for="editCourse">COURSE</label>
 
                             <input
                                 type="text"
                                 id="editCourse"
-                                required
-                                maxlength="100"
                                 placeholder="Enter your course"
+                                required
                             >
                         </div>
 
                         <div class="form-group">
-                            <label for="editYear">
-                                YEAR LEVEL
-                            </label>
+                            <label for="editYear">YEAR LEVEL</label>
 
                             <select id="editYear" required>
                                 <option value="">Select Year Level</option>
@@ -1192,9 +1022,7 @@ footer {
                         </div>
 
                         <div class="form-group">
-                            <label for="editBirthdate">
-                                BIRTHDATE
-                            </label>
+                            <label for="editBirthdate">BIRTHDATE</label>
 
                             <input
                                 type="date"
@@ -1217,7 +1045,6 @@ footer {
                         <button
                             type="button"
                             class="cancel-button"
-                            id="cancelButton"
                             onclick="toggleEditForm(false)"
                         >
                             CANCEL
@@ -1231,19 +1058,6 @@ footer {
 
         </section>
 
-    </div>
-
-    <div id="errorBox" class="error-box" hidden>
-        <strong>Unable to load profile.</strong>
-        <p id="errorText"></p>
-
-        <button
-            type="button"
-            class="retry-button"
-            onclick="loadProfile()"
-        >
-            TRY AGAIN
-        </button>
     </div>
 
 </main>
@@ -1270,15 +1084,13 @@ const db = window.supabase.createClient(
     SUPABASE_ANON_KEY
 );
 
-const PROFILE_BUCKET = "student-profiles";
+const PHOTO_BUCKET = "student-profiles";
 const MAX_PHOTO_SIZE = 3 * 1024 * 1024;
 
 let currentUser = null;
 let currentStudent = null;
+let currentPhotoPath = null;
 let profileLoadPromise = null;
-let isSaving = false;
-let isUploading = false;
-let isDeletingPhoto = false;
 
 
 // ==========================================
@@ -1286,22 +1098,18 @@ let isDeletingPhoto = false;
 // ==========================================
 
 function toggleSidebar() {
-
     document.getElementById("sidebar").classList.toggle("open");
-
     document.getElementById("sidebarOverlay").classList.toggle("show");
 }
 
 function closeSidebar() {
-
     document.getElementById("sidebar").classList.remove("open");
-
     document.getElementById("sidebarOverlay").classList.remove("show");
 }
 
 
 // ==========================================
-// MESSAGE HANDLER
+// MESSAGE
 // ==========================================
 
 function showMessage(message, type = "info") {
@@ -1309,10 +1117,7 @@ function showMessage(message, type = "info") {
     const element = document.getElementById("message");
 
     element.textContent = message;
-
     element.className = "message " + type;
-
-    element.style.display = "block";
 }
 
 function clearMessage() {
@@ -1320,171 +1125,7 @@ function clearMessage() {
     const element = document.getElementById("message");
 
     element.textContent = "";
-
     element.className = "message";
-
-    element.style.display = "none";
-}
-
-
-// ==========================================
-// FORMAT DISPLAY VALUES
-// ==========================================
-
-function displayValue(value) {
-
-    if (value === null || value === undefined || value === "") {
-        return "Not provided";
-    }
-
-    return value;
-}
-
-function formatBirthdate(value) {
-
-    if (!value) {
-        return "Not provided";
-    }
-
-    const parts = value.split("-");
-
-    if (parts.length !== 3) {
-        return value;
-    }
-
-    return new Date(
-        Number(parts[0]),
-        Number(parts[1]) - 1,
-        Number(parts[2])
-    ).toLocaleDateString("en-PH", {
-        year: "numeric",
-        month: "long",
-        day: "numeric"
-    });
-}
-
-
-// ==========================================
-// LOAD PROFILE PHOTO
-// ==========================================
-
-async function loadProfilePicture(path) {
-
-    const image = document.getElementById("profilePhoto");
-
-    const placeholder = document.getElementById("photoPlaceholder");
-
-    const deleteButton = document.getElementById("deletePhotoButton");
-
-    image.style.display = "none";
-
-    placeholder.style.display = "block";
-
-    deleteButton.hidden = !path;
-
-    if (!path) {
-        return;
-    }
-
-    try {
-
-        const { data, error } = await db.storage
-            .from(PROFILE_BUCKET)
-            .createSignedUrl(path, 3600);
-
-        if (error) {
-            throw error;
-        }
-
-        if (!data || !data.signedUrl) {
-            throw new Error("Unable to generate profile photo URL.");
-        }
-
-        image.onload = function() {
-            image.style.display = "block";
-            placeholder.style.display = "none";
-        };
-
-        image.onerror = function() {
-            image.style.display = "none";
-            placeholder.style.display = "block";
-        };
-
-        image.src = data.signedUrl;
-
-    } catch (error) {
-
-        console.error("Profile photo loading error:", error);
-
-        image.style.display = "none";
-
-        placeholder.style.display = "block";
-    }
-}
-
-
-// ==========================================
-// DISPLAY PROFILE INFORMATION
-// ==========================================
-
-async function displayProfile(student) {
-
-    currentStudent = student;
-
-    document.getElementById("displayFirstName").textContent =
-        displayValue(student.first_name);
-
-    document.getElementById("displayLastName").textContent =
-        displayValue(student.last_name);
-
-    document.getElementById("displayEmail").textContent =
-        displayValue(student.email || currentUser?.email);
-
-    document.getElementById("displayCourse").textContent =
-        displayValue(student.course);
-
-    document.getElementById("displayYear").textContent =
-        displayValue(student.year_level);
-
-    document.getElementById("displayBirthdate").textContent =
-        formatBirthdate(student.birthdate);
-
-    const fullName = [
-        student.first_name,
-        student.last_name
-    ].filter(Boolean).join(" ").trim();
-
-    document.getElementById("profileName").textContent =
-        fullName || "Student Name";
-
-    document.getElementById("profileCourse").textContent =
-        student.course || "Course not provided";
-
-    document.getElementById("editFirstName").value =
-        student.first_name || "";
-
-    document.getElementById("editLastName").value =
-        student.last_name || "";
-
-    document.getElementById("editEmail").value =
-        student.email || currentUser?.email || "";
-
-    document.getElementById("editCourse").value =
-        student.course || "";
-
-    document.getElementById("editYear").value =
-        student.year_level || "";
-
-    document.getElementById("editBirthdate").value =
-        student.birthdate || "";
-
-    await loadProfilePicture(student.profile_picture_path);
-
-    document.getElementById("loadingBox").hidden = true;
-
-    document.getElementById("errorBox").hidden = true;
-
-    document.getElementById("profileContent").hidden = false;
 }
 
 
@@ -1498,25 +1139,18 @@ async function loadProfile() {
         return profileLoadPromise;
     }
 
-    profileLoadPromise = (async function() {
+    profileLoadPromise = (async () => {
 
-        const loadingBox = document.getElementById("loadingBox");
+        const loading = document.getElementById("loading");
+        const content = document.getElementById("profileContent");
 
-        const profileContent = document.getElementById("profileContent");
-
-        const errorBox = document.getElementById("errorBox");
-
-        loadingBox.hidden = false;
-
-        profileContent.hidden = true;
-
-        errorBox.hidden = true;
+        loading.style.display = "block";
+        loading.textContent = "Loading student profile...";
+        content.hidden = true;
 
         clearMessage();
 
         try {
-
-            // CHECK AUTHENTICATED USER
 
             const {
                 data: sessionData,
@@ -1530,16 +1164,11 @@ async function loadProfile() {
             const session = sessionData.session;
 
             if (!session || !session.user) {
-
                 location.replace("index.html");
-
                 return null;
             }
 
             currentUser = session.user;
-
-            // GET STUDENT RECORD
-            // STUDENT NUMBER IS NOT USED ON THIS PAGE
 
             const {
                 data: student,
@@ -1548,6 +1177,7 @@ async function loadProfile() {
                 .from("students")
                 .select(`
                     id,
+                    student_number,
                     first_name,
                     last_name,
                     email,
@@ -1566,12 +1196,16 @@ async function loadProfile() {
             if (!student) {
 
                 throw new Error(
-                    "Your student record was not found. " +
-                    "Please contact the administrator."
+                    "Student record not found. Please contact the administrator."
                 );
             }
 
-            await displayProfile(student);
+            currentStudent = student;
+
+            displayProfile(student);
+
+            loading.style.display = "none";
+            content.hidden = false;
 
             return student;
 
@@ -1579,14 +1213,25 @@ async function loadProfile() {
 
             console.error("Profile loading error:", error);
 
-            loadingBox.hidden = true;
+            loading.style.display = "none";
 
-            profileContent.hidden = true;
+            showMessage(
+                "Unable to load profile: " + error.message,
+                "error"
+            );
 
-            errorBox.hidden = false;
+            const retry = document.createElement("button");
+            retry.type = "button";
+            retry.className = "edit-button";
+            retry.textContent = "TRY AGAIN";
+            retry.onclick = () => loadProfile();
 
-            document.getElementById("errorText").textContent =
-                error.message || "Unknown error.";
+            loading.style.display = "block";
+            loading.textContent = "";
+            loading.appendChild(document.createTextNode(
+                "Unable to load your profile. "
+            ));
+            loading.appendChild(retry);
 
             return null;
         }
@@ -1594,54 +1239,184 @@ async function loadProfile() {
     })();
 
     try {
-
         return await profileLoadPromise;
-
     } finally {
-
         profileLoadPromise = null;
     }
 }
 
 
 // ==========================================
-// SHOW / HIDE EDIT FORM
+// DISPLAY PROFILE INFORMATION
+// ==========================================
+
+function displayProfile(student) {
+
+    const fullName = [
+        student.first_name,
+        student.last_name
+    ].filter(Boolean).join(" ").trim();
+
+    document.getElementById("displayStudentNumber").textContent =
+        student.student_number || "Not assigned";
+
+    document.getElementById("displayFirstName").textContent =
+        student.first_name || "Not provided";
+
+    document.getElementById("displayLastName").textContent =
+        student.last_name || "Not provided";
+
+    document.getElementById("displayEmail").textContent =
+        student.email || currentUser.email || "Not provided";
+
+    document.getElementById("displayCourse").textContent =
+        student.course || "Not provided";
+
+    document.getElementById("displayYear").textContent =
+        student.year_level || "Not provided";
+
+    document.getElementById("displayBirthdate").textContent =
+        formatBirthdate(student.birthdate);
+
+    document.getElementById("photoName").textContent =
+        fullName || "Student Name";
+
+    document.getElementById("photoCourse").textContent =
+        student.course || "Course not provided";
+
+    currentPhotoPath = student.profile_picture_path || null;
+
+    // Fill edit form
+
+    document.getElementById("editStudentNumber").value =
+        student.student_number || "";
+
+    document.getElementById("editFirstName").value =
+        student.first_name || "";
+
+    document.getElementById("editLastName").value =
+        student.last_name || "";
+
+    document.getElementById("editEmail").value =
+        student.email || currentUser.email || "";
+
+    document.getElementById("editCourse").value =
+        student.course || "";
+
+    document.getElementById("editYear").value =
+        student.year_level || "";
+
+    document.getElementById("editBirthdate").value =
+        student.birthdate || "";
+
+    loadProfilePicture(currentPhotoPath);
+}
+
+
+// ==========================================
+// FORMAT BIRTHDATE
+// ==========================================
+
+function formatBirthdate(date) {
+
+    if (!date) {
+        return "Not provided";
+    }
+
+    const parsed = new Date(date + "T00:00:00");
+
+    if (isNaN(parsed.getTime())) {
+        return date;
+    }
+
+    return parsed.toLocaleDateString("en-PH", {
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+    });
+}
+
+
+// ==========================================
+// LOAD PROFILE PHOTO
+// ==========================================
+
+async function loadProfilePicture(path) {
+
+    const image = document.getElementById("profileImage");
+    const placeholder = document.getElementById("photoPlaceholder");
+    const deleteButton = document.getElementById("deletePhotoButton");
+
+    image.hidden = true;
+    placeholder.hidden = false;
+
+    deleteButton.hidden = !path;
+
+    if (!path) {
+        return;
+    }
+
+    try {
+
+        const {
+            data,
+            error
+        } = await db.storage
+            .from(PHOTO_BUCKET)
+            .createSignedUrl(path, 3600);
+
+        if (error) {
+            throw error;
+        }
+
+        image.onload = function() {
+            image.hidden = false;
+            placeholder.hidden = true;
+        };
+
+        image.onerror = function() {
+            image.hidden = true;
+            placeholder.hidden = false;
+        };
+
+        image.src = data.signedUrl;
+
+    } catch (error) {
+
+        console.error("Profile photo loading error:", error);
+
+        image.hidden = true;
+        placeholder.hidden = false;
+    }
+}
+
+
+// ==========================================
+// OPEN / CLOSE EDIT FORM
 // ==========================================
 
 function toggleEditForm(show) {
 
     const form = document.getElementById("editForm");
 
+    form.classList.toggle("show", show);
+
+    document.getElementById("editButton").hidden = show;
+
     if (show) {
-
-        if (!currentStudent) {
-            return;
-        }
-
-        form.classList.add("show");
-
-        document.getElementById("editButton").hidden = true;
-
         form.scrollIntoView({
             behavior: "smooth",
-            block: "nearest"
+            block: "start"
         });
-
-    } else {
-
-        form.classList.remove("show");
-
-        document.getElementById("editButton").hidden = false;
-
-        if (currentStudent) {
-            displayProfile(currentStudent);
-        }
+    } else if (currentStudent) {
+        displayProfile(currentStudent);
+        clearMessage();
     }
 }
 
 
 // ==========================================
-// UPDATE STUDENT PROFILE
+// UPDATE PROFILE
 // ==========================================
 
 document.getElementById("editForm").addEventListener(
@@ -1650,9 +1425,15 @@ document.getElementById("editForm").addEventListener(
 
         event.preventDefault();
 
-        if (isSaving || !currentUser || !currentStudent) {
+        if (!currentUser || !currentStudent) {
+            showMessage("Student information is not loaded.", "error");
             return;
         }
+
+        const saveButton = document.getElementById("saveButton");
+
+        const studentNumber =
+            document.getElementById("editStudentNumber").value.trim();
 
         const firstName =
             document.getElementById("editFirstName").value.trim();
@@ -1672,30 +1453,22 @@ document.getElementById("editForm").addEventListener(
         if (!firstName || !lastName || !course || !yearLevel) {
 
             showMessage(
-                "Please complete all required student information.",
+                "Please complete all required fields.",
                 "error"
             );
 
             return;
         }
 
-        isSaving = true;
-
-        const saveButton = document.getElementById("saveButton");
-
-        const cancelButton = document.getElementById("cancelButton");
+        const originalText = saveButton.textContent;
 
         saveButton.disabled = true;
-
-        cancelButton.disabled = true;
-
         saveButton.textContent = "SAVING...";
-
-        clearMessage();
 
         try {
 
-            const updatedInformation = {
+            const updates = {
+                student_number: studentNumber || null,
                 first_name: firstName,
                 last_name: lastName,
                 course: course,
@@ -1704,14 +1477,15 @@ document.getElementById("editForm").addEventListener(
             };
 
             const {
-                data: updatedStudent,
-                error: updateError
+                data,
+                error
             } = await db
                 .from("students")
-                .update(updatedInformation)
+                .update(updates)
                 .eq("id", currentUser.id)
                 .select(`
                     id,
+                    student_number,
                     first_name,
                     last_name,
                     email,
@@ -1720,29 +1494,20 @@ document.getElementById("editForm").addEventListener(
                     birthdate,
                     profile_picture_path
                 `)
-                .maybeSingle();
+                .single();
 
-            if (updateError) {
-                throw updateError;
+            if (error) {
+                throw error;
             }
 
-            if (!updatedStudent) {
+            currentStudent = data;
 
-                throw new Error(
-                    "No student record was updated. " +
-                    "Please check your students table UPDATE policy " +
-                    "and authenticated user permissions."
-                );
-            }
-
-            currentStudent = updatedStudent;
-
-            await displayProfile(updatedStudent);
+            displayProfile(currentStudent);
 
             toggleEditForm(false);
 
             showMessage(
-                "Your profile has been successfully updated.",
+                "Your profile information has been successfully updated.",
                 "success"
             );
 
@@ -1751,20 +1516,14 @@ document.getElementById("editForm").addEventListener(
             console.error("Profile update error:", error);
 
             showMessage(
-                "Unable to update profile: " +
-                (error.message || "Unknown error"),
+                "Unable to update profile: " + error.message,
                 "error"
             );
 
         } finally {
 
-            isSaving = false;
-
             saveButton.disabled = false;
-
-            cancelButton.disabled = false;
-
-            saveButton.textContent = "SAVE CHANGES";
+            saveButton.textContent = originalText;
         }
     }
 );
@@ -1774,196 +1533,171 @@ document.getElementById("editForm").addEventListener(
 // UPLOAD PROFILE PHOTO
 // ==========================================
 
-document.getElementById("photoInput").addEventListener(
-    "change",
-    async function(event) {
+async function uploadProfilePhoto(event) {
 
-        const file = event.target.files[0];
+    const file = event.target.files[0];
 
-        if (!file) {
-            return;
-        }
-
-        if (isUploading || !currentUser || !currentStudent) {
-            event.target.value = "";
-            return;
-        }
-
-        const allowedTypes = [
-            "image/jpeg",
-            "image/png",
-            "image/webp"
-        ];
-
-        if (!allowedTypes.includes(file.type)) {
-
-            showMessage(
-                "Invalid image format. Please upload JPG, PNG, or WEBP.",
-                "error"
-            );
-
-            event.target.value = "";
-
-            return;
-        }
-
-        if (file.size > MAX_PHOTO_SIZE) {
-
-            showMessage(
-                "Your image is too large. Maximum file size is 3 MB.",
-                "error"
-            );
-
-            event.target.value = "";
-
-            return;
-        }
-
-        isUploading = true;
-
-        const uploadButton = document.getElementById("uploadButton");
-
-        const photoInput = document.getElementById("photoInput");
-
-        uploadButton.disabled = true;
-
-        photoInput.disabled = true;
-
-        uploadButton.textContent = "UPLOADING...";
-
-        clearMessage();
-
-        let newFilePath = null;
-
-        try {
-
-            const extension = file.type === "image/jpeg"
-                ? "jpg"
-                : file.type === "image/png"
-                    ? "png"
-                    : "webp";
-
-            newFilePath =
-                currentUser.id +
-                "/profile-" +
-                Date.now() +
-                "." +
-                extension;
-
-            // UPLOAD NEW IMAGE
-
-            const {
-                error: uploadError
-            } = await db.storage
-                .from(PROFILE_BUCKET)
-                .upload(newFilePath, file, {
-                    cacheControl: "3600",
-                    upsert: false,
-                    contentType: file.type
-                });
-
-            if (uploadError) {
-                throw uploadError;
-            }
-
-            // UPDATE DATABASE PATH
-
-            const oldPath = currentStudent.profile_picture_path;
-
-            const {
-                data: updatedStudent,
-                error: updateError
-            } = await db
-                .from("students")
-                .update({
-                    profile_picture_path: newFilePath
-                })
-                .eq("id", currentUser.id)
-                .select(`
-                    id,
-                    first_name,
-                    last_name,
-                    email,
-                    course,
-                    year_level,
-                    birthdate,
-                    profile_picture_path
-                `)
-                .maybeSingle();
-
-            if (updateError) {
-                throw updateError;
-            }
-
-            if (!updatedStudent) {
-
-                throw new Error(
-                    "The image was uploaded, but the student record " +
-                    "was not updated. Please check your students UPDATE policy."
-                );
-            }
-
-            currentStudent = updatedStudent;
-
-            await displayProfile(updatedStudent);
-
-            // REMOVE OLD PHOTO AFTER DATABASE UPDATE
-
-            if (oldPath && oldPath !== newFilePath) {
-
-                const {
-                    error: removeOldError
-                } = await db.storage
-                    .from(PROFILE_BUCKET)
-                    .remove([oldPath]);
-
-                if (removeOldError) {
-
-                    console.warn(
-                        "Old profile photo could not be removed:",
-                        removeOldError
-                    );
-                }
-            }
-
-            showMessage(
-                "Your profile photo has been successfully updated.",
-                "success"
-            );
-
-        } catch (error) {
-
-            console.error("Photo upload error:", error);
-
-            // CLEAN UP NEW UPLOAD IF DATABASE UPDATE FAILED
-
-            if (newFilePath) {
-
-                await db.storage
-                    .from(PROFILE_BUCKET)
-                    .remove([newFilePath]);
-            }
-
-            showMessage(
-                "Photo upload failed: " +
-                (error.message || "Unknown error"),
-                "error"
-            );
-
-        } finally {
-
-            isUploading = false;
-
-            uploadButton.disabled = false;
-
-            photoInput.disabled = false;
-
-            uploadButton.textContent = "📷 Upload / Change Photo";
-
-            photoInput.value = "";
-        }
+    if (!file) {
+        return;
     }
-);
+
+    const input = document.getElementById("photoInput");
+    const uploadButton = document.getElementById("uploadButton");
+
+    if (!currentUser || !currentStudent) {
+        showMessage("Student information is not loaded.", "error");
+        input.value = "";
+        return;
+    }
+
+    const allowedTypes = [
+        "image/jpeg",
+        "image/png",
+        "image/webp"
+    ];
+
+    if (!allowedTypes.includes(file.type)) {
+
+        showMessage(
+            "Invalid file format. Please upload JPG, PNG, or WEBP.",
+            "error"
+        );
+
+        input.value = "";
+        return;
+    }
+
+    if (file.size > MAX_PHOTO_SIZE) {
+
+        showMessage(
+            "File is too large. Maximum allowed size is 3 MB.",
+            "error"
+        );
+
+        input.value = "";
+        return;
+    }
+
+    const originalText = uploadButton.textContent;
+
+    input.disabled = true;
+    uploadButton.disabled = true;
+    uploadButton.textContent = "UPLOADING...";
+
+    let newPath = null;
+
+    try {
+
+        const extension = file.type === "image/jpeg"
+            ? "jpg"
+            : file.type === "image/png"
+                ? "png"
+                : "webp";
+
+        newPath =
+            currentUser.id +
+            "/profile-" +
+            Date.now() +
+            "." +
+            extension;
+
+        // Upload new image
+
+        const {
+            error: uploadError
+        } = await db.storage
+            .from(PHOTO_BUCKET)
+            .upload(newPath, file, {
+                cacheControl: "3600",
+                upsert: false,
+                contentType: file.type
+            });
+
+        if (uploadError) {
+            throw uploadError;
+        }
+
+        // Update database path
+
+        const oldPath = currentPhotoPath;
+
+        const {
+            data,
+            error: updateError
+        } = await db
+            .from("students")
+            .update({
+                profile_picture_path: newPath
+            })
+            .eq("id", currentUser.id)
+            .select(`
+                id,
+                student_number,
+                first_name,
+                last_name,
+                email,
+                course,
+                year_level,
+                birthdate,
+                profile_picture_path
+            `)
+            .single();
+
+        if (updateError) {
+            throw updateError;
+        }
+
+        currentStudent = data;
+        currentPhotoPath = newPath;
+
+        // Remove old image only after database update succeeds
+
+        if (oldPath) {
+
+            const {
+                error: removeError
+            } = await db.storage
+                .from(PHOTO_BUCKET)
+                .remove([oldPath]);
+
+            if (removeError) {
+                console.warn("Old photo cleanup error:", removeError);
+            }
+        }
+
+        displayProfile(currentStudent);
+
+        showMessage(
+            "Profile photo successfully updated.",
+            "success"
+        );
+
+    } catch (error) {
+
+        console.error("Photo upload error:", error);
+
+        // Remove newly uploaded file if database update failed
+
+        if (newPath) {
+            await db.storage
+                .from(PHOTO_BUCKET)
+                .remove([newPath]);
+        }
+
+        showMessage(
+            "Photo upload failed: " + error.message,
+            "error"
+        );
+
+    } finally {
+
+        input.disabled = false;
+        input.value = "";
+
+        uploadButton.disabled = false;
+        uploadButton.textContent = originalText;
+    }
+}
 
 
 // ==========================================
@@ -1972,12 +1706,7 @@ document.getElementById("photoInput").addEventListener(
 
 async function deleteProfilePhoto() {
 
-    if (
-        isDeletingPhoto ||
-        !currentUser ||
-        !currentStudent ||
-        !currentStudent.profile_picture_path
-    ) {
+    if (!currentPhotoPath || !currentUser) {
         return;
     }
 
@@ -1989,30 +1718,20 @@ async function deleteProfilePhoto() {
         return;
     }
 
-    isDeletingPhoto = true;
-
     const deleteButton =
         document.getElementById("deletePhotoButton");
 
-    const uploadButton =
-        document.getElementById("uploadButton");
-
     deleteButton.disabled = true;
-
-    uploadButton.disabled = true;
-
     deleteButton.textContent = "REMOVING...";
-
-    clearMessage();
-
-    const oldPath = currentStudent.profile_picture_path;
 
     try {
 
-        // CLEAR DATABASE REFERENCE FIRST
+        const oldPath = currentPhotoPath;
+
+        // Clear database path first
 
         const {
-            data: updatedStudent,
+            data,
             error: updateError
         } = await db
             .from("students")
@@ -2022,6 +1741,7 @@ async function deleteProfilePhoto() {
             .eq("id", currentUser.id)
             .select(`
                 id,
+                student_number,
                 first_name,
                 last_name,
                 email,
@@ -2030,73 +1750,54 @@ async function deleteProfilePhoto() {
                 birthdate,
                 profile_picture_path
             `)
-            .maybeSingle();
+            .single();
 
         if (updateError) {
             throw updateError;
         }
 
-        if (!updatedStudent) {
+        currentStudent = data;
+        currentPhotoPath = null;
 
-            throw new Error(
-                "Unable to update the student record. " +
-                "Please check your students UPDATE policy."
-            );
-        }
-
-        currentStudent = updatedStudent;
-
-        await displayProfile(updatedStudent);
-
-        // REMOVE FILE FROM STORAGE
+        // Remove file from storage
 
         const {
             error: removeError
         } = await db.storage
-            .from(PROFILE_BUCKET)
+            .from(PHOTO_BUCKET)
             .remove([oldPath]);
+
+        displayProfile(currentStudent);
 
         if (removeError) {
 
-            console.error(
-                "Storage removal error:",
-                removeError
-            );
-
             showMessage(
-                "Your profile photo was removed from your profile, " +
-                "but the old storage file could not be deleted: " +
+                "Your profile photo reference was cleared, but the old storage file could not be removed: " +
                 removeError.message,
                 "error"
             );
 
-            return;
-        }
+        } else {
 
-        showMessage(
-            "Your profile photo has been removed.",
-            "success"
-        );
+            showMessage(
+                "Profile photo successfully removed.",
+                "success"
+            );
+        }
 
     } catch (error) {
 
-        console.error("Delete photo error:", error);
+        console.error("Photo deletion error:", error);
 
         showMessage(
-            "Unable to remove profile photo: " +
-            (error.message || "Unknown error"),
+            "Unable to remove profile photo: " + error.message,
             "error"
         );
 
     } finally {
 
-        isDeletingPhoto = false;
-
         deleteButton.disabled = false;
-
-        uploadButton.disabled = false;
-
-        deleteButton.textContent = "🗑 Remove Photo";
+        deleteButton.textContent = "Remove Profile Photo";
     }
 }
 
@@ -2129,26 +1830,24 @@ async function logout() {
 
         console.error("Logout error:", error);
 
-        alert(
-            "Unable to log out: " + error.message
-        );
+        alert("Unable to log out: " + error.message);
     }
 }
 
 
 // ==========================================
-// INITIALIZE PROFILE PAGE
+// INITIALIZE PAGE
 // ==========================================
 
-loadProfile();
+async function initializeProfile() {
+    await loadProfile();
+}
 
-
-// HANDLE BROWSER BACK/FORWARD CACHE
+initializeProfile();
 
 window.addEventListener("pageshow", function(event) {
-
     if (event.persisted) {
-        loadProfile();
+        initializeProfile();
     }
 });
 
@@ -2156,3 +1855,10 @@ window.addEventListener("pageshow", function(event) {
 
 </body>
 </html>
+
+
+
+
+
+
+
