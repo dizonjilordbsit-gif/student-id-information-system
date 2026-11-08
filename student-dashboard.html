@@ -1181,6 +1181,168 @@ button {
     }
 }
 
+/* ==========================================
+   STUDENT MESSAGING DESIGN
+========================================== */
+
+.message-count{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-width:20px;
+    height:20px;
+    padding:0 6px;
+    margin-left:auto;
+    border-radius:20px;
+    background:#d6ad45;
+    color:#003b24;
+    font-size:11px;
+    font-weight:bold;
+}
+
+.messages-panel{
+    background:white;
+    border:1px solid #e5d9b5;
+    border-radius:10px;
+    overflow:hidden;
+}
+
+.messages-toolbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    flex-wrap:wrap;
+    padding:13px 16px;
+    border-bottom:1px solid #e5e9e4;
+}
+
+.messages-toolbar p{
+    color:#758078;
+    font-size:12px;
+}
+
+.messages-refresh{
+    background:#075c3b;
+    color:white;
+    border:0;
+    border-radius:6px;
+    padding:9px 14px;
+    font-size:12px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.student-chat-messages{
+    height:400px;
+    overflow-y:auto;
+    padding:18px;
+    background:#f5f7f4;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.student-chat-empty{
+    margin:auto;
+    text-align:center;
+    color:#758078;
+    font-size:13px;
+    line-height:1.7;
+}
+
+.student-chat-bubble{
+    max-width:80%;
+    padding:12px 14px;
+    border-radius:12px;
+    font-size:13px;
+    line-height:1.6;
+    overflow-wrap:anywhere;
+}
+
+.student-chat-bubble.admin{
+    align-self:flex-start;
+    background:white;
+    color:#26352e;
+    border:1px solid #e5e9e4;
+    border-bottom-left-radius:3px;
+}
+
+.student-chat-bubble.student{
+    align-self:flex-end;
+    background:#075c3b;
+    color:white;
+    border-bottom-right-radius:3px;
+}
+
+.student-chat-time{
+    font-size:10px;
+    margin-top:5px;
+    opacity:.7;
+}
+
+.student-chat-compose{
+    display:flex;
+    gap:10px;
+    padding:14px;
+    border-top:1px solid #e5e9e4;
+    background:white;
+}
+
+.student-chat-compose textarea{
+    flex:1;
+    min-width:0;
+    min-height:48px;
+    max-height:110px;
+    resize:vertical;
+    padding:12px;
+    border:1px solid #d9dfd9;
+    border-radius:7px;
+    font-size:13px;
+    outline:none;
+}
+
+.student-chat-compose textarea:focus{
+    border-color:#075c3b;
+}
+
+.student-chat-compose button{
+    align-self:flex-end;
+    padding:12px 18px;
+    background:#075c3b;
+    color:white;
+    border:0;
+    border-radius:7px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.student-chat-compose button:disabled{
+    opacity:.6;
+    cursor:not-allowed;
+}
+
+@media(max-width:600px){
+    .student-chat-messages{
+        height:350px;
+        padding:12px;
+    }
+
+    .student-chat-bubble{
+        max-width:90%;
+    }
+
+    .student-chat-compose{
+        padding:10px;
+        gap:7px;
+    }
+
+    .student-chat-compose button{
+        padding:11px;
+        font-size:12px;
+    }
+}
+
 
 </style>
 </head>
@@ -1259,6 +1421,14 @@ button {
         onclick="window.location.href='document.html'">
     <span>📁</span> My Documents
 </button>
+
+<button class="sidebar-link" id="messagesNavButton"
+        onclick="openStudentMessages(this)">
+    <span>✉</span> Messages
+    <span class="message-count" id="unreadMessageBadge"
+          style="display:none">0</span>
+</button>
+
 
         <div class="sidebar-divider"></div>
 
@@ -1554,6 +1724,62 @@ button {
 
         </div>
     </section>
+    
+<!-- STUDENT MESSAGES PAGE -->
+<section id="studentMessagesPage" class="other-page card">
+
+    <div class="card-header">
+        <h2>Messages from Admin</h2>
+    </div>
+
+    <div class="card-body">
+
+        <p style="margin-bottom:15px;color:#52645a;font-size:13px">
+            Read announcements and messages from your administrator.
+            You can also reply directly here.
+        </p>
+
+        <div class="messages-panel">
+
+            <div class="messages-toolbar">
+                <p>Admin Conversation</p>
+                <button type="button" class="messages-refresh"
+                        id="refreshStudentMessages">
+                    ↻ Refresh
+                </button>
+            </div>
+
+            <div class="student-chat-messages" id="studentChatMessages">
+                <div class="student-chat-empty">
+                    Open Messages to load your conversation.
+                </div>
+            </div>
+
+            <form class="student-chat-compose" id="studentChatForm">
+
+                <textarea
+                    id="studentChatInput"
+                    placeholder="Write your reply to the admin..."
+                    maxlength="5000"
+                    required
+                ></textarea>
+
+                <button type="submit" id="studentSendButton">
+                    Send
+                </button>
+
+            </form>
+
+        </div>
+
+        <button class="back-button"
+                onclick="showPage('dashboardPage')">
+            ← BACK TO DASHBOARD
+        </button>
+
+    </div>
+</section>
+
 
 
     <!-- LOADING / ERROR -->
@@ -1596,6 +1822,9 @@ const supabaseClient = window.supabase.createClient(
 
 let currentStudent = null;
 let dashboardLoadPromise = null;
+let studentAuthId = null;
+let activeAdminId = null;
+let studentChatSending = false;
 
 // ==========================================
 // LOAD AUTHENTICATED STUDENT
@@ -1636,6 +1865,7 @@ async function loadStudentDashboard() {
             }
 
             const user = session.user;
+            studentAuthId = user.id;
 
             // Get the authenticated student's database record
             const {
@@ -1804,6 +2034,264 @@ function displayStudentInformation(student) {
         student.studentNumber;
 }
 
+
+// ==========================================
+// STUDENT MESSAGING SYSTEM
+// ==========================================
+
+function escapeMessageHTML(value){
+
+    return String(value ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+}
+
+function formatStudentMessageDate(value){
+
+    if(!value) return "";
+
+    const date = new Date(value);
+
+    if(Number.isNaN(date.getTime())) return "";
+
+    return date.toLocaleString("en-PH",{
+        month:"short",
+        day:"numeric",
+        year:"numeric",
+        hour:"numeric",
+        minute:"2-digit"
+    });
+}
+
+
+// OPEN MESSAGES PAGE
+
+async function openStudentMessages(button){
+
+    showPage("studentMessagesPage");
+
+    document.querySelectorAll(".sidebar-link").forEach(link=>{
+        link.classList.remove("active");
+    });
+
+    if(button){
+        button.classList.add("active");
+    }
+
+    closeSidebar();
+
+    await loadStudentMessages();
+}
+
+
+// LOAD MESSAGES
+
+async function loadStudentMessages(){
+
+    if(!studentAuthId){
+
+        const {data,error} = await supabaseClient.auth.getSession();
+
+        if(error){
+            alert("Unable to verify student session: " + error.message);
+            return;
+        }
+
+        studentAuthId = data.session?.user?.id || null;
+    }
+
+    if(!studentAuthId) return;
+
+    const container = document.getElementById("studentChatMessages");
+    const badge = document.getElementById("unreadMessageBadge");
+
+    container.innerHTML =
+        '<div class="student-chat-empty">Loading your messages...</div>';
+
+    try{
+
+        const {data,error} = await supabaseClient
+            .from("messages")
+            .select("id,sender_id,receiver_id,message,created_at,read_at")
+            .or(
+                `sender_id.eq.${studentAuthId},receiver_id.eq.${studentAuthId}`
+            )
+            .order("created_at",{ascending:true});
+
+        if(error) throw error;
+
+        const messages = data || [];
+
+        // Find latest admin who sent a message
+        const incomingMessages = messages.filter(
+            msg => msg.receiver_id === studentAuthId
+        );
+
+        if(incomingMessages.length){
+
+            activeAdminId =
+                incomingMessages[incomingMessages.length - 1].sender_id;
+
+        }else{
+
+            activeAdminId = null;
+
+        }
+
+        // Count unread admin messages
+        const unreadMessages = messages.filter(
+            msg => msg.receiver_id === studentAuthId && !msg.read_at
+        );
+
+        if(unreadMessages.length){
+
+            badge.textContent = unreadMessages.length;
+            badge.style.display = "inline-flex";
+
+        }else{
+
+            badge.style.display = "none";
+
+        }
+
+        if(!messages.length){
+
+            container.innerHTML = `
+                <div class="student-chat-empty">
+                    <strong>No messages yet.</strong><br>
+                    Messages sent by your administrator will appear here.
+                </div>
+            `;
+
+            return;
+        }
+
+        container.innerHTML = messages.map(msg=>{
+
+            const isStudent = msg.sender_id === studentAuthId;
+
+            return `
+                <div class="student-chat-bubble ${isStudent?"student":"admin"}">
+
+                    <div>${escapeMessageHTML(msg.message)}</div>
+
+                    <div class="student-chat-time">
+                        ${isStudent?"You":"Admin"}
+                        · ${formatStudentMessageDate(msg.created_at)}
+                    </div>
+
+                </div>
+            `;
+
+        }).join("");
+
+        container.scrollTop = container.scrollHeight;
+
+        // Mark received messages as read
+        const unreadIds = unreadMessages.map(msg=>msg.id);
+
+        if(unreadIds.length){
+
+            const {error:readError} = await supabaseClient
+                .from("messages")
+                .update({
+                    read_at:new Date().toISOString()
+                })
+                .in("id",unreadIds);
+
+            if(readError){
+
+                console.error("Unable to mark messages as read:",readError);
+
+            }else{
+
+                badge.style.display = "none";
+
+            }
+        }
+
+    }catch(error){
+
+        console.error("Student message loading error:",error);
+
+        container.innerHTML = `
+            <div class="student-chat-empty">
+                Unable to load messages.<br>
+                ${escapeMessageHTML(error.message)}
+            </div>
+        `;
+    }
+}
+
+
+// SEND STUDENT REPLY
+
+document.getElementById("studentChatForm")
+.addEventListener("submit",async event=>{
+
+    event.preventDefault();
+
+    if(studentChatSending) return;
+
+    const input = document.getElementById("studentChatInput");
+    const sendButton = document.getElementById("studentSendButton");
+
+    const messageText = input.value.trim();
+
+    if(!messageText) return;
+
+    if(!studentAuthId || !activeAdminId){
+
+        alert(
+            "Wala pang message mula sa admin. " +
+            "Hintayin munang magpadala ng message ang administrator."
+        );
+
+        return;
+    }
+
+    studentChatSending = true;
+    sendButton.disabled = true;
+    sendButton.textContent = "Sending...";
+
+    try{
+
+        const {error} = await supabaseClient
+            .from("messages")
+            .insert({
+                sender_id:studentAuthId,
+                receiver_id:activeAdminId,
+                message:messageText
+            });
+
+        if(error) throw error;
+
+        input.value = "";
+
+        await loadStudentMessages();
+
+    }catch(error){
+
+        console.error("Student reply error:",error);
+
+        alert("Unable to send reply: " + error.message);
+
+    }finally{
+
+        studentChatSending = false;
+        sendButton.disabled = false;
+        sendButton.textContent = "Send";
+    }
+});
+
+
+// REFRESH MESSAGES
+
+document.getElementById("refreshStudentMessages")
+.addEventListener("click",loadStudentMessages);
 
 // ==========================================
 // PAGE NAVIGATION
