@@ -1,1 +1,769 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard | I-PILIMON Student ID INFORMATION</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+:root{--green:#064b35;--dark-green:#033b2a;--gold:#d6ad45;--cream:#f7f5ed;--white:#fff;--text:#26352e;--muted:#758078;--border:#e5e9e4}
+body{background:var(--cream);color:var(--text)}
+.header{height:75px;background:var(--green);color:white;display:flex;align-items:center;justify-content:space-between;padding:0 25px;border-bottom:4px solid var(--gold);position:fixed;top:0;left:0;right:0;z-index:1000}
+.header-left{display:flex;align-items:center;gap:14px}
+.brand{font-size:18px;font-weight:bold;line-height:1.3}
+.brand small{display:block;font-size:11px;color:#e8d28e;font-weight:normal;letter-spacing:1px}
+.menu-btn{display:none;background:transparent;border:none;color:white;font-size:27px;cursor:pointer}
+.logout-top{background:var(--gold);color:var(--dark-green);border:none;padding:10px 18px;border-radius:6px;font-weight:bold;cursor:pointer}
+.sidebar{position:fixed;top:75px;left:0;bottom:0;width:255px;background:var(--green);padding:25px 15px;border-right:4px solid var(--gold);z-index:900;transition:transform .3s ease}
+.sidebar-title{color:#e8d28e;font-size:12px;font-weight:bold;letter-spacing:1.5px;padding:5px 14px 18px}
+.sidebar button{width:100%;display:flex;align-items:center;gap:12px;padding:14px 15px;margin-bottom:8px;background:transparent;border:none;border-radius:7px;color:white;text-align:left;font-size:14px;cursor:pointer;transition:.2s}
+.sidebar button:hover,.sidebar button.active{background:var(--gold);color:var(--dark-green);font-weight:bold}
+.sidebar .sidebar-logout{margin-top:30px;border:1px solid rgba(255,255,255,.3)}
+.main{margin-left:255px;padding:105px 30px 35px;min-height:100vh}
+.page-section{display:none}
+.page-section.active{display:block}
+.page-heading{margin-bottom:25px}
+.page-heading h1{color:var(--green);font-size:27px;margin-bottom:7px}
+.page-heading p{color:var(--muted);font-size:14px}
+
+/* STATISTICS */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:28px}
+.stat-card{appearance:none;width:100%;text-align:left;background:white;padding:22px;border-radius:10px;border:1px solid var(--border);border-left:5px solid var(--gold);box-shadow:0 3px 12px rgba(0,0,0,.04);color:inherit;font:inherit;cursor:pointer;transition:transform .2s,box-shadow .2s}
+.stat-card:hover{transform:translateY(-3px);box-shadow:0 6px 16px rgba(0,0,0,.09)}
+.stat-card:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.stat-card p{color:var(--muted);font-size:13px;margin-bottom:12px}
+.stat-card h2{color:var(--green);font-size:30px}
+
+/* PANELS */
+.panel{background:white;padding:23px;border-radius:10px;border:1px solid var(--border);box-shadow:0 3px 12px rgba(0,0,0,.04);margin-bottom:25px}
+.panel-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+.panel-heading h2{color:var(--green);font-size:19px}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+.toolbar input,.toolbar select{padding:11px 13px;border:1px solid #d9dfd9;border-radius:6px;font-size:13px;outline:none;background:white}
+.toolbar input{flex:1;min-width:180px}
+.toolbar input:focus,.toolbar select:focus{border-color:var(--green)}
+.btn{padding:10px 15px;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:bold}
+.btn-green{background:var(--green);color:white}
+.btn-gold{background:var(--gold);color:var(--dark-green)}
+.btn-view{background:#e8f1ec;color:var(--green)}
+.btn-approve{background:#dff3e5;color:#176b35}
+.btn-reject{background:#fde7e7;color:#a12626}
+.btn:hover{opacity:.85}
+.btn:disabled{opacity:.6;cursor:not-allowed}
+.table-wrapper{width:100%;overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:700px}
+th{background:#edf3ee;color:var(--green);padding:14px 12px;text-align:left;font-size:12px;white-space:nowrap}
+td{padding:13px 12px;border-bottom:1px solid var(--border);font-size:13px;vertical-align:middle}
+tbody tr:hover{background:#fafcf9}
+.status{display:inline-block;padding:6px 10px;border-radius:20px;font-size:11px;font-weight:bold;white-space:nowrap}
+.status-pending,.status-incomplete{background:#fff2d5;color:#916100}
+.status-approved,.status-complete{background:#def3e4;color:#176b35}
+.status-rejected{background:#fde3e3;color:#a12626}
+.action-buttons{display:flex;gap:6px;flex-wrap:wrap}
+.action-buttons .btn{padding:7px 10px;font-size:11px}
+.message{padding:14px;background:#f1f5f1;border-radius:7px;color:var(--muted);font-size:13px;margin-bottom:15px;display:none;overflow-wrap:anywhere}
+.loading,.empty{text-align:center;color:var(--muted);padding:25px}
+.quick-links{display:flex;flex-wrap:wrap;gap:10px}
+.quick-links button{padding:12px 16px;border:1px solid var(--border);background:#f7faf7;color:var(--green);border-radius:7px;cursor:pointer;font-weight:bold}
+.profile-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.profile-field{display:flex;flex-direction:column;gap:8px}
+.profile-field label{color:var(--green);font-size:13px;font-weight:bold}
+.profile-field input,.profile-field textarea{width:100%;padding:12px;border:1px solid #d9dfd9;border-radius:6px;font-size:14px;outline:none;background:white;color:var(--text)}
+.profile-field input:focus,.profile-field textarea:focus{border-color:var(--green)}
+.profile-field input[readonly]{background:#f1f3ef;color:#68736c;cursor:not-allowed}
+.profile-field textarea{resize:vertical}
+.full-width{grid-column:1/-1}
+.profile-actions{display:flex;gap:10px;margin-top:25px;flex-wrap:wrap}
+.overlay{display:none;position:fixed;inset:75px 0 0;background:rgba(0,0,0,.45);z-index:850}
+.overlay.show{display:block}
+.student-signature-preview{width:110px;height:55px;object-fit:contain;background:#fff;border:1px solid #d9dfd9;border-radius:6px;padding:5px;cursor:pointer;display:block}
+.student-signature-preview:hover{border-color:var(--gold);box-shadow:0 2px 7px rgba(0,0,0,.12)}
+@media(max-width:1100px){.stats-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:850px){.menu-btn{display:block}.sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.main{margin-left:0;padding:100px 18px 30px}}
+@media(max-width:600px){.profile-grid{grid-template-columns:1fr}.full-width{grid-column:auto}}
+@media(max-width:550px){.header{padding:0 14px}.brand{font-size:14px}.brand small{font-size:9px}.logout-top{padding:8px 11px;font-size:12px}.stats-grid{grid-template-columns:1fr 1fr;gap:10px}.stat-card{padding:15px}.stat-card h2{font-size:24px}.panel{padding:15px}.page-heading h1{font-size:23px}}
+</style>
+</head>
+
+<body>
+<header class="header">
+    <div class="header-left">
+        <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
+        <div class="brand">I-PILIMON<small>STUDENT ID INFORMATION SYSTEM</small></div>
+    </div>
+    <button class="logout-top" id="topLogout">Logout</button>
+</header>
+
+<div class="overlay" id="overlay"></div>
+
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-title">ADMIN MENU</div>
+    <button data-page="adminProfilePage" data-hash="admin-profile"><span>♙</span> Admin Profile</button>
+    <button class="active" data-page="dashboardPage" data-hash="dashboard"><span>▦</span> Dashboard</button>
+    <button data-page="studentsPage" data-hash="students"><span>♙</span> Student Management</button>
+    <button data-page="documentsPage" data-hash="documents"><span>▤</span> Document Management</button>
+    <button id="reportsLink"><span>▥</span> Reports & Analytics</button>
+    <button class="sidebar-logout" id="sidebarLogout"><span>↪</span> Logout</button>
+</aside>
+
+<main class="main">
+
+<section class="page-section active" id="dashboardPage">
+    <div class="page-heading">
+        <h1>Admin Dashboard</h1>
+        <p>Welcome to the I-PILIMON Student ID Information System.</p>
+    </div>
+    <div class="message" id="dashboardMessage"></div>
+
+    <div class="stats-grid">
+        <button type="button" class="stat-card" data-go="studentsPage" data-hash="students">
+            <p>Total Registered Students</p>
+            <h2 id="totalStudents">0</h2>
+        </button>
+        <button type="button" class="stat-card" data-go="documentsPage" data-hash="documents">
+            <p>Total Submitted Documents</p>
+            <h2 id="totalDocuments">0</h2>
+        </button>
+        <button type="button" class="stat-card" data-go="documentsPage" data-filter="Pending" data-hash="documents-pending">
+            <p>Pending Documents</p>
+            <h2 id="pendingDocuments">0</h2>
+        </button>
+        <button type="button" class="stat-card" data-go="documentsPage" data-filter="Approved" data-hash="documents-approved">
+            <p>Approved Documents</p>
+            <h2 id="approvedDocuments">0</h2>
+        </button>
+    </div>
+
+    <div class="panel">
+        <div class="panel-heading"><h2>Quick Access</h2></div>
+        <div class="quick-links">
+            <button data-go="studentsPage" data-hash="students">View Registered Students</button>
+            <button data-go="documentsPage" data-hash="documents">Review Submitted Documents</button>
+            <button id="dashboardRefresh">Refresh Dashboard</button>
+        </div>
+    </div>
+</section>
+
+<section class="page-section" id="studentsPage">
+    <div class="page-heading">
+        <h1>Student Management</h1>
+        <p>View all accounts registered in the system.</p>
+    </div>
+    <div class="panel">
+        <div class="panel-heading">
+            <h2>Registered Students</h2>
+            <button class="btn btn-green" id="refreshStudents">Refresh</button>
+        </div>
+        <div class="toolbar">
+            <input type="search" id="studentSearch" placeholder="Search student name, number, or email...">
+        </div>
+        <div class="message" id="studentMessage"></div>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Student Number</th><th>Student Name</th><th>Email</th>
+                        <th>Course</th><th>Year Level</th><th>Signature</th>
+                        <th>Profile Status</th><th>Date Registered</th><th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="studentsTable">
+                    <tr><td colspan="9" class="loading">Loading students...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<section class="page-section" id="documentsPage">
+    <div class="page-heading">
+        <h1>Document Management</h1>
+        <p>Review, view, approve, or reject submitted student documents.</p>
+    </div>
+    <div class="panel">
+        <div class="panel-heading">
+            <h2>Submitted Documents</h2>
+            <button class="btn btn-green" id="refreshDocuments">Refresh</button>
+        </div>
+        <div class="toolbar">
+            <input type="search" id="documentSearch" placeholder="Search student or document...">
+            <select id="documentFilter">
+                <option value="All">All Status</option>
+                <option value="Pending">Pending</option>
+                <option value="Approved">Approved</option>
+                <option value="Rejected">Rejected</option>
+            </select>
+        </div>
+        <div class="message" id="documentMessage"></div>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr><th>Student</th><th>Email</th><th>Document Name</th><th>Date Uploaded</th><th>Status</th><th>Actions</th></tr>
+                </thead>
+                <tbody id="documentsTable">
+                    <tr><td colspan="6" class="loading">Loading documents...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<section class="page-section" id="adminProfilePage">
+    <div class="page-heading">
+        <h1>Admin Profile</h1>
+        <p>Manage your personal administrator information.</p>
+    </div>
+    <div class="panel">
+        <div class="panel-heading">
+            <h2>Personal Information</h2>
+            <span class="status status-approved">Administrator</span>
+        </div>
+        <div class="message" id="adminProfileMessage"></div>
+        <form id="adminProfileForm">
+            <div class="profile-grid">
+                <div class="profile-field"><label for="adminFirstName">First Name</label><input type="text" id="adminFirstName" placeholder="Enter first name" required></div>
+                <div class="profile-field"><label for="adminLastName">Last Name</label><input type="text" id="adminLastName" placeholder="Enter last name" required></div>
+                <div class="profile-field"><label for="adminEmail">Email Address</label><input type="email" id="adminEmail" readonly></div>
+                <div class="profile-field"><label for="adminRole">Role</label><input type="text" id="adminRole" value="Admin" readonly></div>
+                <div class="profile-field"><label for="adminBirthday">Birthday</label><input type="date" id="adminBirthday"></div>
+                <div class="profile-field"><label for="adminContact">Contact Number</label><input type="tel" id="adminContact" placeholder="Enter contact number"></div>
+                <div class="profile-field"><label for="adminDepartment">Department</label><input type="text" id="adminDepartment" placeholder="Enter department"></div>
+                <div class="profile-field"><label for="adminCreatedAt">Date Created</label><input type="text" id="adminCreatedAt" readonly></div>
+                <div class="profile-field full-width"><label for="adminAddress">Address</label><textarea id="adminAddress" rows="3" placeholder="Enter your address"></textarea></div>
+            </div>
+            <div class="profile-actions">
+                <button type="submit" class="btn btn-green" id="saveAdminProfile">Save Changes</button>
+                <button type="button" class="btn btn-gold" id="reloadAdminProfile">Reload Profile</button>
+            </div>
+        </form>
+    </div>
+</section>
+
+</main>
+
+<script>
+const SUPABASE_URL="https://mlrpkkmexmboqrnmjkuy.supabase.co";
+const SUPABASE_ANON_KEY="sb_publishable_-BIYMjip4Zon8HwZUCPT1Q_P0pDCMke";
+const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+
+let currentUser=null;
+let students=[];
+let documents=[];
+
+function escapeHTML(value){
+    return String(value??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");
+}
+function displayValue(value){return value?escapeHTML(value):"—";}
+function formatDate(value){
+    if(!value)return "—";
+    const date=new Date(value);
+    if(Number.isNaN(date.getTime()))return "—";
+    return date.toLocaleDateString("en-PH",{year:"numeric",month:"short",day:"numeric"});
+}
+function showMessage(elementId,message){
+    const element=document.getElementById(elementId);
+    element.textContent=message;
+    element.style.display="block";
+}
+function hideMessage(elementId){
+    const element=document.getElementById(elementId);
+    element.textContent="";
+    element.style.display="none";
+}
+
+// AUTHENTICATION
+async function initializeAdmin(){
+    try{
+        const {data:sessionData,error:sessionError}=await supabaseClient.auth.getSession();
+        if(sessionError)throw sessionError;
+        const session=sessionData.session;
+        if(!session){window.location.replace("index.html");return;}
+        currentUser=session.user;
+
+        const {data:admin,error:adminError}=await supabaseClient
+            .from("admin_users").select("user_id")
+            .eq("user_id",currentUser.id).maybeSingle();
+
+        if(adminError)throw adminError;
+        if(!admin){
+            alert("Access denied. Admin account only.");
+            await supabaseClient.auth.signOut();
+            window.location.replace("index.html");
+            return;
+        }
+
+        await loadAdminProfile();
+        await loadAllData();
+        handleDashboardHash();
+    }catch(error){
+        console.error("Initialization error:",error);
+        alert("Unable to initialize Admin Dashboard: "+error.message);
+    }
+}
+
+// ADMIN PROFILE
+async function loadAdminProfile(){
+    if(!currentUser)return;
+    try{
+        const {data,error}=await supabaseClient.from("admin_profiles")
+            .select("first_name,last_name,birthday,contact_number,department,address,role,created_at")
+            .eq("user_id",currentUser.id).maybeSingle();
+        if(error)throw error;
+
+        document.getElementById("adminEmail").value=currentUser.email||"";
+        document.getElementById("adminRole").value=data?.role||"Admin";
+        document.getElementById("adminFirstName").value=data?.first_name||"";
+        document.getElementById("adminLastName").value=data?.last_name||"";
+        document.getElementById("adminBirthday").value=data?.birthday||"";
+        document.getElementById("adminContact").value=data?.contact_number||"";
+        document.getElementById("adminDepartment").value=data?.department||"";
+        document.getElementById("adminAddress").value=data?.address||"";
+        document.getElementById("adminCreatedAt").value=data?.created_at?formatDate(data.created_at):"Not yet available";
+        hideMessage("adminProfileMessage");
+    }catch(error){
+        console.error("Admin profile loading error:",error);
+        showMessage("adminProfileMessage","Unable to load profile: "+error.message);
+    }
+}
+
+document.getElementById("adminProfileForm").addEventListener("submit",async function(event){
+    event.preventDefault();
+    if(!currentUser){alert("Admin account is not logged in.");return;}
+
+    const firstName=document.getElementById("adminFirstName").value.trim();
+    const lastName=document.getElementById("adminLastName").value.trim();
+    const birthday=document.getElementById("adminBirthday").value||null;
+    const contactNumber=document.getElementById("adminContact").value.trim();
+    const department=document.getElementById("adminDepartment").value.trim();
+    const address=document.getElementById("adminAddress").value.trim();
+
+    if(!firstName||!lastName){alert("Please enter your first name and last name.");return;}
+
+    const saveButton=document.getElementById("saveAdminProfile");
+    saveButton.disabled=true;
+    saveButton.textContent="Saving...";
+
+    try{
+        const {error}=await supabaseClient.from("admin_profiles").upsert({
+            user_id:currentUser.id,first_name:firstName,last_name:lastName,
+            birthday,contact_number:contactNumber||null,
+            department:department||null,address:address||null,
+            updated_at:new Date().toISOString()
+        },{onConflict:"user_id"});
+        if(error)throw error;
+        showMessage("adminProfileMessage","Your admin profile has been successfully updated!");
+        await loadAdminProfile();
+    }catch(error){
+        console.error("Admin profile save error:",error);
+        showMessage("adminProfileMessage","Unable to save profile: "+error.message);
+    }finally{
+        saveButton.disabled=false;
+        saveButton.textContent="Save Changes";
+    }
+});
+document.getElementById("reloadAdminProfile").addEventListener("click",loadAdminProfile);
+
+// LOAD STUDENTS AND DOCUMENTS
+async function loadAllData(){
+    const studentTable=document.getElementById("studentsTable");
+    const documentTable=document.getElementById("documentsTable");
+    studentTable.innerHTML='<tr><td colspan="9" class="loading">Loading students...</td></tr>';
+    documentTable.innerHTML='<tr><td colspan="6" class="loading">Loading documents...</td></tr>';
+
+    hideMessage("dashboardMessage");
+    hideMessage("studentMessage");
+    hideMessage("documentMessage");
+
+    const [studentResult,documentResult]=await Promise.all([
+        supabaseClient.from("students")
+            .select("id,student_number,first_name,last_name,email,course,year_level,birthdate,signature_path,created_at")
+            .order("created_at",{ascending:false}),
+        supabaseClient.from("documents")
+            .select("id,student_id,document_name,file_path,file_type,status,uploaded_at")
+            .order("uploaded_at",{ascending:false})
+    ]);
+
+    if(studentResult.error){
+        console.error("Students query error:",studentResult.error);
+        students=[];
+        studentTable.innerHTML='<tr><td colspan="9" class="empty">Unable to load student records.</td></tr>';
+        showMessage("studentMessage",studentResult.error.message);
+    }else{
+        students=studentResult.data||[];
+        await renderStudents();
+    }
+
+    if(documentResult.error){
+        console.error("Documents query error:",documentResult.error);
+        documents=[];
+        documentTable.innerHTML='<tr><td colspan="6" class="empty">Unable to load documents.</td></tr>';
+        showMessage("documentMessage",documentResult.error.message);
+    }else{
+        documents=documentResult.data||[];
+        renderDocuments();
+    }
+    updateStatistics();
+}
+
+// DASHBOARD STATISTICS
+function updateStatistics(){
+    document.getElementById("totalStudents").textContent=students.length;
+    document.getElementById("totalDocuments").textContent=documents.length;
+
+    const pending=documents.filter(doc=>(doc.status||"Pending").toLowerCase()==="pending").length;
+    const approved=documents.filter(doc=>(doc.status||"").toLowerCase()==="approved").length;
+
+    document.getElementById("pendingDocuments").textContent=pending;
+    document.getElementById("approvedDocuments").textContent=approved;
+}
+
+// STUDENT MANAGEMENT
+async function renderStudents(){
+    const table=document.getElementById("studentsTable");
+    const search=document.getElementById("studentSearch").value.trim().toLowerCase();
+
+    const filtered=students.filter(student=>{
+        const fullName=`${student.first_name||""} ${student.last_name||""}`.toLowerCase();
+        return fullName.includes(search)||
+            (student.student_number||"").toLowerCase().includes(search)||
+            (student.email||"").toLowerCase().includes(search);
+    });
+
+    if(filtered.length===0){
+        table.innerHTML='<tr><td colspan="9" class="empty">No registered students found.</td></tr>';
+        return;
+    }
+
+    table.innerHTML='<tr><td colspan="9" class="loading">Loading student information and signatures...</td></tr>';
+
+    const rows=await Promise.all(filtered.map(async student=>{
+        const fullName=`${student.first_name||""} ${student.last_name||""}`.trim();
+        const complete=Boolean(student.student_number&&student.first_name&&student.last_name&&student.course&&student.year_level);
+
+        let signatureHTML='<span class="status status-incomplete">No Signature</span>';
+
+        if(student.signature_path){
+            try{
+                const {data,error}=await supabaseClient.storage.from("student-profiles").createSignedUrl(student.signature_path,3600);
+                if(error)throw error;
+                if(data?.signedUrl){
+                    const safeURL=escapeHTML(data.signedUrl);
+                    signatureHTML=`<a href="${safeURL}" target="_blank" rel="noopener noreferrer" title="View student signature"><img src="${safeURL}" alt="Student Signature" class="student-signature-preview"></a>`;
+                }
+            }catch(error){
+                console.error("Unable to load signature for:",student.id,error);
+                signatureHTML='<span class="status status-rejected">Unable to Load</span>';
+            }
+        }
+
+        return `<tr>
+            <td>${displayValue(student.student_number)}</td>
+            <td>${displayValue(fullName)}</td>
+            <td>${displayValue(student.email)}</td>
+            <td>${displayValue(student.course)}</td>
+            <td>${displayValue(student.year_level)}</td>
+            <td>${signatureHTML}</td>
+            <td><span class="status ${complete?"status-complete":"status-incomplete"}">${complete?"Complete":"Incomplete"}</span></td>
+            <td>${formatDate(student.created_at)}</td>
+            <td><div class="action-buttons">
+                <button class="btn btn-view" data-student-action="edit" data-id="${escapeHTML(student.id)}">Edit</button>
+                <button class="btn btn-reject" data-student-action="delete" data-id="${escapeHTML(student.id)}">Delete</button>
+            </div></td>
+        </tr>`;
+    }));
+    table.innerHTML=rows.join("");
+}
+
+async function editStudent(studentId){
+    const student=students.find(item=>item.id===studentId);
+    if(!student){alert("Student not found.");return;}
+
+    const studentNumber=prompt("Student Number:",student.student_number||"");
+    if(studentNumber===null)return;
+    const firstName=prompt("First Name:",student.first_name||"");
+    if(firstName===null)return;
+    const lastName=prompt("Last Name:",student.last_name||"");
+    if(lastName===null)return;
+    const email=prompt("Email:",student.email||"");
+    if(email===null)return;
+    const course=prompt("Course:",student.course||"");
+    if(course===null)return;
+    const yearLevel=prompt("Year Level:",student.year_level||"");
+    if(yearLevel===null)return;
+
+    if(!firstName.trim()||!lastName.trim()||!email.trim()){
+        alert("First name, last name, and email are required.");
+        return;
+    }
+    if(!confirm("Save the updated student information?"))return;
+
+    try{
+        const {error}=await supabaseClient.from("students").update({
+            student_number:studentNumber.trim()||null,
+            first_name:firstName.trim(),last_name:lastName.trim(),
+            email:email.trim(),course:course.trim()||null,
+            year_level:yearLevel.trim()||null
+        }).eq("id",studentId);
+        if(error)throw error;
+        alert("Student information successfully updated!");
+        await loadAllData();
+    }catch(error){
+        console.error("Edit student error:",error);
+        alert("Unable to update student: "+error.message);
+    }
+}
+
+async function deleteStudent(studentId){
+    const student=students.find(item=>item.id===studentId);
+    if(!student){alert("Student not found.");return;}
+    const fullName=`${student.first_name||""} ${student.last_name||""}`.trim();
+    if(!confirm(`Are you sure you want to delete ${fullName||"this student"} from the student records?`))return;
+
+    try{
+        const {error}=await supabaseClient.from("students").delete().eq("id",studentId);
+        if(error)throw error;
+        alert("Student record successfully deleted!");
+        await loadAllData();
+    }catch(error){
+        console.error("Delete student error:",error);
+        alert("Unable to delete student: "+error.message);
+    }
+}
+
+document.getElementById("studentsTable").addEventListener("click",async event=>{
+    const button=event.target.closest("button[data-student-action]");
+    if(!button)return;
+    const action=button.dataset.studentAction;
+    const studentId=button.dataset.id;
+    if(action==="edit")await editStudent(studentId);
+    if(action==="delete")await deleteStudent(studentId);
+});
+
+// DOCUMENT MANAGEMENT
+function renderDocuments(){
+    const table=document.getElementById("documentsTable");
+    const search=document.getElementById("documentSearch").value.trim().toLowerCase();
+    const selectedStatus=document.getElementById("documentFilter").value;
+
+    const filtered=documents.filter(doc=>{
+        const student=students.find(item=>item.id===doc.student_id);
+        const studentName=student?`${student.first_name||""} ${student.last_name||""}`.trim():"Unknown Student";
+        const status=doc.status||"Pending";
+        const matchesSearch=studentName.toLowerCase().includes(search)||
+            (student?.email||"").toLowerCase().includes(search)||
+            (doc.document_name||"").toLowerCase().includes(search);
+        const matchesStatus=selectedStatus==="All"||status.toLowerCase()===selectedStatus.toLowerCase();
+        return matchesSearch&&matchesStatus;
+    });
+
+    if(filtered.length===0){
+        table.innerHTML='<tr><td colspan="6" class="empty">No submitted documents found.</td></tr>';
+        return;
+    }
+
+    table.innerHTML=filtered.map(doc=>{
+        const student=students.find(item=>item.id===doc.student_id);
+        const studentName=student?`${student.first_name||""} ${student.last_name||""}`.trim():"Unknown Student";
+        const status=doc.status||"Pending";
+        let statusClass="status-pending";
+        if(status.toLowerCase()==="approved")statusClass="status-approved";
+        else if(status.toLowerCase()==="rejected")statusClass="status-rejected";
+
+        const pendingActions=status.toLowerCase()==="pending"?`
+            <button class="btn btn-approve" data-action="approve" data-id="${escapeHTML(doc.id)}">Approve</button>
+            <button class="btn btn-reject" data-action="reject" data-id="${escapeHTML(doc.id)}">Reject</button>`:"";
+
+        return `<tr>
+            <td>${displayValue(studentName)}</td>
+            <td>${displayValue(student?.email)}</td>
+            <td>${displayValue(doc.document_name)}</td>
+            <td>${formatDate(doc.uploaded_at)}</td>
+            <td><span class="status ${statusClass}">${escapeHTML(status)}</span></td>
+            <td><div class="action-buttons">
+                <button class="btn btn-view" data-action="view" data-id="${escapeHTML(doc.id)}">View</button>
+                ${pendingActions}
+                <button class="btn btn-reject" data-action="delete" data-id="${escapeHTML(doc.id)}">Delete</button>
+            </div></td>
+        </tr>`;
+    }).join("");
+}
+
+async function viewDocument(documentId){
+    const doc=documents.find(item=>item.id===documentId);
+    if(!doc||!doc.file_path){alert("Document file path is missing.");return;}
+    try{
+        const {data,error}=await supabaseClient.storage.from("student-documents").createSignedUrl(doc.file_path,60);
+        if(error)throw error;
+        if(!data?.signedUrl)throw new Error("Unable to generate document link.");
+        const newWindow=window.open(data.signedUrl,"_blank","noopener,noreferrer");
+        if(!newWindow)alert("Your browser may have blocked the document window. Please allow pop-ups.");
+    }catch(error){
+        console.error("View document error:",error);
+        alert("Unable to open document: "+error.message);
+    }
+}
+
+async function updateDocumentStatus(documentId,newStatus){
+    const doc=documents.find(item=>item.id===documentId);
+    if(!doc){alert("Document record not found.");return;}
+    if(!confirm(`Are you sure you want to ${newStatus.toLowerCase()} this document?`))return;
+    try{
+        const {error}=await supabaseClient.from("documents").update({status:newStatus}).eq("id",documentId);
+        if(error)throw error;
+        alert(`Document successfully ${newStatus.toLowerCase()}.`);
+        await loadAllData();
+    }catch(error){
+        console.error("Update document status error:",error);
+        alert("Unable to update document status: "+error.message);
+    }
+}
+
+async function deleteDocument(documentId){
+    const doc=documents.find(item=>item.id===documentId);
+    if(!doc){alert("Document record not found.");return;}
+    if(!confirm("Are you sure you want to permanently delete this document?"))return;
+    try{
+        if(doc.file_path){
+            const {error:storageError}=await supabaseClient.storage.from("student-documents").remove([doc.file_path]);
+            if(storageError)throw storageError;
+        }
+        const {error:databaseError}=await supabaseClient.from("documents").delete().eq("id",documentId);
+        if(databaseError)throw databaseError;
+        alert("Document successfully deleted!");
+        await loadAllData();
+    }catch(error){
+        console.error("Delete document error:",error);
+        alert("Unable to delete document: "+error.message);
+    }
+}
+
+document.getElementById("documentsTable").addEventListener("click",async event=>{
+    const button=event.target.closest("button[data-action]");
+    if(!button)return;
+    const action=button.dataset.action;
+    const documentId=button.dataset.id;
+    if(action==="view")await viewDocument(documentId);
+    if(action==="approve")await updateDocumentStatus(documentId,"Approved");
+    if(action==="reject")await updateDocumentStatus(documentId,"Rejected");
+    if(action==="delete")await deleteDocument(documentId);
+});
+
+// PAGE NAVIGATION + URL HASH
+function hashForPage(pageId){
+    const map={
+        dashboardPage:"dashboard",
+        studentsPage:"students",
+        documentsPage:"documents",
+        adminProfilePage:"admin-profile"
+    };
+    return map[pageId]||"dashboard";
+}
+
+function showAdminPage(pageId,updateURL=true){
+    document.querySelectorAll(".page-section").forEach(section=>section.classList.remove("active"));
+    const target=document.getElementById(pageId);
+    if(target)target.classList.add("active");
+
+    document.querySelectorAll(".sidebar button[data-page]").forEach(button=>{
+        button.classList.toggle("active",button.dataset.page===pageId);
+    });
+
+    if(updateURL){
+        const hash=hashForPage(pageId);
+        history.replaceState(null,"",`#${hash}`);
+    }
+    closeSidebar();
+    window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function handleDashboardHash(){
+    const hash=(location.hash||"#dashboard").replace("#","");
+    const filter=document.getElementById("documentFilter");
+
+    if(hash==="students"){
+        showAdminPage("studentsPage",false);
+    }else if(hash==="documents-pending"){
+        filter.value="Pending";
+        showAdminPage("documentsPage",false);
+        renderDocuments();
+    }else if(hash==="documents-approved"){
+        filter.value="Approved";
+        showAdminPage("documentsPage",false);
+        renderDocuments();
+    }else if(hash==="documents"){
+        filter.value="All";
+        showAdminPage("documentsPage",false);
+        renderDocuments();
+    }else if(hash==="admin-profile"){
+        showAdminPage("adminProfilePage",false);
+    }else{
+        showAdminPage("dashboardPage",false);
+    }
+}
+
+window.addEventListener("hashchange",handleDashboardHash);
+
+document.querySelectorAll(".sidebar button[data-page]").forEach(button=>{
+    button.addEventListener("click",()=>{
+        if(button.dataset.page==="documentsPage"){
+            document.getElementById("documentFilter").value="All";
+            renderDocuments();
+        }
+        showAdminPage(button.dataset.page);
+    });
+});
+
+document.querySelectorAll("[data-go]").forEach(button=>{
+    button.addEventListener("click",()=>{
+        const pageId=button.dataset.go;
+        const filter=button.dataset.filter;
+        if(filter){
+            document.getElementById("documentFilter").value=filter;
+        }else if(pageId==="documentsPage"){
+            document.getElementById("documentFilter").value="All";
+        }
+        showAdminPage(pageId);
+        if(pageId==="documentsPage")renderDocuments();
+        if(button.dataset.hash)history.replaceState(null,"",`#${button.dataset.hash}`);
+    });
+});
+
+document.getElementById("reportsLink").addEventListener("click",()=>{
+    window.location.href="reports.html";
+});
+
+// SEARCH AND FILTER
+document.getElementById("studentSearch").addEventListener("input",renderStudents);
+document.getElementById("documentSearch").addEventListener("input",renderDocuments);
+document.getElementById("documentFilter").addEventListener("change",renderDocuments);
+
+// REFRESH
+document.getElementById("refreshStudents").addEventListener("click",loadAllData);
+document.getElementById("refreshDocuments").addEventListener("click",loadAllData);
+document.getElementById("dashboardRefresh").addEventListener("click",loadAllData);
+
+// MOBILE SIDEBAR
+const sidebar=document.getElementById("sidebar");
+const overlay=document.getElementById("overlay");
+function openSidebar(){sidebar.classList.add("open");overlay.classList.add("show");}
+function closeSidebar(){sidebar.classList.remove("open");overlay.classList.remove("show");}
+document.getElementById("menuBtn").addEventListener("click",openSidebar);
+overlay.addEventListener("click",closeSidebar);
+
+// LOGOUT
+async function logout(){
+    if(!confirm("Are you sure you want to logout?"))return;
+    await supabaseClient.auth.signOut();
+    window.location.replace("index.html");
+}
+document.getElementById("topLogout").addEventListener("click",logout);
+document.getElementById("sidebarLogout").addEventListener("click",logout);
+
+// START
+initializeAdmin();
+</script>
+</body>
+</html>
