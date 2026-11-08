@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -170,8 +169,6 @@ button.stat-card:focus-visible{
     outline-offset:3px;
 }
 
-div.stat-card{cursor:default}
-
 .stat-card p{
     color:var(--muted);
     font-size:13px;
@@ -326,36 +323,6 @@ tbody tr:hover{background:#fafcf9}
     padding:25px;
 }
 
-/* QUICK ACCESS */
-.quick-links{
-    display:flex;
-    flex-wrap:wrap;
-    gap:10px;
-}
-
-.quick-links button{
-    padding:12px 16px;
-    border:1px solid var(--border);
-    background:#f7faf7;
-    color:var(--green);
-    border-radius:7px;
-    cursor:pointer;
-    font-weight:bold;
-    transition:.2s;
-}
-
-.quick-links button:hover{
-    background:var(--green);
-    color:white;
-    border-color:var(--green);
-    transform:translateY(-2px);
-}
-
-.quick-links button:focus-visible{
-    outline:3px solid var(--gold);
-    outline-offset:3px;
-}
-
 .profile-grid{
     display:grid;
     grid-template-columns:repeat(2,1fr);
@@ -483,19 +450,19 @@ tbody tr:hover{background:#fafcf9}
 <aside class="sidebar" id="sidebar">
     <div class="sidebar-title">ADMIN MENU</div>
 
-    <button data-page="adminProfilePage" data-hash="admin-profile">
+    <button data-page="adminProfilePage">
         <span>♙</span> Admin Profile
     </button>
 
-    <button class="active" data-page="dashboardPage" data-hash="dashboard">
+    <button class="active" data-page="dashboardPage">
         <span>▦</span> Dashboard
     </button>
 
-    <button data-page="studentsPage" data-hash="students">
+    <button data-page="studentsPage">
         <span>♙</span> Student Management
     </button>
 
-    <button data-page="documentsPage" data-hash="documents">
+    <button data-page="documentsPage">
         <span>▤</span> Document Management
     </button>
 
@@ -523,49 +490,30 @@ tbody tr:hover{background:#fafcf9}
     <div class="stats-grid">
 
         <button type="button" class="stat-card"
-                data-go="studentsPage" data-hash="students">
+                data-go="studentsPage">
             <p>Total Registered Students</p>
-            <h2 id="totalStudents">0</h2>
+            <h2 id="totalStudents">...</h2>
         </button>
 
         <button type="button" class="stat-card"
-                data-go="documentsPage" data-hash="documents">
+                data-go="documentsPage" data-filter="All">
             <p>Total Submitted Documents</p>
-            <h2 id="totalDocuments">0</h2>
+            <h2 id="totalDocuments">...</h2>
         </button>
 
         <button type="button" class="stat-card"
-                data-go="documentsPage" data-filter="Pending"
-                data-hash="documents-pending">
+                data-go="documentsPage" data-filter="Pending">
             <p>Pending Documents</p>
-            <h2 id="pendingDocuments">0</h2>
+            <h2 id="pendingDocuments">...</h2>
         </button>
 
         <button type="button" class="stat-card"
-                data-go="documentsPage" data-filter="Approved"
-                data-hash="documents-approved">
+                data-go="documentsPage" data-filter="Approved">
             <p>Approved Documents</p>
-            <h2 id="approvedDocuments">0</h2>
+            <h2 id="approvedDocuments">...</h2>
         </button>
-
-        <div class="stat-card">
-            <p>Reports & Analytics</p>
-            <h2 id="reportsCount">—</h2>
-        </div>
-
-        <div class="stat-card">
-            <p>Student Concern Overview</p>
-            <h2 id="studentConcernsCount">—</h2>
-        </div>
-
-        <div class="stat-card">
-            <p>Submitted Documents</p>
-            <h2 id="submittedDocumentsCount">0</h2>
-        </div>
 
     </div>
-
- 
 
 </section>
 
@@ -757,21 +705,32 @@ tbody tr:hover{background:#fafcf9}
 </main>
 
 <script>
-const SUPABASE_URL="https://mlrpkkmexmboqrnmjkuy.supabase.co";
-const SUPABASE_ANON_KEY="sb_publishable_-BIYMjip4Zon8HwZUCPT1Q_P0pDCMke";
+/* =========================================
+   SUPABASE CONFIGURATION
+========================================= */
 
-const supabaseClient=window.supabase.createClient(
+const SUPABASE_URL = "https://mlrpkkmexmboqrnmjkuy.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_-BIYMjip4Zon8HwZUCPT1Q_P0pDCMke";
+
+const supabaseClient = window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_ANON_KEY
 );
 
-let currentUser=null;
-let students=[];
-let documents=[];
+let currentUser = null;
+let students = [];
+let documents = [];
 
-/* GENERAL FUNCTIONS */
+let studentLoadError = null;
+let documentLoadError = null;
+let isLoadingData = false;
+
+/* =========================================
+   GENERAL FUNCTIONS
+========================================= */
+
 function escapeHTML(value){
-    return String(value??"")
+    return String(value ?? "")
         .replace(/&/g,"&amp;")
         .replace(/</g,"&lt;")
         .replace(/>/g,"&gt;")
@@ -780,15 +739,15 @@ function escapeHTML(value){
 }
 
 function displayValue(value){
-    return value?escapeHTML(value):"—";
+    return value ? escapeHTML(value) : "—";
 }
 
 function formatDate(value){
-    if(!value)return "—";
+    if(!value) return "—";
 
-    const date=new Date(value);
+    const date = new Date(value);
 
-    if(Number.isNaN(date.getTime()))return "—";
+    if(Number.isNaN(date.getTime())) return "—";
 
     return date.toLocaleDateString("en-PH",{
         year:"numeric",
@@ -798,42 +757,47 @@ function formatDate(value){
 }
 
 function showMessage(elementId,message){
-    const element=document.getElementById(elementId);
-    element.textContent=message;
-    element.style.display="block";
+    const element = document.getElementById(elementId);
+    element.textContent = message;
+    element.style.display = "block";
 }
 
 function hideMessage(elementId){
-    const element=document.getElementById(elementId);
-    element.textContent="";
-    element.style.display="none";
+    const element = document.getElementById(elementId);
+    element.textContent = "";
+    element.style.display = "none";
 }
 
-/* AUTHENTICATION */
+/* =========================================
+   AUTHENTICATION
+========================================= */
+
 async function initializeAdmin(){
+
     try{
-        const {data:sessionData,error:sessionError}=
+
+        const {data:sessionData,error:sessionError} =
             await supabaseClient.auth.getSession();
 
-        if(sessionError)throw sessionError;
+        if(sessionError) throw sessionError;
 
-        const session=sessionData.session;
+        const session = sessionData.session;
 
         if(!session){
             window.location.replace("index.html");
             return;
         }
 
-        currentUser=session.user;
+        currentUser = session.user;
 
-        const {data:admin,error:adminError}=
+        const {data:admin,error:adminError} =
             await supabaseClient
                 .from("admin_users")
                 .select("user_id")
                 .eq("user_id",currentUser.id)
                 .maybeSingle();
 
-        if(adminError)throw adminError;
+        if(adminError) throw adminError;
 
         if(!admin){
             alert("Access denied. Admin account only.");
@@ -846,59 +810,84 @@ async function initializeAdmin(){
         await loadAllData();
         handleDashboardHash();
 
+        startAutomaticRefresh();
+
     }catch(error){
+
         console.error("Initialization error:",error);
-        alert("Unable to initialize Admin Dashboard: "+error.message);
+
+        alert(
+            "Unable to initialize Admin Dashboard: " +
+            error.message
+        );
     }
 }
 
-/* ADMIN PROFILE */
+/* =========================================
+   ADMIN PROFILE
+========================================= */
+
 async function loadAdminProfile(){
-    if(!currentUser)return;
+
+    if(!currentUser) return;
 
     try{
-        const {data,error}=await supabaseClient
+
+        const {data,error} = await supabaseClient
             .from("admin_profiles")
-            .select("first_name,last_name,birthday,contact_number,department,address,role,created_at")
+            .select(`
+                first_name,
+                last_name,
+                birthday,
+                contact_number,
+                department,
+                address,
+                role,
+                created_at
+            `)
             .eq("user_id",currentUser.id)
             .maybeSingle();
 
-        if(error)throw error;
+        if(error) throw error;
 
-        document.getElementById("adminEmail").value=
-            currentUser.email||"";
+        document.getElementById("adminEmail").value =
+            currentUser.email || "";
 
-        document.getElementById("adminRole").value=
-            data?.role||"Admin";
+        document.getElementById("adminRole").value =
+            data?.role || "Admin";
 
-        document.getElementById("adminFirstName").value=
-            data?.first_name||"";
+        document.getElementById("adminFirstName").value =
+            data?.first_name || "";
 
-        document.getElementById("adminLastName").value=
-            data?.last_name||"";
+        document.getElementById("adminLastName").value =
+            data?.last_name || "";
 
-        document.getElementById("adminBirthday").value=
-            data?.birthday||"";
+        document.getElementById("adminBirthday").value =
+            data?.birthday || "";
 
-        document.getElementById("adminContact").value=
-            data?.contact_number||"";
+        document.getElementById("adminContact").value =
+            data?.contact_number || "";
 
-        document.getElementById("adminDepartment").value=
-            data?.department||"";
+        document.getElementById("adminDepartment").value =
+            data?.department || "";
 
-        document.getElementById("adminAddress").value=
-            data?.address||"";
+        document.getElementById("adminAddress").value =
+            data?.address || "";
 
-        document.getElementById("adminCreatedAt").value=
-            data?.created_at?formatDate(data.created_at):"Not yet available";
+        document.getElementById("adminCreatedAt").value =
+            data?.created_at
+                ? formatDate(data.created_at)
+                : "Not yet available";
 
         hideMessage("adminProfileMessage");
 
     }catch(error){
+
         console.error("Admin profile loading error:",error);
+
         showMessage(
             "adminProfileMessage",
-            "Unable to load profile: "+error.message
+            "Unable to load profile: " + error.message
         );
     }
 }
@@ -913,51 +902,53 @@ document.getElementById("adminProfileForm")
         return;
     }
 
-    const firstName=
+    const firstName =
         document.getElementById("adminFirstName").value.trim();
 
-    const lastName=
+    const lastName =
         document.getElementById("adminLastName").value.trim();
 
-    const birthday=
-        document.getElementById("adminBirthday").value||null;
+    const birthday =
+        document.getElementById("adminBirthday").value || null;
 
-    const contactNumber=
+    const contactNumber =
         document.getElementById("adminContact").value.trim();
 
-    const department=
+    const department =
         document.getElementById("adminDepartment").value.trim();
 
-    const address=
+    const address =
         document.getElementById("adminAddress").value.trim();
 
-    if(!firstName||!lastName){
+    if(!firstName || !lastName){
         alert("Please enter your first name and last name.");
         return;
     }
 
-    const saveButton=document.getElementById("saveAdminProfile");
+    const saveButton =
+        document.getElementById("saveAdminProfile");
 
-    saveButton.disabled=true;
-    saveButton.textContent="Saving...";
+    saveButton.disabled = true;
+    saveButton.textContent = "Saving...";
 
     try{
-        const {error}=await supabaseClient
+
+        const {error} = await supabaseClient
             .from("admin_profiles")
             .upsert({
                 user_id:currentUser.id,
                 first_name:firstName,
                 last_name:lastName,
                 birthday,
-                contact_number:contactNumber||null,
-                department:department||null,
-                address:address||null,
+                contact_number:contactNumber || null,
+                department:department || null,
+                address:address || null,
                 updated_at:new Date().toISOString()
             },{
                 onConflict:"user_id"
             });
 
-        if(error)throw error;
+        if(error) throw error;
 
         showMessage(
             "adminProfileMessage",
@@ -967,168 +958,280 @@ document.getElementById("adminProfileForm")
         await loadAdminProfile();
 
     }catch(error){
+
         console.error("Admin profile save error:",error);
 
         showMessage(
             "adminProfileMessage",
-            "Unable to save profile: "+error.message
+            "Unable to save profile: " + error.message
         );
 
     }finally{
-        saveButton.disabled=false;
-        saveButton.textContent="Save Changes";
+
+        saveButton.disabled = false;
+        saveButton.textContent = "Save Changes";
     }
 });
 
 document.getElementById("reloadAdminProfile")
 .addEventListener("click",loadAdminProfile);
 
-/* LOAD STUDENTS AND DOCUMENTS */
+/* =========================================
+   LOAD STUDENTS AND DOCUMENTS
+========================================= */
+
 async function loadAllData(){
 
-    const studentTable=document.getElementById("studentsTable");
-    const documentTable=document.getElementById("documentsTable");
+    if(!currentUser || isLoadingData) return;
 
-    studentTable.innerHTML=
-        '<tr><td colspan="9" class="loading">Loading students...</td></tr>';
+    isLoadingData = true;
 
-    documentTable.innerHTML=
-        '<tr><td colspan="6" class="loading">Loading documents...</td></tr>';
+    try{
 
-    hideMessage("dashboardMessage");
-    hideMessage("studentMessage");
-    hideMessage("documentMessage");
+        hideMessage("dashboardMessage");
+        hideMessage("studentMessage");
+        hideMessage("documentMessage");
 
-    const [studentResult,documentResult]=await Promise.all([
+        const [studentResult,documentResult] = await Promise.all([
 
-        supabaseClient
-            .from("students")
-            .select("id,student_number,first_name,last_name,email,course,year_level,birthdate,signature_path,created_at")
-            .order("created_at",{ascending:false}),
+            supabaseClient
+                .from("students")
+                .select(`
+                    id,
+                    student_number,
+                    first_name,
+                    last_name,
+                    email,
+                    course,
+                    year_level,
+                    birthdate,
+                    signature_path,
+                    created_at
+                `)
+                .order("created_at",{ascending:false}),
 
-        supabaseClient
-            .from("documents")
-            .select("id,student_id,document_name,file_path,file_type,status,uploaded_at")
-            .order("uploaded_at",{ascending:false})
+            supabaseClient
+                .from("documents")
+                .select(`
+                    id,
+                    student_id,
+                    document_name,
+                    file_path,
+                    file_type,
+                    status,
+                    uploaded_at
+                `)
+                .order("uploaded_at",{ascending:false})
 
-    ]);
+        ]);
 
-    if(studentResult.error){
-        console.error("Students query error:",studentResult.error);
+        studentLoadError = studentResult.error;
+        documentLoadError = documentResult.error;
 
-        students=[];
+        if(studentResult.error){
 
-        studentTable.innerHTML=
-            '<tr><td colspan="9" class="empty">Unable to load student records.</td></tr>';
+            console.error(
+                "Students query error:",
+                studentResult.error
+            );
 
-        showMessage("studentMessage",studentResult.error.message);
+            students = [];
 
-    }else{
-        students=studentResult.data||[];
-        await renderStudents();
+            document.getElementById("studentsTable").innerHTML =
+                `<tr>
+                    <td colspan="9" class="empty">
+                        Unable to load student records.
+                    </td>
+                </tr>`;
+
+            showMessage(
+                "studentMessage",
+                studentResult.error.message
+            );
+
+        }else{
+
+            students = studentResult.data || [];
+            await renderStudents();
+        }
+
+        if(documentResult.error){
+
+            console.error(
+                "Documents query error:",
+                documentResult.error
+            );
+
+            documents = [];
+
+            document.getElementById("documentsTable").innerHTML =
+                `<tr>
+                    <td colspan="6" class="empty">
+                        Unable to load document records.
+                    </td>
+                </tr>`;
+
+            showMessage(
+                "documentMessage",
+                documentResult.error.message
+            );
+
+        }else{
+
+            documents = documentResult.data || [];
+            renderDocuments();
+        }
+
+        updateStatistics();
+
+        /* DISPLAY DATABASE ERRORS ON DASHBOARD */
+
+        const errors = [];
+
+        if(studentResult.error){
+            errors.push(
+                "Students table: " + studentResult.error.message
+            );
+        }
+
+        if(documentResult.error){
+            errors.push(
+                "Documents table: " + documentResult.error.message
+            );
+        }
+
+        if(errors.length > 0){
+
+            showMessage(
+                "dashboardMessage",
+                "Database error: " + errors.join(" | ")
+            );
+
+        }else{
+
+            hideMessage("dashboardMessage");
+        }
+
+    }catch(error){
+
+        console.error("Load all data error:",error);
+
+        showMessage(
+            "dashboardMessage",
+            "Unable to load dashboard data: " + error.message
+        );
+
+    }finally{
+
+        isLoadingData = false;
     }
-
-    if(documentResult.error){
-        console.error("Documents query error:",documentResult.error);
-
-        documents=[];
-
-        documentTable.innerHTML=
-            '<tr><td colspan="6" class="empty">Unable to load documents.</td></tr>';
-
-        showMessage("documentMessage",documentResult.error.message);
-
-    }else{
-        documents=documentResult.data||[];
-        renderDocuments();
-    }
-
-    updateStatistics();
 }
 
-/* DASHBOARD STATISTICS */
+/* =========================================
+   DASHBOARD STATISTICS
+========================================= */
+
 function updateStatistics(){
 
-    const totalStudents=students.length;
-    const totalDocuments=documents.length;
+    const totalStudents =
+        studentLoadError ? "!" : students.length;
 
-    const pending=documents.filter(doc=>
-        (doc.status||"Pending").toLowerCase()==="pending"
-    ).length;
+    const totalDocuments =
+        documentLoadError ? "!" : documents.length;
 
-    const approved=documents.filter(doc=>
-        (doc.status||"").toLowerCase()==="approved"
-    ).length;
+    const pending =
+        documentLoadError
+            ? "!"
+            : documents.filter(doc =>
+                (doc.status || "Pending").toLowerCase() === "pending"
+            ).length;
 
-    document.getElementById("totalStudents").textContent=totalStudents;
-    document.getElementById("totalDocuments").textContent=totalDocuments;
-    document.getElementById("pendingDocuments").textContent=pending;
-    document.getElementById("approvedDocuments").textContent=approved;
+    const approved =
+        documentLoadError
+            ? "!"
+            : documents.filter(doc =>
+                (doc.status || "").toLowerCase() === "approved"
+            ).length;
 
-    document.getElementById("submittedDocumentsCount").textContent=
+    document.getElementById("totalStudents").textContent =
+        totalStudents;
+
+    document.getElementById("totalDocuments").textContent =
         totalDocuments;
 
-    document.getElementById("reportsCount").textContent="—";
-    document.getElementById("studentConcernsCount").textContent="—";
+    document.getElementById("pendingDocuments").textContent =
+        pending;
+
+    document.getElementById("approvedDocuments").textContent =
+        approved;
 }
 
-/* STUDENT MANAGEMENT */
+/* =========================================
+   STUDENT MANAGEMENT
+========================================= */
+
 async function renderStudents(){
 
-    const table=document.getElementById("studentsTable");
+    const table = document.getElementById("studentsTable");
 
-    const search=
+    const search =
         document.getElementById("studentSearch")
         .value.trim().toLowerCase();
 
-    const filtered=students.filter(student=>{
+    const filtered = students.filter(student => {
 
-        const fullName=
-            `${student.first_name||""} ${student.last_name||""}`.toLowerCase();
+        const fullName =
+            `${student.first_name || ""} ${student.last_name || ""}`
+            .toLowerCase();
 
-        return fullName.includes(search)||
-            (student.student_number||"").toLowerCase().includes(search)||
-            (student.email||"").toLowerCase().includes(search);
+        return fullName.includes(search) ||
+            (student.student_number || "").toLowerCase().includes(search) ||
+            (student.email || "").toLowerCase().includes(search);
     });
 
-    if(filtered.length===0){
-        table.innerHTML=
+    if(filtered.length === 0){
+
+        table.innerHTML =
             '<tr><td colspan="9" class="empty">No registered students found.</td></tr>';
+
         return;
     }
 
-    table.innerHTML=
+    table.innerHTML =
         '<tr><td colspan="9" class="loading">Loading student information and signatures...</td></tr>';
 
-    const rows=await Promise.all(filtered.map(async student=>{
+    const rows = await Promise.all(filtered.map(async student => {
 
-        const fullName=
-            `${student.first_name||""} ${student.last_name||""}`.trim();
+        const fullName =
+            `${student.first_name || ""} ${student.last_name || ""}`.trim();
 
-        const complete=Boolean(
-            student.student_number&&
-            student.first_name&&
-            student.last_name&&
-            student.course&&
+        const complete = Boolean(
+            student.student_number &&
+            student.first_name &&
+            student.last_name &&
+            student.course &&
             student.year_level
         );
 
-        let signatureHTML=
+        let signatureHTML =
             '<span class="status status-incomplete">No Signature</span>';
 
         if(student.signature_path){
+
             try{
-                const {data,error}=await supabaseClient
+
+                const {data,error} = await supabaseClient
                     .storage
                     .from("student-profiles")
                     .createSignedUrl(student.signature_path,3600);
 
-                if(error)throw error;
+                if(error) throw error;
 
                 if(data?.signedUrl){
-                    const safeURL=escapeHTML(data.signedUrl);
 
-                    signatureHTML=`
+                    const safeURL = escapeHTML(data.signedUrl);
+
+                    signatureHTML = `
                         <a href="${safeURL}"
                            target="_blank"
                            rel="noopener noreferrer"
@@ -1141,13 +1244,14 @@ async function renderStudents(){
                 }
 
             }catch(error){
+
                 console.error(
                     "Unable to load signature for:",
                     student.id,
                     error
                 );
 
-                signatureHTML=
+                signatureHTML =
                     '<span class="status status-rejected">Unable to Load</span>';
             }
         }
@@ -1162,9 +1266,9 @@ async function renderStudents(){
                 <td>${signatureHTML}</td>
                 <td>
                     <span class="status ${
-                        complete?"status-complete":"status-incomplete"
+                        complete ? "status-complete" : "status-incomplete"
                     }">
-                        ${complete?"Complete":"Incomplete"}
+                        ${complete ? "Complete" : "Incomplete"}
                     </span>
                 </td>
                 <td>${formatDate(student.created_at)}</td>
@@ -1175,6 +1279,7 @@ async function renderStudents(){
                                 data-id="${escapeHTML(student.id)}">
                             Edit
                         </button>
+
                         <button class="btn btn-reject"
                                 data-student-action="delete"
                                 data-id="${escapeHTML(student.id)}">
@@ -1186,205 +1291,230 @@ async function renderStudents(){
         `;
     }));
 
-    table.innerHTML=rows.join("");
+    table.innerHTML = rows.join("");
 }
 
 /* EDIT STUDENT */
+
 async function editStudent(studentId){
 
-    const student=students.find(item=>item.id===studentId);
+    const student = students.find(item => item.id === studentId);
 
     if(!student){
         alert("Student not found.");
         return;
     }
 
-    const studentNumber=prompt(
+    const studentNumber = prompt(
         "Student Number:",
-        student.student_number||""
+        student.student_number || ""
     );
-    if(studentNumber===null)return;
 
-    const firstName=prompt(
+    if(studentNumber === null) return;
+
+    const firstName = prompt(
         "First Name:",
-        student.first_name||""
+        student.first_name || ""
     );
-    if(firstName===null)return;
 
-    const lastName=prompt(
+    if(firstName === null) return;
+
+    const lastName = prompt(
         "Last Name:",
-        student.last_name||""
+        student.last_name || ""
     );
-    if(lastName===null)return;
 
-    const email=prompt("Email:",student.email||"");
-    if(email===null)return;
+    if(lastName === null) return;
 
-    const course=prompt("Course:",student.course||"");
-    if(course===null)return;
+    const email = prompt("Email:",student.email || "");
+    if(email === null) return;
 
-    const yearLevel=prompt("Year Level:",student.year_level||"");
-    if(yearLevel===null)return;
+    const course = prompt("Course:",student.course || "");
+    if(course === null) return;
 
-    if(!firstName.trim()||!lastName.trim()||!email.trim()){
+    const yearLevel = prompt("Year Level:",student.year_level || "");
+    if(yearLevel === null) return;
+
+    if(!firstName.trim() || !lastName.trim() || !email.trim()){
         alert("First name, last name, and email are required.");
         return;
     }
 
-    if(!confirm("Save the updated student information?"))return;
+    if(!confirm("Save the updated student information?")) return;
 
     try{
-        const {error}=await supabaseClient
+
+        const {error} = await supabaseClient
             .from("students")
             .update({
-                student_number:studentNumber.trim()||null,
+                student_number:studentNumber.trim() || null,
                 first_name:firstName.trim(),
                 last_name:lastName.trim(),
                 email:email.trim(),
-                course:course.trim()||null,
-                year_level:yearLevel.trim()||null
+                course:course.trim() || null,
+                year_level:yearLevel.trim() || null
             })
             .eq("id",studentId);
 
-        if(error)throw error;
+        if(error) throw error;
 
         alert("Student information successfully updated!");
+
         await loadAllData();
 
     }catch(error){
+
         console.error("Edit student error:",error);
-        alert("Unable to update student: "+error.message);
+
+        alert("Unable to update student: " + error.message);
     }
 }
 
 /* DELETE STUDENT RECORD */
+
 async function deleteStudent(studentId){
 
-    const student=students.find(item=>item.id===studentId);
+    const student = students.find(item => item.id === studentId);
 
     if(!student){
         alert("Student not found.");
         return;
     }
 
-    const fullName=
-        `${student.first_name||""} ${student.last_name||""}`.trim();
+    const fullName =
+        `${student.first_name || ""} ${student.last_name || ""}`.trim();
 
     if(!confirm(
         `Are you sure you want to delete ${
-            fullName||"this student"
+            fullName || "this student"
         } from the student records?`
-    ))return;
+    )) return;
 
     try{
-        const {error}=await supabaseClient
+
+        const {error} = await supabaseClient
             .from("students")
             .delete()
             .eq("id",studentId);
 
-        if(error)throw error;
+        if(error) throw error;
 
         alert("Student record successfully deleted!");
+
         await loadAllData();
 
     }catch(error){
+
         console.error("Delete student error:",error);
-        alert("Unable to delete student: "+error.message);
+
+        alert("Unable to delete student: " + error.message);
     }
 }
 
 document.getElementById("studentsTable")
-.addEventListener("click",async event=>{
+.addEventListener("click",async event => {
 
-    const button=event.target.closest(
+    const button = event.target.closest(
         "button[data-student-action]"
     );
 
-    if(!button)return;
+    if(!button) return;
 
-    const action=button.dataset.studentAction;
-    const studentId=button.dataset.id;
+    const action = button.dataset.studentAction;
+    const studentId = button.dataset.id;
 
-    if(action==="edit")await editStudent(studentId);
-    if(action==="delete")await deleteStudent(studentId);
+    if(action === "edit"){
+        await editStudent(studentId);
+    }
+
+    if(action === "delete"){
+        await deleteStudent(studentId);
+    }
 });
 
-/* DOCUMENT MANAGEMENT */
+/* =========================================
+   DOCUMENT MANAGEMENT
+========================================= */
+
 function renderDocuments(){
 
-    const table=document.getElementById("documentsTable");
+    const table = document.getElementById("documentsTable");
 
-    const search=
+    const search =
         document.getElementById("documentSearch")
         .value.trim().toLowerCase();
 
-    const selectedStatus=
+    const selectedStatus =
         document.getElementById("documentFilter").value;
 
-    const filtered=documents.filter(doc=>{
+    const filtered = documents.filter(doc => {
 
-        const student=students.find(
-            item=>item.id===doc.student_id
+        const student = students.find(
+            item => item.id === doc.student_id
         );
 
-        const studentName=student?
-            `${student.first_name||""} ${student.last_name||""}`.trim():
-            "Unknown Student";
+        const studentName = student
+            ? `${student.first_name || ""} ${student.last_name || ""}`.trim()
+            : "Unknown Student";
 
-        const status=doc.status||"Pending";
+        const status = doc.status || "Pending";
 
-        const matchesSearch=
-            studentName.toLowerCase().includes(search)||
-            (student?.email||"").toLowerCase().includes(search)||
-            (doc.document_name||"").toLowerCase().includes(search);
+        const matchesSearch =
+            studentName.toLowerCase().includes(search) ||
+            (student?.email || "").toLowerCase().includes(search) ||
+            (doc.document_name || "").toLowerCase().includes(search);
 
-        const matchesStatus=
-            selectedStatus==="All"||
-            status.toLowerCase()===selectedStatus.toLowerCase();
+        const matchesStatus =
+            selectedStatus === "All" ||
+            status.toLowerCase() === selectedStatus.toLowerCase();
 
-        return matchesSearch&&matchesStatus;
+        return matchesSearch && matchesStatus;
     });
 
-    if(filtered.length===0){
-        table.innerHTML=
+    if(filtered.length === 0){
+
+        table.innerHTML =
             '<tr><td colspan="6" class="empty">No submitted documents found.</td></tr>';
+
         return;
     }
 
-    table.innerHTML=filtered.map(doc=>{
+    table.innerHTML = filtered.map(doc => {
 
-        const student=students.find(
-            item=>item.id===doc.student_id
+        const student = students.find(
+            item => item.id === doc.student_id
         );
 
-        const studentName=student?
-            `${student.first_name||""} ${student.last_name||""}`.trim():
-            "Unknown Student";
+        const studentName = student
+            ? `${student.first_name || ""} ${student.last_name || ""}`.trim()
+            : "Unknown Student";
 
-        const status=doc.status||"Pending";
+        const status = doc.status || "Pending";
 
-        let statusClass="status-pending";
+        let statusClass = "status-pending";
 
-        if(status.toLowerCase()==="approved"){
-            statusClass="status-approved";
-        }else if(status.toLowerCase()==="rejected"){
-            statusClass="status-rejected";
+        if(status.toLowerCase() === "approved"){
+            statusClass = "status-approved";
+        }else if(status.toLowerCase() === "rejected"){
+            statusClass = "status-rejected";
         }
 
-        const pendingActions=
-            status.toLowerCase()==="pending"?
-            `
+        const pendingActions =
+            status.toLowerCase() === "pending"
+            ? `
                 <button class="btn btn-approve"
                         data-action="approve"
                         data-id="${escapeHTML(doc.id)}">
                     Approve
                 </button>
+
                 <button class="btn btn-reject"
                         data-action="reject"
                         data-id="${escapeHTML(doc.id)}">
                     Reject
                 </button>
-            `:"";
+            `
+            : "";
 
         return `
             <tr>
@@ -1404,7 +1534,9 @@ function renderDocuments(){
                                 data-id="${escapeHTML(doc.id)}">
                             View
                         </button>
+
                         ${pendingActions}
+
                         <button class="btn btn-reject"
                                 data-action="delete"
                                 data-id="${escapeHTML(doc.id)}">
@@ -1418,28 +1550,30 @@ function renderDocuments(){
 }
 
 /* VIEW DOCUMENT */
+
 async function viewDocument(documentId){
 
-    const doc=documents.find(item=>item.id===documentId);
+    const doc = documents.find(item => item.id === documentId);
 
-    if(!doc||!doc.file_path){
+    if(!doc || !doc.file_path){
         alert("Document file path is missing.");
         return;
     }
 
     try{
-        const {data,error}=await supabaseClient
+
+        const {data,error} = await supabaseClient
             .storage
             .from("student-documents")
             .createSignedUrl(doc.file_path,60);
 
-        if(error)throw error;
+        if(error) throw error;
 
         if(!data?.signedUrl){
             throw new Error("Unable to generate document link.");
         }
 
-        const newWindow=window.open(
+        const newWindow = window.open(
             data.signedUrl,
             "_blank",
             "noopener,noreferrer"
@@ -1452,15 +1586,18 @@ async function viewDocument(documentId){
         }
 
     }catch(error){
+
         console.error("View document error:",error);
-        alert("Unable to open document: "+error.message);
+
+        alert("Unable to open document: " + error.message);
     }
 }
 
 /* APPROVE OR REJECT DOCUMENT */
+
 async function updateDocumentStatus(documentId,newStatus){
 
-    const doc=documents.find(item=>item.id===documentId);
+    const doc = documents.find(item => item.id === documentId);
 
     if(!doc){
         alert("Document record not found.");
@@ -1469,29 +1606,34 @@ async function updateDocumentStatus(documentId,newStatus){
 
     if(!confirm(
         `Are you sure you want to ${newStatus.toLowerCase()} this document?`
-    ))return;
+    )) return;
 
     try{
-        const {error}=await supabaseClient
+
+        const {error} = await supabaseClient
             .from("documents")
             .update({status:newStatus})
             .eq("id",documentId);
 
-        if(error)throw error;
+        if(error) throw error;
 
         alert(`Document successfully ${newStatus.toLowerCase()}.`);
+
         await loadAllData();
 
     }catch(error){
+
         console.error("Update document status error:",error);
-        alert("Unable to update document status: "+error.message);
+
+        alert("Unable to update document status: " + error.message);
     }
 }
 
 /* DELETE DOCUMENT */
+
 async function deleteDocument(documentId){
 
-    const doc=documents.find(item=>item.id===documentId);
+    const doc = documents.find(item => item.id === documentId);
 
     if(!doc){
         alert("Document record not found.");
@@ -1500,80 +1642,90 @@ async function deleteDocument(documentId){
 
     if(!confirm(
         "Are you sure you want to permanently delete this document?"
-    ))return;
+    )) return;
 
     try{
+
         if(doc.file_path){
-            const {error:storageError}=await supabaseClient
+
+            const {error:storageError} = await supabaseClient
                 .storage
                 .from("student-documents")
                 .remove([doc.file_path]);
 
-            if(storageError)throw storageError;
+            if(storageError) throw storageError;
         }
 
-        const {error:databaseError}=await supabaseClient
+        const {error:databaseError} = await supabaseClient
             .from("documents")
             .delete()
             .eq("id",documentId);
 
-        if(databaseError)throw databaseError;
+        if(databaseError) throw databaseError;
 
         alert("Document successfully deleted!");
+
         await loadAllData();
 
     }catch(error){
+
         console.error("Delete document error:",error);
-        alert("Unable to delete document: "+error.message);
+
+        alert("Unable to delete document: " + error.message);
     }
 }
 
 document.getElementById("documentsTable")
-.addEventListener("click",async event=>{
+.addEventListener("click",async event => {
 
-    const button=event.target.closest("button[data-action]");
+    const button = event.target.closest("button[data-action]");
 
-    if(!button)return;
+    if(!button) return;
 
-    const action=button.dataset.action;
-    const documentId=button.dataset.id;
+    const action = button.dataset.action;
+    const documentId = button.dataset.id;
 
-    if(action==="view")await viewDocument(documentId);
+    if(action === "view"){
+        await viewDocument(documentId);
+    }
 
-    if(action==="approve"){
+    if(action === "approve"){
         await updateDocumentStatus(documentId,"Approved");
     }
 
-    if(action==="reject"){
+    if(action === "reject"){
         await updateDocumentStatus(documentId,"Rejected");
     }
 
-    if(action==="delete"){
+    if(action === "delete"){
         await deleteDocument(documentId);
     }
 });
 
-/* PAGE NAVIGATION + URL HASH */
+/* =========================================
+   PAGE NAVIGATION
+========================================= */
+
 function hashForPage(pageId){
 
-    const map={
+    const map = {
         dashboardPage:"dashboard",
         studentsPage:"students",
         documentsPage:"documents",
         adminProfilePage:"admin-profile"
     };
 
-    return map[pageId]||"dashboard";
+    return map[pageId] || "dashboard";
 }
 
 function showAdminPage(pageId,updateURL=true){
 
     document.querySelectorAll(".page-section")
-        .forEach(section=>{
+        .forEach(section => {
             section.classList.remove("active");
         });
 
-    const target=document.getElementById(pageId);
+    const target = document.getElementById(pageId);
 
     if(target){
         target.classList.add("active");
@@ -1581,15 +1733,17 @@ function showAdminPage(pageId,updateURL=true){
 
     document.querySelectorAll(
         ".sidebar button[data-page]"
-    ).forEach(button=>{
+    ).forEach(button => {
+
         button.classList.toggle(
             "active",
-            button.dataset.page===pageId
+            button.dataset.page === pageId
         );
     });
 
     if(updateURL){
-        const hash=hashForPage(pageId);
+
+        const hash = hashForPage(pageId);
 
         history.replaceState(null,"",`#${hash}`);
     }
@@ -1604,31 +1758,37 @@ function showAdminPage(pageId,updateURL=true){
 
 function handleDashboardHash(){
 
-    const hash=(location.hash||"#dashboard").replace("#","");
-    const filter=document.getElementById("documentFilter");
+    const hash = (location.hash || "#dashboard").replace("#","");
+    const filter = document.getElementById("documentFilter");
 
-    if(hash==="students"){
+    if(hash === "students"){
+
         showAdminPage("studentsPage",false);
 
-    }else if(hash==="documents-pending"){
-        filter.value="Pending";
+    }else if(hash === "documents-pending"){
+
+        filter.value = "Pending";
         showAdminPage("documentsPage",false);
         renderDocuments();
 
-    }else if(hash==="documents-approved"){
-        filter.value="Approved";
+    }else if(hash === "documents-approved"){
+
+        filter.value = "Approved";
         showAdminPage("documentsPage",false);
         renderDocuments();
 
-    }else if(hash==="documents"){
-        filter.value="All";
+    }else if(hash === "documents"){
+
+        filter.value = "All";
         showAdminPage("documentsPage",false);
         renderDocuments();
 
-    }else if(hash==="admin-profile"){
+    }else if(hash === "admin-profile"){
+
         showAdminPage("adminProfilePage",false);
 
     }else{
+
         showAdminPage("dashboardPage",false);
     }
 }
@@ -1636,14 +1796,16 @@ function handleDashboardHash(){
 window.addEventListener("hashchange",handleDashboardHash);
 
 /* SIDEBAR NAVIGATION */
+
 document.querySelectorAll(
     ".sidebar button[data-page]"
-).forEach(button=>{
+).forEach(button => {
 
-    button.addEventListener("click",()=>{
+    button.addEventListener("click",() => {
 
-        if(button.dataset.page==="documentsPage"){
-            document.getElementById("documentFilter").value="All";
+        if(button.dataset.page === "documentsPage"){
+
+            document.getElementById("documentFilter").value = "All";
             renderDocuments();
         }
 
@@ -1652,69 +1814,43 @@ document.querySelectorAll(
 });
 
 /* DASHBOARD CARD NAVIGATION */
+
 document.querySelectorAll("[data-go]")
-.forEach(button=>{
+.forEach(button => {
 
-    button.addEventListener("click",()=>{
+    button.addEventListener("click",() => {
 
-        const pageId=button.dataset.go;
-        const filter=button.dataset.filter;
+        const pageId = button.dataset.go;
+        const filter = button.dataset.filter;
 
         if(filter){
-            document.getElementById("documentFilter").value=filter;
-        }else if(pageId==="documentsPage"){
-            document.getElementById("documentFilter").value="All";
+            document.getElementById("documentFilter").value = filter;
         }
 
         showAdminPage(pageId);
 
-        if(pageId==="documentsPage"){
+        if(pageId === "documentsPage"){
             renderDocuments();
         }
 
-        if(button.dataset.hash){
-            history.replaceState(
-                null,
-                "",
-                `#${button.dataset.hash}`
-            );
+        if(pageId === "studentsPage"){
+            renderStudents();
         }
     });
 });
 
-/* REPORTS & ANALYTICS SIDEBAR LINK */
+/* REPORTS & ANALYTICS */
+
 document.getElementById("reportsLink")
-.addEventListener("click",()=>{
-    window.location.href="reports.html";
+.addEventListener("click",() => {
+
+    window.location.href = "reports.html";
 });
 
-/* NEW QUICK ACCESS: SUBMITTED DOCUMENTS */
-document.getElementById("submittedDocumentsQuickLink")
-.addEventListener("click",()=>{
+/* =========================================
+   SEARCH AND FILTER
+========================================= */
 
-    document.getElementById("documentFilter").value="All";
-    document.getElementById("documentSearch").value="";
-
-    showAdminPage("documentsPage");
-
-    renderDocuments();
-
-    history.replaceState(null,"","#documents");
-});
-
-/* NEW QUICK ACCESS: REPORTS & ANALYTICS */
-document.getElementById("reportsQuickLink")
-.addEventListener("click",()=>{
-    window.location.href="reports.html";
-});
-
-/* NEW QUICK ACCESS: STUDENT CONCERN OVERVIEW */
-document.getElementById("studentConcernQuickLink")
-.addEventListener("click",()=>{
-    window.location.href="reports.html#studentConcernSection";
-});
-
-/* SEARCH AND FILTER */
 document.getElementById("studentSearch")
 .addEventListener("input",renderStudents);
 
@@ -1724,26 +1860,55 @@ document.getElementById("documentSearch")
 document.getElementById("documentFilter")
 .addEventListener("change",renderDocuments);
 
-/* REFRESH */
+/* =========================================
+   REFRESH BUTTONS
+========================================= */
+
 document.getElementById("refreshStudents")
 .addEventListener("click",loadAllData);
 
 document.getElementById("refreshDocuments")
 .addEventListener("click",loadAllData);
 
-document.getElementById("dashboardRefresh")
-.addEventListener("click",loadAllData);
+/* =========================================
+   AUTOMATIC DASHBOARD REFRESH
+   Refreshes data every 10 seconds
+========================================= */
 
-/* MOBILE SIDEBAR */
-const sidebar=document.getElementById("sidebar");
-const overlay=document.getElementById("overlay");
+let refreshTimer = null;
+
+function startAutomaticRefresh(){
+
+    if(refreshTimer){
+        clearInterval(refreshTimer);
+    }
+
+    refreshTimer = setInterval(async () => {
+
+        if(!currentUser) return;
+
+        if(document.hidden) return;
+
+        await loadAllData();
+
+    },10000);
+}
+
+/* =========================================
+   MOBILE SIDEBAR
+========================================= */
+
+const sidebar = document.getElementById("sidebar");
+const overlay = document.getElementById("overlay");
 
 function openSidebar(){
+
     sidebar.classList.add("open");
     overlay.classList.add("show");
 }
 
 function closeSidebar(){
+
     sidebar.classList.remove("open");
     overlay.classList.remove("show");
 }
@@ -1753,10 +1918,17 @@ document.getElementById("menuBtn")
 
 overlay.addEventListener("click",closeSidebar);
 
-/* LOGOUT */
+/* =========================================
+   LOGOUT
+========================================= */
+
 async function logout(){
 
-    if(!confirm("Are you sure you want to logout?"))return;
+    if(!confirm("Are you sure you want to logout?")) return;
+
+    if(refreshTimer){
+        clearInterval(refreshTimer);
+    }
 
     await supabaseClient.auth.signOut();
 
@@ -1769,16 +1941,10 @@ document.getElementById("topLogout")
 document.getElementById("sidebarLogout")
 .addEventListener("click",logout);
 
-/* AUTOMATIC DASHBOARD COUNT REFRESH */
-setInterval(async function(){
+/* =========================================
+   START ADMIN DASHBOARD
+========================================= */
 
-    if(!currentUser)return;
-
-    await loadAllData();
-
-},10000);
-
-/* START */
 initializeAdmin();
 
 </script>
