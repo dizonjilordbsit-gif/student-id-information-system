@@ -565,42 +565,7 @@ tbody tr:hover{background:#fafcf9}
 
     </div>
 
-    <div class="panel">
-        <div class="panel-heading">
-            <h2>Quick Access</h2>
-        </div>
-
-        <div class="quick-links">
-
-            <button data-go="studentsPage" data-hash="students">
-                View Registered Students
-            </button>
-
-            <button data-go="documentsPage" data-hash="documents">
-                Review Submitted Documents
-            </button>
-
-            <!-- NEW: SUBMITTED DOCUMENTS -->
-            <button id="submittedDocumentsQuickLink">
-                Submitted Documents
-            </button>
-
-            <!-- NEW: REPORTS & ANALYTICS -->
-            <button id="reportsQuickLink">
-                Reports & Analytics
-            </button>
-
-            <!-- NEW: STUDENT CONCERNS -->
-            <button id="studentConcernQuickLink">
-                Student Concern Overview
-            </button>
-
-            <button id="dashboardRefresh">
-                Refresh Dashboard
-            </button>
-
-        </div>
-    </div>
+ 
 
 </section>
 
@@ -1803,6 +1768,15 @@ document.getElementById("topLogout")
 
 document.getElementById("sidebarLogout")
 .addEventListener("click",logout);
+
+/* AUTOMATIC DASHBOARD COUNT REFRESH */
+setInterval(async function(){
+
+    if(!currentUser)return;
+
+    await loadAllData();
+
+},10000);
 
 /* START */
 initializeAdmin();
