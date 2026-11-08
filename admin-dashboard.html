@@ -125,6 +125,122 @@ border:1px solid #d9dfd9;border-radius:6px;padding:5px;cursor:pointer;display:bl
 .stat-card{padding:15px}.stat-card h2{font-size:24px}
 .panel{padding:15px}.page-heading h1{font-size:23px}
 }
+
+/* ADMIN CHAT WINDOW */
+.chat-modal{
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.55);
+z-index:2000;
+align-items:center;
+justify-content:center;
+padding:15px;
+}
+.chat-modal.show{display:flex}
+.chat-container{
+width:100%;
+max-width:650px;
+height: min(650px, 90vh);
+background:white;
+border-radius:12px;
+overflow:hidden;
+display:flex;
+flex-direction:column;
+box-shadow:0 10px 35px rgba(0,0,0,.2);
+}
+.chat-header{
+background:var(--green);
+color:white;
+padding:17px 20px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+border-bottom:4px solid var(--gold);
+}
+.chat-header h2{font-size:17px}
+.chat-header p{font-size:12px;color:#e8d28e;margin-top:5px}
+.chat-close{
+background:transparent;
+border:none;
+color:white;
+font-size:26px;
+cursor:pointer;
+}
+.chat-toolbar{
+padding:10px 15px;
+border-bottom:1px solid var(--border);
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+.chat-messages{
+flex:1;
+overflow-y:auto;
+padding:20px;
+background:#f5f7f4;
+display:flex;
+flex-direction:column;
+gap:12px;
+}
+.chat-empty{
+text-align:center;
+color:var(--muted);
+margin:auto;
+font-size:13px;
+}
+.chat-bubble{
+max-width:80%;
+padding:11px 14px;
+border-radius:12px;
+font-size:13px;
+line-height:1.5;
+overflow-wrap:anywhere;
+}
+.chat-bubble.admin{
+align-self:flex-end;
+background:var(--green);
+color:white;
+border-bottom-right-radius:3px;
+}
+.chat-bubble.student{
+align-self:flex-start;
+background:white;
+color:var(--text);
+border:1px solid var(--border);
+border-bottom-left-radius:3px;
+}
+.chat-time{
+font-size:10px;
+margin-top:5px;
+opacity:.75;
+}
+.chat-compose{
+padding:15px;
+border-top:1px solid var(--border);
+display:flex;
+gap:10px;
+background:white;
+}
+.chat-compose textarea{
+flex:1;
+resize:none;
+min-height:48px;
+max-height:110px;
+padding:12px;
+border:1px solid #d9dfd9;
+border-radius:7px;
+font-size:13px;
+outline:none;
+}
+.chat-compose textarea:focus{border-color:var(--green)}
+.chat-compose button{align-self:flex-end}
+@media(max-width:500px){
+.chat-modal{padding:0}
+.chat-container{height:100%;max-height:100%;border-radius:0}
+.chat-bubble{max-width:90%}
+}
+
 </style>
 </head>
 <body>
@@ -268,6 +384,46 @@ placeholder="Search name, student number, email, course, or year level...">
 </div>
 </section>
 
+<!-- ADMIN CHAT MODAL -->
+<div class="chat-modal" id="chatModal">
+    <div class="chat-container">
+
+        <div class="chat-header">
+            <div>
+                <h2 id="chatStudentName">Student Conversation</h2>
+                <p id="chatStudentEmail">Loading student...</p>
+            </div>
+            <button class="chat-close" id="closeChat">&times;</button>
+        </div>
+
+        <div class="chat-toolbar">
+            <span style="font-size:12px;color:#758078">
+                Conversation History
+            </span>
+            <button class="btn btn-view" id="refreshChat">Refresh</button>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+            <div class="chat-empty">Loading messages...</div>
+        </div>
+
+        <form class="chat-compose" id="chatForm">
+            <textarea
+                id="chatInput"
+                placeholder="Type your message..."
+                maxlength="5000"
+                required
+            ></textarea>
+
+            <button type="submit" class="btn btn-green" id="sendChat">
+                Send
+            </button>
+        </form>
+
+    </div>
+</div>
+
+
 </main>
 
 <script>
@@ -277,7 +433,6 @@ const supabaseClient = window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_K
 
 let currentUser=null,students=[],documents=[];
 let studentLoadError=null,documentLoadError=null,isLoadingData=false;
-let refreshTimer=null;
 
 function escapeHTML(value){
 return String(value??"").replace(/&/g,"&amp;").replace(/</g,"&lt;")
@@ -318,7 +473,6 @@ window.location.replace("index.html");return;
 await loadAdminProfile();
 await loadAllData();
 handleDashboardHash();
-startAutomaticRefresh();
 }catch(error){
 console.error("Initialization error:",error);
 alert("Unable to initialize Admin Dashboard: "+error.message);
@@ -485,27 +639,219 @@ return `<tr>
 table.innerHTML=rows.join("");
 }
 
-/* MESSAGE STUDENT */
+
+/* ADMIN DIRECT MESSAGING */
+
+let activeChatStudent = null;
+let chatSending = false;
+
 function messageStudent(studentId){
-const student=students.find(item=>String(item.id)===String(studentId));
-if(!student){alert("Student account not found.");return;}
-if(!student.email){alert("This student has no registered email address.");return;}
-const fullName=`${student.first_name||""} ${student.last_name||""}`.trim();
-const subject="I-PILIMON Student ID Information System";
-const body=`Good day ${fullName||"Student"},
 
-We are contacting you regarding your student account and Student ID application in the I-PILIMON Student ID Information System.
+    const student = students.find(
+        item => String(item.id) === String(studentId)
+    );
 
-Please reply to this email so we can assist you with your concern.
+    if(!student){
+        alert("Student account not found.");
+        return;
+    }
 
-Thank you.
+    activeChatStudent = student;
 
-I-PILIMON Student ID Information System
-Pamantasan ng Lungsod ng Muntinlupa`;
-const mailto="mailto:"+encodeURIComponent(student.email)+
-"?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(body);
-window.location.href=mailto;
+    const fullName =
+        `${student.first_name || ""} ${student.last_name || ""}`.trim();
+
+    document.getElementById("chatStudentName").textContent =
+        fullName || "Student";
+
+    document.getElementById("chatStudentEmail").textContent =
+        student.email || "No email address";
+
+    document.getElementById("chatInput").value = "";
+
+    document.getElementById("chatModal").classList.add("show");
+
+    loadChatMessages();
 }
+
+function formatChatTime(value){
+
+    if(!value) return "";
+
+    const date = new Date(value);
+
+    if(Number.isNaN(date.getTime())) return "";
+
+    return date.toLocaleString("en-PH",{
+        month:"short",
+        day:"numeric",
+        year:"numeric",
+        hour:"numeric",
+        minute:"2-digit"
+    });
+}
+
+async function loadChatMessages(){
+
+    if(!currentUser || !activeChatStudent) return;
+
+    const container = document.getElementById("chatMessages");
+
+    container.innerHTML =
+        '<div class="chat-empty">Loading messages...</div>';
+
+    try{
+
+        const studentId = activeChatStudent.id;
+
+        const {data,error} = await supabaseClient
+            .from("messages")
+            .select("id,sender_id,receiver_id,message,created_at,read_at")
+            .or(
+                `and(sender_id.eq.${currentUser.id},receiver_id.eq.${studentId}),and(sender_id.eq.${studentId},receiver_id.eq.${currentUser.id})`
+            )
+            .order("created_at",{ascending:true});
+
+        if(error) throw error;
+
+        if(!data || data.length === 0){
+
+            container.innerHTML = `
+                <div class="chat-empty">
+                    No messages yet.<br>
+                    Send a message to start the conversation.
+                </div>
+            `;
+
+            return;
+        }
+
+        container.innerHTML = data.map(msg => {
+
+            const isAdmin = msg.sender_id === currentUser.id;
+
+            const bubbleClass = isAdmin ? "admin" : "student";
+
+            const senderLabel = isAdmin ? "You" : "Student";
+
+            return `
+                <div class="chat-bubble ${bubbleClass}">
+                    <div>${escapeHTML(msg.message)}</div>
+                    <div class="chat-time">
+                        ${senderLabel} · ${formatChatTime(msg.created_at)}
+                    </div>
+                </div>
+            `;
+
+        }).join("");
+
+        container.scrollTop = container.scrollHeight;
+
+        // Mark received messages as read
+        const unreadIds = data
+            .filter(msg =>
+                msg.receiver_id === currentUser.id && !msg.read_at
+            )
+            .map(msg => msg.id);
+
+        if(unreadIds.length){
+
+            const {error:readError} = await supabaseClient
+                .from("messages")
+                .update({read_at:new Date().toISOString()})
+                .in("id",unreadIds);
+
+            if(readError) console.error("Read status error:",readError);
+        }
+
+    }catch(error){
+
+        console.error("Chat loading error:",error);
+
+        container.innerHTML = `
+            <div class="chat-empty">
+                Unable to load messages.<br>
+                ${escapeHTML(error.message)}
+            </div>
+        `;
+    }
+}
+
+document.getElementById("chatForm").addEventListener("submit",async event=>{
+
+    event.preventDefault();
+
+    if(chatSending || !currentUser || !activeChatStudent) return;
+
+    const input = document.getElementById("chatInput");
+    const sendButton = document.getElementById("sendChat");
+
+    const messageText = input.value.trim();
+
+    if(!messageText) return;
+
+    chatSending = true;
+    sendButton.disabled = true;
+    sendButton.textContent = "Sending...";
+
+    try{
+
+        const {error} = await supabaseClient
+            .from("messages")
+            .insert({
+                sender_id:currentUser.id,
+                receiver_id:activeChatStudent.id,
+                message:messageText
+            });
+
+        if(error) throw error;
+
+        input.value = "";
+
+        await loadChatMessages();
+
+    }catch(error){
+
+        console.error("Message sending error:",error);
+
+        alert("Unable to send message: " + error.message);
+
+    }finally{
+
+        chatSending = false;
+        sendButton.disabled = false;
+        sendButton.textContent = "Send";
+        input.focus();
+    }
+});
+
+document.getElementById("refreshChat").addEventListener(
+    "click",
+    loadChatMessages
+);
+
+function closeChat(){
+
+    document.getElementById("chatModal").classList.remove("show");
+
+    activeChatStudent = null;
+}
+
+document.getElementById("closeChat").addEventListener("click",closeChat);
+
+document.getElementById("chatModal").addEventListener("click",event=>{
+
+    if(event.target.id === "chatModal"){
+        closeChat();
+    }
+});
+
+document.addEventListener("keydown",event=>{
+
+    if(event.key === "Escape"){
+        closeChat();
+    }
+});
 
 /* EDIT STUDENT */
 async function editStudent(studentId){
@@ -713,14 +1059,6 @@ document.getElementById("documentFilter").addEventListener("change",renderDocume
 document.getElementById("refreshStudents").addEventListener("click",loadAllData);
 document.getElementById("refreshDocuments").addEventListener("click",loadAllData);
 
-/* AUTOMATIC REFRESH */
-function startAutomaticRefresh(){
-if(refreshTimer)clearInterval(refreshTimer);
-refreshTimer=setInterval(async()=>{
-if(!currentUser||document.hidden)return;
-await loadAllData();
-},10000);
-}
 
 /* MOBILE SIDEBAR */
 const sidebar=document.getElementById("sidebar");
@@ -733,7 +1071,6 @@ overlay.addEventListener("click",closeSidebar);
 /* LOGOUT */
 async function logout(){
 if(!confirm("Are you sure you want to logout?"))return;
-if(refreshTimer)clearInterval(refreshTimer);
 await supabaseClient.auth.signOut();
 window.location.replace("index.html");
 }
