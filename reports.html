@@ -107,6 +107,7 @@ body{background:var(--cream);color:var(--text)}
 }
 .btn-green{background:var(--green);color:white}
 .btn-gold{background:var(--gold);color:var(--dark-green)}
+.btn-red{background:#b83232;color:white}
 .btn:hover,.header-btn:hover{opacity:.85}
 .btn:disabled{opacity:.6;cursor:not-allowed}
 .table-wrapper{width:100%;overflow-x:auto}
@@ -122,10 +123,12 @@ td{padding:13px 12px;border-bottom:1px solid var(--border);font-size:13px}
     font-size:11px;font-weight:bold;white-space:nowrap
 }
 .status-pending{background:#fff2d5;color:#916100}
-.status-approved{background:#def3e4;color:#176b35}
+.status-approved,.status-resolved,.status-complete{
+    background:#def3e4;color:#176b35
+}
 .status-rejected{background:#fde3e3;color:#a12626}
-.status-complete{background:#def3e4;color:#176b35}
 .status-incomplete{background:#fff2d5;color:#916100}
+.status-progress{background:#dcecff;color:#245b91}
 .empty{text-align:center;color:var(--muted);padding:25px}
 .report-info{
     display:flex;flex-wrap:wrap;gap:15px;
@@ -137,12 +140,9 @@ td{padding:13px 12px;border-bottom:1px solid var(--border);font-size:13px}
 }
 .overlay.show{display:block}
 
-/* STUDENT REPORT FILTERS */
 .student-report-filters{
-    display:grid;
-    grid-template-columns:2fr 1fr 1fr;
-    gap:12px;
-    margin-bottom:18px
+    display:grid;grid-template-columns:2fr 1fr 1fr;
+    gap:12px;margin-bottom:18px
 }
 .filter-control{
     width:100%;padding:12px;
@@ -152,8 +152,7 @@ td{padding:13px 12px;border-bottom:1px solid var(--border);font-size:13px}
 }
 .filter-control:focus{border-color:var(--green)}
 .report-count{
-    font-size:13px;color:var(--muted);
-    margin-bottom:15px
+    font-size:13px;color:var(--muted);margin-bottom:15px
 }
 .student-name{font-weight:bold;color:var(--green)}
 .student-email{color:var(--muted);font-size:12px;margin-top:4px}
@@ -163,8 +162,43 @@ td{padding:13px 12px;border-bottom:1px solid var(--border);font-size:13px}
     font-size:13px
 }
 
+/* STUDENT CONCERN REPORT */
+.concern-stats{
+    display:grid;grid-template-columns:repeat(5,1fr);
+    gap:12px;margin-bottom:20px
+}
+.concern-stat{
+    background:#f8faf8;border:1px solid var(--border);
+    border-radius:8px;padding:16px
+}
+.concern-stat p{font-size:12px;color:var(--muted);margin-bottom:9px}
+.concern-stat h3{font-size:25px;color:var(--green)}
+.concern-filters{
+    display:grid;grid-template-columns:2fr 1fr;
+    gap:12px;margin-bottom:16px
+}
+.concern-details{
+    min-width:220px;max-width:360px;
+    white-space:normal;line-height:1.5;
+    overflow-wrap:anywhere
+}
+.concern-subject{font-weight:bold;color:var(--green);margin-bottom:5px}
+.concern-description{color:#536158;font-size:12px}
+.concern-meta{font-size:11px;color:var(--muted);margin-top:6px}
+.concern-editor{min-width:190px;display:flex;flex-direction:column;gap:7px}
+.concern-editor select,.concern-editor textarea{
+    width:100%;padding:9px;border:1px solid var(--border);
+    border-radius:5px;font-size:12px;background:white
+}
+.concern-editor textarea{min-height:65px;resize:vertical}
+.concern-editor button{width:100%}
+.concern-student{min-width:160px}
+.concern-student strong{display:block;color:var(--green);margin-bottom:4px}
+.concern-student small{color:var(--muted);overflow-wrap:anywhere}
+
 @media(max-width:1100px){
     .stats-grid{grid-template-columns:repeat(2,1fr)}
+    .concern-stats{grid-template-columns:repeat(3,1fr)}
 }
 @media(max-width:900px){
     .charts-grid{grid-template-columns:1fr}
@@ -176,7 +210,8 @@ td{padding:13px 12px;border-bottom:1px solid var(--border);font-size:13px}
     .main{margin-left:0;padding:100px 18px 30px}
 }
 @media(max-width:600px){
-    .student-report-filters{grid-template-columns:1fr}
+    .student-report-filters,.concern-filters{grid-template-columns:1fr}
+    .concern-stats{grid-template-columns:repeat(2,1fr)}
 }
 @media(max-width:550px){
     .header{padding:0 14px}
@@ -191,17 +226,18 @@ td{padding:13px 12px;border-bottom:1px solid var(--border);font-size:13px}
     .chart-container{height:260px}
 }
 
-/* PRINT */
 @media print{
     body{background:white}
     .header,.sidebar,.overlay,.menu-btn,
     .header-actions,.student-report-filters,
-    .report-actions,.no-print{display:none!important}
+    .concern-filters,.report-actions,.no-print,
+    .concern-editor{display:none!important}
     .main{margin:0;padding:10px;min-height:0}
     .page-heading{margin-bottom:15px}
     .panel{box-shadow:none;border:1px solid #ccc;break-inside:avoid}
     .stats-grid{grid-template-columns:repeat(4,1fr)}
     .charts-grid{grid-template-columns:repeat(2,1fr)}
+    .concern-stats{grid-template-columns:repeat(5,1fr)}
     .table-wrapper{overflow:visible}
     table{min-width:0;width:100%}
     th,td{font-size:10px;padding:7px}
@@ -253,7 +289,7 @@ td{padding:13px 12px;border-bottom:1px solid var(--border);font-size:13px}
 
     <div class="page-heading">
         <h1>Reports & Analytics</h1>
-        <p>View student registration statistics and document submission reports.</p>
+        <p>View student records, document reports, and student concerns.</p>
 
         <div class="report-info">
             <span id="reportDate">Report Date: Loading...</span>
@@ -262,8 +298,9 @@ td{padding:13px 12px;border-bottom:1px solid var(--border);font-size:13px}
     </div>
 
     <div class="message" id="reportMessage"></div>
+    <div class="message" id="concernMessage"></div>
 
-    <!-- STATISTICS -->
+    <!-- EXISTING STATISTICS -->
     <div class="stats-grid">
         <div class="stat-card">
             <p>Total Registered Students</p>
@@ -303,6 +340,111 @@ td{padding:13px 12px;border-bottom:1px solid var(--border);font-size:13px}
         <div class="stat-card">
             <p>Courses Represented</p>
             <h2 id="totalCourses">0</h2>
+        </div>
+    </div>
+
+    <!-- STUDENT CONCERN STATISTICS -->
+    <div class="panel">
+        <div class="panel-heading">
+            <div>
+                <h2>Student Concern Overview</h2>
+                <p style="font-size:12px;color:#758078;margin-top:6px;">
+                    Summary of concerns submitted by students.
+                </p>
+            </div>
+        </div>
+
+        <div class="concern-stats">
+            <div class="concern-stat">
+                <p>Total Concerns</p>
+                <h3 id="totalConcerns">0</h3>
+            </div>
+
+            <div class="concern-stat">
+                <p>Pending</p>
+                <h3 id="pendingConcerns">0</h3>
+            </div>
+
+            <div class="concern-stat">
+                <p>In Progress</p>
+                <h3 id="progressConcerns">0</h3>
+            </div>
+
+            <div class="concern-stat">
+                <p>Resolved</p>
+                <h3 id="resolvedConcerns">0</h3>
+            </div>
+
+            <div class="concern-stat">
+                <p>Rejected</p>
+                <h3 id="rejectedConcerns">0</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- STUDENT CONCERN REPORT -->
+    <div class="panel" id="studentConcernSection">
+
+        <div class="panel-heading">
+            <div>
+                <h2>Student Concern Report</h2>
+                <p style="font-size:12px;color:#758078;margin-top:6px;">
+                    Review student concerns and update their status and admin remarks.
+                </p>
+            </div>
+
+            <div class="report-actions">
+                <button class="btn btn-green" id="printConcerns">
+                    Print Concerns
+                </button>
+                <button class="btn btn-gold" id="exportConcerns">
+                    Export Concern Report
+                </button>
+            </div>
+        </div>
+
+        <div class="concern-filters no-print">
+            <input
+                type="search"
+                id="concernSearch"
+                class="filter-control"
+                placeholder="Search student name, email, subject, or concern..."
+            >
+
+            <select id="concernStatusFilter" class="filter-control">
+                <option value="">All Concern Statuses</option>
+                <option value="Pending">Pending</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Resolved">Resolved</option>
+                <option value="Rejected">Rejected</option>
+            </select>
+        </div>
+
+        <div class="report-count" id="concernReportCount">
+            Showing 0 concerns
+        </div>
+
+        <div class="table-wrapper">
+            <table id="concernReportTable">
+                <thead>
+                    <tr>
+                        <th>Student Information</th>
+                        <th>Category</th>
+                        <th>Concern Details</th>
+                        <th>Date Submitted</th>
+                        <th>Current Status</th>
+                        <th>Update Concern</th>
+                    </tr>
+                </thead>
+
+                <tbody id="concernReportTableBody">
+                    <tr>
+                        <td colspan="6" class="empty">
+                            Loading student concerns...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 
@@ -360,9 +502,7 @@ td{padding:13px 12px;border-bottom:1px solid var(--border);font-size:13px}
             </div>
         </div>
 
-        <!-- SEARCH AND FILTER -->
         <div class="student-report-filters no-print">
-
             <input
                 type="search"
                 id="studentSearch"
@@ -377,7 +517,6 @@ td{padding:13px 12px;border-bottom:1px solid var(--border);font-size:13px}
             <select id="yearFilter" class="filter-control">
                 <option value="">All Year Levels</option>
             </select>
-
         </div>
 
         <div class="report-count" id="studentReportCount">
@@ -469,7 +608,9 @@ td{padding:13px 12px;border-bottom:1px solid var(--border);font-size:13px}
 </main>
 
 <script>
+// ==========================================
 // SUPABASE CONFIGURATION
+// ==========================================
 const SUPABASE_URL="https://mlrpkkmexmboqrnmjkuy.supabase.co";
 const SUPABASE_ANON_KEY="sb_publishable_-BIYMjip4Zon8HwZUCPT1Q_P0pDCMke";
 
@@ -478,17 +619,23 @@ const supabaseClient=window.supabase.createClient(
     SUPABASE_ANON_KEY
 );
 
+// ==========================================
 // VARIABLES
+// ==========================================
 let currentUser=null;
 let students=[];
 let documents=[];
+let concerns=[];
+let concernStudents=[];
 
 let courseChartInstance=null;
 let yearChartInstance=null;
 let documentChartInstance=null;
 let monthlyChartInstance=null;
 
+// ==========================================
 // HELPERS
+// ==========================================
 function showMessage(message){
     const element=document.getElementById("reportMessage");
     element.textContent=message;
@@ -497,6 +644,18 @@ function showMessage(message){
 
 function hideMessage(){
     const element=document.getElementById("reportMessage");
+    element.textContent="";
+    element.style.display="none";
+}
+
+function showConcernMessage(message){
+    const element=document.getElementById("concernMessage");
+    element.textContent=message;
+    element.style.display="block";
+}
+
+function hideConcernMessage(){
+    const element=document.getElementById("concernMessage");
     element.textContent="";
     element.style.display="none";
 }
@@ -543,7 +702,25 @@ function normalizeStatus(status){
     return String(status||"Pending").trim().toLowerCase();
 }
 
+function concernStatusClass(status){
+    const normalized=normalizeStatus(status);
+
+    if(normalized==="resolved")return "status-resolved";
+    if(normalized==="rejected")return "status-rejected";
+    if(normalized==="in progress")return "status-progress";
+
+    return "status-pending";
+}
+
+function getConcernStudent(concern){
+    return students.find(student=>student.id===concern.student_id) ||
+           concernStudents.find(student=>student.id===concern.student_id) ||
+           null;
+}
+
+// ==========================================
 // ADMIN AUTHENTICATION
+// ==========================================
 async function initializeReports(){
     try{
         const {data,error}=await supabaseClient.auth.getSession();
@@ -580,9 +757,12 @@ async function initializeReports(){
     }
 }
 
-// LOAD REPORT DATA
+// ==========================================
+// LOAD ALL REPORT DATA
+// ==========================================
 async function loadReports(){
     hideMessage();
+    hideConcernMessage();
 
     document.getElementById("refreshButton").disabled=true;
 
@@ -636,6 +816,8 @@ async function loadReports(){
         populateStudentFilters();
         renderStudentReport();
 
+        await loadStudentConcerns();
+
         document.getElementById("reportDate").textContent=
             "Report Date: "+formatDate(new Date());
 
@@ -650,7 +832,9 @@ async function loadReports(){
     }
 }
 
-// STATISTICS
+// ==========================================
+// EXISTING STATISTICS
+// ==========================================
 function updateStatistics(){
 
     const complete=students.filter(isComplete).length;
@@ -684,7 +868,9 @@ function updateStatistics(){
     document.getElementById("totalCourses").textContent=courses.size;
 }
 
-// COURSE CHART
+// ==========================================
+// STUDENTS BY COURSE CHART
+// ==========================================
 function renderCourseChart(){
 
     const counts={};
@@ -729,7 +915,9 @@ function renderCourseChart(){
     );
 }
 
-// YEAR LEVEL CHART
+// ==========================================
+// STUDENTS BY YEAR LEVEL CHART
+// ==========================================
 function renderYearChart(){
 
     const counts={};
@@ -772,7 +960,9 @@ function renderYearChart(){
     );
 }
 
+// ==========================================
 // DOCUMENT STATUS CHART
+// ==========================================
 function renderDocumentChart(){
 
     const pending=documents.filter(
@@ -819,7 +1009,9 @@ function renderDocumentChart(){
     );
 }
 
+// ==========================================
 // MONTHLY REGISTRATION CHART
+// ==========================================
 function renderMonthlyChart(){
 
     const counts={};
@@ -887,7 +1079,9 @@ function renderMonthlyChart(){
     );
 }
 
+// ==========================================
 // POPULATE STUDENT FILTERS
+// ==========================================
 function populateStudentFilters(){
 
     const courseFilter=document.getElementById("courseFilter");
@@ -924,7 +1118,9 @@ function populateStudentFilters(){
     if(years.includes(currentYear))yearFilter.value=currentYear;
 }
 
-// GET FILTERED STUDENTS
+// ==========================================
+// FILTER STUDENTS
+// ==========================================
 function getFilteredStudents(){
 
     const search=document
@@ -967,7 +1163,9 @@ function getFilteredStudents(){
     });
 }
 
-// STUDENT REPORT TABLE
+// ==========================================
+// RENDER STUDENT REPORT
+// ==========================================
 function renderStudentReport(){
 
     const table=document.getElementById("studentReportTableBody");
@@ -1004,17 +1202,12 @@ function renderStudentReport(){
         return `
             <tr>
                 <td>${escapeHTML(student.student_number||"Not Provided")}</td>
-
                 <td>
                     <div class="student-name">${escapeHTML(fullName)}</div>
                 </td>
-
                 <td>${escapeHTML(student.email||"—")}</td>
-
                 <td>${escapeHTML(student.course||"Not Specified")}</td>
-
                 <td>${escapeHTML(student.year_level||"Not Specified")}</td>
-
                 <td>
                     <span class="status ${
                         complete?"status-complete":"status-incomplete"
@@ -1022,7 +1215,6 @@ function renderStudentReport(){
                         ${complete?"Complete":"Incomplete"}
                     </span>
                 </td>
-
                 <td>${formatDate(student.created_at)}</td>
             </tr>
         `;
@@ -1030,7 +1222,9 @@ function renderStudentReport(){
     }).join("");
 }
 
+// ==========================================
 // DOCUMENT SUMMARY TABLE
+// ==========================================
 function renderDocumentSummary(){
 
     const table=document.getElementById("documentSummaryTable");
@@ -1065,7 +1259,9 @@ function renderDocumentSummary(){
     `).join("");
 }
 
+// ==========================================
 // COURSE SUMMARY TABLE
+// ==========================================
 function renderCourseSummary(){
 
     const table=document.getElementById("courseSummaryTable");
@@ -1098,7 +1294,357 @@ function renderCourseSummary(){
     `).join("");
 }
 
-// CSV EXPORT
+// ==========================================
+// LOAD STUDENT CONCERNS
+// ==========================================
+async function loadStudentConcerns(){
+
+    const table=document.getElementById("concernReportTableBody");
+
+    table.innerHTML=`
+        <tr>
+            <td colspan="6" class="empty">Loading student concerns...</td>
+        </tr>
+    `;
+
+    const {data,error}=await supabaseClient
+        .from("student_concerns")
+        .select(`
+            id,
+            student_id,
+            category,
+            subject,
+            description,
+            status,
+            admin_remarks,
+            created_at,
+            updated_at
+        `)
+        .order("created_at",{ascending:false});
+
+    if(error){
+        console.error("Student concerns error:",error);
+
+        concerns=[];
+
+        updateConcernStatistics();
+
+        table.innerHTML=`
+            <tr>
+                <td colspan="6" class="empty">
+                    Unable to load concerns. Check that the
+                    student_concerns table and admin SELECT policy
+                    have been created in Supabase.
+                    <br><br>
+                    ${escapeHTML(error.message)}
+                </td>
+            </tr>
+        `;
+
+        showConcernMessage(
+            "Student Concern Report could not load. Make sure the student_concerns table and its RLS policies are already set up in Supabase."
+        );
+
+        return;
+    }
+
+    concerns=data||[];
+
+    // Get student records for concerns that may not be in the main list.
+    const missingIds=[...new Set(
+        concerns
+            .map(item=>item.student_id)
+            .filter(id=>id&&!students.some(student=>student.id===id))
+    )];
+
+    concernStudents=[];
+
+    if(missingIds.length){
+        const {data:extraStudents,error:extraError}=await supabaseClient
+            .from("students")
+            .select("id,student_number,first_name,last_name,email,course,year_level")
+            .in("id",missingIds);
+
+        if(!extraError){
+            concernStudents=extraStudents||[];
+        }
+    }
+
+    updateConcernStatistics();
+    renderConcernReport();
+}
+
+// ==========================================
+// CONCERN STATISTICS
+// ==========================================
+function updateConcernStatistics(){
+
+    const pending=concerns.filter(
+        item=>normalizeStatus(item.status)==="pending"
+    ).length;
+
+    const inProgress=concerns.filter(
+        item=>normalizeStatus(item.status)==="in progress"
+    ).length;
+
+    const resolved=concerns.filter(
+        item=>normalizeStatus(item.status)==="resolved"
+    ).length;
+
+    const rejected=concerns.filter(
+        item=>normalizeStatus(item.status)==="rejected"
+    ).length;
+
+    document.getElementById("totalConcerns").textContent=concerns.length;
+    document.getElementById("pendingConcerns").textContent=pending;
+    document.getElementById("progressConcerns").textContent=inProgress;
+    document.getElementById("resolvedConcerns").textContent=resolved;
+    document.getElementById("rejectedConcerns").textContent=rejected;
+}
+
+// ==========================================
+// FILTER CONCERNS
+// ==========================================
+function getFilteredConcerns(){
+
+    const search=document
+        .getElementById("concernSearch")
+        .value.trim().toLowerCase();
+
+    const selectedStatus=document
+        .getElementById("concernStatusFilter")
+        .value;
+
+    return concerns.filter(concern=>{
+
+        const student=getConcernStudent(concern);
+
+        const fullName=student
+            ?`${student.first_name||""} ${student.last_name||""}`.trim()
+            :"";
+
+        const email=student?.email||"";
+
+        const searchable=[
+            fullName,
+            email,
+            student?.student_number||"",
+            concern.category||"",
+            concern.subject||"",
+            concern.description||"",
+            concern.status||""
+        ].join(" ").toLowerCase();
+
+        const matchesSearch=!search||searchable.includes(search);
+
+        const matchesStatus=
+            !selectedStatus||
+            String(concern.status||"Pending")===selectedStatus;
+
+        return matchesSearch&&matchesStatus;
+    });
+}
+
+// ==========================================
+// RENDER CONCERN REPORT
+// ==========================================
+function renderConcernReport(){
+
+    const table=document.getElementById("concernReportTableBody");
+    const count=document.getElementById("concernReportCount");
+
+    const filtered=getFilteredConcerns();
+
+    count.textContent=
+        "Showing "+filtered.length+
+        " of "+concerns.length+" submitted concerns";
+
+    if(!filtered.length){
+        table.innerHTML=`
+            <tr>
+                <td colspan="6" class="empty">
+                    No student concerns found.
+                </td>
+            </tr>
+        `;
+        return;
+    }
+
+    table.innerHTML=filtered.map(concern=>{
+
+        const student=getConcernStudent(concern);
+
+        const fullName=student
+            ?`${student.first_name||""} ${student.last_name||""}`.trim()
+            :"Student record unavailable";
+
+        const status=concern.status||"Pending";
+
+        return `
+            <tr>
+                <td>
+                    <div class="concern-student">
+                        <strong>${escapeHTML(fullName)}</strong>
+                        <small>${escapeHTML(student?.email||"Email unavailable")}</small>
+                        <div class="concern-meta">
+                            Student No.: ${escapeHTML(student?.student_number||"Not Provided")}
+                        </div>
+                    </div>
+                </td>
+
+                <td>${escapeHTML(concern.category||"Other")}</td>
+
+                <td>
+                    <div class="concern-details">
+                        <div class="concern-subject">
+                            ${escapeHTML(concern.subject||"No subject")}
+                        </div>
+
+                        <div class="concern-description">
+                            ${escapeHTML(concern.description||"No description")}
+                        </div>
+
+                        ${
+                            concern.admin_remarks
+                            ?`<div class="concern-meta">
+                                Admin Remarks: ${escapeHTML(concern.admin_remarks)}
+                              </div>`
+                            :""
+                        }
+                    </div>
+                </td>
+
+                <td>${formatDate(concern.created_at)}</td>
+
+                <td>
+                    <span class="status ${concernStatusClass(status)}">
+                        ${escapeHTML(status)}
+                    </span>
+                </td>
+
+                <td>
+                    <div class="concern-editor no-print">
+                        <select
+                            class="concern-status-input"
+                            data-id="${escapeHTML(concern.id)}"
+                        >
+                            <option value="Pending" ${status==="Pending"?"selected":""}>Pending</option>
+                            <option value="In Progress" ${status==="In Progress"?"selected":""}>In Progress</option>
+                            <option value="Resolved" ${status==="Resolved"?"selected":""}>Resolved</option>
+                            <option value="Rejected" ${status==="Rejected"?"selected":""}>Rejected</option>
+                        </select>
+
+                        <textarea
+                            class="concern-remarks-input"
+                            data-id="${escapeHTML(concern.id)}"
+                            placeholder="Enter admin remarks..."
+                        >${escapeHTML(concern.admin_remarks||"")}</textarea>
+
+                        <button
+                            class="btn btn-green save-concern-btn"
+                            data-id="${escapeHTML(concern.id)}"
+                        >
+                            Save Update
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        `;
+
+    }).join("");
+}
+
+// ==========================================
+// SAVE CONCERN STATUS AND ADMIN REMARKS
+// ==========================================
+async function saveConcernUpdate(concernId,button){
+
+    const statusInput=document.querySelector(
+        `.concern-status-input[data-id="${CSS.escape(concernId)}"]`
+    );
+
+    const remarksInput=document.querySelector(
+        `.concern-remarks-input[data-id="${CSS.escape(concernId)}"]`
+    );
+
+    if(!statusInput||!remarksInput)return;
+
+    const newStatus=statusInput.value;
+    const newRemarks=remarksInput.value.trim();
+
+    if(!confirm("Save the concern status and admin remarks?")){
+        return;
+    }
+
+    button.disabled=true;
+    button.textContent="Saving...";
+
+    try{
+
+        const {data,error}=await supabaseClient
+            .from("student_concerns")
+            .update({
+                status:newStatus,
+                admin_remarks:newRemarks,
+                updated_at:new Date().toISOString()
+            })
+            .eq("id",concernId)
+            .select()
+            .single();
+
+        if(error)throw error;
+
+        const index=concerns.findIndex(
+            item=>item.id===concernId
+        );
+
+        if(index!==-1){
+            concerns[index]={
+                ...concerns[index],
+                ...data
+            };
+        }
+
+        updateConcernStatistics();
+        renderConcernReport();
+
+        alert("Student concern updated successfully.");
+
+    }catch(error){
+
+        console.error("Concern update error:",error);
+
+        alert(
+            "Unable to update concern: "+
+            error.message+
+            "\n\nCheck the Admin UPDATE policy in Supabase."
+        );
+
+        button.disabled=false;
+        button.textContent="Save Update";
+    }
+}
+
+// ==========================================
+// CONCERN BUTTON EVENT DELEGATION
+// ==========================================
+document.getElementById("concernReportTableBody")
+    .addEventListener("click",function(event){
+
+        const button=event.target.closest(".save-concern-btn");
+
+        if(!button)return;
+
+        const concernId=button.dataset.id;
+
+        if(!concernId)return;
+
+        saveConcernUpdate(concernId,button);
+    });
+
+// ==========================================
+// CSV DOWNLOAD
+// ==========================================
 function downloadCSV(filename,rows){
 
     if(!rows.length){
@@ -1132,7 +1678,9 @@ function downloadCSV(filename,rows){
     URL.revokeObjectURL(url);
 }
 
-// EXPORT FILTERED STUDENT REPORT
+// ==========================================
+// EXPORT STUDENT REPORT
+// ==========================================
 function exportStudentReport(){
 
     const filteredStudents=getFilteredStudents();
@@ -1168,7 +1716,9 @@ function exportStudentReport(){
     downloadCSV("PLMUN_Student_Report.csv",rows);
 }
 
-// EXPORT DOCUMENTS
+// ==========================================
+// EXPORT DOCUMENT REPORT
+// ==========================================
 function exportDocumentReport(){
 
     const rows=[[
@@ -1202,7 +1752,55 @@ function exportDocumentReport(){
     downloadCSV("PLMUN_Document_Report.csv",rows);
 }
 
-// STUDENT REPORT FILTER EVENTS
+// ==========================================
+// EXPORT STUDENT CONCERN REPORT
+// ==========================================
+function exportConcernReport(){
+
+    const filtered=getFilteredConcerns();
+
+    const rows=[[
+        "Student Name",
+        "Student Number",
+        "Student Email",
+        "Category",
+        "Subject",
+        "Description",
+        "Status",
+        "Admin Remarks",
+        "Date Submitted",
+        "Last Updated"
+    ]];
+
+    filtered.forEach(concern=>{
+
+        const student=getConcernStudent(concern);
+
+        const fullName=student
+            ?`${student.first_name||""} ${student.last_name||""}`.trim()
+            :"Student record unavailable";
+
+        rows.push([
+            fullName,
+            student?.student_number||"",
+            student?.email||"",
+            concern.category,
+            concern.subject,
+            concern.description,
+            concern.status,
+            concern.admin_remarks,
+            formatDate(concern.created_at),
+            formatDate(concern.updated_at)
+        ]);
+
+    });
+
+    downloadCSV("PLMUN_Student_Concern_Report.csv",rows);
+}
+
+// ==========================================
+// STUDENT FILTER EVENTS
+// ==========================================
 document.getElementById("studentSearch")
     .addEventListener("input",renderStudentReport);
 
@@ -1212,20 +1810,34 @@ document.getElementById("courseFilter")
 document.getElementById("yearFilter")
     .addEventListener("change",renderStudentReport);
 
+// ==========================================
+// CONCERN FILTER EVENTS
+// ==========================================
+document.getElementById("concernSearch")
+    .addEventListener("input",renderConcernReport);
+
+document.getElementById("concernStatusFilter")
+    .addEventListener("change",renderConcernReport);
+
+// ==========================================
 // EXPORT BUTTONS
+// ==========================================
 document.getElementById("exportStudents")
     .addEventListener("click",exportStudentReport);
 
 document.getElementById("exportDocuments")
     .addEventListener("click",exportDocumentReport);
 
-// PRINT STUDENT REPORT
+document.getElementById("exportConcerns")
+    .addEventListener("click",exportConcernReport);
+
+// ==========================================
+// PRINT BUTTONS
+// ==========================================
 document.getElementById("printStudents")
     .addEventListener("click",function(){
 
-        const filteredStudents=getFilteredStudents();
-
-        if(!filteredStudents.length){
+        if(!getFilteredStudents().length){
             alert("No student records available to print.");
             return;
         }
@@ -1233,11 +1845,26 @@ document.getElementById("printStudents")
         window.print();
     });
 
+document.getElementById("printConcerns")
+    .addEventListener("click",function(){
+
+        if(!getFilteredConcerns().length){
+            alert("No student concerns available to print.");
+            return;
+        }
+
+        window.print();
+    });
+
+// ==========================================
 // REFRESH
+// ==========================================
 document.getElementById("refreshButton")
     .addEventListener("click",loadReports);
 
+// ==========================================
 // MOBILE SIDEBAR
+// ==========================================
 const sidebar=document.getElementById("sidebar");
 const overlay=document.getElementById("overlay");
 
@@ -1260,7 +1887,9 @@ document.querySelectorAll(".sidebar a").forEach(link=>{
     link.addEventListener("click",closeSidebar);
 });
 
+// ==========================================
 // LOGOUT
+// ==========================================
 document.getElementById("logoutButton")
     .addEventListener("click",async function(){
 
@@ -1271,7 +1900,9 @@ document.getElementById("logoutButton")
         location.replace("index.html");
     });
 
+// ==========================================
 // START
+// ==========================================
 initializeReports();
 
 </script>
