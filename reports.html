@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,55 +11,202 @@
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
-:root{--green:#064b35;--dark-green:#033b2a;--gold:#d6ad45;--cream:#f7f5ed;--white:#fff;--text:#26352e;--muted:#758078;--border:#e5e9e4}
+:root{
+    --green:#064b35;
+    --dark-green:#033b2a;
+    --gold:#d6ad45;
+    --cream:#f7f5ed;
+    --white:#fff;
+    --text:#26352e;
+    --muted:#758078;
+    --border:#e5e9e4
+}
 body{background:var(--cream);color:var(--text)}
-.header{height:75px;background:var(--green);color:white;display:flex;align-items:center;justify-content:space-between;padding:0 25px;border-bottom:4px solid var(--gold);position:fixed;top:0;left:0;right:0;z-index:1000}
+.header{
+    height:75px;background:var(--green);color:white;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:0 25px;border-bottom:4px solid var(--gold);
+    position:fixed;top:0;left:0;right:0;z-index:1000
+}
 .header-left{display:flex;align-items:center;gap:14px}
 .brand{font-size:18px;font-weight:bold;line-height:1.3}
-.brand small{display:block;font-size:11px;color:#e8d28e;font-weight:normal;letter-spacing:1px}
-.menu-btn{display:none;background:transparent;border:none;color:white;font-size:27px;cursor:pointer}
+.brand small{
+    display:block;font-size:11px;color:#e8d28e;
+    font-weight:normal;letter-spacing:1px
+}
+.menu-btn{
+    display:none;background:transparent;border:none;
+    color:white;font-size:27px;cursor:pointer
+}
 .header-actions{display:flex;gap:10px}
-.header-btn{background:var(--gold);color:var(--dark-green);border:none;padding:10px 16px;border-radius:6px;font-weight:bold;cursor:pointer}
-.sidebar{position:fixed;top:75px;left:0;bottom:0;width:255px;background:var(--green);padding:25px 15px;border-right:4px solid var(--gold);z-index:900;transition:transform .3s ease}
-.sidebar-title{color:#e8d28e;font-size:12px;font-weight:bold;letter-spacing:1.5px;padding:5px 14px 18px}
-.sidebar a{width:100%;display:flex;align-items:center;gap:12px;padding:14px 15px;margin-bottom:8px;background:transparent;border:none;border-radius:7px;color:white;text-align:left;text-decoration:none;font-size:14px;cursor:pointer;transition:.2s}
-.sidebar a:hover,.sidebar a.active{background:var(--gold);color:var(--dark-green);font-weight:bold}
+.header-btn{
+    background:var(--gold);color:var(--dark-green);
+    border:none;padding:10px 16px;border-radius:6px;
+    font-weight:bold;cursor:pointer
+}
+.sidebar{
+    position:fixed;top:75px;left:0;bottom:0;width:255px;
+    background:var(--green);padding:25px 15px;
+    border-right:4px solid var(--gold);z-index:900;
+    transition:transform .3s ease
+}
+.sidebar-title{
+    color:#e8d28e;font-size:12px;font-weight:bold;
+    letter-spacing:1.5px;padding:5px 14px 18px
+}
+.sidebar a{
+    width:100%;display:flex;align-items:center;gap:12px;
+    padding:14px 15px;margin-bottom:8px;
+    background:transparent;border:none;border-radius:7px;
+    color:white;text-align:left;text-decoration:none;
+    font-size:14px;cursor:pointer;transition:.2s
+}
+.sidebar a:hover,.sidebar a.active{
+    background:var(--gold);color:var(--dark-green);font-weight:bold
+}
 .main{margin-left:255px;padding:105px 30px 35px;min-height:100vh}
 .page-heading{margin-bottom:25px}
 .page-heading h1{color:var(--green);font-size:27px;margin-bottom:7px}
 .page-heading p{color:var(--muted);font-size:14px}
-.message{display:none;padding:14px;background:#f1f5f1;border-radius:7px;color:var(--muted);font-size:13px;margin-bottom:18px;overflow-wrap:anywhere}
-.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:25px}
-.stat-card{background:white;padding:22px;border-radius:10px;border:1px solid var(--border);border-left:5px solid var(--gold);box-shadow:0 3px 12px rgba(0,0,0,.04)}
+.message{
+    display:none;padding:14px;background:#f1f5f1;
+    border-radius:7px;color:var(--muted);font-size:13px;
+    margin-bottom:18px;overflow-wrap:anywhere
+}
+.stats-grid{
+    display:grid;grid-template-columns:repeat(4,1fr);
+    gap:18px;margin-bottom:25px
+}
+.stat-card{
+    background:white;padding:22px;border-radius:10px;
+    border:1px solid var(--border);border-left:5px solid var(--gold);
+    box-shadow:0 3px 12px rgba(0,0,0,.04)
+}
 .stat-card p{color:var(--muted);font-size:13px;margin-bottom:12px}
 .stat-card h2{color:var(--green);font-size:30px}
-.panel{background:white;padding:23px;border-radius:10px;border:1px solid var(--border);box-shadow:0 3px 12px rgba(0,0,0,.04);margin-bottom:25px}
-.panel-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+.panel{
+    background:white;padding:23px;border-radius:10px;
+    border:1px solid var(--border);
+    box-shadow:0 3px 12px rgba(0,0,0,.04);
+    margin-bottom:25px
+}
+.panel-heading{
+    display:flex;align-items:center;justify-content:space-between;
+    gap:12px;flex-wrap:wrap;margin-bottom:20px
+}
 .panel-heading h2{color:var(--green);font-size:19px}
-.charts-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.charts-grid{
+    display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:20px
+}
 .chart-container{position:relative;width:100%;height:300px}
 .chart-panel{min-width:0}
-.btn{padding:10px 15px;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:bold}
+.btn{
+    padding:10px 15px;border:none;border-radius:6px;
+    cursor:pointer;font-size:13px;font-weight:bold
+}
 .btn-green{background:var(--green);color:white}
 .btn-gold{background:var(--gold);color:var(--dark-green)}
 .btn:hover,.header-btn:hover{opacity:.85}
 .btn:disabled{opacity:.6;cursor:not-allowed}
 .table-wrapper{width:100%;overflow-x:auto}
 table{width:100%;border-collapse:collapse;min-width:450px}
-th{background:#edf3ee;color:var(--green);padding:14px 12px;text-align:left;font-size:12px}
+th{
+    background:#edf3ee;color:var(--green);
+    padding:14px 12px;text-align:left;font-size:12px;
+    white-space:nowrap
+}
 td{padding:13px 12px;border-bottom:1px solid var(--border);font-size:13px}
-.status{display:inline-block;padding:6px 10px;border-radius:20px;font-size:11px;font-weight:bold}
+.status{
+    display:inline-block;padding:6px 10px;border-radius:20px;
+    font-size:11px;font-weight:bold;white-space:nowrap
+}
 .status-pending{background:#fff2d5;color:#916100}
 .status-approved{background:#def3e4;color:#176b35}
 .status-rejected{background:#fde3e3;color:#a12626}
+.status-complete{background:#def3e4;color:#176b35}
+.status-incomplete{background:#fff2d5;color:#916100}
 .empty{text-align:center;color:var(--muted);padding:25px}
-.report-info{display:flex;flex-wrap:wrap;gap:15px;color:var(--muted);font-size:12px;margin-top:12px}
-.overlay{display:none;position:fixed;inset:75px 0 0;background:rgba(0,0,0,.45);z-index:850}
+.report-info{
+    display:flex;flex-wrap:wrap;gap:15px;
+    color:var(--muted);font-size:12px;margin-top:12px
+}
+.overlay{
+    display:none;position:fixed;inset:75px 0 0;
+    background:rgba(0,0,0,.45);z-index:850
+}
 .overlay.show{display:block}
-@media(max-width:1100px){.stats-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:900px){.charts-grid{grid-template-columns:1fr}}
-@media(max-width:850px){.menu-btn{display:block}.sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.main{margin-left:0;padding:100px 18px 30px}}
-@media(max-width:550px){.header{padding:0 14px}.brand{font-size:14px}.brand small{font-size:9px}.header-btn{padding:8px 10px;font-size:11px}.stats-grid{grid-template-columns:1fr 1fr;gap:10px}.stat-card{padding:15px}.stat-card h2{font-size:24px}.panel{padding:15px}.page-heading h1{font-size:23px}.chart-container{height:260px}}
+
+/* STUDENT REPORT FILTERS */
+.student-report-filters{
+    display:grid;
+    grid-template-columns:2fr 1fr 1fr;
+    gap:12px;
+    margin-bottom:18px
+}
+.filter-control{
+    width:100%;padding:12px;
+    border:1px solid var(--border);border-radius:6px;
+    outline:none;background:white;color:var(--text);
+    font-size:13px
+}
+.filter-control:focus{border-color:var(--green)}
+.report-count{
+    font-size:13px;color:var(--muted);
+    margin-bottom:15px
+}
+.student-name{font-weight:bold;color:var(--green)}
+.student-email{color:var(--muted);font-size:12px;margin-top:4px}
+.report-actions{display:flex;gap:8px;flex-wrap:wrap}
+.no-results{
+    text-align:center;padding:25px;color:var(--muted);
+    font-size:13px
+}
+
+@media(max-width:1100px){
+    .stats-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:900px){
+    .charts-grid{grid-template-columns:1fr}
+}
+@media(max-width:850px){
+    .menu-btn{display:block}
+    .sidebar{transform:translateX(-100%)}
+    .sidebar.open{transform:translateX(0)}
+    .main{margin-left:0;padding:100px 18px 30px}
+}
+@media(max-width:600px){
+    .student-report-filters{grid-template-columns:1fr}
+}
+@media(max-width:550px){
+    .header{padding:0 14px}
+    .brand{font-size:14px}
+    .brand small{font-size:9px}
+    .header-btn{padding:8px 10px;font-size:11px}
+    .stats-grid{grid-template-columns:1fr 1fr;gap:10px}
+    .stat-card{padding:15px}
+    .stat-card h2{font-size:24px}
+    .panel{padding:15px}
+    .page-heading h1{font-size:23px}
+    .chart-container{height:260px}
+}
+
+/* PRINT */
+@media print{
+    body{background:white}
+    .header,.sidebar,.overlay,.menu-btn,
+    .header-actions,.student-report-filters,
+    .report-actions,.no-print{display:none!important}
+    .main{margin:0;padding:10px;min-height:0}
+    .page-heading{margin-bottom:15px}
+    .panel{box-shadow:none;border:1px solid #ccc;break-inside:avoid}
+    .stats-grid{grid-template-columns:repeat(4,1fr)}
+    .charts-grid{grid-template-columns:repeat(2,1fr)}
+    .table-wrapper{overflow:visible}
+    table{min-width:0;width:100%}
+    th,td{font-size:10px;padding:7px}
+    .student-report-panel{break-before:page}
+}
 </style>
 </head>
 
@@ -115,7 +263,7 @@ td{padding:13px 12px;border-bottom:1px solid var(--border);font-size:13px}
 
     <div class="message" id="reportMessage"></div>
 
-    <!-- STUDENT STATISTICS -->
+    <!-- STATISTICS -->
     <div class="stats-grid">
         <div class="stat-card">
             <p>Total Registered Students</p>
@@ -191,6 +339,74 @@ td{padding:13px 12px;border-bottom:1px solid var(--border);font-size:13px}
 
     </div>
 
+    <!-- STUDENT RECORDS REPORT -->
+    <div class="panel student-report-panel" id="studentReportSection">
+
+        <div class="panel-heading">
+            <div>
+                <h2>Student Records Report</h2>
+                <p style="font-size:12px;color:#758078;margin-top:6px;">
+                    Complete list of registered students from the database.
+                </p>
+            </div>
+
+            <div class="report-actions">
+                <button class="btn btn-green" id="printStudents">
+                    Print Student Report
+                </button>
+                <button class="btn btn-gold" id="exportStudents">
+                    Export Student Report
+                </button>
+            </div>
+        </div>
+
+        <!-- SEARCH AND FILTER -->
+        <div class="student-report-filters no-print">
+
+            <input
+                type="search"
+                id="studentSearch"
+                class="filter-control"
+                placeholder="Search student number, name, or email..."
+            >
+
+            <select id="courseFilter" class="filter-control">
+                <option value="">All Courses</option>
+            </select>
+
+            <select id="yearFilter" class="filter-control">
+                <option value="">All Year Levels</option>
+            </select>
+
+        </div>
+
+        <div class="report-count" id="studentReportCount">
+            Showing 0 students
+        </div>
+
+        <div class="table-wrapper">
+            <table id="studentReportTable">
+                <thead>
+                    <tr>
+                        <th>Student Number</th>
+                        <th>Student Name</th>
+                        <th>Email</th>
+                        <th>Course</th>
+                        <th>Year Level</th>
+                        <th>Profile Status</th>
+                        <th>Date Registered</th>
+                    </tr>
+                </thead>
+
+                <tbody id="studentReportTableBody">
+                    <tr>
+                        <td colspan="7" class="empty">Loading student records...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
     <!-- DOCUMENT SUMMARY -->
     <div class="panel">
         <div class="panel-heading">
@@ -235,20 +451,19 @@ td{padding:13px 12px;border-bottom:1px solid var(--border);font-size:13px}
         </div>
     </div>
 
-    <!-- EXPORT -->
-    <div class="panel">
+    <!-- DOCUMENT EXPORT -->
+    <div class="panel no-print">
         <div class="panel-heading">
-            <h2>Export Reports</h2>
+            <h2>Export Document Report</h2>
         </div>
 
         <p style="font-size:13px;color:#758078;margin-bottom:18px;">
-            Download the current student and document report data as CSV files.
+            Download the current document report data as a CSV file.
         </p>
 
-        <div style="display:flex;gap:10px;flex-wrap:wrap;">
-            <button class="btn btn-green" id="exportStudents">Export Student Report</button>
-            <button class="btn btn-gold" id="exportDocuments">Export Document Report</button>
-        </div>
+        <button class="btn btn-gold" id="exportDocuments">
+            Export Document Report
+        </button>
     </div>
 
 </main>
@@ -257,12 +472,17 @@ td{padding:13px 12px;border-bottom:1px solid var(--border);font-size:13px}
 // SUPABASE CONFIGURATION
 const SUPABASE_URL="https://mlrpkkmexmboqrnmjkuy.supabase.co";
 const SUPABASE_ANON_KEY="sb_publishable_-BIYMjip4Zon8HwZUCPT1Q_P0pDCMke";
-const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+
+const supabaseClient=window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+);
 
 // VARIABLES
 let currentUser=null;
 let students=[];
 let documents=[];
+
 let courseChartInstance=null;
 let yearChartInstance=null;
 let documentChartInstance=null;
@@ -274,21 +494,32 @@ function showMessage(message){
     element.textContent=message;
     element.style.display="block";
 }
+
 function hideMessage(){
     const element=document.getElementById("reportMessage");
     element.textContent="";
     element.style.display="none";
 }
+
 function formatDate(value){
     if(!value)return "—";
+
     const date=new Date(value);
+
     if(Number.isNaN(date.getTime()))return "—";
-    return date.toLocaleDateString("en-PH",{year:"numeric",month:"short",day:"numeric"});
+
+    return date.toLocaleDateString("en-PH",{
+        year:"numeric",
+        month:"short",
+        day:"numeric"
+    });
 }
+
 function formatPercent(value,total){
     if(!total)return "0%";
     return ((value/total)*100).toFixed(1)+"%";
 }
+
 function escapeHTML(value){
     return String(value??"")
         .replace(/&/g,"&amp;")
@@ -297,15 +528,17 @@ function escapeHTML(value){
         .replace(/"/g,"&quot;")
         .replace(/'/g,"&#039;");
 }
+
 function isComplete(student){
     return Boolean(
-        student.student_number&&
-        student.first_name&&
-        student.last_name&&
-        student.course&&
-        student.year_level
+        student.student_number?.trim() &&
+        student.first_name?.trim() &&
+        student.last_name?.trim() &&
+        student.course?.trim() &&
+        student.year_level?.trim()
     );
 }
+
 function normalizeStatus(status){
     return String(status||"Pending").trim().toLowerCase();
 }
@@ -314,6 +547,7 @@ function normalizeStatus(status){
 async function initializeReports(){
     try{
         const {data,error}=await supabaseClient.auth.getSession();
+
         if(error)throw error;
 
         if(!data.session){
@@ -349,16 +583,37 @@ async function initializeReports(){
 // LOAD REPORT DATA
 async function loadReports(){
     hideMessage();
+
     document.getElementById("refreshButton").disabled=true;
 
     try{
         const [studentResult,documentResult]=await Promise.all([
-            supabaseClient.from("students")
-                .select("id,student_number,first_name,last_name,email,course,year_level,birthdate,created_at")
+
+            supabaseClient
+                .from("students")
+                .select(`
+                    id,
+                    student_number,
+                    first_name,
+                    last_name,
+                    email,
+                    course,
+                    year_level,
+                    birthdate,
+                    created_at
+                `)
                 .order("created_at",{ascending:true}),
 
-            supabaseClient.from("documents")
-                .select("id,student_id,document_name,file_type,status,uploaded_at")
+            supabaseClient
+                .from("documents")
+                .select(`
+                    id,
+                    student_id,
+                    document_name,
+                    file_type,
+                    status,
+                    uploaded_at
+                `)
                 .order("uploaded_at",{ascending:true})
         ]);
 
@@ -369,12 +624,17 @@ async function loadReports(){
         documents=documentResult.data||[];
 
         updateStatistics();
+
         renderCourseChart();
         renderYearChart();
         renderDocumentChart();
         renderMonthlyChart();
+
         renderDocumentSummary();
         renderCourseSummary();
+
+        populateStudentFilters();
+        renderStudentReport();
 
         document.getElementById("reportDate").textContent=
             "Report Date: "+formatDate(new Date());
@@ -392,15 +652,26 @@ async function loadReports(){
 
 // STATISTICS
 function updateStatistics(){
+
     const complete=students.filter(isComplete).length;
     const incomplete=students.length-complete;
 
-    const pending=documents.filter(doc=>normalizeStatus(doc.status)==="pending").length;
-    const approved=documents.filter(doc=>normalizeStatus(doc.status)==="approved").length;
-    const rejected=documents.filter(doc=>normalizeStatus(doc.status)==="rejected").length;
+    const pending=documents.filter(
+        doc=>normalizeStatus(doc.status)==="pending"
+    ).length;
+
+    const approved=documents.filter(
+        doc=>normalizeStatus(doc.status)==="approved"
+    ).length;
+
+    const rejected=documents.filter(
+        doc=>normalizeStatus(doc.status)==="rejected"
+    ).length;
 
     const courses=new Set(
-        students.map(student=>student.course?.trim()).filter(Boolean)
+        students
+            .map(student=>student.course?.trim())
+            .filter(Boolean)
     );
 
     document.getElementById("totalStudents").textContent=students.length;
@@ -415,7 +686,9 @@ function updateStatistics(){
 
 // COURSE CHART
 function renderCourseChart(){
+
     const counts={};
+
     students.forEach(student=>{
         const course=student.course?.trim()||"Not Specified";
         counts[course]=(counts[course]||0)+1;
@@ -423,33 +696,44 @@ function renderCourseChart(){
 
     const labels=Object.keys(counts);
     const values=Object.values(counts);
+
     if(courseChartInstance)courseChartInstance.destroy();
 
-    courseChartInstance=new Chart(document.getElementById("courseChart"),{
-        type:"bar",
-        data:{
-            labels,
-            datasets:[{
-                label:"Number of Students",
-                data:values,
-                backgroundColor:"#075c3b",
-                borderColor:"#d6ad45",
-                borderWidth:1,
-                borderRadius:5
-            }]
-        },
-        options:{
-            responsive:true,
-            maintainAspectRatio:false,
-            plugins:{legend:{display:false}},
-            scales:{y:{beginAtZero:true,ticks:{precision:0}}}
+    courseChartInstance=new Chart(
+        document.getElementById("courseChart"),
+        {
+            type:"bar",
+            data:{
+                labels,
+                datasets:[{
+                    label:"Number of Students",
+                    data:values,
+                    backgroundColor:"#075c3b",
+                    borderColor:"#d6ad45",
+                    borderWidth:1,
+                    borderRadius:5
+                }]
+            },
+            options:{
+                responsive:true,
+                maintainAspectRatio:false,
+                plugins:{legend:{display:false}},
+                scales:{
+                    y:{
+                        beginAtZero:true,
+                        ticks:{precision:0}
+                    }
+                }
+            }
         }
-    });
+    );
 }
 
 // YEAR LEVEL CHART
 function renderYearChart(){
+
     const counts={};
+
     students.forEach(student=>{
         const year=student.year_level?.trim()||"Not Specified";
         counts[year]=(counts[year]||0)+1;
@@ -457,65 +741,100 @@ function renderYearChart(){
 
     const labels=Object.keys(counts);
     const values=Object.values(counts);
+
     if(yearChartInstance)yearChartInstance.destroy();
 
-    yearChartInstance=new Chart(document.getElementById("yearChart"),{
-        type:"bar",
-        data:{
-            labels,
-            datasets:[{
-                label:"Number of Students",
-                data:values,
-                backgroundColor:"#d6ad45",
-                borderRadius:5
-            }]
-        },
-        options:{
-            responsive:true,
-            maintainAspectRatio:false,
-            plugins:{legend:{display:false}},
-            scales:{y:{beginAtZero:true,ticks:{precision:0}}}
+    yearChartInstance=new Chart(
+        document.getElementById("yearChart"),
+        {
+            type:"bar",
+            data:{
+                labels,
+                datasets:[{
+                    label:"Number of Students",
+                    data:values,
+                    backgroundColor:"#d6ad45",
+                    borderRadius:5
+                }]
+            },
+            options:{
+                responsive:true,
+                maintainAspectRatio:false,
+                plugins:{legend:{display:false}},
+                scales:{
+                    y:{
+                        beginAtZero:true,
+                        ticks:{precision:0}
+                    }
+                }
+            }
         }
-    });
+    );
 }
 
 // DOCUMENT STATUS CHART
 function renderDocumentChart(){
-    const pending=documents.filter(doc=>normalizeStatus(doc.status)==="pending").length;
-    const approved=documents.filter(doc=>normalizeStatus(doc.status)==="approved").length;
-    const rejected=documents.filter(doc=>normalizeStatus(doc.status)==="rejected").length;
+
+    const pending=documents.filter(
+        doc=>normalizeStatus(doc.status)==="pending"
+    ).length;
+
+    const approved=documents.filter(
+        doc=>normalizeStatus(doc.status)==="approved"
+    ).length;
+
+    const rejected=documents.filter(
+        doc=>normalizeStatus(doc.status)==="rejected"
+    ).length;
+
     const other=documents.length-pending-approved-rejected;
 
     if(documentChartInstance)documentChartInstance.destroy();
 
-    documentChartInstance=new Chart(document.getElementById("documentChart"),{
-        type:"doughnut",
-        data:{
-            labels:["Pending","Approved","Rejected","Other"],
-            datasets:[{
-                data:[pending,approved,rejected,other],
-                backgroundColor:["#d6ad45","#198754","#dc3545","#758078"],
-                borderWidth:2
-            }]
-        },
-        options:{
-            responsive:true,
-            maintainAspectRatio:false,
-            plugins:{legend:{position:"bottom"}}
+    documentChartInstance=new Chart(
+        document.getElementById("documentChart"),
+        {
+            type:"doughnut",
+            data:{
+                labels:["Pending","Approved","Rejected","Other"],
+                datasets:[{
+                    data:[pending,approved,rejected,other],
+                    backgroundColor:[
+                        "#d6ad45",
+                        "#198754",
+                        "#dc3545",
+                        "#758078"
+                    ],
+                    borderWidth:2
+                }]
+            },
+            options:{
+                responsive:true,
+                maintainAspectRatio:false,
+                plugins:{
+                    legend:{position:"bottom"}
+                }
+            }
         }
-    });
+    );
 }
 
 // MONTHLY REGISTRATION CHART
 function renderMonthlyChart(){
+
     const counts={};
 
     students.forEach(student=>{
+
         if(!student.created_at)return;
+
         const date=new Date(student.created_at);
+
         if(Number.isNaN(date.getTime()))return;
 
-        const key=date.getFullYear()+"-"+String(date.getMonth()+1).padStart(2,"0");
+        const key=date.getFullYear()+"-"+
+            String(date.getMonth()+1).padStart(2,"0");
+
         counts[key]=(counts[key]||0)+1;
     });
 
@@ -523,44 +842,211 @@ function renderMonthlyChart(){
 
     const labels=sortedKeys.map(key=>{
         const [year,month]=key.split("-");
-        return new Date(Number(year),Number(month)-1).toLocaleDateString("en-PH",{
-            month:"short",year:"numeric"
+
+        return new Date(
+            Number(year),
+            Number(month)-1
+        ).toLocaleDateString("en-PH",{
+            month:"short",
+            year:"numeric"
         });
     });
 
     const values=sortedKeys.map(key=>counts[key]);
+
     if(monthlyChartInstance)monthlyChartInstance.destroy();
 
-    monthlyChartInstance=new Chart(document.getElementById("monthlyChart"),{
-        type:"line",
-        data:{
-            labels,
-            datasets:[{
-                label:"New Registrations",
-                data:values,
-                borderColor:"#075c3b",
-                backgroundColor:"rgba(7,92,59,.12)",
-                fill:true,
-                tension:.3,
-                pointRadius:4
-            }]
-        },
-        options:{
-            responsive:true,
-            maintainAspectRatio:false,
-            plugins:{legend:{display:false}},
-            scales:{y:{beginAtZero:true,ticks:{precision:0}}}
+    monthlyChartInstance=new Chart(
+        document.getElementById("monthlyChart"),
+        {
+            type:"line",
+            data:{
+                labels,
+                datasets:[{
+                    label:"New Registrations",
+                    data:values,
+                    borderColor:"#075c3b",
+                    backgroundColor:"rgba(7,92,59,.12)",
+                    fill:true,
+                    tension:.3,
+                    pointRadius:4
+                }]
+            },
+            options:{
+                responsive:true,
+                maintainAspectRatio:false,
+                plugins:{legend:{display:false}},
+                scales:{
+                    y:{
+                        beginAtZero:true,
+                        ticks:{precision:0}
+                    }
+                }
+            }
         }
+    );
+}
+
+// POPULATE STUDENT FILTERS
+function populateStudentFilters(){
+
+    const courseFilter=document.getElementById("courseFilter");
+    const yearFilter=document.getElementById("yearFilter");
+
+    const currentCourse=courseFilter.value;
+    const currentYear=yearFilter.value;
+
+    const courses=[...new Set(
+        students
+            .map(student=>student.course?.trim())
+            .filter(Boolean)
+    )].sort();
+
+    const years=[...new Set(
+        students
+            .map(student=>student.year_level?.trim())
+            .filter(Boolean)
+    )].sort((a,b)=>a.localeCompare(b,undefined,{numeric:true}));
+
+    courseFilter.innerHTML=
+        '<option value="">All Courses</option>'+
+        courses.map(course=>
+            `<option value="${escapeHTML(course)}">${escapeHTML(course)}</option>`
+        ).join("");
+
+    yearFilter.innerHTML=
+        '<option value="">All Year Levels</option>'+
+        years.map(year=>
+            `<option value="${escapeHTML(year)}">${escapeHTML(year)}</option>`
+        ).join("");
+
+    if(courses.includes(currentCourse))courseFilter.value=currentCourse;
+    if(years.includes(currentYear))yearFilter.value=currentYear;
+}
+
+// GET FILTERED STUDENTS
+function getFilteredStudents(){
+
+    const search=document
+        .getElementById("studentSearch")
+        .value.trim().toLowerCase();
+
+    const selectedCourse=document.getElementById("courseFilter").value;
+    const selectedYear=document.getElementById("yearFilter").value;
+
+    return students.filter(student=>{
+
+        const fullName=(
+            (student.first_name||"")+" "+
+            (student.last_name||"")
+        ).trim().toLowerCase();
+
+        const studentNumber=String(
+            student.student_number||""
+        ).toLowerCase();
+
+        const email=String(
+            student.email||""
+        ).toLowerCase();
+
+        const matchesSearch=
+            !search||
+            fullName.includes(search)||
+            studentNumber.includes(search)||
+            email.includes(search);
+
+        const matchesCourse=
+            !selectedCourse||
+            (student.course||"").trim()===selectedCourse;
+
+        const matchesYear=
+            !selectedYear||
+            (student.year_level||"").trim()===selectedYear;
+
+        return matchesSearch&&matchesCourse&&matchesYear;
     });
+}
+
+// STUDENT REPORT TABLE
+function renderStudentReport(){
+
+    const table=document.getElementById("studentReportTableBody");
+    const count=document.getElementById("studentReportCount");
+
+    const filteredStudents=getFilteredStudents();
+
+    count.textContent=
+        "Showing "+filteredStudents.length+
+        " of "+students.length+" registered students";
+
+    if(!filteredStudents.length){
+
+        table.innerHTML=`
+            <tr>
+                <td colspan="7" class="empty">
+                    No student records found.
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+    table.innerHTML=filteredStudents.map(student=>{
+
+        const fullName=(
+            (student.first_name||"")+" "+
+            (student.last_name||"")
+        ).trim()||"Incomplete Name";
+
+        const complete=isComplete(student);
+
+        return `
+            <tr>
+                <td>${escapeHTML(student.student_number||"Not Provided")}</td>
+
+                <td>
+                    <div class="student-name">${escapeHTML(fullName)}</div>
+                </td>
+
+                <td>${escapeHTML(student.email||"—")}</td>
+
+                <td>${escapeHTML(student.course||"Not Specified")}</td>
+
+                <td>${escapeHTML(student.year_level||"Not Specified")}</td>
+
+                <td>
+                    <span class="status ${
+                        complete?"status-complete":"status-incomplete"
+                    }">
+                        ${complete?"Complete":"Incomplete"}
+                    </span>
+                </td>
+
+                <td>${formatDate(student.created_at)}</td>
+            </tr>
+        `;
+
+    }).join("");
 }
 
 // DOCUMENT SUMMARY TABLE
 function renderDocumentSummary(){
+
     const table=document.getElementById("documentSummaryTable");
 
-    const pending=documents.filter(doc=>normalizeStatus(doc.status)==="pending").length;
-    const approved=documents.filter(doc=>normalizeStatus(doc.status)==="approved").length;
-    const rejected=documents.filter(doc=>normalizeStatus(doc.status)==="rejected").length;
+    const pending=documents.filter(
+        doc=>normalizeStatus(doc.status)==="pending"
+    ).length;
+
+    const approved=documents.filter(
+        doc=>normalizeStatus(doc.status)==="approved"
+    ).length;
+
+    const rejected=documents.filter(
+        doc=>normalizeStatus(doc.status)==="rejected"
+    ).length;
+
     const other=documents.length-pending-approved-rejected;
 
     const statuses=[
@@ -581,6 +1067,7 @@ function renderDocumentSummary(){
 
 // COURSE SUMMARY TABLE
 function renderCourseSummary(){
+
     const table=document.getElementById("courseSummaryTable");
     const counts={};
 
@@ -592,7 +1079,13 @@ function renderCourseSummary(){
     const sorted=Object.entries(counts).sort((a,b)=>b[1]-a[1]);
 
     if(!sorted.length){
-        table.innerHTML='<tr><td colspan="3" class="empty">No student records found.</td></tr>';
+        table.innerHTML=`
+            <tr>
+                <td colspan="3" class="empty">
+                    No student records found.
+                </td>
+            </tr>
+        `;
         return;
     }
 
@@ -607,22 +1100,31 @@ function renderCourseSummary(){
 
 // CSV EXPORT
 function downloadCSV(filename,rows){
+
     if(!rows.length){
         alert("No data available to export.");
         return;
     }
 
     const csv=rows.map(row=>row.map(value=>{
+
         const safe=String(value??"").replace(/"/g,'""');
+
         return `"${safe}"`;
+
     }).join(",")).join("\r\n");
 
-    const blob=new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8;"});
+    const blob=new Blob(
+        ["\uFEFF"+csv],
+        {type:"text/csv;charset=utf-8;"}
+    );
+
     const url=URL.createObjectURL(blob);
     const link=document.createElement("a");
 
     link.href=url;
     link.download=filename;
+
     document.body.appendChild(link);
     link.click();
     link.remove();
@@ -630,14 +1132,25 @@ function downloadCSV(filename,rows){
     URL.revokeObjectURL(url);
 }
 
-// EXPORT STUDENTS
-document.getElementById("exportStudents").addEventListener("click",function(){
+// EXPORT FILTERED STUDENT REPORT
+function exportStudentReport(){
+
+    const filteredStudents=getFilteredStudents();
+
     const rows=[[
-        "Student Number","First Name","Last Name","Email",
-        "Course","Year Level","Birthdate","Profile Status","Date Registered"
+        "Student Number",
+        "First Name",
+        "Last Name",
+        "Email",
+        "Course",
+        "Year Level",
+        "Birthdate",
+        "Profile Status",
+        "Date Registered"
     ]];
 
-    students.forEach(student=>{
+    filteredStudents.forEach(student=>{
+
         rows.push([
             student.student_number,
             student.first_name,
@@ -649,35 +1162,80 @@ document.getElementById("exportStudents").addEventListener("click",function(){
             isComplete(student)?"Complete":"Incomplete",
             formatDate(student.created_at)
         ]);
+
     });
 
     downloadCSV("PLMUN_Student_Report.csv",rows);
-});
+}
 
 // EXPORT DOCUMENTS
-document.getElementById("exportDocuments").addEventListener("click",function(){
+function exportDocumentReport(){
+
     const rows=[[
-        "Student Name","Student Email","Document Name",
-        "File Type","Status","Date Uploaded"
+        "Student Name",
+        "Student Email",
+        "Document Name",
+        "File Type",
+        "Status",
+        "Date Uploaded"
     ]];
 
     documents.forEach(doc=>{
-        const student=students.find(item=>item.id===doc.student_id);
+
+        const student=students.find(
+            item=>item.id===doc.student_id
+        );
+
         rows.push([
-            student?`${student.first_name||""} ${student.last_name||""}`.trim():"Unknown Student",
+            student?
+                `${student.first_name||""} ${student.last_name||""}`.trim():
+                "Unknown Student",
             student?.email||"",
             doc.document_name,
             doc.file_type,
             doc.status||"Pending",
             formatDate(doc.uploaded_at)
         ]);
+
     });
 
     downloadCSV("PLMUN_Document_Report.csv",rows);
-});
+}
+
+// STUDENT REPORT FILTER EVENTS
+document.getElementById("studentSearch")
+    .addEventListener("input",renderStudentReport);
+
+document.getElementById("courseFilter")
+    .addEventListener("change",renderStudentReport);
+
+document.getElementById("yearFilter")
+    .addEventListener("change",renderStudentReport);
+
+// EXPORT BUTTONS
+document.getElementById("exportStudents")
+    .addEventListener("click",exportStudentReport);
+
+document.getElementById("exportDocuments")
+    .addEventListener("click",exportDocumentReport);
+
+// PRINT STUDENT REPORT
+document.getElementById("printStudents")
+    .addEventListener("click",function(){
+
+        const filteredStudents=getFilteredStudents();
+
+        if(!filteredStudents.length){
+            alert("No student records available to print.");
+            return;
+        }
+
+        window.print();
+    });
 
 // REFRESH
-document.getElementById("refreshButton").addEventListener("click",loadReports);
+document.getElementById("refreshButton")
+    .addEventListener("click",loadReports);
 
 // MOBILE SIDEBAR
 const sidebar=document.getElementById("sidebar");
@@ -687,28 +1245,35 @@ function openSidebar(){
     sidebar.classList.add("open");
     overlay.classList.add("show");
 }
+
 function closeSidebar(){
     sidebar.classList.remove("open");
     overlay.classList.remove("show");
 }
 
-document.getElementById("menuBtn").addEventListener("click",openSidebar);
+document.getElementById("menuBtn")
+    .addEventListener("click",openSidebar);
+
 overlay.addEventListener("click",closeSidebar);
 
-// Close sidebar when a navigation link is clicked
 document.querySelectorAll(".sidebar a").forEach(link=>{
     link.addEventListener("click",closeSidebar);
 });
 
 // LOGOUT
-document.getElementById("logoutButton").addEventListener("click",async function(){
-    if(!confirm("Are you sure you want to logout?"))return;
-    await supabaseClient.auth.signOut();
-    location.replace("index.html");
-});
+document.getElementById("logoutButton")
+    .addEventListener("click",async function(){
+
+        if(!confirm("Are you sure you want to logout?"))return;
+
+        await supabaseClient.auth.signOut();
+
+        location.replace("index.html");
+    });
 
 // START
 initializeReports();
+
 </script>
 
 </body>
