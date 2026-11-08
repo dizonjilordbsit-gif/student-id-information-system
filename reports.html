@@ -1546,6 +1546,13 @@ function renderConcernReport(){
                         >
                             Save Update
                         </button>
+                        <button
+    class="btn btn-red delete-concern-btn"
+    data-id="${escapeHTML(concern.id)}"
+    type="button"
+>
+    Delete Concern
+</button>
                     </div>
                 </td>
             </tr>
@@ -1624,22 +1631,106 @@ async function saveConcernUpdate(concernId,button){
         button.textContent="Save Update";
     }
 }
+// ==========================================
+// DELETE STUDENT CONCERN
+// ==========================================
+async function deleteConcern(concernId, button) {
+
+    const concern = concerns.find(
+        item => item.id === concernId
+    );
+
+    if (!concern) {
+        alert("Concern record not found.");
+        return;
+    }
+
+    const confirmed = confirm(
+        "Are you sure you want to permanently delete this student concern?\n\n" +
+        "Subject: " + (concern.subject || "No subject") +
+        "\n\nThis action cannot be undone."
+    );
+
+    if (!confirmed) return;
+
+    button.disabled = true;
+    button.textContent = "Deleting...";
+
+    try {
+
+        const { data, error } = await supabaseClient
+            .from("student_concerns")
+            .delete()
+            .eq("id", concernId)
+            .select("id")
+            .maybeSingle();
+
+        if (error) throw error;
+
+        if (!data) {
+            throw new Error(
+                "No concern was deleted. Check your Admin DELETE RLS policy."
+            );
+        }
+
+        // Remove from local data
+        concerns = concerns.filter(
+            item => item.id !== concernId
+        );
+
+        // Refresh statistics and table
+        updateConcernStatistics();
+        renderConcernReport();
+
+        alert("Student concern deleted successfully.");
+
+    } catch (error) {
+
+        console.error("Delete concern error:", error);
+
+        alert(
+            "Unable to delete concern:\n" +
+            error.message +
+            "\n\nPlease check the Admin DELETE policy in Supabase."
+        );
+
+        button.disabled = false;
+        button.textContent = "Delete Concern";
+    }
+}
 
 // ==========================================
 // CONCERN BUTTON EVENT DELEGATION
 // ==========================================
 document.getElementById("concernReportTableBody")
-    .addEventListener("click",function(event){
+    .addEventListener("click", function(event) {
 
-        const button=event.target.closest(".save-concern-btn");
+        // SAVE CONCERN
+        const saveButton = event.target.closest(".save-concern-btn");
 
-        if(!button)return;
+        if (saveButton) {
 
-        const concernId=button.dataset.id;
+            const concernId = saveButton.dataset.id;
 
-        if(!concernId)return;
+            if (concernId) {
+                saveConcernUpdate(concernId, saveButton);
+            }
 
-        saveConcernUpdate(concernId,button);
+            return;
+        }
+
+        // DELETE CONCERN
+        const deleteButton = event.target.closest(".delete-concern-btn");
+
+        if (deleteButton) {
+
+            const concernId = deleteButton.dataset.id;
+
+            if (concernId) {
+                deleteConcern(concernId, deleteButton);
+            }
+
+        }
     });
 
 // ==========================================
