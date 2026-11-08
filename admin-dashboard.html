@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -157,10 +158,7 @@ body{background:var(--cream);color:var(--text)}
     transition:transform .2s,box-shadow .2s;
 }
 
-/* Existing clickable cards */
-button.stat-card{
-    cursor:pointer;
-}
+button.stat-card{cursor:pointer}
 
 button.stat-card:hover{
     transform:translateY(-3px);
@@ -172,10 +170,7 @@ button.stat-card:focus-visible{
     outline-offset:3px;
 }
 
-/* New cards are NOT buttons */
-div.stat-card{
-    cursor:default;
-}
+div.stat-card{cursor:default}
 
 .stat-card p{
     color:var(--muted);
@@ -331,6 +326,7 @@ tbody tr:hover{background:#fafcf9}
     padding:25px;
 }
 
+/* QUICK ACCESS */
 .quick-links{
     display:flex;
     flex-wrap:wrap;
@@ -345,6 +341,19 @@ tbody tr:hover{background:#fafcf9}
     border-radius:7px;
     cursor:pointer;
     font-weight:bold;
+    transition:.2s;
+}
+
+.quick-links button:hover{
+    background:var(--green);
+    color:white;
+    border-color:var(--green);
+    transform:translateY(-2px);
+}
+
+.quick-links button:focus-visible{
+    outline:3px solid var(--gold);
+    outline-offset:3px;
 }
 
 .profile-grid{
@@ -511,60 +520,44 @@ tbody tr:hover{background:#fafcf9}
 
     <div class="message" id="dashboardMessage"></div>
 
-    <!-- STATISTICS -->
     <div class="stats-grid">
 
-        <!-- EXISTING CARD 1 -->
-        <button type="button"
-                class="stat-card"
-                data-go="studentsPage"
-                data-hash="students">
+        <button type="button" class="stat-card"
+                data-go="studentsPage" data-hash="students">
             <p>Total Registered Students</p>
             <h2 id="totalStudents">0</h2>
         </button>
 
-        <!-- EXISTING CARD 2 -->
-        <button type="button"
-                class="stat-card"
-                data-go="documentsPage"
-                data-hash="documents">
+        <button type="button" class="stat-card"
+                data-go="documentsPage" data-hash="documents">
             <p>Total Submitted Documents</p>
             <h2 id="totalDocuments">0</h2>
         </button>
 
-        <!-- EXISTING CARD 3 -->
-        <button type="button"
-                class="stat-card"
-                data-go="documentsPage"
-                data-filter="Pending"
+        <button type="button" class="stat-card"
+                data-go="documentsPage" data-filter="Pending"
                 data-hash="documents-pending">
             <p>Pending Documents</p>
             <h2 id="pendingDocuments">0</h2>
         </button>
 
-        <!-- EXISTING CARD 4 -->
-        <button type="button"
-                class="stat-card"
-                data-go="documentsPage"
-                data-filter="Approved"
+        <button type="button" class="stat-card"
+                data-go="documentsPage" data-filter="Approved"
                 data-hash="documents-approved">
             <p>Approved Documents</p>
             <h2 id="approvedDocuments">0</h2>
         </button>
 
-        <!-- NEW CARD 5: NOT A BUTTON -->
         <div class="stat-card">
             <p>Reports & Analytics</p>
             <h2 id="reportsCount">—</h2>
         </div>
 
-        <!-- NEW CARD 6: NOT A BUTTON -->
         <div class="stat-card">
             <p>Student Concern Overview</p>
             <h2 id="studentConcernsCount">—</h2>
         </div>
 
-        <!-- NEW CARD 7: NOT A BUTTON -->
         <div class="stat-card">
             <p>Submitted Documents</p>
             <h2 id="submittedDocumentsCount">0</h2>
@@ -578,6 +571,7 @@ tbody tr:hover{background:#fafcf9}
         </div>
 
         <div class="quick-links">
+
             <button data-go="studentsPage" data-hash="students">
                 View Registered Students
             </button>
@@ -586,9 +580,25 @@ tbody tr:hover{background:#fafcf9}
                 Review Submitted Documents
             </button>
 
+            <!-- NEW: SUBMITTED DOCUMENTS -->
+            <button id="submittedDocumentsQuickLink">
+                Submitted Documents
+            </button>
+
+            <!-- NEW: REPORTS & ANALYTICS -->
+            <button id="reportsQuickLink">
+                Reports & Analytics
+            </button>
+
+            <!-- NEW: STUDENT CONCERNS -->
+            <button id="studentConcernQuickLink">
+                Student Concern Overview
+            </button>
+
             <button id="dashboardRefresh">
                 Refresh Dashboard
             </button>
+
         </div>
     </div>
 
@@ -609,8 +619,7 @@ tbody tr:hover{background:#fafcf9}
         </div>
 
         <div class="toolbar">
-            <input type="search"
-                   id="studentSearch"
+            <input type="search" id="studentSearch"
                    placeholder="Search student name, number, or email...">
         </div>
 
@@ -631,7 +640,6 @@ tbody tr:hover{background:#fafcf9}
                         <th>Actions</th>
                     </tr>
                 </thead>
-
                 <tbody id="studentsTable">
                     <tr>
                         <td colspan="9" class="loading">Loading students...</td>
@@ -658,8 +666,7 @@ tbody tr:hover{background:#fafcf9}
         </div>
 
         <div class="toolbar">
-            <input type="search"
-                   id="documentSearch"
+            <input type="search" id="documentSearch"
                    placeholder="Search student or document...">
 
             <select id="documentFilter">
@@ -684,7 +691,6 @@ tbody tr:hover{background:#fafcf9}
                         <th>Actions</th>
                     </tr>
                 </thead>
-
                 <tbody id="documentsTable">
                     <tr>
                         <td colspan="6" class="loading">Loading documents...</td>
@@ -713,7 +719,6 @@ tbody tr:hover{background:#fafcf9}
         <div class="message" id="adminProfileMessage"></div>
 
         <form id="adminProfileForm">
-
             <div class="profile-grid">
 
                 <div class="profile-field">
@@ -769,19 +774,16 @@ tbody tr:hover{background:#fafcf9}
             </div>
 
             <div class="profile-actions">
-                <button type="submit"
-                        class="btn btn-green"
+                <button type="submit" class="btn btn-green"
                         id="saveAdminProfile">
                     Save Changes
                 </button>
 
-                <button type="button"
-                        class="btn btn-gold"
+                <button type="button" class="btn btn-gold"
                         id="reloadAdminProfile">
                     Reload Profile
                 </button>
             </div>
-
         </form>
     </div>
 
@@ -1047,7 +1049,6 @@ async function loadAllData(){
     ]);
 
     if(studentResult.error){
-
         console.error("Students query error:",studentResult.error);
 
         students=[];
@@ -1058,14 +1059,11 @@ async function loadAllData(){
         showMessage("studentMessage",studentResult.error.message);
 
     }else{
-
         students=studentResult.data||[];
-
         await renderStudents();
     }
 
     if(documentResult.error){
-
         console.error("Documents query error:",documentResult.error);
 
         documents=[];
@@ -1076,9 +1074,7 @@ async function loadAllData(){
         showMessage("documentMessage",documentResult.error.message);
 
     }else{
-
         documents=documentResult.data||[];
-
         renderDocuments();
     }
 
@@ -1099,29 +1095,15 @@ function updateStatistics(){
         (doc.status||"").toLowerCase()==="approved"
     ).length;
 
-    document.getElementById("totalStudents").textContent=
-        totalStudents;
+    document.getElementById("totalStudents").textContent=totalStudents;
+    document.getElementById("totalDocuments").textContent=totalDocuments;
+    document.getElementById("pendingDocuments").textContent=pending;
+    document.getElementById("approvedDocuments").textContent=approved;
 
-    document.getElementById("totalDocuments").textContent=
-        totalDocuments;
-
-    document.getElementById("pendingDocuments").textContent=
-        pending;
-
-    document.getElementById("approvedDocuments").textContent=
-        approved;
-
-    /* NEW STATISTICS */
     document.getElementById("submittedDocumentsCount").textContent=
         totalDocuments;
 
-    /*
-       Reports & Analytics and Student Concern Overview
-       are set to — because the supplied database schema
-       does not include report or student concern tables.
-    */
     document.getElementById("reportsCount").textContent="—";
-
     document.getElementById("studentConcernsCount").textContent="—";
 }
 
@@ -1145,10 +1127,8 @@ async function renderStudents(){
     });
 
     if(filtered.length===0){
-
         table.innerHTML=
             '<tr><td colspan="9" class="empty">No registered students found.</td></tr>';
-
         return;
     }
 
@@ -1172,9 +1152,7 @@ async function renderStudents(){
             '<span class="status status-incomplete">No Signature</span>';
 
         if(student.signature_path){
-
             try{
-
                 const {data,error}=await supabaseClient
                     .storage
                     .from("student-profiles")
@@ -1183,7 +1161,6 @@ async function renderStudents(){
                 if(error)throw error;
 
                 if(data?.signedUrl){
-
                     const safeURL=escapeHTML(data.signedUrl);
 
                     signatureHTML=`
@@ -1191,7 +1168,6 @@ async function renderStudents(){
                            target="_blank"
                            rel="noopener noreferrer"
                            title="View student signature">
-
                             <img src="${safeURL}"
                                  alt="Student Signature"
                                  class="student-signature-preview">
@@ -1200,7 +1176,6 @@ async function renderStudents(){
                 }
 
             }catch(error){
-
                 console.error(
                     "Unable to load signature for:",
                     student.id,
@@ -1220,7 +1195,6 @@ async function renderStudents(){
                 <td>${displayValue(student.course)}</td>
                 <td>${displayValue(student.year_level)}</td>
                 <td>${signatureHTML}</td>
-
                 <td>
                     <span class="status ${
                         complete?"status-complete":"status-incomplete"
@@ -1228,24 +1202,19 @@ async function renderStudents(){
                         ${complete?"Complete":"Incomplete"}
                     </span>
                 </td>
-
                 <td>${formatDate(student.created_at)}</td>
-
                 <td>
                     <div class="action-buttons">
-
                         <button class="btn btn-view"
                                 data-student-action="edit"
                                 data-id="${escapeHTML(student.id)}">
                             Edit
                         </button>
-
                         <button class="btn btn-reject"
                                 data-student-action="delete"
                                 data-id="${escapeHTML(student.id)}">
                             Delete
                         </button>
-
                     </div>
                 </td>
             </tr>
@@ -1269,42 +1238,27 @@ async function editStudent(studentId){
         "Student Number:",
         student.student_number||""
     );
-
     if(studentNumber===null)return;
 
     const firstName=prompt(
         "First Name:",
         student.first_name||""
     );
-
     if(firstName===null)return;
 
     const lastName=prompt(
         "Last Name:",
         student.last_name||""
     );
-
     if(lastName===null)return;
 
-    const email=prompt(
-        "Email:",
-        student.email||""
-    );
-
+    const email=prompt("Email:",student.email||"");
     if(email===null)return;
 
-    const course=prompt(
-        "Course:",
-        student.course||""
-    );
-
+    const course=prompt("Course:",student.course||"");
     if(course===null)return;
 
-    const yearLevel=prompt(
-        "Year Level:",
-        student.year_level||""
-    );
-
+    const yearLevel=prompt("Year Level:",student.year_level||"");
     if(yearLevel===null)return;
 
     if(!firstName.trim()||!lastName.trim()||!email.trim()){
@@ -1315,7 +1269,6 @@ async function editStudent(studentId){
     if(!confirm("Save the updated student information?"))return;
 
     try{
-
         const {error}=await supabaseClient
             .from("students")
             .update({
@@ -1331,13 +1284,10 @@ async function editStudent(studentId){
         if(error)throw error;
 
         alert("Student information successfully updated!");
-
         await loadAllData();
 
     }catch(error){
-
         console.error("Edit student error:",error);
-
         alert("Unable to update student: "+error.message);
     }
 }
@@ -1362,7 +1312,6 @@ async function deleteStudent(studentId){
     ))return;
 
     try{
-
         const {error}=await supabaseClient
             .from("students")
             .delete()
@@ -1371,13 +1320,10 @@ async function deleteStudent(studentId){
         if(error)throw error;
 
         alert("Student record successfully deleted!");
-
         await loadAllData();
 
     }catch(error){
-
         console.error("Delete student error:",error);
-
         alert("Unable to delete student: "+error.message);
     }
 }
@@ -1395,7 +1341,6 @@ document.getElementById("studentsTable")
     const studentId=button.dataset.id;
 
     if(action==="edit")await editStudent(studentId);
-
     if(action==="delete")await deleteStudent(studentId);
 });
 
@@ -1436,10 +1381,8 @@ function renderDocuments(){
     });
 
     if(filtered.length===0){
-
         table.innerHTML=
             '<tr><td colspan="6" class="empty">No submitted documents found.</td></tr>';
-
         return;
     }
 
@@ -1471,7 +1414,6 @@ function renderDocuments(){
                         data-id="${escapeHTML(doc.id)}">
                     Approve
                 </button>
-
                 <button class="btn btn-reject"
                         data-action="reject"
                         data-id="${escapeHTML(doc.id)}">
@@ -1485,44 +1427,35 @@ function renderDocuments(){
                 <td>${displayValue(student?.email)}</td>
                 <td>${displayValue(doc.document_name)}</td>
                 <td>${formatDate(doc.uploaded_at)}</td>
-
                 <td>
                     <span class="status ${statusClass}">
                         ${escapeHTML(status)}
                     </span>
                 </td>
-
                 <td>
                     <div class="action-buttons">
-
                         <button class="btn btn-view"
                                 data-action="view"
                                 data-id="${escapeHTML(doc.id)}">
                             View
                         </button>
-
                         ${pendingActions}
-
                         <button class="btn btn-reject"
                                 data-action="delete"
                                 data-id="${escapeHTML(doc.id)}">
                             Delete
                         </button>
-
                     </div>
                 </td>
             </tr>
         `;
-
     }).join("");
 }
 
 /* VIEW DOCUMENT */
 async function viewDocument(documentId){
 
-    const doc=documents.find(
-        item=>item.id===documentId
-    );
+    const doc=documents.find(item=>item.id===documentId);
 
     if(!doc||!doc.file_path){
         alert("Document file path is missing.");
@@ -1530,7 +1463,6 @@ async function viewDocument(documentId){
     }
 
     try{
-
         const {data,error}=await supabaseClient
             .storage
             .from("student-documents")
@@ -1555,9 +1487,7 @@ async function viewDocument(documentId){
         }
 
     }catch(error){
-
         console.error("View document error:",error);
-
         alert("Unable to open document: "+error.message);
     }
 }
@@ -1565,9 +1495,7 @@ async function viewDocument(documentId){
 /* APPROVE OR REJECT DOCUMENT */
 async function updateDocumentStatus(documentId,newStatus){
 
-    const doc=documents.find(
-        item=>item.id===documentId
-    );
+    const doc=documents.find(item=>item.id===documentId);
 
     if(!doc){
         alert("Document record not found.");
@@ -1579,7 +1507,6 @@ async function updateDocumentStatus(documentId,newStatus){
     ))return;
 
     try{
-
         const {error}=await supabaseClient
             .from("documents")
             .update({status:newStatus})
@@ -1587,16 +1514,11 @@ async function updateDocumentStatus(documentId,newStatus){
 
         if(error)throw error;
 
-        alert(
-            `Document successfully ${newStatus.toLowerCase()}.`
-        );
-
+        alert(`Document successfully ${newStatus.toLowerCase()}.`);
         await loadAllData();
 
     }catch(error){
-
         console.error("Update document status error:",error);
-
         alert("Unable to update document status: "+error.message);
     }
 }
@@ -1604,9 +1526,7 @@ async function updateDocumentStatus(documentId,newStatus){
 /* DELETE DOCUMENT */
 async function deleteDocument(documentId){
 
-    const doc=documents.find(
-        item=>item.id===documentId
-    );
+    const doc=documents.find(item=>item.id===documentId);
 
     if(!doc){
         alert("Document record not found.");
@@ -1618,9 +1538,7 @@ async function deleteDocument(documentId){
     ))return;
 
     try{
-
         if(doc.file_path){
-
             const {error:storageError}=await supabaseClient
                 .storage
                 .from("student-documents")
@@ -1637,13 +1555,10 @@ async function deleteDocument(documentId){
         if(databaseError)throw databaseError;
 
         alert("Document successfully deleted!");
-
         await loadAllData();
 
     }catch(error){
-
         console.error("Delete document error:",error);
-
         alert("Unable to delete document: "+error.message);
     }
 }
@@ -1651,9 +1566,7 @@ async function deleteDocument(documentId){
 document.getElementById("documentsTable")
 .addEventListener("click",async event=>{
 
-    const button=event.target.closest(
-        "button[data-action]"
-    );
+    const button=event.target.closest("button[data-action]");
 
     if(!button)return;
 
@@ -1704,7 +1617,6 @@ function showAdminPage(pageId,updateURL=true){
     document.querySelectorAll(
         ".sidebar button[data-page]"
     ).forEach(button=>{
-
         button.classList.toggle(
             "active",
             button.dataset.page===pageId
@@ -1712,14 +1624,9 @@ function showAdminPage(pageId,updateURL=true){
     });
 
     if(updateURL){
-
         const hash=hashForPage(pageId);
 
-        history.replaceState(
-            null,
-            "",
-            `#${hash}`
-        );
+        history.replaceState(null,"",`#${hash}`);
     }
 
     closeSidebar();
@@ -1732,53 +1639,36 @@ function showAdminPage(pageId,updateURL=true){
 
 function handleDashboardHash(){
 
-    const hash=(location.hash||"#dashboard")
-        .replace("#","");
-
+    const hash=(location.hash||"#dashboard").replace("#","");
     const filter=document.getElementById("documentFilter");
 
     if(hash==="students"){
-
         showAdminPage("studentsPage",false);
 
     }else if(hash==="documents-pending"){
-
         filter.value="Pending";
-
         showAdminPage("documentsPage",false);
-
         renderDocuments();
 
     }else if(hash==="documents-approved"){
-
         filter.value="Approved";
-
         showAdminPage("documentsPage",false);
-
         renderDocuments();
 
     }else if(hash==="documents"){
-
         filter.value="All";
-
         showAdminPage("documentsPage",false);
-
         renderDocuments();
 
     }else if(hash==="admin-profile"){
-
         showAdminPage("adminProfilePage",false);
 
     }else{
-
         showAdminPage("dashboardPage",false);
     }
 }
 
-window.addEventListener(
-    "hashchange",
-    handleDashboardHash
-);
+window.addEventListener("hashchange",handleDashboardHash);
 
 /* SIDEBAR NAVIGATION */
 document.querySelectorAll(
@@ -1788,9 +1678,7 @@ document.querySelectorAll(
     button.addEventListener("click",()=>{
 
         if(button.dataset.page==="documentsPage"){
-
             document.getElementById("documentFilter").value="All";
-
             renderDocuments();
         }
 
@@ -1808,11 +1696,8 @@ document.querySelectorAll("[data-go]")
         const filter=button.dataset.filter;
 
         if(filter){
-
             document.getElementById("documentFilter").value=filter;
-
         }else if(pageId==="documentsPage"){
-
             document.getElementById("documentFilter").value="All";
         }
 
@@ -1823,7 +1708,6 @@ document.querySelectorAll("[data-go]")
         }
 
         if(button.dataset.hash){
-
             history.replaceState(
                 null,
                 "",
@@ -1836,8 +1720,33 @@ document.querySelectorAll("[data-go]")
 /* REPORTS & ANALYTICS SIDEBAR LINK */
 document.getElementById("reportsLink")
 .addEventListener("click",()=>{
-
     window.location.href="reports.html";
+});
+
+/* NEW QUICK ACCESS: SUBMITTED DOCUMENTS */
+document.getElementById("submittedDocumentsQuickLink")
+.addEventListener("click",()=>{
+
+    document.getElementById("documentFilter").value="All";
+    document.getElementById("documentSearch").value="";
+
+    showAdminPage("documentsPage");
+
+    renderDocuments();
+
+    history.replaceState(null,"","#documents");
+});
+
+/* NEW QUICK ACCESS: REPORTS & ANALYTICS */
+document.getElementById("reportsQuickLink")
+.addEventListener("click",()=>{
+    window.location.href="reports.html";
+});
+
+/* NEW QUICK ACCESS: STUDENT CONCERN OVERVIEW */
+document.getElementById("studentConcernQuickLink")
+.addEventListener("click",()=>{
+    window.location.href="reports.html#studentConcernSection";
 });
 
 /* SEARCH AND FILTER */
